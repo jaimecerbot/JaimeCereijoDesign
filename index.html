@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaime Cereijo Design</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+
+    /* RESET Y BASE */
+    *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
+    html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
+    body { font-family: Coolvetica, sans-serif; background: #f8f8f8; display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex: 1; margin-top: 70px; overflow-x: hidden; }
+
+    /* HEADER */
+    header { display: flex; align-items: center; justify-content: space-between; background: #001f3f; color: yellow; padding: 10px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px; will-change: transform; transition: transform .3s ease; }
+    header.hidden { transform: translateY(-100%); }
+    .logo { height: 50px; width: 50px; background: url('Jmotion.png') no-repeat center/contain; text-indent: -9999px; }
+    nav { display: flex; align-items: center; }
+    nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; }
+    nav a:hover { transform: scale(1.1); z-index: 10; }
+
+    /* IDIOMA Y SECCIONES */
+    #idioma-btn { background: none; border: 1px solid yellow; color: yellow; padding: 5px 10px; cursor: pointer; position: relative; }
+    #idioma-list { font-family: Helvetica; display: none; position: absolute; top: 30px; right: 0; background: #001f3f; color: yellow; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; z-index: 101; }
+    #idioma-list div { padding: 5px 10px; cursor: pointer; }
+    #idioma-list div:hover { background: #eee; color: #001f3f; }
+    #desktop-version section { display: none; padding: 40px; flex: 1; margin-top: 0; scrollbar-width: none; -ms-overflow-style: none; }
+    #desktop-version section.active { display: block; }
+
+    /* CAROUSEL Y PROYECTOS */
+    .carousel { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; -ms-overflow-style: none; }
+    .carousel img { width: 200px; height: 120px; object-fit: cover; cursor: pointer; border-radius: 8px; will-change: transform; transition: transform .3s ease; }
+    .carousel img:hover { transform: scale(1.05); }
+    #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
+    .proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; }
+
+    /* ÍNDICE */
+    #indice { width: 280px; background: #f9f9f9; border-right: 1px solid #ddd; padding: 1.5em 0; flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px); align-self: flex-start; overflow-y: auto; z-index: 900; scrollbar-width: none; -ms-overflow-style: none; will-change: top; transition: top .3s ease; }
+    .indice-content { padding: 0 1.5em; flex: 1; display: flex; flex-direction: column; }
+    #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
+    #indice ul { list-style: none; flex: 1; }
+    #indice li { margin-bottom: .5em; }
+    #indice a { text-decoration: none; color: black; display: block; padding: .6em .8em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; }
+    @media (min-width: 769px) {
+      #indice a.active { background: #001f3f; color: yellow; border-radius: 20px; transform: translateX(12px); box-shadow: 0 2px 8px rgba(0,31,63,.4); padding: .6em 1.2em; }
+      #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }
+    }
+
+    /* GALERÍA Y FOOTER */
+    #galeria-container { flex: 1; overflow-x: hidden; overflow-y: auto; padding: 0; margin: 0; }
+    #galeria { width: 100%; padding: 0; margin: 0; overflow: visible; }
+    #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
+    .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
+    footer { display: flex; justify-content: space-between; background: #001f3f; color: white; padding: 20px; font-size: .9em; z-index: 1100; position: relative; width: 100%; transform: translateY(100%); transition: transform .3s; }
+    footer.visible { transform: translateY(0); }
+    @media (min-width: 769px) {
+      body.proyectos-active footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform .3s; }
+      body.proyectos-active footer.visible { transform: translateY(0); }
+    }
+
+    /* INTRO Y SISTEMA DE OVERLAYS */
+    #intro-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #001f3f; display: flex; justify-content: center; align-items: center; z-index: 999999; opacity: 1; transition: opacity 1.5s; overflow: hidden; }
+    #intro-overlay.fade-out { opacity: 0; pointer-events: none; }
+    #intro-video { max-width: 60vw; max-height: 60vh; object-fit: contain; }
+    .image-wrap#p11, .image-wrap#p12, .image-wrap#p13, .image-wrap#p14 { overflow: visible !important; }
+    .image-wrap .base { display: block; width: 100%; height: auto; object-fit: cover; z-index: 1; }
+    .image-wrap .overlay { position: absolute; left: 0; width: 100%; height: auto; top: var(--overlay-top, 0%); z-index: calc(2 + var(--z, 0)); pointer-events: auto; object-fit: contain; }
+    .image-wrap .overlay2 { position: absolute; top: var(--overlay-top, 0%); left: 50%; width: auto; transform: translateX(-50%); z-index: 2; pointer-events: auto; object-fit: cover; }
+    .image-wrap .overlay2.overlay-rollo { height: 100%; object-fit: contain; }
+    .overlay-rollo { pointer-events: auto !important; }
+
+    /* EFECTOS PARA OVERLAYS - OPTIMIZADO */
+    .overlay, .overlay2 { opacity: 0; will-change: opacity, transform; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .overlay.visible, .overlay2.visible { opacity: 1; transform: scale(1); }
+    .overlay2.visible { transform: translateX(-50%) scale(1); }
+    .overlay.hovered { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
+    .overlay2.hovered { transform: translateX(-50%) scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
+
+    /* EFECTOS ESPECÍFICOS */
+    .overlay-stand { opacity: 0; transform: scale(1.2); pointer-events: auto; cursor: pointer; z-index: 10; position: absolute; will-change: opacity, transform; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .overlay-stand.immediate-visible { opacity: 1; transform: scale(1); transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .overlay-stand.resetting { opacity: 0 !important; transform: scale(1.2) !important; transition: none !important; }
+    .overlay-stand.immediate-visible:hover { transition: transform 0.05s ease-out; }
+
+    /* CUADROS DE TEXTO PARA GALERÍA */
+    .image-wrap {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      container-type: inline-size; /* Establece el contexto de contenedor para consultas de contenedor */
+    }
+    
+    .text-overlay {
+      position: absolute;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #333;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      pointer-events: none;
+      z-index: 50;
+      font-size: var(--text-size, 5cqw); /* Tamaño relativo al ancho del contenedor (imagen) */
+      line-height: 1.4;
+      white-space: pre-line;
+      /* 
+      SISTEMA DE TAMAÑOS RELATIVOS A LA IMAGEN:
+      - El tamaño por defecto es 5cqw (5% del ancho de la imagen)
+      - Para textos más grandes usa: --text-size: 8cqw (8% del ancho)
+      - Para textos más pequeños usa: --text-size: 3cqw (3% del ancho)
+      - Para títulos principales usa: --text-size: 10cqw (10% del ancho)
+      - El tamaño siempre será proporcional al ancho de la imagen, manteniendo la relación visual
+      */
+      /* Posicionamiento usando variables CSS para flexibilidad */
+      top: var(--text-top, 10%);
+      left: var(--text-left, 10%);
+      right: var(--text-right, auto);
+      bottom: var(--text-bottom, auto);
+      width: var(--text-width, auto);
+      height: var(--text-height, auto);
+      max-width: var(--text-max-width, 80%);
+      text-align: var(--text-align, left);
+      transform: var(--text-transform, none);
+    }
+
+    .overlay-botella { transform-origin: center center; opacity: 1; will-change: transform; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .overlay-botella.pulse { transform: scale(1.05); transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .overlay-botella.hover-active { transform: scale(1.03) !important; transition: transform 0.15s ease-out !important; }
+    .overlay-botella[data-botella="1"] { transform-origin: 12.63% 50%; }
+    .overlay-botella[data-botella="2"] { transform-origin: 20.82% 50%; }
+    .overlay-botella[data-botella="3"] { transform-origin: 27.65% 50%; }
+    .overlay-botella[data-botella="4"] { transform-origin: 33.10% 50%; }
+    .overlay-botella[data-botella="5"] { transform-origin: 38.91% 50%; }
+    .overlay-botella[data-botella="6"] { transform-origin: 43.34% 50%; }
+    .overlay-botella[data-botella="7"] { transform-origin: 47.78% 50%; }
+    .overlay-botella[data-botella="8"] { transform-origin: 51.19% 50%; }
+    .overlay-botella[data-botella="9"] { transform-origin: 54.95% 50%; }
+
+    .overlay-rollo { transform-origin: center center; opacity: 1; cursor: default; position: absolute; z-index: 10; top: var(--overlay-top, 0%); left: 50%; width: auto; height: auto; max-width: none; max-height: none; will-change: transform; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .overlay-rollo.displaced-left { transform: translateX(-50%) translateX(-5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .overlay-rollo.displaced-right { transform: translateX(-50%) translateX(5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+    .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
+
+    /* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
+    /* Aplica a overlays de p9 (videos.png) y p10 (1.1..1.4) */
+    #p9 .overlay, #p10 .overlay {
+      opacity: 0;
+      transform: translateY(64px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    #p9 .overlay.visible, #p10 .overlay.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* THUMBNAILS (p10): Transiciones suaves para textos que cambian por grupo */
+    #p10 .text-group {
+      display: block !important; /* Forzar sobre estilos inline existentes */
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(4px);
+      will-change: opacity, transform, filter;
+      transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #p10 .text-group.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* EFECTOS - OPTIMIZACIONES ADICIONALES */
+    .overlay.hovered { transform: scale(1.05); } /* preserve hovered but weaker */
+    
+    /* RESPONSIVE - OPTIMIZADO */
+    @media (max-width: 1024px) { #indice { width: 250px; } }
+    @media (max-width: 768px) {
+      header { flex-direction: column; align-items: flex-start; padding: 10px; height: auto; }
+      nav { display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%; margin-top: 10px; }
+      nav a { margin: 5px; font-size: .9em; }
+      main { margin-top: 120px; }
+      section { padding: 20px; padding-top: 0; }
+      .proyectos-container { flex-direction: column; height: auto; }
+      #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 120px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
+      .indice-content { padding: 0 15px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: visible; }
+      #indice h2 { display: none; }
+      #indice ul { display: flex; overflow-x: auto; gap: 8px; padding: 8px 0; height: 100%; align-items: center; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
+      #indice li { flex-shrink: 0; margin-bottom: 0; height: 100%; display: flex; align-items: center; }
+      #indice a { white-space: nowrap; padding: .6em 1.2em; border: none; border-radius: 20px; background: #f0f0f0; transition: all .2s; color: #333; font-size: .9em; box-shadow: 0 1px 3px rgba(0,0,0,.1); height: 40px; display: flex; align-items: center; justify-content: center; margin: 0; width: fit-content; min-width: auto; }
+      #indice a.active { color: yellow; background: #001f3f; transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,31,63,.5); padding: .6em 1.4em; }
+      #indice a:hover { color: #001f3f; transform: translateY(-2px); }
+      #galeria-container { height: calc(100vh - 190px); }
+      #galeria { padding-bottom: 0; }
+      .carousel img { width: 150px; height: 100px; }
+  .text-overlay { --text-size: 4cqw !important; }
+      footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; transform: translateY(0) !important; }
+      #intro-video { max-width: 90vw; max-height: 90vh; }
+    }
+    @media (max-width: 480px) {
+      .logo { height: 40px; width: 40px; }
+      #idioma-btn { padding: 4px 8px; font-size: .9em; }
+      main { margin-top: 100px; }
+      section { padding: 15px; padding-top: 0; }
+      .carousel img { width: 130px; height: 90px; }
+      #indice { top: 100px; height: 60px; }
+      .indice-content { padding: 0 10px; }
+      #indice a { padding: 0.5em 1em; font-size: 0.85em; height: 36px; }
+      #galeria-container { height: calc(100vh - 160px); }
+      .text-overlay { --text-size: 3.5cqw !important; }
+    }
+
+    html.intro-active, body.intro-active { overflow: hidden; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header id="main-header">
+    <div class="logo">
+      <img src="Jmotion.png" alt="Logo">
+    </div>
+    <nav>
+      <a onclick="mostrarSeccion('menu')"><span data-es="Menú" data-en="Menu"></span></a>
+      <a onclick="mostrarSeccion('proyectos')"><span data-es="Proyectos" data-en="Projects"></span></a>
+      <a onclick="mostrarSeccion('redes')"><span data-es="Redes" data-en="Social"></span></a>
+      <a onclick="mostrarSeccion('contacto')"><span data-es="Contacto" data-en="Contact"></span></a>
+      <a onclick="mostrarSeccion('sobremi')"><span data-es="Sobre mí" data-en="About me"></span></a>
+    </nav>
+    <div style="position:relative;">
+      <button id="idioma-btn">ES</button>
+      <div id="idioma-list">
+        <div onclick="cambiarIdioma('es')">Español</div>
+        <div onclick="cambiarIdioma('en')">English</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main id="desktop-version">
+    <section id="menu" class="active">
+      <h1><span data-es="Menú" data-en="Menu"></span></h1>
+      <div class="carousel">
+        <img src="proyecto1.jpg" alt="Perchero Hira" onclick="irAProyecto(0)">
+        <img src="proyecto2.jpg" alt="Vinos Nostre" onclick="irAProyecto(1)">
+        <img src="proyecto3.jpg" alt="Reflejos del Multiverso" onclick="irAProyecto(2)">
+        <img src="proyecto4.jpg" alt="Moifez" onclick="irAProyecto(3)">
+      </div>
+      <p data-es="También puedes explorar mis últimos proyectos, leer sobre mi proceso creativo o contactar conmigo directamente." 
+         data-en="You can also explore my latest projects, learn about my creative process, or contact me directly."></p>
+    </section>
+
+    <section id="proyectos">
+      <div class="proyectos-container">
+        <nav id="indice">
+          <div class="indice-content">
+            <h2>Índice</h2>
+            <ul>
+              <li><a href="#p1" class="active">Hira x Systemtronic</a></li>
+              <li><a href="#p3">Etiquetado para Nostre</a></li>
+              <li><a href="#p7">"Reflejos del Multiverso"</a></li>
+              <li><a href="#p9">Thumbnails para Moifez</a></li>
+              <li><a href="#p11">Ilustraciones para cuentos</a></li>
+              <li><a href="#p15">Concepto para baraja</a></li>
+              <li><a href="#p18">Cubiertas de libros</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- CONTENEDOR SEPARADO PARA LA GALERÍA CON SCROLL -->
+        <div id="galeria-container">
+          <div id="galeria">
+            <!-- Ejemplo de patrón: imagen base + overlay vinculada + textos
+                 - Para añadir una overlay sobre otra imagen, envuelve la imagen base en
+                   <div class="image-wrap"> y añade dentro la overlay.
+                 - Ajusta la posición vertical relativa mediante --overlay-top (porcentaje).
+                 
+                 SISTEMA DE CUADROS DE TEXTO:
+                 - Añade <div class="text-overlay">Texto aquí</div> dentro de cualquier image-wrap
+                 - Posiciona usando variables CSS:
+                   --text-top: 10% (distancia desde arriba)
+                   --text-left: 10% (distancia desde izquierda)
+                   --text-right: 5% (distancia desde derecha, usar con --text-left: auto)
+                   --text-bottom: 10% (distancia desde abajo, usar con --text-top: auto)
+                   --text-max-width: 300px (ancho máximo del cuadro)
+                   --text-align: left|center|right (alineación del texto)
+                   --text-transform: translateX(-50%) (para centrar horizontalmente)
+                 - Estilos inline adicionales: color, font-size, font-weight
+                 
+                 Ejemplo:
+                 <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; color: white;">Mi texto</div>
+                 
+                 O usar JavaScript:
+                 addTextOverlay('p1', 'Mi texto', {top: '20%', left: '10%', color: 'white'});
+            -->
+            <div class="image-wrap" id="p1">
+              <!-- Imagen base (inamovible) -->
+              <img id="p1" src="assets/Hira/focos.png" alt="Hira 1" class="base">
+              <!-- Overlay vinculada a la base; ajustar --overlay-top para posicionarla
+                   Ejemplo: --overlay-top:60% coloca la esquina superior de la overlay al 60% de la altura de la base -->
+              <img id="p1" src="assets/Hira/stand.png" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p2">
+              <img id="p2" src="assets/Hira/render.png" alt="Hira 2" class="base">
+              <div class="text-overlay" style="--text-top: 15%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;">Perchero Hira</div>
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 20%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw;">En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
+                Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a las propuestas de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025.
+              </div>
+            </div>
+            <div class="image-wrap" id="p3">
+              <img id="p3" src="assets/Nostre/Nostre1.png" alt="Nostre 1" class="base">
+              <div class="text-overlay" style="--text-top: 10%; --text-left: 50%; --text-transform: translateX(-50%); --text-size: 4cqw; font-family: 'Cinzel', serif; color: black; white-space: nowrap;">ETIQUETADO DE VINOS Y CERVEZAS</div>
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 5%; font-family: 'Times New Roman', serif; color: black; --text-size: 2cqw; text-align: justify; max-width: 25%; white-space: normal;">En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia.</div>
+              <div class="text-overlay" style="--text-top: 60%; --text-left: 66%; font-family: 'Times New Roman', serif; color:black; --text-size: 2cqw; text-align: justify; max-width: 30%; white-space: normal;">Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas enviadas como obsequio por la UPV a otras universidades llevaron nuestras etiquetas</div>
+            </div>
+            <div class="image-wrap" id="p4">
+              <img id="p4" src="assets/Nostre/Nostre2.png" alt="Nostre 2" class="base">
+              <img id="p4" src="assets/Nostre/Botella9.png" alt="Botella9" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="9">
+              <img id="p4" src="assets/Nostre/Botella8.png" alt="Botella8" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="8">
+              <img id="p4" src="assets/Nostre/Botella7.png" alt="Botella7" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="7">
+              <img id="p4" src="assets/Nostre/Botella6.png" alt="Botella6" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="6">
+              <img id="p4" src="assets/Nostre/Botella5.png" alt="Botella5" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="5">
+              <img id="p4" src="assets/Nostre/Botella4.png" alt="Botella4" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="4">
+              <img id="p4" src="assets/Nostre/Botella3.png" alt="Botella3" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="3">
+              <img id="p4" src="assets/Nostre/Botella2.png" alt="Botella2" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="2">
+              <img id="p4" src="assets/Nostre/Botella1.png" alt="Botella1" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="1">
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 60%; ">Fraternidades Americanas</div>
+              <div class="text-overlay" style="--text-top: 50%; --text-left: 60%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 35%;">La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses.</div>
+            </div>
+            <div class="image-wrap" id="p5">
+              <img id="p5" src="assets/Nostre/Nostre3.png" alt="Nostre 3" class="base">
+              <img id="p5" src="assets/Nostre/Manos.png" alt="Manos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p6">
+              <img id="p6" src="assets/Nostre/Nostre4.png" alt="Nostre 4">
+              <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; ">Romanticismo Mediterráneo</div>
+              <div class="text-overlay" style="--text-top: 40%; --text-left: 10%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 30%; text-align: justify;">Para los vinos quisimos presentar un etiquetado más sobrio, que mostrase una visión romántica del Mediterráneo. Para ellos, usamos una fuente gruesa con serifas suaves, concentrando todo el color en la "N" para aludir a las letras capitales, tan populares durante el romanticismo.</div>
+            </div>
+            <div class="image-wrap" id="p7">
+              <video id="p7" src="assets/Reflejos/fondo_2.mp4" muted loop playsinline autoplay alt="Reflejos 1" class="base"></video>
+              <img id="p7" src="assets/Reflejos/folletos.png" alt="folletos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <div class="text-overlay" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;">Reflejos del Multiverso</div>
+              <div class="text-overlay" style="--text-top: 40%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;">Para promocionar la obra "Reflejos del Multiverso, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
+                Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra."</div>
+            </div>
+            <video id="p8" src="assets/Reflejos/fondo_1.mp4" muted loop playsinline autoplay alt="Reflejos 2"></video>
+            <div class="image-wrap" id="p9">
+              <img id="p9" src="assets/Thumbnails/fondo1.png" alt="Thumbnails 1" class="base">
+              <img id="p9" src="assets/Thumbnails/videos.png" alt="Videos" class="overlay" style="--overlay-top:0%;">
+              <div class="text-overlay" style="--text-top: 12%; --text-left: 27%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 5cqw; ">Thumbnails para Moifez</div>
+              <div class="text-overlay" style="--text-top: 25%; --text-left: 27%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 55cqw;">Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas.</div>
+              <div class="text-overlay" style="--text-top: 55%; --text-left: 50%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 3cqw; ">Procedimiento Habitual</div>
+              <div class="text-overlay" style="--text-top: 65%; --text-left: 50%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;">Normalmente, el cliente me envía un boceto y varias imágenes de referencia para que haga una primera versión del thumbnail, y tras recibir su feedback y hacer las modificaciones necesarias, llegamos al resultado final.</div>
+              <div class="text-overlay" style="--text-top: 85%; --text-left: 50%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;">3,1K visualizaciones • Hace 3 años</div>
+            </div>
+            <div class="image-wrap" id="p10">
+              <img id="p10" src="assets/Thumbnails/fondo.png" alt="Thumbnails 1" class="base">
+              <img id="p10" src="assets/Thumbnails/1.1.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p10" src="assets/Thumbnails/1.2.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p10" src="assets/Thumbnails/1.3.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p10" src="assets/Thumbnails/1.4.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <div class="text-overlay" style="--text-top: 37%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Boceto del cliente</div>
+              <div class="text-overlay" style="--text-top: 65%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Referencia 1</div>
+              <div class="text-overlay" style="--text-top: 90%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Referencia 2</div>
+              
+              <!-- Grupo 1 de textos (correspondientes a imágenes 1.1-1.4) -->
+              <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">• <strong>Tipografías</strong> Aver y SF Florencesans</div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Tipografías</strong> Badaboom y BentonSans</div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Tipografías</strong> Nulshock RG y Bahnschrift</div>
+
+              <!-- Grupo 2 de textos -->
+              <div class="text-overlay text-group text-group-2" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; ">• <strong>Mismo estilo</strong> que las referencias</div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Portadas e Ilustraciones</strong> de varios libros</div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Misma composición</strong> que la referencia</div>
+              
+              <!-- Grupo 3 de textos -->
+              <div class="text-overlay text-group text-group-2" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; ">• <strong>Mascota del canal</strong> con gafas 3D</div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Imágenes ordenadas</strong> cromáticamente</div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">• <strong>Mascota del canal</strong> adaptada al estilo</div>
+              
+              <!-- Grupo 4 de textos -->
+              <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; ">42,4K visualizaciones • Hace 2 años</div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">5,1K visualizaciones • Hace 2 años</div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">6,7K visualizaciones • Hace 3 años</div>
+            </div>
+            <div class="image-wrap" id="p11">
+              <img id="p11" src="assets/Trenzas/maderas1.png" alt="Trenzas 1" class="base">
+              <img id="p11" src="assets/Trenzas/rollo1.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="1">
+            </div>
+            <div class="image-wrap" id="p12">
+              <img id="p12" src="assets/Trenzas/maderas2.png" alt="Trenzas 2" class="base">
+              <img id="p12" src="assets/Trenzas/rollo2.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="2">
+              <div class="text-overlay" style="--text-top: 15%; --text-left: 50%; --text-transform: translateX(-50%); --z-index: 9999;">MEZCLA DE CULTURAS</div>
+              <div class="text-overlay" style="--text-top: 70%; --text-left: 55%; --z-index: 9999; ">Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado "Trenzas del Mar del Norte".
+                El cliente quería que el estilo de los dibujos fuera "una mezcla entre arte polinesio y vikingo", y el aspecto de casi todos los elementos venía definido por las descripciones que se dan en el relato.
+              </div>
+            </div>
+            <div class="image-wrap" id="p13">
+              <img id="p13" src="assets/Trenzas/maderas4.png" alt="Trenzas 3" class="base">
+              <img id="p13" src="assets/Trenzas/rollo3.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="3">
+            </div>
+            <div class="image-wrap" id="p14">
+              <img id="p14" src="assets/Trenzas/maderas5.png" alt="Trenzas 4" class="base">
+              <img id="p14" src="assets/Trenzas/rollo4.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="4">
+            </div>
+            <div class="image-wrap" id="p15">
+              <img id="p15" src="assets/Cartas/fondotitulo.png" alt="Cartas 1">
+              <img id="p15" src="assets/Cartas/titulo.png" alt="logo" class="overlay">
+              <div class="text-overlay" style="--text-top: 50%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Roboto'; font-size: 2cqw; color: white; max-width: 38cqw;">Hace algunos años, como proyecto personal, planteé el concepto para una baraja de cartas inspiradas en el videojuego "Outer Wilds".
+                El valor principal de estos diseños reside en una combinación de varios elementos icónicos del juego con los símbolos tradicionales de la baraja francesa.
+              </div>
+            </div>
+            <div class="image-wrap" id="p16">
+              <img id="p16" src="assets/Cartas/fondocartas1.png" alt="Cartas 2" class="base">
+              <img id="p16" src="assets/Cartas/cartas1.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 55%; font-family:'Roboto'; font-size: 2cqw; color: white; max-width: 28cqw;">Originalmente, enfoqué el proyecto como concepto para una baraja de colección, estilo tarot.
+                Más adelante, revisé los diseños para que la baraja se adaptase a otras tipologías, como cartas de juego o para trucos de magia.
+              </div>
+            </div>
+            <div class="image-wrap" id="p17">
+              <img id="p17" src="assets/Cartas/fondocartas2.png" alt="Cartas 3" class="base">
+              <img id="p17" src="assets/Cartas/cartas2.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p18">
+              <img id="p18" src="assets/Libro/libro1.png" alt="Libro 1">
+              <div class="text-overlay" style="--text-top: 58%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Times New Roman'; font-size: 2cqw; color: rgb(206, 170, 10); max-width: 42cqw;">Como parte de un proyecto académico, se nos instó a diseñar las cubiertas de "El Libro de la Selva".
+                Opté por un diseño simple, acorde con las tendencias actuales en diseño editorial, pero con un corte tradicional, ya que se trata de un clásico de la literatura inglesa.
+              </div>
+            </div>
+            <img id="p19" src="assets/Libro/libro2.png" alt="Libro 2">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="redes">
+      <h1><span data-es="Redes" data-en="Social"></span></h1>
+      <p data-es="Encuéntrame en Instagram, Behance y LinkedIn para seguir mis proyectos y actualizaciones."
+         data-en="Find me on Instagram, Behance, and LinkedIn to follow my projects and updates."></p>
+    </section>
+
+    <section id="contacto">
+      <h1><span data-es="Contacto" data-en="Contact"></span></h1>
+      <p data-es="Para encargos o colaboraciones, envíame un correo o mensaje directo a través de mis redes."
+         data-en="For commissions or collaborations, send me an email or direct message via my socials."></p>
+    </section>
+
+    <section id="sobremi">
+      <h1><span data-es="Sobre mí" data-en="About me"></span></h1>
+      <p data-es="Soy Jaime, diseñador con intereses en arte, comunicación y creación multidisciplinar. Me apasiona combinar diseño gráfico, ilustración y narrativa visual."
+         data-en="I'm Jaime, a designer interested in art, communication, and multidisciplinary creation. I love combining graphic design, illustration, and visual storytelling."></p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <p>Email: jaimecereijobotana@gmail.com</p>
+      <p data-es="Teléfono: +34 644 43 26 86" data-en="Phone: +34 644 43 26 86"></p>
+    </div>
+    <div>
+      <p>Jaime Cereijo Design</p>
+      <p data-es="Valencia, España" data-en="Valencia, Spain"></p>
+    </div>
+  </footer>
+
+  <!-- BLOQUE DE INTRO -->
+  <div id="intro-overlay">
+  <video id="intro-video" playsinline muted autoplay></video>
+  </div>
+
+  <script>
+    // ===== ESTADO GLOBAL Y UTILIDADES =====
+    const $ = {
+      header: null, indice: null, main: null, footer: null, galeriaContainer: null, galeria: null,
+      body: document.body, html: document.documentElement,
+      lastScrollY: 0, headerHeight: 70, isMobile: window.innerWidth <= 768, 
+      isProyectosActive: false, lastScrollTop: 0, bottleEffectTriggered: false,
+      throttles: new Set(), timers: new Map(), rafId: null
+    };
+
+    const throttle = (key, fn, ms = 16) => {
+      if ($.throttles.has(key)) return;
+      $.throttles.add(key);
+      $.rafId && cancelAnimationFrame($.rafId);
+      $.rafId = requestAnimationFrame(() => { 
+        fn(); 
+        setTimeout(() => $.throttles.delete(key), ms); 
+        $.rafId = null;
+      });
+    };
+    
+    const debounce = (key, fn, ms = 250) => {
+      const timer = $.timers.get(key);
+      timer && clearTimeout(timer);
+      $.timers.set(key, setTimeout(() => { fn(); $.timers.delete(key); }, ms));
+    };
+
+    // ===== LAYOUT, SCROLL Y NAVEGACIÓN =====
+    const Layout = {
+      init() {
+        // Map the actual element IDs/nodes used in the HTML to the $ cache.
+        // Note: the main container uses id="desktop-version" and <footer> has no id,
+        // so we must query them explicitly instead of assuming ids named 'main'/'footer'.
+        $.header = document.getElementById('main-header');
+        $.indice = document.getElementById('indice');
+        $.main = document.getElementById('desktop-version');
+        $.footer = document.querySelector('footer');
+        $.galeriaContainer = document.getElementById('galeria-container');
+        $.galeria = document.getElementById('galeria');
+        this.update();
+      },
+      update() {
+        if (!$.header || !$.main) return;
+        const margin = $.isMobile ? $.headerHeight + 50 : $.headerHeight;
+        $.main.style.marginTop = `${margin}px`;
+        $.indice && ($.indice.style.top = `${margin}px`);
+      }
+    };
+
+    const Scroll = {
+      footerVisible: false, hideTimer: null,
+      handleMain() {
+        throttle('scroll', () => {
+          const delta = window.scrollY - $.lastScrollY;
+          if (Math.abs(delta) > 5) {
+            const hide = delta > 0 && window.scrollY > ($.isMobile ? 50 : 100);
+            $.header?.classList.toggle('hidden', hide);
+            this.updateLayout();
+            $.lastScrollY = window.scrollY;
+          }
+          this.updateFooter();
+        });
+      },
+      updateLayout() {
+        const visible = !$.header?.classList.contains('hidden');
+        const top = visible ? $.headerHeight : 0;
+        $.main && ($.main.style.marginTop = `${top}px`);
+        $.indice && ($.indice.style.top = `${$.isMobile && visible ? $.headerHeight + 50 : top}px`);
+      },
+      updateFooter() {
+        if (!$.galeriaContainer || !$.footer || $.isMobile || !$.isProyectosActive) {
+          this.hideFooter(); return;
+        }
+        const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
+        const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
+        atBottom ? this.showFooter() : (scrollTop < $.lastScrollTop && this.footerVisible && this.scheduleHide());
+        $.lastScrollTop = scrollTop;
+      },
+      showFooter() {
+        if (this.footerVisible) return;
+        $.footer?.classList.add('visible');
+        this.footerVisible = true;
+        this.hideTimer && clearTimeout(this.hideTimer);
+      },
+      hideFooter() {
+        $.footer?.classList.remove('visible');
+        this.footerVisible = false;
+      },
+      scheduleHide() {
+        this.hideTimer && clearTimeout(this.hideTimer);
+        this.hideTimer = setTimeout(() => this.hideFooter(), 25);
+      }
+    };
+
+    const Nav = {
+      grupos: [
+        {ids: ["p1", "p2"], link: "#p1"}, {ids: ["p3", "p4", "p5", "p6"], link: "#p3"},
+        {ids: ["p7", "p8"], link: "#p7"}, {ids: ["p9", "p10"], link: "#p9"},
+        {ids: ["p11", "p12", "p13", "p14"], link: "#p11"}, {ids: ["p15", "p16", "p17"], link: "#p15"},
+        {ids: ["p18", "p19"], link: "#p18"}
+      ],
+      links: null, activeGroup: null, elements: new Map(),
+      init() {
+        this.links = document.querySelectorAll("#indice a");
+        this.grupos.forEach(g => g.ids.forEach(id => {
+          const el = document.getElementById(id);
+          el && this.elements.set(id, el);
+        }));
+        this.links.forEach(link => {
+          link.onclick = e => {
+            e.preventDefault();
+            const target = this.elements.get(link.getAttribute("href").substring(1));
+            target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
+          };
+        });
+      },
+      updateActive(scrollPos) {
+        let active = null;
+        this.grupos.some(g => g.ids.some(id => {
+          const el = this.elements.get(id);
+          if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
+            active = g.link; return true;
+          }
+        }));
+        if (this.activeGroup !== active) {
+          this.links.forEach(l => l.classList.remove("active"));
+          active && document.querySelector(`#indice a[href='${active}']`)?.classList.add("active");
+          this.activeGroup = active;
+        }
+      }
+    };
+    // ===== UTILIDAD PARA AÑADIR TEXTOS =====
+    function addTextOverlay(imageId, text, options = {}) {
+      const imageWrap = document.querySelector(`.image-wrap#${imageId}`);
+      if (!imageWrap) {
+        console.warn(`No se encontró image-wrap con id: ${imageId}`);
+        return null;
+      }
+      
+      const textDiv = document.createElement('div');
+      textDiv.className = 'text-overlay';
+      textDiv.textContent = text;
+      
+      // Aplicar posicionamiento y estilos usando variables CSS
+      const styles = {
+        '--text-top': options.top || '10%',
+        '--text-left': options.left || '10%',
+        '--text-right': options.right || 'auto',
+        '--text-bottom': options.bottom || 'auto',
+        '--text-width': options.width || 'auto',
+        '--text-height': options.height || 'auto',
+        '--text-max-width': options.maxWidth || '300px',
+        '--text-align': options.align || 'left',
+        '--text-transform': options.transform || 'none',
+        'color': options.color || '#333',
+        'font-size': options.fontSize || '16px',
+        'font-weight': options.fontWeight || 'normal'
+      };
+      
+      Object.entries(styles).forEach(([prop, value]) => {
+        if (value !== 'auto' && value !== 'none') {
+          textDiv.style.setProperty(prop, value);
+        }
+      });
+      
+      imageWrap.appendChild(textDiv);
+      return textDiv;
+    }
+
+    // ===== FUNCIONES DE NAVEGACIÓN Y IDIOMA =====
+    function mostrarSeccion(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id)?.classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      
+      $.isProyectosActive = (id === 'proyectos');
+      $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
+      
+      if ($.isProyectosActive) {
+        debounce('setup', () => { Videos.init(); Effects.setup(); Overlays.update(); Thumbnails.start(); }, 100);
+      } else {
+        Effects.reset(); Thumbnails.stop();
+      }
+      
+      setTimeout(() => { Layout.update(); Scroll.updateFooter(); }, 100);
+    }
+    
+    function irAProyecto(index) {
+      mostrarSeccion('proyectos');
+      setTimeout(() => {
+        const target = $.galeria?.querySelectorAll('img, video')[index];
+        target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
+      }, 100);
+    }
+
+    const Lang = {
+      init() {
+        const [btn, list] = ['idioma-btn', 'idioma-list'].map(id => document.getElementById(id));
+        const elements = document.querySelectorAll('[data-es]');
+        
+        if (btn && list) {
+          btn.onclick = () => list.style.display = list.style.display === 'block' ? 'none' : 'block';
+          document.onclick = e => !btn.contains(e.target) && !list.contains(e.target) && (list.style.display = 'none');
+        }
+        
+        this.change = lang => {
+          localStorage.setItem('idioma', lang);
+          btn.textContent = lang.toUpperCase();
+          elements.forEach(el => {
+            const text = el.getAttribute(`data-${lang}`);
+            text && (el.textContent = text);
+          });
+        };
+        
+        this.change(localStorage.getItem('idioma') || 'es');
+      }
+    };
+    
+    function cambiarIdioma(idioma) { Lang.change(idioma); }
+
+    // ===== OVERLAYS Y EFECTOS OPTIMIZADOS =====
+    const Overlays = {
+      container: null, updatePending: false, elements: new Map(), cache: new Map(),
+      cascadeTimers: new Map(),
+      init() {
+        this.container = $.galeriaContainer;
+        if (!this.container) return;
+        
+        // Cache elementos al inicio
+        document.querySelectorAll('.image-wrap').forEach(wrap => {
+          const base = wrap.querySelector('.base');
+          if (base) {
+            this.elements.set(wrap.id, {
+              wrap, base,
+              overlays: Array.from(wrap.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')),
+              stands: wrap.querySelectorAll('.overlay[data-stand="true"]'),
+              rollos: wrap.querySelectorAll('.overlay-rollo')
+            });
+          }
+        });
+        
+        this.container.onscroll = () => throttle('overlay', () => this.update());
+        window.onresize = () => throttle('overlay-resize', () => this.update());
+      },
+      
+      getViewportInfo(img) {
+        const key = `${img.id}-${$.galeriaContainer.scrollTop}`;
+        if (this.cache.has(key)) return this.cache.get(key);
+        
+        const rect = img.getBoundingClientRect();
+        const containerRect = this.container.getBoundingClientRect();
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top));
+        const imgCenter = rect.top + rect.height / 2;
+        const containerCenter = containerRect.top + containerRect.height / 2;
+        
+        const info = {
+          visible: (visibleHeight / rect.height) >= 0.6,
+          centered: Math.abs(imgCenter - containerCenter) <= containerRect.height * 0.3,
+          outOfView: rect.bottom <= containerRect.top || rect.top >= containerRect.bottom
+        };
+        
+        // Limpiar cache viejo
+        this.cache.size > 20 && this.cache.clear();
+        this.cache.set(key, info);
+        return info;
+      },
+      
+      update() {
+        if (!$.isProyectosActive || this.updatePending) return;
+        this.updatePending = true;
+        
+        requestAnimationFrame(() => {
+          this.elements.forEach(({wrap, base, overlays, stands, rollos}) => {
+            const info = this.getViewportInfo(base);
+            
+            // -- Overlays: normal single overlay or multiple overlays (cascade for those that share base)
+            if (overlays && overlays.length) {
+              if (info.visible) {
+                // if multiple overlays in same wrap, cascade them only when first not already visible
+                if (overlays.length > 1) {
+                  if (!overlays[0].classList.contains('visible')) {
+                    // clear any previous cascade timers
+                    const prev = this.cascadeTimers.get(wrap.id);
+                    if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
+                    const timers = [];
+                    overlays.forEach((o, i) => {
+                      const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
+                      timers.push(t);
+                    });
+                    this.cascadeTimers.set(wrap.id, timers);
+                  }
+                } else {
+                  overlays.forEach(o => o.classList.add('visible'));
+                }
+              } else {
+                // not visible -> remove classes and clear timers
+                overlays.forEach(o => o.classList.remove('visible'));
+                const prev = this.cascadeTimers.get(wrap.id);
+                if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
+              }
+            }
+
+            this.processStands(stands, info);
+            this.processRollos(rollos, info);
+          });
+          
+          Nav.updateActive($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
+          !$.bottleEffectTriggered && Bottles.checkTrigger();
+          this.updatePending = false;
+        });
+      },
+      
+      processStands(stands, {outOfView, centered}) {
+        stands.forEach(stand => {
+          const visible = stand.classList.contains('immediate-visible');
+          if (outOfView && visible) {
+            stand.classList.remove('immediate-visible');
+            setTimeout(() => {
+              stand.classList.add('resetting');
+              setTimeout(() => stand.classList.remove('resetting'), 50);
+            }, 600);
+          } else if (centered && !visible && !outOfView) {
+            stand.classList.add('immediate-visible');
+          }
+        });
+      },
+      
+      processRollos(rollos, {centered}) {
+        rollos.forEach(rollo => {
+          const isCentered = rollo.classList.contains('centered');
+          if (centered !== isCentered) {
+            rollo.classList.toggle('centered', centered);
+            if (centered) {
+              rollo.classList.remove('displaced-left', 'displaced-right');
+            } else {
+              const dir = rollo.getAttribute('data-initial-direction') === 'right' ? 'displaced-right' : 'displaced-left';
+              rollo.classList.add(dir);
+            }
+          }
+        });
+      }
+    };
+
+    // ===== EFECTOS CONSOLIDADOS =====
+    const Effects = {
+      handlers: new WeakMap(),
+      
+      setup() {
+        ['stands', 'bottles', 'rollos'].forEach((type, i) => 
+          debounce(`setup-${type}`, () => this[`setup${type.charAt(0).toUpperCase() + type.slice(1)}`](), 100 + i * 50));
+      },
+      
+      setupStands() {
+        document.querySelectorAll('[data-stand="true"]').forEach(stand => {
+          if (this.handlers.has(stand)) return;
+          
+          Object.assign(stand.style, {position: 'absolute', pointerEvents: 'auto', cursor: 'default'});
+          
+          let hovering = false, isHovering = false;
+          const isOpaque = (x, y) => {
+            const rect = stand.getBoundingClientRect();
+            const [relX, relY] = [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
+            return relX >= 0.25 && relX <= 0.75 && relY >= 0.15 && relY <= 0.85;
+          };
+          
+          const onMouseMove = e => {
+            const opaque = isOpaque(e.clientX, e.clientY);
+            if (opaque !== isHovering) {
+              isHovering = opaque;
+              if (opaque) {
+                hovering = true;
+                Object.assign(stand.style, {willChange: 'transform', transform: 'scale(1.02)', cursor: 'pointer'});
+              } else {
+                hovering = false;
+                Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)', willChange: 'auto'});
+                return;
+              }
+            }
+            
+            if (hovering && opaque) {
+              const rect = stand.getBoundingClientRect();
+              const [centerX, centerY] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
+              const [deltaX, deltaY] = [(e.clientX - centerX) * 0.06, (e.clientY - centerY) * 0.06];
+              const [x, y] = [Math.max(-8, Math.min(8, deltaX)), Math.max(-8, Math.min(8, deltaY))];
+              stand.style.transform = `scale(1.02) translate(${x}px, ${y}px)`;
+            }
+          };
+          
+          const onMouseLeave = () => {
+            hovering = isHovering = false;
+            Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)'});
+            setTimeout(() => stand.style.willChange = 'auto', 200);
+          };
+          
+          ['mousemove', 'mouseleave'].forEach((e, i) => 
+            stand.addEventListener(e, [onMouseMove, onMouseLeave][i]));
+          this.handlers.set(stand, {onMouseMove, onMouseLeave});
+        });
+      },
+      
+      setupRollos() {
+        document.querySelectorAll('.overlay-rollo').forEach(rollo => {
+          if (this.handlers.has(rollo)) return;
+          
+          const dir = Math.random() > 0.5 ? 'right' : 'left';
+          rollo.classList.add(`displaced-${dir}`);
+          rollo.setAttribute('data-initial-direction', dir);
+          Object.assign(rollo.style, {pointerEvents: 'auto', zIndex: '100'});
+          
+          const onMouseMove = e => {
+            if (rollo.classList.contains('centered')) {
+              const rect = rollo.getBoundingClientRect();
+              const x = Math.max(-8, Math.min(8, (e.clientX - rect.left - rect.width / 2) * 0.06));
+              rollo.style.transform = `translateX(-50%) translateX(${x}px)`;
+            }
+          };
+          
+          const onMouseLeave = () => {
+            rollo.style.cursor = 'default';
+            const transform = rollo.classList.contains('centered') 
+              ? 'translateX(-50%) translateX(0px)'
+              : `translateX(-50%) translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
+            rollo.style.transform = transform;
+          };
+          
+          rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'pointer', pointerEvents: 'auto', zIndex: '100'}));
+          ['mousemove', 'mouseleave', 'click'].forEach((e, i) => 
+            rollo.addEventListener(e, [onMouseMove, onMouseLeave, e => { e.preventDefault(); e.stopPropagation(); }][i]));
+          
+          this.handlers.set(rollo, {onMouseMove, onMouseLeave});
+        });
+      },
+      
+      setupBottles() {
+        const container = document.querySelector('.image-wrap#p4');
+        if (!container || container.hasAttribute('data-bottles-configured')) return;
+        
+        const bottles = Array.from(document.querySelectorAll('.overlay-botella'));
+        if (!bottles.length) return;
+        
+        bottles.forEach((bottle, i) => {
+          bottle.style.zIndex = (10 + i).toString();
+          bottle.style.pointerEvents = 'none';
+        });
+        
+        container.setAttribute('data-bottles-configured', 'true');
+        const ranges = [[0.0682, 0.1877], [0.1877, 0.266], [0.266, 0.33], [0.33, 0.375], [0.375, 0.43], 
+                       [0.43, 0.48], [0.48, 0.52], [0.52, 0.555], [0.555, 0.585]];
+        let lastActive = null, rafPending = false;
+        
+        const onMouseMove = e => {
+          if (rafPending) return;
+          rafPending = true;
+          requestAnimationFrame(() => {
+            const rect = container.getBoundingClientRect();
+            const [relX, relY] = [(e.clientX - rect.left) / rect.width, (e.clientY - rect.top) / rect.height];
+            let active = null;
+            
+            if (relY >= 0.2 && relY <= 0.8) {
+              ranges.some((range, i) => {
+                if (relX >= range[0] && relX <= range[1]) {
+                  active = i + 1;
+                  return true;
+                }
+              });
+            }
+            
+            if (lastActive !== active) {
+              bottles.forEach(b => b.classList.remove('hover-active'));
+              if (active) {
+                container.querySelector(`.overlay-botella[data-botella="${active}"]`)?.classList.add('hover-active');
+                container.style.cursor = 'pointer';
+              } else container.style.cursor = 'default';
+              lastActive = active;
+            }
+            rafPending = false;
+          });
+        };
+        
+        const onMouseLeave = () => {
+          bottles.forEach(b => b.classList.remove('hover-active'));
+          container.style.cursor = 'default';
+          lastActive = null;
+        };
+        
+        ['mousemove', 'mouseleave'].forEach((e, i) => 
+          container.addEventListener(e, [onMouseMove, onMouseLeave][i]));
+      },
+      
+      reset() {
+        document.querySelectorAll('.overlay-stand, .overlay-rollo, .overlay-botella').forEach(el => {
+          el.classList.remove('immediate-visible', 'resetting', 'centered', 'hover-active');
+          Object.assign(el.style, {transform: '', cursor: 'default', willChange: 'auto'});
+        });
+        // clear any cascade timers and visible classes for thumbnail overlays
+        this.cascadeTimers.forEach(arr => arr.forEach(t => clearTimeout(t)));
+        this.cascadeTimers.clear();
+        document.querySelectorAll('#p9 .overlay, #p10 .overlay').forEach(o => o.classList.remove('visible'));
+        this.handlers = new WeakMap();
+      }
+    };
+
+    const Bottles = {
+      cachedElements: null,
+      checkTrigger() {
+        if (!this.cachedElements) {
+          this.cachedElements = {
+            nostre2: document.getElementById('p4'),
+            bottles: Array.from(document.querySelectorAll('.overlay-botella'))
+              .sort((a, b) => parseInt(a.getAttribute('data-botella')) - parseInt(b.getAttribute('data-botella')))
+          };
+        }
+        
+        const {nostre2} = this.cachedElements;
+        if (!nostre2 || !$.galeriaContainer) return;
+        
+        const containerRect = $.galeriaContainer.getBoundingClientRect();
+        const sectionRect = nostre2.getBoundingClientRect();
+        const [zoneTop, zoneBottom] = [containerRect.top + containerRect.height * 0.3, 
+                                      containerRect.top + containerRect.height * 0.7];
+        
+        if (sectionRect.top <= zoneBottom && sectionRect.bottom >= zoneTop) {
+          $.bottleEffectTriggered = true;
+          setTimeout(() => this.pulse(), 100);
+        }
+        
+        if ($.bottleEffectTriggered && (sectionRect.bottom < containerRect.top - 200 || 
+                                       sectionRect.top > containerRect.bottom + 200)) {
+          $.bottleEffectTriggered = false;
+        }
+      },
+      
+      pulse() {
+        this.cachedElements.bottles.forEach((bottle, i) => {
+          setTimeout(() => {
+            bottle.classList.add('pulse');
+            setTimeout(() => bottle.classList.remove('pulse'), 250);
+          }, i * 120);
+        });
+      }
+    };
+
+    // ===== VIDEOS Y FUNCIONES SIMPLIFICADAS =====
+    const Videos = { 
+      init() {
+        document.querySelectorAll('#galeria video').forEach(video => {
+          ['muted', 'playsinline', 'loop'].forEach(attr => video.setAttribute(attr, ''));
+          video.play().catch(() => {
+            if (!document.hasAttribute('data-video-fallback')) {
+              document.setAttribute('data-video-fallback', 'true');
+              const handleClick = () => {
+                document.querySelectorAll('#galeria video').forEach(v => v.play().catch(() => {}));
+                document.removeEventListener('click', handleClick);
+              };
+              document.addEventListener('click', handleClick);
+            }
+          });
+        });
+      }
+    };
+    
+    const setupNormalOverlays = () => {
+      document.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')
+              .forEach(img => {
+        // Omitir hover en los thumbnails (p9 y p10)
+        if (img.closest('#p9') || img.closest('#p10')) return;
+        const handleMouseMove = e => {
+          // keep basic small parallax for overlays, but do not conflict with thumbnail translate animation
+          const rect = img.getBoundingClientRect();
+          const [x, y] = [((e.clientX - rect.left) / rect.width - 0.5) * 10, 
+                         ((e.clientY - rect.top) / rect.height - 0.5) * 10];
+          img.classList.add('hovered');
+          const base = img.classList.contains('overlay2') ? 'translateX(-50%)' : '';
+          img.style.transform = `${base} scale(1.03) translate(${x}px, ${y}px)`;
+        };
+        const handleMouseLeave = () => { 
+          img.classList.remove('hovered'); 
+          img.style.transform = ''; 
+        };
+        
+        ['mousemove', 'mouseleave'].forEach((e, i) => 
+          img.addEventListener(e, [handleMouseMove, handleMouseLeave][i]));
+      });
+    };
+
+    // ===== THUMBNAILS: ciclo de grupos 1.x, 2.x, 3.x con fade/blur =====
+    const Thumbnails = {
+      timer: null,
+      currentGroup: 1,
+      overlays: [],
+      preloaded: false,
+      preload() {
+        if (this.preloaded) return;
+        const images = [];
+        [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
+          const img = new Image();
+          img.src = `assets/Thumbnails/${g}.${i}.png`;
+          images.push(img);
+        }));
+        this.preloaded = true;
+      },
+      initCache() {
+        this.overlays = Array.from(document.querySelectorAll('#p10 .overlay'));
+      },
+      setGroup(group) {
+        if (!this.overlays.length) this.initCache();
+        this.overlays.forEach((el, idx) => {
+          // Wipe diagonal (≈70°) con borde difuminado solo en la línea de separación
+          const newSrc = `assets/Thumbnails/${group}.${idx+1}.png`;
+          const tmp = document.createElement('img');
+          tmp.alt = el.alt || '';
+          tmp.className = `${el.className} visible thumb-temp`;
+          tmp.style.position = 'absolute';
+          tmp.style.top = getComputedStyle(el).top || '0%';
+          tmp.style.left = getComputedStyle(el).left || '0';
+          tmp.style.width = getComputedStyle(el).width || '100%';
+          tmp.style.height = getComputedStyle(el).height || 'auto';
+          tmp.style.objectFit = getComputedStyle(el).objectFit || 'contain';
+          tmp.style.zIndex = '100';
+          tmp.style.pointerEvents = 'none';
+          // Máscara con gradiente en ángulo 250deg (160+90) para rotar el edge ≈ 70°+90°
+          const feather = '3%';
+          const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -10%) - ${feather}), rgba(0,0,0,1) var(--edge, -10%), rgba(0,0,0,0) calc(var(--edge, -10%) + ${feather}))`;
+          tmp.style.webkitMaskImage = mask;
+          tmp.style.maskImage = mask;
+          tmp.style.webkitMaskRepeat = 'no-repeat';
+          tmp.style.maskRepeat = 'no-repeat';
+          tmp.style.webkitMaskSize = '200% 200%';
+          tmp.style.maskSize = '200% 200%';
+          tmp.style.setProperty('--edge', '-10%');
+
+          tmp.addEventListener('load', () => {
+            el.parentElement.appendChild(tmp);
+            // Animación manual de la variable --edge para un movimiento lento y suave
+            const duration = 1600; // ms (más lento)
+            const start = performance.now();
+            const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+            const step = now => {
+              let p = (now - start) / duration;
+              if (p < 0) p = 0; if (p > 1) p = 1;
+              const eased = easeInOut(p);
+              const edge = -10 + 120 * eased; // de -10% a 110%
+              tmp.style.setProperty('--edge', edge.toFixed(2) + '%');
+              if (p < 1) {
+                requestAnimationFrame(step);
+              } else {
+                // finalizar: sustituir src y limpiar
+                el.src = newSrc;
+                tmp.remove();
+              }
+            };
+            requestAnimationFrame(step);
+          }, {once: true});
+          tmp.src = newSrc;
+        });
+        this.currentGroup = group;
+        // Cambiar textos correspondientes
+        this.setTextGroup(group);
+      },
+      setTextGroup(group) {
+        // Limpiar estilos inline antiguos y ocultar con clase
+        const all = Array.from(document.querySelectorAll('#p10 .text-group'));
+        all.forEach(el => {
+          if (el.style && el.style.display) el.style.display = '';
+          el.classList.remove('visible');
+        });
+
+        // Mostrar solo los textos del grupo actual con un pequeño escalonado
+        const current = Array.from(document.querySelectorAll(`#p10 .text-group-${group}`));
+        const baseDelay = 150; // acompasa con el wipe de imágenes
+        current.forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), baseDelay + i * 80);
+        });
+      },
+      nextGroup() {
+        const next = this.currentGroup === 3 ? 1 : this.currentGroup + 1;
+        this.setGroup(next);
+      },
+      start() {
+        this.preload();
+        this.initCache();
+        if (!this.overlays.length) return;
+        if (this.timer) return; // ya corriendo
+        // Inicializar con el grupo 1 visible (limpiando display inline del HTML)
+        document.querySelectorAll('#p10 .text-group').forEach(el => { if (el.style) el.style.display = ''; el.classList.remove('visible'); });
+        this.setTextGroup(1);
+        // Iniciar con el grupo 1 como base (ya están en 1.x); programar cambios periódicos
+        this.timer = setInterval(() => this.nextGroup(), 5000);
+      },
+      stop() {
+        if (this.timer) { clearInterval(this.timer); this.timer = null; }
+        // Limpiar efectos temporales
+        this.overlays.forEach(el => { el.style.opacity = ''; el.style.filter = ''; });
+      }
+    };
+
+    const Intro = {
+      init() {
+        const [video, overlay] = ['intro-video', 'intro-overlay'].map(id => document.getElementById(id));
+        if (!video || !overlay) return;
+        
+        [$.html, $.body].forEach(el => el.classList.add('intro-active'));
+        
+        video.src = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent) ? 'Jmotion_1.mov' : 'Jmotion_FINAL.webm';
+        Object.assign(video, {muted: true, autoplay: true, playsInline: true});
+        
+        const tryPlay = () => video.play().catch(() => 
+          ['touchstart', 'click'].forEach(event => 
+            document.addEventListener(event, () => video.play(), {once: true})));
+        
+        video.addEventListener('canplaythrough', tryPlay, {once: true});
+        setTimeout(tryPlay, 2000);
+        
+        setTimeout(() => {
+          overlay.classList.add('fade-out');
+          [$.html, $.body].forEach(el => el.classList.remove('intro-active'));
+          setTimeout(() => overlay.remove(), 1600);
+        }, 3000);
+      }
+    };
+    
+    // ===== INICIALIZACIÓN OPTIMIZADA =====
+    const init = () => {
+      [Layout, Nav, Overlays, Lang, Intro].forEach(comp => comp.init());
+      setupNormalOverlays();
+      
+      // Event listeners optimizados
+      [
+        [window, 'scroll', () => Scroll.handleMain()],
+        [window, 'resize', () => debounce('resize', () => { 
+          $.isMobile = window.innerWidth <= 768; 
+          Layout.update(); 
+        }, 100)],
+        [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
+          Overlays.update(); 
+          Scroll.updateFooter(); 
+        })]
+      ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
+      
+      // Observer para proyectos
+      const proyectos = document.getElementById('proyectos');
+      if (proyectos) {
+        new MutationObserver(mutations => {
+          if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
+                             proyectos.classList.contains('active'))) {
+            setTimeout(() => { Videos.init(); Thumbnails.start(); }, 100);
+          } else if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
+                              !proyectos.classList.contains('active'))) {
+            Thumbnails.stop();
+          }
+        }).observe(proyectos, {attributes: true, attributeFilter: ['class']});
+      }
+    };
+    
+    ['load', 'DOMContentLoaded'].forEach(event => window.addEventListener(event, init, {once: true}));
+  </script>
+</body>
+</html>
