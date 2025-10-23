@@ -11,6 +11,28 @@
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code&display=swap');
+
+    /* FUENTES LOCALES */
+    @font-face {
+      font-family: 'CCTheStorySoNearWOO-Regular';
+      src: url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.woff2') format('woff2'),
+           url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.woff') format('woff'),
+           url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+      @font-face {
+      font-family: 'UnciaDis';
+      src: url('UnciaDis.ttf') format('truetype'),
+           url('uncadis.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
 
     /* RESET Y BASE */
     *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,9 +58,43 @@
     #desktop-version section.active { display: block; }
 
     /* CAROUSEL Y PROYECTOS */
-    .carousel { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; scrollbar-width: none; -ms-overflow-style: none; }
-    .carousel img { width: 200px; height: 120px; object-fit: cover; cursor: pointer; border-radius: 8px; will-change: transform; transition: transform .3s ease; }
-    .carousel img:hover { transform: scale(1.05); }
+    .carousel { 
+      display: flex; 
+      overflow: hidden; 
+      gap: 20px; 
+      padding: 20px 0; 
+      scrollbar-width: none; 
+      -ms-overflow-style: none;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      position: relative;
+    }
+    .carousel img { 
+      width: 60vw; 
+      height: 35vw; 
+      max-width: 800px;
+      max-height: 450px;
+      min-width: 400px;
+      min-height: 225px;
+      object-fit: cover; 
+      cursor: pointer; 
+      border-radius: 12px; 
+      will-change: transform; 
+      transition: transform .5s ease, opacity .5s ease; 
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .carousel img.active { 
+      opacity: 1; 
+      transform: scale(1.05); 
+      z-index: 2;
+    }
+    .carousel img:hover { 
+      transform: scale(1.1); 
+      opacity: 1;
+    }
     #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
     .proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; }
 
@@ -48,14 +104,21 @@
     #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
     #indice ul { list-style: none; flex: 1; }
     #indice li { margin-bottom: .5em; }
-    #indice a { text-decoration: none; color: black; display: block; padding: .6em .8em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; }
+    #indice a { text-decoration: none; color: black; display: block; padding: .6em 1.2em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; }
     @media (min-width: 769px) {
-      #indice a.active { background: #001f3f; color: yellow; border-radius: 20px; transform: translateX(12px); box-shadow: 0 2px 8px rgba(0,31,63,.4); padding: .6em 1.2em; }
+      #indice a.active { background: #001f3f; color: yellow; border-radius: 20px; transform: translateX(12px); box-shadow: 0 2px 8px rgba(0,31,63,.4); }
       #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }
     }
 
     /* GALERÍA Y FOOTER */
-    #galeria-container { flex: 1; overflow-x: hidden; overflow-y: auto; padding: 0; margin: 0; }
+    #galeria-container { 
+      flex: 1; 
+      overflow-x: hidden; 
+      overflow-y: auto; 
+      padding: 0; 
+      margin: 0; 
+      background: white;
+    }
     #galeria { width: 100%; padding: 0; margin: 0; overflow: visible; }
     #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
     .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
@@ -108,7 +171,9 @@
       border: none;
       padding: 0;
       margin: 0;
-      pointer-events: none;
+      pointer-events: auto;
+      user-select: text;
+      cursor: text;
       z-index: 50;
       font-size: var(--text-size, 5cqw); /* Tamaño relativo al ancho del contenedor (imagen) */
       line-height: 1.4;
@@ -139,12 +204,47 @@
        - Para ajustar: modificar el color/blur/offset en text-shadow
     */
     .image-wrap#p2 .text-overlay {
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      /* Sombra base para todos los textos de p2 */
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .image-wrap#p2 .text-overlay.shadowed {
+      /* Sombra más intensa específicamente para el texto largo de Hira */
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95),
+                   0 6px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Sombra aplicada específicamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
+       - Mejora la legibilidad sobre el video de fondo
+       - Se aplica solo a #p7 para textos verdes sobre video
+    */
+    .image-wrap#p7 .text-overlay {
+      /* Solo reborde negro para el título, sin sombra difusa */
+      text-shadow: 
+        1px 1px 0 rgba(0, 0, 0, 1),
+        -1px 1px 0 rgba(0, 0, 0, 1),
+        1px -1px 0 rgba(0, 0, 0, 1),
+        -1px -1px 0 rgba(0, 0, 0, 1);
+    }
+
+    /* Sombra con contorno específicamente para el texto descriptivo (Roboto) */
+    .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
+      /* Sombra muy intensa con contorno completo para máximo contraste */
+      text-shadow: 
+        /* Contorno negro en todas las direcciones */
+        1px 1px 3 rgba(0, 0, 0, 1),
+        -1px 1px 3 rgba(0, 0, 0, 1),
+        1px -1px 3 rgba(0, 0, 0, 1),
+        -1px -1px 3 rgba(0, 0, 0, 1),
+        /* Sombras difusas para suavizar */
+        0 2px 10px rgba(0, 0, 0, 0.95),
+        0 6px 25px rgba(0, 0, 0, 0.8),
+        0 12px 40px rgba(0, 0, 0, 0.6);
     }
 
     .overlay-botella { transform-origin: center center; opacity: 1; will-change: transform; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .overlay-botella.pulse { transform: scale(1.05); transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-    .overlay-botella.hover-active { transform: scale(1.03) !important; transition: transform 0.15s ease-out !important; }
+    .overlay-botella.pulse { transform: scale(1.06); transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .overlay-botella.hover-active { transform: scale(1.06) !important; transition: transform 0.15s ease-out !important; }
     .overlay-botella[data-botella="1"] { transform-origin: 12.63% 50%; }
     .overlay-botella[data-botella="2"] { transform-origin: 20.82% 50%; }
     .overlay-botella[data-botella="3"] { transform-origin: 27.65% 50%; }
@@ -162,16 +262,80 @@
     .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
 
     /* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
-    /* Aplica a overlays de p9 (videos.png) y p10 (1.1..1.4) */
-    #p9 .overlay, #p10 .overlay {
+    /* Aplica a overlays de p9 (videos.png), p10 (1.1..1.4) y p15 (titulo.png) */
+    #p9 .overlay, #p10 .overlay, #p15 .overlay {
       opacity: 0;
       transform: translateY(64px);
       transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
     }
-    #p9 .overlay.visible, #p10 .overlay.visible {
+    #p9 .overlay.visible, #p10 .overlay.visible, #p15 .overlay.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* THUMBNAILS: Prevención de espacios en blanco durante transiciones */
+    #p10 .overlay {
+      position: absolute;
+      top: var(--overlay-top, 0%);
+      left: 0;
+      width: 100%;
+      height: auto;
+    }
+    
+    /* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
+    #p10 .overlay.transitioning {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RECTANGULOS BLANCOS para ocultar imágenes viejas durante transición */
+    .thumb-mask {
+      position: absolute;
+      background: #ffffff; /* Mismo color que el fondo de la página */
+      z-index: 50; /* Entre imagen vieja (z-index bajo) y nueva (z-index 100) */
+      pointer-events: none;
+      opacity: 0;
+      /* Máscara diagonal sincronizada con las imágenes nuevas */
+      -webkit-mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
+      mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 200% 200%;
+      mask-size: 200% 200%;
+    }
+    
+    .thumb-mask.active {
+      opacity: 1;
+    }
+    
+    /* Configuración de dimensiones por defecto para cada rectángulo (ajustables) */
+    .thumb-mask[data-thumb="1"] {
+      top: var(--mask1-top, 12%);
+      left: var(--mask1-left, 30%);
+      width: var(--mask1-width, 65%);
+      height: var(--mask1-height, 65%);
+    }
+    
+    .thumb-mask[data-thumb="2"] {
+      top: var(--mask2-top, 14%);
+      left: var(--mask2-left, 5%);
+      width: var(--mask2-width, 22%);
+      height: var(--mask2-height, 22%);
+    }
+    
+    .thumb-mask[data-thumb="3"] {
+      top: var(--mask3-top, 41%);
+      left: var(--mask3-left, 5%);
+      width: var(--mask3-width, 22%);
+      height: var(--mask3-height, 22%);
+    }
+    
+    .thumb-mask[data-thumb="4"] {
+      top: var(--mask4-top, 68.5%);
+      left: var(--mask4-left, 5%);
+      width: var(--mask4-width, 22%);
+      height: var(--mask4-height, 22%);
     }
 
     /* THUMBNAILS (p10): Transiciones suaves para textos que cambian por grupo */
@@ -214,7 +378,22 @@
       #indice a:hover { color: #001f3f; transform: translateY(-2px); }
       #galeria-container { height: calc(100vh - 190px); }
       #galeria { padding-bottom: 0; }
-      .carousel img { width: 150px; height: 100px; }
+      .carousel { 
+        gap: 15px; 
+        width: 100%;
+        margin-left: 0;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 15px;
+      }
+      .carousel img { 
+        width: 70vw; 
+        height: 40vw; 
+        min-width: 250px;
+        min-height: 140px;
+        max-width: none;
+        max-height: none;
+      }
   .text-overlay { --text-size: 4cqw !important; }
       footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; transform: translateY(0) !important; }
       #intro-video { max-width: 90vw; max-height: 90vh; }
@@ -224,7 +403,16 @@
       #idioma-btn { padding: 4px 8px; font-size: .9em; }
       main { margin-top: 100px; }
       section { padding: 15px; padding-top: 0; }
-      .carousel img { width: 130px; height: 90px; }
+      .carousel { 
+        gap: 10px; 
+        padding: 10px;
+      }
+      .carousel img { 
+        width: 80vw; 
+        height: 45vw; 
+        min-width: 200px;
+        min-height: 112px;
+      }
       #indice { top: 100px; height: 60px; }
       .indice-content { padding: 0 10px; }
       #indice a { padding: 0.5em 1em; font-size: 0.85em; height: 36px; }
@@ -262,10 +450,9 @@
     <section id="menu" class="active">
       <h1><span data-es="Menú" data-en="Menu"></span></h1>
       <div class="carousel">
-        <img src="proyecto1.jpg" alt="Perchero Hira" onclick="irAProyecto(0)">
-        <img src="proyecto2.jpg" alt="Vinos Nostre" onclick="irAProyecto(1)">
-        <img src="proyecto3.jpg" alt="Reflejos del Multiverso" onclick="irAProyecto(2)">
-        <img src="proyecto4.jpg" alt="Moifez" onclick="irAProyecto(3)">
+        <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto(0)">
+        <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto(1)">
+        <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto(2)">
       </div>
       <p data-es="También puedes explorar mis últimos proyectos, leer sobre mi proceso creativo o contactar conmigo directamente." 
          data-en="You can also explore my latest projects, learn about my creative process, or contact me directly."></p>
@@ -291,29 +478,6 @@
         <!-- CONTENEDOR SEPARADO PARA LA GALERÍA CON SCROLL -->
         <div id="galeria-container">
           <div id="galeria">
-            <!-- Ejemplo de patrón: imagen base + overlay vinculada + textos
-                 - Para añadir una overlay sobre otra imagen, envuelve la imagen base en
-                   <div class="image-wrap"> y añade dentro la overlay.
-                 - Ajusta la posición vertical relativa mediante --overlay-top (porcentaje).
-                 
-                 SISTEMA DE CUADROS DE TEXTO:
-                 - Añade <div class="text-overlay">Texto aquí</div> dentro de cualquier image-wrap
-                 - Posiciona usando variables CSS:
-                   --text-top: 10% (distancia desde arriba)
-                   --text-left: 10% (distancia desde izquierda)
-                   --text-right: 5% (distancia desde derecha, usar con --text-left: auto)
-                   --text-bottom: 10% (distancia desde abajo, usar con --text-top: auto)
-                   --text-max-width: 300px (ancho máximo del cuadro)
-                   --text-align: left|center|right (alineación del texto)
-                   --text-transform: translateX(-50%) (para centrar horizontalmente)
-                 - Estilos inline adicionales: color, font-size, font-weight
-                 
-                 Ejemplo:
-                 <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; color: white;">Mi texto</div>
-                 
-                 O usar JavaScript:
-                 addTextOverlay('p1', 'Mi texto', {top: '20%', left: '10%', color: 'white'});
-            -->
             <div class="image-wrap" id="p1">
               <!-- Imagen base (inamovible) -->
               <img id="p1" src="assets/Hira/focos.png" alt="Hira 1" class="base">
@@ -323,16 +487,18 @@
             </div>
             <div class="image-wrap" id="p2">
               <img id="p2" src="assets/Hira/render.png" alt="Hira 2" class="base">
-              <div class="text-overlay" style="--text-top: 15%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;">Prchero Hira</div>
-              <div class="text-overlay" style="--text-top: 30%; --text-left: 20%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw;">En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
-                Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a las propuestas de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025.
-              </div>
+              <div class="text-overlay" style="--text-top: 8%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;"><span data-es="Perchero Hira" data-en="Hira Coat Rack"></span></div>
+              <div class="text-overlay shadowed" style="--text-top: 20%; --text-left: 20.1%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw; white-space: pre-line; line-height: 1.4;"><span data-es="En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
+
+Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a las propuestas de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025." data-en="In September 2024, Systemtronic published a brief for developing a coat rack that would fit their catalog. My team designed and presented 4 options to the company, which showed great interest in one of them.
+
+After a redesign, I created two panels with mockups like this and prepared a presentation with which we managed to get Systemtronic to select the Hira coat rack over proposals from 12 other teams. Hira was presented at Hábitat València Fair 2025."></span></div>
             </div>
             <div class="image-wrap" id="p3">
               <img id="p3" src="assets/Nostre/Nostre1.png" alt="Nostre 1" class="base">
-              <div class="text-overlay" style="--text-top: 10%; --text-left: 50%; --text-transform: translateX(-50%); --text-size: 4cqw; font-family: 'Cinzel', serif; color: black; white-space: nowrap;">ETIQUETADO DE VINOS Y CERVEZAS</div>
-              <div class="text-overlay" style="--text-top: 30%; --text-left: 5%; font-family: 'Times New Roman', serif; color: black; --text-size: 2cqw; text-align: justify; max-width: 25%; white-space: normal;">En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia.</div>
-              <div class="text-overlay" style="--text-top: 60%; --text-left: 66%; font-family: 'Times New Roman', serif; color:black; --text-size: 2cqw; text-align: justify; max-width: 30%; white-space: normal;">Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas enviadas como obsequio por la UPV a otras universidades llevaron nuestras etiquetas</div>
+              <div class="text-overlay" style="--text-top: 10%; --text-left: 48%; --text-transform: translateX(-50%); --text-size: 4.5cqw; font-family: 'Cinzel', serif; color: black; white-space: nowrap; text-align: center;"><span data-es="ETIQUETADO DE VINOS Y CERVEZAS" data-en="WINE AND BEER LABELING"></span></div>
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 8.5%; font-family: 'Times New Roman', serif; color: black; --text-size: 2cqw; text-align: justify; max-width: 22%; white-space: normal;"><span data-es="En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia." data-en="In 2024 I was the winner, along with two classmates, in a labeling contest organized by the Polytechnic University of Valencia."></span></div>
+              <div class="text-overlay" style="--text-top: 58.7%; --text-left: 68%; font-family: 'Times New Roman', serif; color:black; --text-size: 2cqw; text-align: justify; max-width: 25%; white-space: normal;"><span data-es="Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas que la UPV envió como obsequio a otros centros llevaron nuestras etiquetas." data-en="Alain Ferrer, Álvaro Selma and I won in the wine category. That's why, in 2025, the bottles that UPV sent as gifts to other centers bore our labels."></span></div>
             </div>
             <div class="image-wrap" id="p4">
               <img id="p4" src="assets/Nostre/Nostre2.png" alt="Nostre 2" class="base">
@@ -345,8 +511,8 @@
               <img id="p4" src="assets/Nostre/Botella3.png" alt="Botella3" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="3">
               <img id="p4" src="assets/Nostre/Botella2.png" alt="Botella2" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="2">
               <img id="p4" src="assets/Nostre/Botella1.png" alt="Botella1" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="1">
-              <div class="text-overlay" style="--text-top: 30%; --text-left: 60%; ">Fraternidades Americanas</div>
-              <div class="text-overlay" style="--text-top: 50%; --text-left: 60%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 35%;">La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses.</div>
+              <div class="text-overlay" style="--text-top: 28%; --text-left: 60%; font-family: 'Aver', sans-serif; font-style: italic; font-size: 6cqw; color: black; max-width: 19cqw; line-height: 0.9;"><span data-es="Fraternidades Americanas" data-en="American Fraternities"></span></div>
+              <div class="text-overlay" style="--text-top: 50%; --text-left: 60%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 35%;"><span data-es="La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses." data-en="The proposal we made in the beer category sought to adapt UPV's identity to the typical image of American university fraternities."></span></div>
             </div>
             <div class="image-wrap" id="p5">
               <img id="p5" src="assets/Nostre/Nostre3.png" alt="Nostre 3" class="base">
@@ -354,25 +520,33 @@
             </div>
             <div class="image-wrap" id="p6">
               <img id="p6" src="assets/Nostre/Nostre4.png" alt="Nostre 4">
-              <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; ">Romanticismo Mediterráneo</div>
-              <div class="text-overlay" style="--text-top: 40%; --text-left: 10%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 30%; text-align: justify;">Para los vinos quisimos presentar un etiquetado más sobrio, que mostrase una visión romántica del Mediterráneo. Para ellos, usamos una fuente gruesa con serifas suaves, concentrando todo el color en la "N" para aludir a las letras capitales, tan populares durante el romanticismo.</div>
+              <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; font-family: 'CCTheStorySoNearWOO-Regular', serif; font-size: 5.5cqw; color: black; max-width: 31%; line-height: 0.95;"><span data-es="Romanticismo Mediterráneo" data-en="Mediterranean Romanticism"></span></div>
+              <div class="text-overlay" style="--text-top: 42%; --text-left: 10%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 29.75%; text-align: justify; white-space: pre-line; line-height: 1.4;"><span data-es="En cuanto a los vinos, quisimos presentar un etiquetado más sobrio, y que además mostrase una visión romántica del Mediterráneo.
+
+              Para ello, usamos una fuente gruesa con serifas suaves, concentrando todo el color en la &quot;N&quot; para aludir a las letras capitales, tan populares durante el romanticismo." data-en="For the wines we wanted to present a more sober labeling, showing a romantic vision of the Mediterranean.
+
+              For them, we used a thick font with soft serifs, concentrating all the color on the &quot;N&quot; to allude to capital letters, so popular during romanticism."></span></div>
             </div>
             <div class="image-wrap" id="p7">
               <video id="p7" src="assets/Reflejos/fondo_2.mp4" muted loop playsinline autoplay alt="Reflejos 1" class="base"></video>
               <img id="p7" src="assets/Reflejos/folletos.png" alt="folletos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
-              <div class="text-overlay" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;">Reflejos del Multiverso</div>
-              <div class="text-overlay" style="--text-top: 40%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;">Para promocionar la obra "Reflejos del Multiverso, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
-                Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra."</div>
+              <div class="text-overlay" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 3.33cqw;"><span data-es="Reflejos del" data-en="Reflections of the"></span></div>
+              <div class="text-overlay" style="--text-top: 21%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;"><span data-es="Multiverso" data-en="Multiverse"></span></div>
+              <div class="text-overlay" style="--text-top: 35.5%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;"><span data-es="Para promocionar la obra &quot;Reflejos del Multiverso&quot;, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
+
+                Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra." data-en="To promote the play &quot;Reflections of the Multiverse&quot;, the UPV Performing Arts Classroom asked me to create an A3 poster, a program and graphics for social media.
+
+                In the end, I made two posters and integrated animated graphics into the social media material, and thanks to my services, all tickets for the 4 sessions of the play were sold."></span></div>
             </div>
             <video id="p8" src="assets/Reflejos/fondo_1.mp4" muted loop playsinline autoplay alt="Reflejos 2"></video>
             <div class="image-wrap" id="p9">
               <img id="p9" src="assets/Thumbnails/fondo1.png" alt="Thumbnails 1" class="base">
               <img id="p9" src="assets/Thumbnails/videos.png" alt="Videos" class="overlay" style="--overlay-top:0%;">
-              <div class="text-overlay" style="--text-top: 12%; --text-left: 27%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 5cqw; ">Thumbnails para Moifez</div>
-              <div class="text-overlay" style="--text-top: 25%; --text-left: 27%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 55cqw;">Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas.</div>
-              <div class="text-overlay" style="--text-top: 55%; --text-left: 50%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 3cqw; ">Procedimiento Habitual</div>
-              <div class="text-overlay" style="--text-top: 65%; --text-left: 50%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;">Normalmente, el cliente me envía un boceto y varias imágenes de referencia para que haga una primera versión del thumbnail, y tras recibir su feedback y hacer las modificaciones necesarias, llegamos al resultado final.</div>
-              <div class="text-overlay" style="--text-top: 85%; --text-left: 50%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;">3,1K visualizaciones • Hace 3 años</div>
+              <div class="text-overlay" style="--text-top: 14%; --text-left: 26.5%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 4.75cqw; "><span data-es="Thumbnails para Moifez" data-en="Thumbnails for Moifez"></span></div>
+              <div class="text-overlay" style="--text-top: 25.5%; --text-left: 27.4%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.75cqw; max-width: 47cqw;"><span data-es="Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas." data-en="For more than four years, I have occasionally made thumbnails for some of Moifez's videos on his YouTube channel. Several of them have reached up to 400K views."></span></div>
+              <div class="text-overlay" style="--text-top: 55%; --text-left: 50.75%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 3cqw; "><span data-es="Procedimiento Habitual" data-en="Usual Procedure"></span></div>
+              <div class="text-overlay" style="--text-top: 62%; --text-left: 50.8%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 35cqw;"><span data-es="Normalmente, el cliente me envía un boceto y varias imágenes de referencia para que haga una primera versión del thumbnail, y tras recibir su feedback y hacer las modificaciones necesarias, llegamos al resultado final." data-en="Usually, the client sends me a sketch and several reference images for me to make a first version of the thumbnail, and after receiving their feedback and making the necessary modifications, we reach the final result."></span></div>
+              <div class="text-overlay" style="--text-top: 83.5%; --text-left: 50.8%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;"><span data-es="3,1K visualizaciones • Hace 3 años" data-en="3.1K views • 3 years ago"></span></div>
             </div>
             <div class="image-wrap" id="p10">
               <img id="p10" src="assets/Thumbnails/fondo.png" alt="Thumbnails 1" class="base">
@@ -380,9 +554,14 @@
               <img id="p10" src="assets/Thumbnails/1.2.png" alt="video" class="overlay" style="--overlay-top:0%;">
               <img id="p10" src="assets/Thumbnails/1.3.png" alt="video" class="overlay" style="--overlay-top:0%;">
               <img id="p10" src="assets/Thumbnails/1.4.png" alt="video" class="overlay" style="--overlay-top:0%;">
-              <div class="text-overlay" style="--text-top: 37%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Boceto del cliente</div>
-              <div class="text-overlay" style="--text-top: 65%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Referencia 1</div>
-              <div class="text-overlay" style="--text-top: 90%; --text-left: 5%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">Referencia 2</div>
+              <!-- Rectángulos para transición -->
+              <div class="thumb-mask" data-thumb="1"></div>
+              <div class="thumb-mask" data-thumb="2"></div>
+              <div class="thumb-mask" data-thumb="3"></div>
+              <div class="thumb-mask" data-thumb="4"></div>
+              <div class="text-overlay" style="--text-top: 35.45%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Boceto del cliente" data-en="Client sketch"></span></div>
+              <div class="text-overlay" style="--text-top: 62.75%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Referencia 1" data-en="Reference 1"></span></div>
+              <div class="text-overlay" style="--text-top: 90.2%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Referencia 2" data-en="Reference 2"></span></div>
               
               <!-- Grupo 1 de textos (correspondientes a imágenes 1.1-1.4) -->
               <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;">• <strong>Tipografías</strong> Aver y SF Florencesans</div>
@@ -403,6 +582,11 @@
               <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; ">42,4K visualizaciones • Hace 2 años</div>
               <div class="text-overlay text-group text-group-1" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">5,1K visualizaciones • Hace 2 años</div>
               <div class="text-overlay text-group text-group-3" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;">6,7K visualizaciones • Hace 3 años</div>
+
+              <!-- Grupo 5 de textos -->
+              <div class="text-overlay text-group text-group-2" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; ">por qué es IMPOSIBLE ver un JUEGO en 3D</div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; display: none;">el NUEVO UNIVERSO CINEMÁTICO que SUPERARÁ a MARVEL</div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; display: none;">NOTICIAS de MIERDA S01E01</div>
             </div>
             <div class="image-wrap" id="p11">
               <img id="p11" src="assets/Trenzas/maderas1.png" alt="Trenzas 1" class="base">
@@ -411,10 +595,10 @@
             <div class="image-wrap" id="p12">
               <img id="p12" src="assets/Trenzas/maderas2.png" alt="Trenzas 2" class="base">
               <img id="p12" src="assets/Trenzas/rollo2.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="2">
-              <div class="text-overlay" style="--text-top: 15%; --text-left: 50%; --text-transform: translateX(-50%); --z-index: 9999;">MEZCLA DE CULTURAS</div>
-              <div class="text-overlay" style="--text-top: 70%; --text-left: 55%; --z-index: 9999; ">Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado "Trenzas del Mar del Norte".
-                El cliente quería que el estilo de los dibujos fuera "una mezcla entre arte polinesio y vikingo", y el aspecto de casi todos los elementos venía definido por las descripciones que se dan en el relato.
-              </div>
+              <div class="text-overlay" style="--text-top: 27.5%; --text-left: 52%; z-index: 9999; font-family: 'Caveat Brush'; font-size: 2cqw; color: black; max-width: 23cqw; line-height: 2.28cqw;"><span data-es="Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado &quot;Trenzas del Mar del Norte&quot;.
+
+                El cliente quería que el estilo fuera &quot;una mezcla de arte polinesio y vikingo&quot;, y el aspecto de casi todos los elementos venía definido por las descripciones del relato" data-en="Another commission I received from Moifez was a set of 30 illustrations for his self-published story &quot;Braids of the North Sea&quot;.
+                The client wanted the style of the drawings to be &quot;a mix between Polynesian and Viking art&quot;, and the appearance of almost all elements was defined by the descriptions given in the story."></span></div>
             </div>
             <div class="image-wrap" id="p13">
               <img id="p13" src="assets/Trenzas/maderas4.png" alt="Trenzas 3" class="base">
@@ -425,18 +609,20 @@
               <img id="p14" src="assets/Trenzas/rollo4.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="4">
             </div>
             <div class="image-wrap" id="p15">
-              <img id="p15" src="assets/Cartas/fondotitulo.png" alt="Cartas 1">
-              <img id="p15" src="assets/Cartas/titulo.png" alt="logo" class="overlay">
-              <div class="text-overlay" style="--text-top: 50%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Roboto'; font-size: 2cqw; color: white; max-width: 38cqw;">Hace algunos años, como proyecto personal, planteé el concepto para una baraja de cartas inspiradas en el videojuego "Outer Wilds".
-                El valor principal de estos diseños reside en una combinación de varios elementos icónicos del juego con los símbolos tradicionales de la baraja francesa.
-              </div>
+              <img id="p15" src="assets/Cartas/fondotitulo.png" alt="Cartas 1" class="base">
+              <img id="p15" src="assets/Cartas/titulo.png" alt="logo" class="overlay" style="--overlay-top:0%;">
+              <div class="text-overlay" style="--text-top: 46%; --text-left: 50%; --text-transform: translateX(-47.5%); text-align: center; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 40cqw;"><span data-es="Hace poco, como proyecto personal, planteé el concepto para una baraja de cartas inspiradas en el videojuego &quot;Outer Wilds&quot;.
+
+                El valor principal de estos diseños reside en una combinación de elementos icónicos del juego con los símbolos tradicionales de la baraja francesa." data-en="A few years ago, as a personal project, I developed the concept for a deck of cards inspired by the video game &quot;Outer Wilds&quot;.
+                The main value of these designs lies in a combination of various iconic game elements with traditional French deck symbols."></span></div>
             </div>
             <div class="image-wrap" id="p16">
               <img id="p16" src="assets/Cartas/fondocartas1.png" alt="Cartas 2" class="base">
               <img id="p16" src="assets/Cartas/cartas1.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
-              <div class="text-overlay" style="--text-top: 30%; --text-left: 55%; font-family:'Roboto'; font-size: 2cqw; color: white; max-width: 28cqw;">Originalmente, enfoqué el proyecto como concepto para una baraja de colección, estilo tarot.
-                Más adelante, revisé los diseños para que la baraja se adaptase a otras tipologías, como cartas de juego o para trucos de magia.
-              </div>
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 55%; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 30cqw;"><span data-es="Originalmente, enfoqué el proyecto como concepto para una baraja de colección, estilo tarot.
+
+                Más adelante, revisé los diseños para que se adaptasen a nuevas tipologías de baraja, como cartas de juego o para trucos de magia." data-en="Originally, I approached the project as a concept for a collectible deck, tarot style.
+                Later, I revised the designs so that the deck would adapt to other typologies, such as playing cards or magic tricks."></span></div>
             </div>
             <div class="image-wrap" id="p17">
               <img id="p17" src="assets/Cartas/fondocartas2.png" alt="Cartas 3" class="base">
@@ -444,9 +630,9 @@
             </div>
             <div class="image-wrap" id="p18">
               <img id="p18" src="assets/Libro/libro1.png" alt="Libro 1">
-              <div class="text-overlay" style="--text-top: 58%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Times New Roman'; font-size: 2cqw; color: rgb(206, 170, 10); max-width: 42cqw;">Como parte de un proyecto académico, se nos instó a diseñar las cubiertas de "El Libro de la Selva".
-                Opté por un diseño simple, acorde con las tendencias actuales en diseño editorial, pero con un corte tradicional, ya que se trata de un clásico de la literatura inglesa.
-              </div>
+              <div class="text-overlay" style="--text-top: 58%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Times New Roman'; font-size: 2cqw; background: linear-gradient(to bottom, #C9A961 0%, #C9A961 30%, #b58d07 100%); background-size: 100% 1.4em; background-repeat: repeat-y; background-attachment: local; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3); max-width: 42cqw; line-height: 1.4;"><span data-es="Como parte de un proyecto académico, se nos instó a diseñar las cubiertas de &quot;El Libro de la Selva&quot;.
+                Opté por un diseño simple, acorde con las tendencias actuales en diseño editorial, pero con un corte tradicional, ya que se trata de un clásico de la literatura inglesa." data-en="As part of an academic project, we were urged to design the covers of &quot;The Jungle Book&quot;.
+                I opted for a simple design, in line with current trends in editorial design, but with a traditional cut, since it is a classic of English literature."></span></div>
             </div>
             <img id="p19" src="assets/Libro/libro2.png" alt="Libro 2">
           </div>
@@ -667,6 +853,13 @@
       
       $.isProyectosActive = (id === 'proyectos');
       $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
+      
+      // Manejo del carrusel
+      if (id === 'menu') {
+        setTimeout(() => Carousel.start(), 500);
+      } else {
+        Carousel.stop();
+      }
       
       if ($.isProyectosActive) {
         debounce('setup', () => { Videos.init(); Effects.setup(); Overlays.update(); Thumbnails.start(); }, 100);
@@ -987,7 +1180,7 @@
         // clear any cascade timers and visible classes for thumbnail overlays
         this.cascadeTimers.forEach(arr => arr.forEach(t => clearTimeout(t)));
         this.cascadeTimers.clear();
-        document.querySelectorAll('#p9 .overlay, #p10 .overlay').forEach(o => o.classList.remove('visible'));
+        document.querySelectorAll('#p9 .overlay, #p10 .overlay, #p15 .overlay').forEach(o => o.classList.remove('visible'));
         this.handlers = new WeakMap();
       }
     };
@@ -1054,8 +1247,8 @@
     const setupNormalOverlays = () => {
       document.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')
               .forEach(img => {
-        // Omitir hover en los thumbnails (p9 y p10)
-        if (img.closest('#p9') || img.closest('#p10')) return;
+        // Omitir hover en los thumbnails (p9, p10 y p15)
+        if (img.closest('#p9') || img.closest('#p10') || img.closest('#p15')) return;
         const handleMouseMove = e => {
           // keep basic small parallax for overlays, but do not conflict with thumbnail translate animation
           const rect = img.getBoundingClientRect();
@@ -1075,12 +1268,13 @@
       });
     };
 
-    // ===== THUMBNAILS: ciclo de grupos 1.x, 2.x, 3.x con fade/blur =====
+    // ===== THUMBNAILS: ciclo de grupos 1.x, 2.x, 3.x sin máscaras =====
     const Thumbnails = {
       timer: null,
       currentGroup: 1,
       overlays: [],
       preloaded: false,
+      isTransitioning: false,
       preload() {
         if (this.preloaded) return;
         const images = [];
@@ -1096,75 +1290,164 @@
       },
       setGroup(group) {
         if (!this.overlays.length) this.initCache();
+        if (this.isTransitioning) return; // Prevenir múltiples transiciones simultáneas
+        
+        this.isTransitioning = true;
+        
+        // Activar rectángulos con un retardo más corto después de las imágenes
+        setTimeout(() => this.activateRectangles(), 200);
+        
         this.overlays.forEach((el, idx) => {
-          // Wipe diagonal (≈70°) con borde difuminado solo en la línea de separación
+          // Marcar como en transición para mantener visibilidad
+          el.classList.add('transitioning');
+          
+          // Crear elemento temporal para la nueva imagen
           const newSrc = `assets/Thumbnails/${group}.${idx+1}.png`;
           const tmp = document.createElement('img');
           tmp.alt = el.alt || '';
           tmp.className = `${el.className} visible thumb-temp`;
-          tmp.style.position = 'absolute';
-          tmp.style.top = getComputedStyle(el).top || '0%';
-          tmp.style.left = getComputedStyle(el).left || '0';
-          tmp.style.width = getComputedStyle(el).width || '100%';
-          tmp.style.height = getComputedStyle(el).height || 'auto';
-          tmp.style.objectFit = getComputedStyle(el).objectFit || 'contain';
-          tmp.style.zIndex = '100';
-          tmp.style.pointerEvents = 'none';
-          // Máscara con gradiente en ángulo 250deg (160+90) para rotar el edge ≈ 70°+90°
+          tmp.style.cssText = `
+            position: absolute;
+            top: ${getComputedStyle(el).top || '0%'};
+            left: ${getComputedStyle(el).left || '0'};
+            width: ${getComputedStyle(el).width || '100%'};
+            height: ${getComputedStyle(el).height || 'auto'};
+            object-fit: ${getComputedStyle(el).objectFit || 'contain'};
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+          `;
+          
+          // Configurar máscara con gradiente diagonal
           const feather = '3%';
           const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -10%) - ${feather}), rgba(0,0,0,1) var(--edge, -10%), rgba(0,0,0,0) calc(var(--edge, -10%) + ${feather}))`;
-          tmp.style.webkitMaskImage = mask;
-          tmp.style.maskImage = mask;
-          tmp.style.webkitMaskRepeat = 'no-repeat';
-          tmp.style.maskRepeat = 'no-repeat';
-          tmp.style.webkitMaskSize = '200% 200%';
-          tmp.style.maskSize = '200% 200%';
+          Object.assign(tmp.style, {
+            webkitMaskImage: mask,
+            maskImage: mask,
+            webkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+            webkitMaskSize: '200% 200%',
+            maskSize: '200% 200%'
+          });
           tmp.style.setProperty('--edge', '-10%');
 
           tmp.addEventListener('load', () => {
+            // Hacer visible inmediatamente para evitar espacios en blanco
+            tmp.style.opacity = '1';
             el.parentElement.appendChild(tmp);
-            // Animación manual de la variable --edge para un movimiento lento y suave
-            const duration = 1600; // ms (más lento)
+            
+            // Animación diagonal suave
+            const duration = 1600;
             const start = performance.now();
             const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+            
             const step = now => {
-              let p = (now - start) / duration;
-              if (p < 0) p = 0; if (p > 1) p = 1;
+              let p = Math.min(1, Math.max(0, (now - start) / duration));
               const eased = easeInOut(p);
-              const edge = -10 + 120 * eased; // de -10% a 110%
-              tmp.style.setProperty('--edge', edge.toFixed(2) + '%');
+              const edge = -10 + 120 * eased;
+              const edgeValue = edge.toFixed(2) + '%';
+              
+              // Aplicar valor de --edge solo a la imagen nueva
+              tmp.style.setProperty('--edge', edgeValue);
+              
               if (p < 1) {
                 requestAnimationFrame(step);
               } else {
-                // finalizar: sustituir src y limpiar
+                // Finalizar: primero cambiar src, luego esperar un frame antes de limpiar
                 el.src = newSrc;
-                tmp.remove();
+                
+                // Esperar a que la nueva imagen se renderice antes de limpiar
+                requestAnimationFrame(() => {
+                  el.classList.remove('transitioning');
+                  tmp.remove();
+                  
+                  // Marcar transición completa cuando se procese el último overlay
+                  if (idx === this.overlays.length - 1) {
+                    // Dar un pequeño delay adicional para evitar parpadeos
+                    setTimeout(() => {
+                      this.isTransitioning = false;
+                    }, 50);
+                  }
+                });
               }
             };
             requestAnimationFrame(step);
           }, {once: true});
+          
           tmp.src = newSrc;
         });
+        
         this.currentGroup = group;
-        // Cambiar textos correspondientes
         this.setTextGroup(group);
       },
-      setTextGroup(group) {
-        // Limpiar estilos inline antiguos y ocultar con clase
-        const all = Array.from(document.querySelectorAll('#p10 .text-group'));
-        all.forEach(el => {
-          if (el.style && el.style.display) el.style.display = '';
-          el.classList.remove('visible');
+      activateRectangles() {
+        // Activar los cuatro rectángulos con el efecto de barrido simultáneo
+        const rectangles = document.querySelectorAll('#p10 .thumb-mask');
+        const duration = 1400;
+        const start = performance.now();
+        const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+        
+        rectangles.forEach((rect) => {
+          // Configurar máscara diagonal
+          const feather = '3%';
+          const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - ${feather}), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + ${feather}))`;
+          Object.assign(rect.style, {
+            webkitMaskImage: mask,
+            maskImage: mask,
+            webkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+            webkitMaskSize: '200% 200%',
+            maskSize: '200% 200%'
+          });
+          rect.style.setProperty('--edge', '-20%');
+          
+          // Hacer visible el rectángulo
+          rect.classList.add('active');
         });
-
-        // Mostrar solo los textos del grupo actual con un pequeño escalonado
+        
+        // Animación sincronizada para todos los rectángulos
+        const step = now => {
+          let p = Math.min(1, Math.max(0, (now - start) / duration));
+          const eased = easeInOut(p);
+          const edge = -20 + 140 * eased;
+          const edgeValue = edge.toFixed(2) + '%';
+          
+          // Aplicar a todos los rectángulos simultáneamente
+          rectangles.forEach(rect => {
+            rect.style.setProperty('--edge', edgeValue);
+          });
+          
+          if (p < 1) {
+            requestAnimationFrame(step);
+          } else {
+            // Al finalizar, ocultar todos los rectángulos
+            rectangles.forEach(rect => {
+              rect.classList.remove('active');
+            });
+          }
+        };
+        requestAnimationFrame(step);
+      },
+      setTextGroup(group) {
+        // Transición suave de textos sin ocultar todos al mismo tiempo
+        const all = Array.from(document.querySelectorAll('#p10 .text-group'));
         const current = Array.from(document.querySelectorAll(`#p10 .text-group-${group}`));
-        const baseDelay = 150; // acompasa con el wipe de imágenes
+        
+        // Ocultar textos no actuales gradualmente
+        all.forEach(el => {
+          if (!current.includes(el)) {
+            el.classList.remove('visible');
+          }
+        });
+        
+        // Mostrar textos actuales con escalonado
+        const baseDelay = 150;
         current.forEach((el, i) => {
           setTimeout(() => el.classList.add('visible'), baseDelay + i * 80);
         });
       },
       nextGroup() {
+        if (this.isTransitioning) return; // Evitar cambios durante transición
         const next = this.currentGroup === 3 ? 1 : this.currentGroup + 1;
         this.setGroup(next);
       },
@@ -1172,17 +1455,99 @@
         this.preload();
         this.initCache();
         if (!this.overlays.length) return;
-        if (this.timer) return; // ya corriendo
-        // Inicializar con el grupo 1 visible (limpiando display inline del HTML)
-        document.querySelectorAll('#p10 .text-group').forEach(el => { if (el.style) el.style.display = ''; el.classList.remove('visible'); });
+        if (this.timer) return;
+        
+        // Asegurar que las imágenes base están visibles
+        this.overlays.forEach(el => el.classList.add('visible'));
+        
+        // Inicializar textos del grupo 1
+        document.querySelectorAll('#p10 .text-group').forEach(el => {
+          if (el.style) el.style.display = '';
+          el.classList.remove('visible');
+        });
         this.setTextGroup(1);
-        // Iniciar con el grupo 1 como base (ya están en 1.x); programar cambios periódicos
+        
+        // Iniciar ciclo automático
         this.timer = setInterval(() => this.nextGroup(), 5000);
       },
       stop() {
-        if (this.timer) { clearInterval(this.timer); this.timer = null; }
-        // Limpiar efectos temporales
-        this.overlays.forEach(el => { el.style.opacity = ''; el.style.filter = ''; });
+        if (this.timer) {
+          clearInterval(this.timer);
+          this.timer = null;
+        }
+        this.isTransitioning = false;
+        
+        // Limpiar elementos temporales y estados
+        document.querySelectorAll('.thumb-temp').forEach(el => el.remove());
+        this.overlays.forEach(el => {
+          el.classList.remove('transitioning');
+          el.style.opacity = '';
+          el.style.filter = '';
+        });
+        
+        // Limpiar rectángulos
+        document.querySelectorAll('#p10 .thumb-mask').forEach(rect => {
+          rect.classList.remove('active');
+          rect.style.removeProperty('--edge');
+        });
+      }
+    };
+
+    // ===== CARRUSEL AUTOMÁTICO =====
+    const Carousel = {
+      images: null,
+      currentIndex: 0,
+      autoTimer: null,
+      isMenuActive: false,
+      
+      init() {
+        this.images = document.querySelectorAll('.carousel img');
+        if (!this.images.length) return;
+        
+        // Establecer primera imagen como activa
+        this.setActive(0);
+        
+        // Añadir event listeners
+        this.images.forEach((img, index) => {
+          img.addEventListener('click', () => {
+            this.setActive(index);
+            this.restartTimer();
+          });
+        });
+      },
+      
+      setActive(index) {
+        this.images.forEach(img => img.classList.remove('active'));
+        this.images[index].classList.add('active');
+        this.currentIndex = index;
+      },
+      
+      next() {
+        const nextIndex = (this.currentIndex + 1) % this.images.length;
+        this.setActive(nextIndex);
+      },
+      
+      start() {
+        if (this.autoTimer) return;
+        this.isMenuActive = true;
+        this.autoTimer = setInterval(() => {
+          if (this.isMenuActive) {
+            this.next();
+          }
+        }, 4000); // Cambiar cada 4 segundos
+      },
+      
+      stop() {
+        if (this.autoTimer) {
+          clearInterval(this.autoTimer);
+          this.autoTimer = null;
+        }
+        this.isMenuActive = false;
+      },
+      
+      restartTimer() {
+        this.stop();
+        setTimeout(() => this.start(), 1000); // Pausa 1 segundo después de interacción manual
       }
     };
 
@@ -1213,7 +1578,7 @@
     
     // ===== INICIALIZACIÓN OPTIMIZADA =====
     const init = () => {
-      [Layout, Nav, Overlays, Lang, Intro].forEach(comp => comp.init());
+      [Layout, Nav, Overlays, Lang, Intro, Carousel].forEach(comp => comp.init());
       setupNormalOverlays();
       
       // Event listeners optimizados
@@ -1242,6 +1607,13 @@
           }
         }).observe(proyectos, {attributes: true, attributeFilter: ['class']});
       }
+      
+      // Iniciar carrusel si el menú está activo
+      setTimeout(() => {
+        if (document.getElementById('menu')?.classList.contains('active')) {
+          Carousel.start();
+        }
+      }, 1000);
     };
     
     ['load', 'DOMContentLoaded'].forEach(event => window.addEventListener(event, init, {once: true}));
