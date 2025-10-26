@@ -4,424 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaime Cereijo Design</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code&display=swap');
-
-    /* FUENTES LOCALES */
-    @font-face {
-      font-family: 'CCTheStorySoNearWOO-Regular';
-      src: url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.woff2') format('woff2'),
-           url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.woff') format('woff'),
-           url('CCTheStorySoNear W00 Regular/CCTheStorySoNear W00 Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
-      @font-face {
-      font-family: 'UnciaDis';
-      src: url('UnciaDis.ttf') format('truetype'),
-           url('uncadis.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    /* RESET Y BASE */
-    *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
-    html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
-    body { font-family: Coolvetica, sans-serif; background: #f8f8f8; display: flex; flex-direction: column; min-height: 100vh; }
-    main { flex: 1; margin-top: 70px; overflow-x: hidden; }
-
-    /* HEADER */
-    header { display: flex; align-items: center; justify-content: space-between; background: #001f3f; color: yellow; padding: 10px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px; will-change: transform; transition: transform .3s ease; }
-    header.hidden { transform: translateY(-100%); }
-    .logo { height: 50px; width: 50px; background: url('Jmotion.png') no-repeat center/contain; text-indent: -9999px; }
-    nav { display: flex; align-items: center; }
-    nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; }
-    nav a:hover { transform: scale(1.1); z-index: 10; }
-
-    /* IDIOMA Y SECCIONES */
-    #idioma-btn { background: none; border: 1px solid yellow; color: yellow; padding: 5px 10px; cursor: pointer; position: relative; }
-    #idioma-list { font-family: Helvetica; display: none; position: absolute; top: 30px; right: 0; background: #001f3f; color: yellow; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; z-index: 101; }
-    #idioma-list div { padding: 5px 10px; cursor: pointer; }
-    #idioma-list div:hover { background: #eee; color: #001f3f; }
-    #desktop-version section { display: none; padding: 40px; flex: 1; margin-top: 0; scrollbar-width: none; -ms-overflow-style: none; }
-    #desktop-version section.active { display: block; }
-
-    /* CAROUSEL Y PROYECTOS */
-    .carousel { 
-      display: flex; 
-      overflow: hidden; 
-      gap: 20px; 
-      padding: 20px 0; 
-      scrollbar-width: none; 
-      -ms-overflow-style: none;
-      justify-content: center;
-      align-items: center;
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      position: relative;
-    }
-    .carousel img { 
-      width: 60vw; 
-      height: 35vw; 
-      max-width: 800px;
-      max-height: 450px;
-      min-width: 400px;
-      min-height: 225px;
-      object-fit: cover; 
-      cursor: pointer; 
-      border-radius: 12px; 
-      will-change: transform; 
-      transition: transform .5s ease, opacity .5s ease; 
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
-    .carousel img.active { 
-      opacity: 1; 
-      transform: scale(1.05); 
-      z-index: 2;
-    }
-    .carousel img:hover { 
-      transform: scale(1.1); 
-      opacity: 1;
-    }
-    #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
-    .proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; }
-
-    /* ÍNDICE */
-    #indice { width: 280px; background: #f9f9f9; border-right: 1px solid #ddd; padding: 1.5em 0; flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px); align-self: flex-start; overflow-y: auto; z-index: 900; scrollbar-width: none; -ms-overflow-style: none; will-change: top; transition: top .3s ease; }
-    .indice-content { padding: 0 1.5em; flex: 1; display: flex; flex-direction: column; }
-    #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
-    #indice ul { list-style: none; flex: 1; }
-    #indice li { margin-bottom: .5em; }
-    #indice a { text-decoration: none; color: black; display: block; padding: .6em 1.2em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; }
-    @media (min-width: 769px) {
-      #indice a.active { background: #001f3f; color: yellow; border-radius: 20px; transform: translateX(12px); box-shadow: 0 2px 8px rgba(0,31,63,.4); }
-      #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }
-    }
-
-    /* GALERÍA Y FOOTER */
-    #galeria-container { 
-      flex: 1; 
-      overflow-x: hidden; 
-      overflow-y: auto; 
-      padding: 0; 
-      margin: 0; 
-      background: white;
-    }
-    #galeria { width: 100%; padding: 0; margin: 0; overflow: visible; }
-    #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
-    .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
-    footer { display: flex; justify-content: space-between; background: #001f3f; color: white; padding: 20px; font-size: .9em; z-index: 1100; position: relative; width: 100%; transform: translateY(100%); transition: transform .3s; }
-    footer.visible { transform: translateY(0); }
-    @media (min-width: 769px) {
-      body.proyectos-active footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform .3s; }
-      body.proyectos-active footer.visible { transform: translateY(0); }
-    }
-
-    /* INTRO Y SISTEMA DE OVERLAYS */
-    #intro-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #001f3f; display: flex; justify-content: center; align-items: center; z-index: 999999; opacity: 1; transition: opacity 1.5s; overflow: hidden; }
-    #intro-overlay.fade-out { opacity: 0; pointer-events: none; }
-    #intro-video { max-width: 60vw; max-height: 60vh; object-fit: contain; }
-    .image-wrap#p11, .image-wrap#p12, .image-wrap#p13, .image-wrap#p14 { overflow: visible !important; }
-    .image-wrap .base { display: block; width: 100%; height: auto; object-fit: cover; z-index: 1; }
-    .image-wrap .overlay { position: absolute; left: 0; width: 100%; height: auto; top: var(--overlay-top, 0%); z-index: calc(2 + var(--z, 0)); pointer-events: auto; object-fit: contain; }
-    .image-wrap .overlay2 { position: absolute; top: var(--overlay-top, 0%); left: 50%; width: auto; transform: translateX(-50%); z-index: 2; pointer-events: auto; object-fit: cover; }
-    .image-wrap .overlay2.overlay-rollo { height: 100%; object-fit: contain; }
-    .overlay-rollo { pointer-events: auto !important; }
-
-    /* EFECTOS PARA OVERLAYS - OPTIMIZADO */
-    .overlay, .overlay2 { opacity: 0; will-change: opacity, transform; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
-    .overlay.visible, .overlay2.visible { opacity: 1; transform: scale(1); }
-    .overlay2.visible { transform: translateX(-50%) scale(1); }
-    .overlay.hovered { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
-    .overlay2.hovered { transform: translateX(-50%) scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
-
-    /* EFECTOS ESPECÍFICOS */
-    .overlay-stand { opacity: 0; transform: scale(1.2); pointer-events: auto; cursor: pointer; z-index: 10; position: absolute; will-change: opacity, transform; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .overlay-stand.immediate-visible { opacity: 1; transform: scale(1); transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .overlay-stand.resetting { opacity: 0 !important; transform: scale(1.2) !important; transition: none !important; }
-    .overlay-stand.immediate-visible:hover { transition: transform 0.05s ease-out; }
-
-    /* CUADROS DE TEXTO PARA GALERÍA */
-    .image-wrap {
-      position: relative;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: visible;
-      container-type: inline-size; /* Establece el contexto de contenedor para consultas de contenedor */
-    }
-    
-    .text-overlay {
-      position: absolute;
-      font-family: Helvetica, Arial, sans-serif;
-      color: #333;
-      background: none;
-      border: none;
-      padding: 0;
-      margin: 0;
-      pointer-events: auto;
-      user-select: text;
-      cursor: text;
-      z-index: 50;
-      font-size: var(--text-size, 5cqw); /* Tamaño relativo al ancho del contenedor (imagen) */
-      line-height: 1.4;
-      white-space: pre-line;
-      /* 
-      SISTEMA DE TAMAÑOS RELATIVOS A LA IMAGEN:
-      - El tamaño por defecto es 5cqw (5% del ancho de la imagen)
-      - Para textos más grandes usa: --text-size: 8cqw (8% del ancho)
-      - Para textos más pequeños usa: --text-size: 3cqw (3% del ancho)
-      - Para títulos principales usa: --text-size: 10cqw (10% del ancho)
-      - El tamaño siempre será proporcional al ancho de la imagen, manteniendo la relación visual
-      */
-      /* Posicionamiento usando variables CSS para flexibilidad */
-      top: var(--text-top, 10%);
-      left: var(--text-left, 10%);
-      right: var(--text-right, auto);
-      bottom: var(--text-bottom, auto);
-      width: var(--text-width, auto);
-      height: var(--text-height, auto);
-      max-width: var(--text-max-width, 80%);
-      text-align: var(--text-align, left);
-      transform: var(--text-transform, none);
-    }
-
-    /* Sombra aplicada específicamente a los textos dentro del image-wrap "p2" (Hira/render)
-       - Mejora la legibilidad sobre imágenes claras/variadas
-       - Se aplica solo a #p2 para no afectar al resto de textos
-       - Para ajustar: modificar el color/blur/offset en text-shadow
-    */
-    .image-wrap#p2 .text-overlay {
-      /* Sombra base para todos los textos de p2 */
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-    }
-
-    .image-wrap#p2 .text-overlay.shadowed {
-      /* Sombra más intensa específicamente para el texto largo de Hira */
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95),
-                   0 6px 20px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Sombra aplicada específicamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
-       - Mejora la legibilidad sobre el video de fondo
-       - Se aplica solo a #p7 para textos verdes sobre video
-    */
-    .image-wrap#p7 .text-overlay {
-      /* Solo reborde negro para el título, sin sombra difusa */
-      text-shadow: 
-        1px 1px 0 rgba(0, 0, 0, 1),
-        -1px 1px 0 rgba(0, 0, 0, 1),
-        1px -1px 0 rgba(0, 0, 0, 1),
-        -1px -1px 0 rgba(0, 0, 0, 1);
-    }
-
-    /* Sombra con contorno específicamente para el texto descriptivo (Roboto) */
-    .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
-      /* Sombra muy intensa con contorno completo para máximo contraste */
-      text-shadow: 
-        /* Contorno negro en todas las direcciones */
-        1px 1px 3 rgba(0, 0, 0, 1),
-        -1px 1px 3 rgba(0, 0, 0, 1),
-        1px -1px 3 rgba(0, 0, 0, 1),
-        -1px -1px 3 rgba(0, 0, 0, 1),
-        /* Sombras difusas para suavizar */
-        0 2px 10px rgba(0, 0, 0, 0.95),
-        0 6px 25px rgba(0, 0, 0, 0.8),
-        0 12px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .overlay-botella { transform-origin: center center; opacity: 1; will-change: transform; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .overlay-botella.pulse { transform: scale(1.06); transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-    .overlay-botella.hover-active { transform: scale(1.06) !important; transition: transform 0.15s ease-out !important; }
-    .overlay-botella[data-botella="1"] { transform-origin: 12.63% 50%; }
-    .overlay-botella[data-botella="2"] { transform-origin: 20.82% 50%; }
-    .overlay-botella[data-botella="3"] { transform-origin: 27.65% 50%; }
-    .overlay-botella[data-botella="4"] { transform-origin: 33.10% 50%; }
-    .overlay-botella[data-botella="5"] { transform-origin: 38.91% 50%; }
-    .overlay-botella[data-botella="6"] { transform-origin: 43.34% 50%; }
-    .overlay-botella[data-botella="7"] { transform-origin: 47.78% 50%; }
-    .overlay-botella[data-botella="8"] { transform-origin: 51.19% 50%; }
-    .overlay-botella[data-botella="9"] { transform-origin: 54.95% 50%; }
-
-    .overlay-rollo { transform-origin: center center; opacity: 1; cursor: default; position: absolute; z-index: 10; top: var(--overlay-top, 0%); left: 50%; width: auto; height: auto; max-width: none; max-height: none; will-change: transform; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .overlay-rollo.displaced-left { transform: translateX(-50%) translateX(-5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .overlay-rollo.displaced-right { transform: translateX(-50%) translateX(5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
-    .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
-
-    /* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
-    /* Aplica a overlays de p9 (videos.png), p10 (1.1..1.4) y p15 (titulo.png) */
-    #p9 .overlay, #p10 .overlay, #p15 .overlay {
-      opacity: 0;
-      transform: translateY(64px);
-      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: opacity, transform;
-    }
-    #p9 .overlay.visible, #p10 .overlay.visible, #p15 .overlay.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* THUMBNAILS: Prevención de espacios en blanco durante transiciones */
-    #p10 .overlay {
-      position: absolute;
-      top: var(--overlay-top, 0%);
-      left: 0;
-      width: 100%;
-      height: auto;
-    }
-    
-    /* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
-    #p10 .overlay.transitioning {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* RECTANGULOS BLANCOS para ocultar imágenes viejas durante transición */
-    .thumb-mask {
-      position: absolute;
-      background: #ffffff; /* Mismo color que el fondo de la página */
-      z-index: 50; /* Entre imagen vieja (z-index bajo) y nueva (z-index 100) */
-      pointer-events: none;
-      opacity: 0;
-      /* Máscara diagonal sincronizada con las imágenes nuevas */
-      -webkit-mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
-      mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      -webkit-mask-size: 200% 200%;
-      mask-size: 200% 200%;
-    }
-    
-    .thumb-mask.active {
-      opacity: 1;
-    }
-    
-    /* Configuración de dimensiones por defecto para cada rectángulo (ajustables) */
-    .thumb-mask[data-thumb="1"] {
-      top: var(--mask1-top, 12%);
-      left: var(--mask1-left, 30%);
-      width: var(--mask1-width, 65%);
-      height: var(--mask1-height, 65%);
-    }
-    
-    .thumb-mask[data-thumb="2"] {
-      top: var(--mask2-top, 14%);
-      left: var(--mask2-left, 5%);
-      width: var(--mask2-width, 22%);
-      height: var(--mask2-height, 22%);
-    }
-    
-    .thumb-mask[data-thumb="3"] {
-      top: var(--mask3-top, 41%);
-      left: var(--mask3-left, 5%);
-      width: var(--mask3-width, 22%);
-      height: var(--mask3-height, 22%);
-    }
-    
-    .thumb-mask[data-thumb="4"] {
-      top: var(--mask4-top, 68.5%);
-      left: var(--mask4-left, 5%);
-      width: var(--mask4-width, 22%);
-      height: var(--mask4-height, 22%);
-    }
-
-    /* THUMBNAILS (p10): Transiciones suaves para textos que cambian por grupo */
-    #p10 .text-group {
-      display: block !important; /* Forzar sobre estilos inline existentes */
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(4px);
-      will-change: opacity, transform, filter;
-      transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
-                  filter 700ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    #p10 .text-group.visible {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-
-    /* EFECTOS - OPTIMIZACIONES ADICIONALES */
-    .overlay.hovered { transform: scale(1.05); } /* preserve hovered but weaker */
-    
-    /* RESPONSIVE - OPTIMIZADO */
-    @media (max-width: 1024px) { #indice { width: 250px; } }
-    @media (max-width: 768px) {
-      header { flex-direction: column; align-items: flex-start; padding: 10px; height: auto; }
-      nav { display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%; margin-top: 10px; }
-      nav a { margin: 5px; font-size: .9em; }
-      main { margin-top: 120px; }
-      section { padding: 20px; padding-top: 0; }
-      .proyectos-container { flex-direction: column; height: auto; }
-      #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 120px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
-      .indice-content { padding: 0 15px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: visible; }
-      #indice h2 { display: none; }
-      #indice ul { display: flex; overflow-x: auto; gap: 8px; padding: 8px 0; height: 100%; align-items: center; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
-      #indice li { flex-shrink: 0; margin-bottom: 0; height: 100%; display: flex; align-items: center; }
-      #indice a { white-space: nowrap; padding: .6em 1.2em; border: none; border-radius: 20px; background: #f0f0f0; transition: all .2s; color: #333; font-size: .9em; box-shadow: 0 1px 3px rgba(0,0,0,.1); height: 40px; display: flex; align-items: center; justify-content: center; margin: 0; width: fit-content; min-width: auto; }
-      #indice a.active { color: yellow; background: #001f3f; transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,31,63,.5); padding: .6em 1.4em; }
-      #indice a:hover { color: #001f3f; transform: translateY(-2px); }
-      #galeria-container { height: calc(100vh - 190px); }
-      #galeria { padding-bottom: 0; }
-      .carousel { 
-        gap: 15px; 
-        width: 100%;
-        margin-left: 0;
-        overflow-x: auto;
-        justify-content: flex-start;
-        padding: 15px;
-      }
-      .carousel img { 
-        width: 70vw; 
-        height: 40vw; 
-        min-width: 250px;
-        min-height: 140px;
-        max-width: none;
-        max-height: none;
-      }
-  .text-overlay { --text-size: 4cqw !important; }
-      footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; transform: translateY(0) !important; }
-      #intro-video { max-width: 90vw; max-height: 90vh; }
-    }
-    @media (max-width: 480px) {
-      .logo { height: 40px; width: 40px; }
-      #idioma-btn { padding: 4px 8px; font-size: .9em; }
-      main { margin-top: 100px; }
-      section { padding: 15px; padding-top: 0; }
-      .carousel { 
-        gap: 10px; 
-        padding: 10px;
-      }
-      .carousel img { 
-        width: 80vw; 
-        height: 45vw; 
-        min-width: 200px;
-        min-height: 112px;
-      }
-      #indice { top: 100px; height: 60px; }
-      .indice-content { padding: 0 10px; }
-      #indice a { padding: 0.5em 1em; font-size: 0.85em; height: 36px; }
-      #galeria-container { height: calc(100vh - 160px); }
-      .text-overlay { --text-size: 3.5cqw !important; }
-    }
-
-    html.intro-active, body.intro-active { overflow: hidden; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <!-- HEADER -->
@@ -430,17 +15,17 @@
       <img src="Jmotion.png" alt="Logo">
     </div>
     <nav>
-      <a onclick="mostrarSeccion('menu')"><span data-es="Menú" data-en="Menu"></span></a>
-      <a onclick="mostrarSeccion('proyectos')"><span data-es="Proyectos" data-en="Projects"></span></a>
-      <a onclick="mostrarSeccion('redes')"><span data-es="Redes" data-en="Social"></span></a>
-      <a onclick="mostrarSeccion('contacto')"><span data-es="Contacto" data-en="Contact"></span></a>
-      <a onclick="mostrarSeccion('sobremi')"><span data-es="Sobre mí" data-en="About me"></span></a>
+      <a data-section="menu"><span data-es="Menú" data-en="Menu"></span></a>
+      <a data-section="proyectos"><span data-es="Proyectos" data-en="Projects"></span></a>
+      <a data-section="redes"><span data-es="Redes" data-en="Social"></span></a>
+      <a data-section="contacto"><span data-es="Contacto" data-en="Contact"></span></a>
+      <a data-section="sobremi"><span data-es="Sobre mí" data-en="About me"></span></a>
     </nav>
     <div style="position:relative;">
       <button id="idioma-btn">ES</button>
       <div id="idioma-list">
-        <div onclick="cambiarIdioma('es')">Español</div>
-        <div onclick="cambiarIdioma('en')">English</div>
+        <div data-lang="es">Español</div>
+        <div data-lang="en">English</div>
       </div>
     </div>
   </header>
@@ -448,14 +33,134 @@
   <!-- CONTENEDOR PRINCIPAL -->
   <main id="desktop-version">
     <section id="menu" class="active">
-      <h1><span data-es="Menú" data-en="Menu"></span></h1>
       <div class="carousel">
-        <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto(0)">
-        <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto(1)">
-        <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto(2)">
+        <!-- Imagen extra a la izquierda que no afecta la secuencia -->
+        <figure class="carousel-item contrast-strong">
+          <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" class="carousel-buffer" onclick="irAProyecto('p7')" onerror="this.style.display='none';">
+          <div class="carousel-caption">
+            <div class="carousel-title">Título del proyecto</div>
+            <div class="carousel-subtitle">Subtítulo del proyecto</div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto('p1')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Hira.png');">
+          <div class="carousel-caption">
+            <div class="carousel-title">Perchero Hira</div>
+            <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto('p3')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Nostre.png');">
+          <div class="carousel-caption">
+            <div class="carousel-title">Etiquetado para vinos Nostre</div>
+            <div class="carousel-subtitle">Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos.</div>
+          </div>
+        </figure>
+        <figure class="carousel-item contrast-strong">
+          <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto('p7')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Reflejos.png');">
+          <div class="carousel-caption">
+            <div class="carousel-title">"Reflejos del Multiverso"</div>
+            <div class="carousel-subtitle">Campaña gráfica multiplataforma hecha por encargo para la obra de teatro "Reflejos del Multiverso".</div>
+          </div>
+        </figure>
+        <!-- Imágenes extra para transición suave (no forman parte de la lógica) -->
+        <figure class="carousel-item">
+          <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" class="carousel-buffer" onclick="irAProyecto('p1')" onerror="this.style.display='none';">
+          <div class="carousel-caption">
+            <div class="carousel-title">Perchero Hira</div>
+            <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" class="carousel-buffer" onclick="irAProyecto('p3')" onerror="this.style.display='none';">
+          <div class="carousel-caption">
+            <div class="carousel-title">Etiquetado para vinos Nostre</div>
+            <div class="carousel-subtitle">Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos.</div>
+          </div>
+        </figure>
       </div>
-      <p data-es="También puedes explorar mis últimos proyectos, leer sobre mi proceso creativo o contactar conmigo directamente." 
-         data-en="You can also explore my latest projects, learn about my creative process, or contact me directly."></p>
+      <!-- SERVICIOS -->
+      <div class="services">
+        <div class="services-title">¿Qué puedo hacer por ti?</div>
+        <div class="services-circles">
+          <div class="service-circle service-1">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/circulos/DisenoGrafico/DisenoGrafico1.png"></div>
+              <div class="frame f2" data-src="assets/circulos/DisenoGrafico/DisenoGrafico2.png"></div>
+              <div class="frame f3" data-src="assets/circulos/DisenoGrafico/DisenoGrafico3.png"></div>
+            </div>
+            <span>Diseño Gráfico</span>
+          </div>
+          <div class="service-circle service-2"><span>Desarrollo Web</span></div>
+          <div class="service-circle service-3"><span>Edición de Vídeo</span>
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/circulos/EdicionVideo/EdicionVideo.gif"></div>
+            </div>
+          </div>
+          <div class="service-circle service-4">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/circulos/GraficosMoviles/Secuencia 01_1.gif"></div>
+            </div>
+            <span>Gráficos Móviles</span>
+          </div>
+          <div class="service-circle service-5">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/circulos/Comunicacion/Comunicacion1.png"></div>
+              <div class="frame f2" data-src="assets/circulos/Comunicacion/Comunicacion2.png"></div>
+              <div class="frame f3" data-src="assets/circulos/Comunicacion/Comunicacion3.png"></div>
+            </div>
+            <span>Comunicación de Proyectos</span>
+          </div>
+          <div class="service-circle service-6">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/circulos/Ilustraciones/Ilustracion1.png"></div>
+              <div class="frame f2" data-src="assets/circulos/Ilustraciones/Ilustracion2.png"></div>
+              <div class="frame f3" data-src="assets/circulos/Ilustraciones/Ilustracion3.png"></div>
+            </div>
+            <span>Ilustración</span>
+          </div>
+        </div>
+
+        <!-- Descripción dinámica bajo los círculos -->
+        <div class="services-description" aria-live="polite" aria-atomic="true">
+          <span id="services-description-text" data-es="En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie." data-en="Hover over a service to see a description.">En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.</span>
+        </div>
+
+        <!-- CTA: ver proyectos / descargar CV -->
+        <div class="cta-portfolio" aria-labelledby="cta-title">
+          <h3 id="cta-title" class="cta-title">
+            <span data-es="¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!" data-en="Want to see a sample of my work? Check out my project gallery, or download my resume!">¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!</span>
+          </h3>
+          <div class="cta-buttons">
+            <a id="btn-ver-proyectos" href="#proyectos" class="btn-napoleon">
+              <span data-es="Ver proyectos" data-en="See projects">Ver proyectos</span>
+            </a>
+            <a id="btn-cv" href="assets/CV/Curriculum_JaimeCereijo.pdf" class="btn-napoleon" download>
+              <span data-es="Descargar CV" data-en="Download resume">Descargar CV</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Colaboradores y clientes -->
+        <div class="clients" aria-labelledby="clients-title">
+          <div class="clients-logos">
+            <img src="assets/Clientes/systemtronic.webp" alt="Systemtronic" loading="lazy" decoding="async">
+            <img src="assets/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
+            <img src="assets/Clientes/upv.jpg" alt="Universidad Politécnica de Valencia" loading="lazy" decoding="async">
+            <img src="assets/Clientes/etsiadi.jpg" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
+            <img src="assets/Clientes/etsiamn.jpg" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
+            <img src="assets/Clientes/cultura.jpg" alt="Área de Cultura" loading="lazy" decoding="async">
+          </div>
+          <div class="clients-copy">
+            <h3 id="clients-title"><span data-es="Clientes y colaboradores" data-en="Partners and clients">Colaboradores y clientes</span></h3>
+            <p>
+              <span data-es="He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente."
+                    data-en="I’ve worked with companies, institutions and content creators to deliver campaigns, editorial pieces, visual identity and promotional materials. I bring ideas, structure and execution to every stage, adapting to each client’s scope and goals.">He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <section id="proyectos">
@@ -676,947 +381,6 @@ After a redesign, I created two panels with mockups like this and prepared a pre
   <video id="intro-video" playsinline muted autoplay></video>
   </div>
 
-  <script>
-    // ===== ESTADO GLOBAL Y UTILIDADES =====
-    const $ = {
-      header: null, indice: null, main: null, footer: null, galeriaContainer: null, galeria: null,
-      body: document.body, html: document.documentElement,
-      lastScrollY: 0, headerHeight: 70, isMobile: window.innerWidth <= 768, 
-      isProyectosActive: false, lastScrollTop: 0, bottleEffectTriggered: false,
-      throttles: new Set(), timers: new Map(), rafId: null
-    };
-
-    const throttle = (key, fn, ms = 16) => {
-      if ($.throttles.has(key)) return;
-      $.throttles.add(key);
-      $.rafId && cancelAnimationFrame($.rafId);
-      $.rafId = requestAnimationFrame(() => { 
-        fn(); 
-        setTimeout(() => $.throttles.delete(key), ms); 
-        $.rafId = null;
-      });
-    };
-    
-    const debounce = (key, fn, ms = 250) => {
-      const timer = $.timers.get(key);
-      timer && clearTimeout(timer);
-      $.timers.set(key, setTimeout(() => { fn(); $.timers.delete(key); }, ms));
-    };
-
-    // ===== LAYOUT, SCROLL Y NAVEGACIÓN =====
-    const Layout = {
-      init() {
-        // Map the actual element IDs/nodes used in the HTML to the $ cache.
-        // Note: the main container uses id="desktop-version" and <footer> has no id,
-        // so we must query them explicitly instead of assuming ids named 'main'/'footer'.
-        $.header = document.getElementById('main-header');
-        $.indice = document.getElementById('indice');
-        $.main = document.getElementById('desktop-version');
-        $.footer = document.querySelector('footer');
-        $.galeriaContainer = document.getElementById('galeria-container');
-        $.galeria = document.getElementById('galeria');
-        this.update();
-      },
-      update() {
-        if (!$.header || !$.main) return;
-        const margin = $.isMobile ? $.headerHeight + 50 : $.headerHeight;
-        $.main.style.marginTop = `${margin}px`;
-        $.indice && ($.indice.style.top = `${margin}px`);
-      }
-    };
-
-    const Scroll = {
-      footerVisible: false, hideTimer: null,
-      handleMain() {
-        throttle('scroll', () => {
-          const delta = window.scrollY - $.lastScrollY;
-          if (Math.abs(delta) > 5) {
-            const hide = delta > 0 && window.scrollY > ($.isMobile ? 50 : 100);
-            $.header?.classList.toggle('hidden', hide);
-            this.updateLayout();
-            $.lastScrollY = window.scrollY;
-          }
-          this.updateFooter();
-        });
-      },
-      updateLayout() {
-        const visible = !$.header?.classList.contains('hidden');
-        const top = visible ? $.headerHeight : 0;
-        $.main && ($.main.style.marginTop = `${top}px`);
-        $.indice && ($.indice.style.top = `${$.isMobile && visible ? $.headerHeight + 50 : top}px`);
-      },
-      updateFooter() {
-        if (!$.galeriaContainer || !$.footer || $.isMobile || !$.isProyectosActive) {
-          this.hideFooter(); return;
-        }
-        const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
-        const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
-        atBottom ? this.showFooter() : (scrollTop < $.lastScrollTop && this.footerVisible && this.scheduleHide());
-        $.lastScrollTop = scrollTop;
-      },
-      showFooter() {
-        if (this.footerVisible) return;
-        $.footer?.classList.add('visible');
-        this.footerVisible = true;
-        this.hideTimer && clearTimeout(this.hideTimer);
-      },
-      hideFooter() {
-        $.footer?.classList.remove('visible');
-        this.footerVisible = false;
-      },
-      scheduleHide() {
-        this.hideTimer && clearTimeout(this.hideTimer);
-        this.hideTimer = setTimeout(() => this.hideFooter(), 25);
-      }
-    };
-
-    const Nav = {
-      grupos: [
-        {ids: ["p1", "p2"], link: "#p1"}, {ids: ["p3", "p4", "p5", "p6"], link: "#p3"},
-        {ids: ["p7", "p8"], link: "#p7"}, {ids: ["p9", "p10"], link: "#p9"},
-        {ids: ["p11", "p12", "p13", "p14"], link: "#p11"}, {ids: ["p15", "p16", "p17"], link: "#p15"},
-        {ids: ["p18", "p19"], link: "#p18"}
-      ],
-      links: null, activeGroup: null, elements: new Map(),
-      init() {
-        this.links = document.querySelectorAll("#indice a");
-        this.grupos.forEach(g => g.ids.forEach(id => {
-          const el = document.getElementById(id);
-          el && this.elements.set(id, el);
-        }));
-        this.links.forEach(link => {
-          link.onclick = e => {
-            e.preventDefault();
-            const target = this.elements.get(link.getAttribute("href").substring(1));
-            target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
-          };
-        });
-      },
-      updateActive(scrollPos) {
-        let active = null;
-        this.grupos.some(g => g.ids.some(id => {
-          const el = this.elements.get(id);
-          if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
-            active = g.link; return true;
-          }
-        }));
-        if (this.activeGroup !== active) {
-          this.links.forEach(l => l.classList.remove("active"));
-          active && document.querySelector(`#indice a[href='${active}']`)?.classList.add("active");
-          this.activeGroup = active;
-        }
-      }
-    };
-    // ===== UTILIDAD PARA AÑADIR TEXTOS =====
-    function addTextOverlay(imageId, text, options = {}) {
-      const imageWrap = document.querySelector(`.image-wrap#${imageId}`);
-      if (!imageWrap) {
-        console.warn(`No se encontró image-wrap con id: ${imageId}`);
-        return null;
-      }
-      
-      const textDiv = document.createElement('div');
-      textDiv.className = 'text-overlay';
-      textDiv.textContent = text;
-      
-      // Aplicar posicionamiento y estilos usando variables CSS
-      const styles = {
-        '--text-top': options.top || '10%',
-        '--text-left': options.left || '10%',
-        '--text-right': options.right || 'auto',
-        '--text-bottom': options.bottom || 'auto',
-        '--text-width': options.width || 'auto',
-        '--text-height': options.height || 'auto',
-        '--text-max-width': options.maxWidth || '300px',
-        '--text-align': options.align || 'left',
-        '--text-transform': options.transform || 'none',
-        'color': options.color || '#333',
-        'font-size': options.fontSize || '16px',
-        'font-weight': options.fontWeight || 'normal'
-      };
-      
-      Object.entries(styles).forEach(([prop, value]) => {
-        if (value !== 'auto' && value !== 'none') {
-          textDiv.style.setProperty(prop, value);
-        }
-      });
-      
-      imageWrap.appendChild(textDiv);
-      return textDiv;
-    }
-
-    // ===== FUNCIONES DE NAVEGACIÓN Y IDIOMA =====
-    function mostrarSeccion(id) {
-      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id)?.classList.add('active');
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      
-      $.isProyectosActive = (id === 'proyectos');
-      $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
-      
-      // Manejo del carrusel
-      if (id === 'menu') {
-        setTimeout(() => Carousel.start(), 500);
-      } else {
-        Carousel.stop();
-      }
-      
-      if ($.isProyectosActive) {
-        debounce('setup', () => { Videos.init(); Effects.setup(); Overlays.update(); Thumbnails.start(); }, 100);
-      } else {
-        Effects.reset(); Thumbnails.stop();
-      }
-      
-      setTimeout(() => { Layout.update(); Scroll.updateFooter(); }, 100);
-    }
-    
-    function irAProyecto(index) {
-      mostrarSeccion('proyectos');
-      setTimeout(() => {
-        const target = $.galeria?.querySelectorAll('img, video')[index];
-        target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
-      }, 100);
-    }
-
-    const Lang = {
-      init() {
-        const [btn, list] = ['idioma-btn', 'idioma-list'].map(id => document.getElementById(id));
-        const elements = document.querySelectorAll('[data-es]');
-        
-        if (btn && list) {
-          btn.onclick = () => list.style.display = list.style.display === 'block' ? 'none' : 'block';
-          document.onclick = e => !btn.contains(e.target) && !list.contains(e.target) && (list.style.display = 'none');
-        }
-        
-        this.change = lang => {
-          localStorage.setItem('idioma', lang);
-          btn.textContent = lang.toUpperCase();
-          elements.forEach(el => {
-            const text = el.getAttribute(`data-${lang}`);
-            text && (el.textContent = text);
-          });
-        };
-        
-        this.change(localStorage.getItem('idioma') || 'es');
-      }
-    };
-    
-    function cambiarIdioma(idioma) { Lang.change(idioma); }
-
-    // ===== OVERLAYS Y EFECTOS OPTIMIZADOS =====
-    const Overlays = {
-      container: null, updatePending: false, elements: new Map(), cache: new Map(),
-      cascadeTimers: new Map(),
-      init() {
-        this.container = $.galeriaContainer;
-        if (!this.container) return;
-        
-        // Cache elementos al inicio
-        document.querySelectorAll('.image-wrap').forEach(wrap => {
-          const base = wrap.querySelector('.base');
-          if (base) {
-            this.elements.set(wrap.id, {
-              wrap, base,
-              overlays: Array.from(wrap.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')),
-              stands: wrap.querySelectorAll('.overlay[data-stand="true"]'),
-              rollos: wrap.querySelectorAll('.overlay-rollo')
-            });
-          }
-        });
-        
-        this.container.onscroll = () => throttle('overlay', () => this.update());
-        window.onresize = () => throttle('overlay-resize', () => this.update());
-      },
-      
-      getViewportInfo(img) {
-        const key = `${img.id}-${$.galeriaContainer.scrollTop}`;
-        if (this.cache.has(key)) return this.cache.get(key);
-        
-        const rect = img.getBoundingClientRect();
-        const containerRect = this.container.getBoundingClientRect();
-        const visibleHeight = Math.max(0, Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top));
-        const imgCenter = rect.top + rect.height / 2;
-        const containerCenter = containerRect.top + containerRect.height / 2;
-        
-        const info = {
-          visible: (visibleHeight / rect.height) >= 0.6,
-          centered: Math.abs(imgCenter - containerCenter) <= containerRect.height * 0.3,
-          outOfView: rect.bottom <= containerRect.top || rect.top >= containerRect.bottom
-        };
-        
-        // Limpiar cache viejo
-        this.cache.size > 20 && this.cache.clear();
-        this.cache.set(key, info);
-        return info;
-      },
-      
-      update() {
-        if (!$.isProyectosActive || this.updatePending) return;
-        this.updatePending = true;
-        
-        requestAnimationFrame(() => {
-          this.elements.forEach(({wrap, base, overlays, stands, rollos}) => {
-            const info = this.getViewportInfo(base);
-            
-            // -- Overlays: normal single overlay or multiple overlays (cascade for those that share base)
-            if (overlays && overlays.length) {
-              if (info.visible) {
-                // if multiple overlays in same wrap, cascade them only when first not already visible
-                if (overlays.length > 1) {
-                  if (!overlays[0].classList.contains('visible')) {
-                    // clear any previous cascade timers
-                    const prev = this.cascadeTimers.get(wrap.id);
-                    if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
-                    const timers = [];
-                    overlays.forEach((o, i) => {
-                      const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
-                      timers.push(t);
-                    });
-                    this.cascadeTimers.set(wrap.id, timers);
-                  }
-                } else {
-                  overlays.forEach(o => o.classList.add('visible'));
-                }
-              } else {
-                // not visible -> remove classes and clear timers
-                overlays.forEach(o => o.classList.remove('visible'));
-                const prev = this.cascadeTimers.get(wrap.id);
-                if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
-              }
-            }
-
-            this.processStands(stands, info);
-            this.processRollos(rollos, info);
-          });
-          
-          Nav.updateActive($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
-          !$.bottleEffectTriggered && Bottles.checkTrigger();
-          this.updatePending = false;
-        });
-      },
-      
-      processStands(stands, {outOfView, centered}) {
-        stands.forEach(stand => {
-          const visible = stand.classList.contains('immediate-visible');
-          if (outOfView && visible) {
-            stand.classList.remove('immediate-visible');
-            setTimeout(() => {
-              stand.classList.add('resetting');
-              setTimeout(() => stand.classList.remove('resetting'), 50);
-            }, 600);
-          } else if (centered && !visible && !outOfView) {
-            stand.classList.add('immediate-visible');
-          }
-        });
-      },
-      
-      processRollos(rollos, {centered}) {
-        rollos.forEach(rollo => {
-          const isCentered = rollo.classList.contains('centered');
-          if (centered !== isCentered) {
-            rollo.classList.toggle('centered', centered);
-            if (centered) {
-              rollo.classList.remove('displaced-left', 'displaced-right');
-            } else {
-              const dir = rollo.getAttribute('data-initial-direction') === 'right' ? 'displaced-right' : 'displaced-left';
-              rollo.classList.add(dir);
-            }
-          }
-        });
-      }
-    };
-
-    // ===== EFECTOS CONSOLIDADOS =====
-    const Effects = {
-      handlers: new WeakMap(),
-      
-      setup() {
-        ['stands', 'bottles', 'rollos'].forEach((type, i) => 
-          debounce(`setup-${type}`, () => this[`setup${type.charAt(0).toUpperCase() + type.slice(1)}`](), 100 + i * 50));
-      },
-      
-      setupStands() {
-        document.querySelectorAll('[data-stand="true"]').forEach(stand => {
-          if (this.handlers.has(stand)) return;
-          
-          Object.assign(stand.style, {position: 'absolute', pointerEvents: 'auto', cursor: 'default'});
-          
-          let hovering = false, isHovering = false;
-          const isOpaque = (x, y) => {
-            const rect = stand.getBoundingClientRect();
-            const [relX, relY] = [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
-            return relX >= 0.25 && relX <= 0.75 && relY >= 0.15 && relY <= 0.85;
-          };
-          
-          const onMouseMove = e => {
-            const opaque = isOpaque(e.clientX, e.clientY);
-            if (opaque !== isHovering) {
-              isHovering = opaque;
-              if (opaque) {
-                hovering = true;
-                Object.assign(stand.style, {willChange: 'transform', transform: 'scale(1.02)', cursor: 'pointer'});
-              } else {
-                hovering = false;
-                Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)', willChange: 'auto'});
-                return;
-              }
-            }
-            
-            if (hovering && opaque) {
-              const rect = stand.getBoundingClientRect();
-              const [centerX, centerY] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
-              const [deltaX, deltaY] = [(e.clientX - centerX) * 0.06, (e.clientY - centerY) * 0.06];
-              const [x, y] = [Math.max(-8, Math.min(8, deltaX)), Math.max(-8, Math.min(8, deltaY))];
-              stand.style.transform = `scale(1.02) translate(${x}px, ${y}px)`;
-            }
-          };
-          
-          const onMouseLeave = () => {
-            hovering = isHovering = false;
-            Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)'});
-            setTimeout(() => stand.style.willChange = 'auto', 200);
-          };
-          
-          ['mousemove', 'mouseleave'].forEach((e, i) => 
-            stand.addEventListener(e, [onMouseMove, onMouseLeave][i]));
-          this.handlers.set(stand, {onMouseMove, onMouseLeave});
-        });
-      },
-      
-      setupRollos() {
-        document.querySelectorAll('.overlay-rollo').forEach(rollo => {
-          if (this.handlers.has(rollo)) return;
-          
-          const dir = Math.random() > 0.5 ? 'right' : 'left';
-          rollo.classList.add(`displaced-${dir}`);
-          rollo.setAttribute('data-initial-direction', dir);
-          Object.assign(rollo.style, {pointerEvents: 'auto', zIndex: '100'});
-          
-          const onMouseMove = e => {
-            if (rollo.classList.contains('centered')) {
-              const rect = rollo.getBoundingClientRect();
-              const x = Math.max(-8, Math.min(8, (e.clientX - rect.left - rect.width / 2) * 0.06));
-              rollo.style.transform = `translateX(-50%) translateX(${x}px)`;
-            }
-          };
-          
-          const onMouseLeave = () => {
-            rollo.style.cursor = 'default';
-            const transform = rollo.classList.contains('centered') 
-              ? 'translateX(-50%) translateX(0px)'
-              : `translateX(-50%) translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
-            rollo.style.transform = transform;
-          };
-          
-          rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'pointer', pointerEvents: 'auto', zIndex: '100'}));
-          ['mousemove', 'mouseleave', 'click'].forEach((e, i) => 
-            rollo.addEventListener(e, [onMouseMove, onMouseLeave, e => { e.preventDefault(); e.stopPropagation(); }][i]));
-          
-          this.handlers.set(rollo, {onMouseMove, onMouseLeave});
-        });
-      },
-      
-      setupBottles() {
-        const container = document.querySelector('.image-wrap#p4');
-        if (!container || container.hasAttribute('data-bottles-configured')) return;
-        
-        const bottles = Array.from(document.querySelectorAll('.overlay-botella'));
-        if (!bottles.length) return;
-        
-        bottles.forEach((bottle, i) => {
-          bottle.style.zIndex = (10 + i).toString();
-          bottle.style.pointerEvents = 'none';
-        });
-        
-        container.setAttribute('data-bottles-configured', 'true');
-        const ranges = [[0.0682, 0.1877], [0.1877, 0.266], [0.266, 0.33], [0.33, 0.375], [0.375, 0.43], 
-                       [0.43, 0.48], [0.48, 0.52], [0.52, 0.555], [0.555, 0.585]];
-        let lastActive = null, rafPending = false;
-        
-        const onMouseMove = e => {
-          if (rafPending) return;
-          rafPending = true;
-          requestAnimationFrame(() => {
-            const rect = container.getBoundingClientRect();
-            const [relX, relY] = [(e.clientX - rect.left) / rect.width, (e.clientY - rect.top) / rect.height];
-            let active = null;
-            
-            if (relY >= 0.2 && relY <= 0.8) {
-              ranges.some((range, i) => {
-                if (relX >= range[0] && relX <= range[1]) {
-                  active = i + 1;
-                  return true;
-                }
-              });
-            }
-            
-            if (lastActive !== active) {
-              bottles.forEach(b => b.classList.remove('hover-active'));
-              if (active) {
-                container.querySelector(`.overlay-botella[data-botella="${active}"]`)?.classList.add('hover-active');
-                container.style.cursor = 'pointer';
-              } else container.style.cursor = 'default';
-              lastActive = active;
-            }
-            rafPending = false;
-          });
-        };
-        
-        const onMouseLeave = () => {
-          bottles.forEach(b => b.classList.remove('hover-active'));
-          container.style.cursor = 'default';
-          lastActive = null;
-        };
-        
-        ['mousemove', 'mouseleave'].forEach((e, i) => 
-          container.addEventListener(e, [onMouseMove, onMouseLeave][i]));
-      },
-      
-      reset() {
-        document.querySelectorAll('.overlay-stand, .overlay-rollo, .overlay-botella').forEach(el => {
-          el.classList.remove('immediate-visible', 'resetting', 'centered', 'hover-active');
-          Object.assign(el.style, {transform: '', cursor: 'default', willChange: 'auto'});
-        });
-        // clear any cascade timers and visible classes for thumbnail overlays
-        this.cascadeTimers.forEach(arr => arr.forEach(t => clearTimeout(t)));
-        this.cascadeTimers.clear();
-        document.querySelectorAll('#p9 .overlay, #p10 .overlay, #p15 .overlay').forEach(o => o.classList.remove('visible'));
-        this.handlers = new WeakMap();
-      }
-    };
-
-    const Bottles = {
-      cachedElements: null,
-      checkTrigger() {
-        if (!this.cachedElements) {
-          this.cachedElements = {
-            nostre2: document.getElementById('p4'),
-            bottles: Array.from(document.querySelectorAll('.overlay-botella'))
-              .sort((a, b) => parseInt(a.getAttribute('data-botella')) - parseInt(b.getAttribute('data-botella')))
-          };
-        }
-        
-        const {nostre2} = this.cachedElements;
-        if (!nostre2 || !$.galeriaContainer) return;
-        
-        const containerRect = $.galeriaContainer.getBoundingClientRect();
-        const sectionRect = nostre2.getBoundingClientRect();
-        const [zoneTop, zoneBottom] = [containerRect.top + containerRect.height * 0.3, 
-                                      containerRect.top + containerRect.height * 0.7];
-        
-        if (sectionRect.top <= zoneBottom && sectionRect.bottom >= zoneTop) {
-          $.bottleEffectTriggered = true;
-          setTimeout(() => this.pulse(), 100);
-        }
-        
-        if ($.bottleEffectTriggered && (sectionRect.bottom < containerRect.top - 200 || 
-                                       sectionRect.top > containerRect.bottom + 200)) {
-          $.bottleEffectTriggered = false;
-        }
-      },
-      
-      pulse() {
-        this.cachedElements.bottles.forEach((bottle, i) => {
-          setTimeout(() => {
-            bottle.classList.add('pulse');
-            setTimeout(() => bottle.classList.remove('pulse'), 250);
-          }, i * 120);
-        });
-      }
-    };
-
-    // ===== VIDEOS Y FUNCIONES SIMPLIFICADAS =====
-    const Videos = { 
-      init() {
-        document.querySelectorAll('#galeria video').forEach(video => {
-          ['muted', 'playsinline', 'loop'].forEach(attr => video.setAttribute(attr, ''));
-          video.play().catch(() => {
-            if (!document.hasAttribute('data-video-fallback')) {
-              document.setAttribute('data-video-fallback', 'true');
-              const handleClick = () => {
-                document.querySelectorAll('#galeria video').forEach(v => v.play().catch(() => {}));
-                document.removeEventListener('click', handleClick);
-              };
-              document.addEventListener('click', handleClick);
-            }
-          });
-        });
-      }
-    };
-    
-    const setupNormalOverlays = () => {
-      document.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')
-              .forEach(img => {
-        // Omitir hover en los thumbnails (p9, p10 y p15)
-        if (img.closest('#p9') || img.closest('#p10') || img.closest('#p15')) return;
-        const handleMouseMove = e => {
-          // keep basic small parallax for overlays, but do not conflict with thumbnail translate animation
-          const rect = img.getBoundingClientRect();
-          const [x, y] = [((e.clientX - rect.left) / rect.width - 0.5) * 10, 
-                         ((e.clientY - rect.top) / rect.height - 0.5) * 10];
-          img.classList.add('hovered');
-          const base = img.classList.contains('overlay2') ? 'translateX(-50%)' : '';
-          img.style.transform = `${base} scale(1.03) translate(${x}px, ${y}px)`;
-        };
-        const handleMouseLeave = () => { 
-          img.classList.remove('hovered'); 
-          img.style.transform = ''; 
-        };
-        
-        ['mousemove', 'mouseleave'].forEach((e, i) => 
-          img.addEventListener(e, [handleMouseMove, handleMouseLeave][i]));
-      });
-    };
-
-    // ===== THUMBNAILS: ciclo de grupos 1.x, 2.x, 3.x sin máscaras =====
-    const Thumbnails = {
-      timer: null,
-      currentGroup: 1,
-      overlays: [],
-      preloaded: false,
-      isTransitioning: false,
-      preload() {
-        if (this.preloaded) return;
-        const images = [];
-        [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
-          const img = new Image();
-          img.src = `assets/Thumbnails/${g}.${i}.png`;
-          images.push(img);
-        }));
-        this.preloaded = true;
-      },
-      initCache() {
-        this.overlays = Array.from(document.querySelectorAll('#p10 .overlay'));
-      },
-      setGroup(group) {
-        if (!this.overlays.length) this.initCache();
-        if (this.isTransitioning) return; // Prevenir múltiples transiciones simultáneas
-        
-        this.isTransitioning = true;
-        
-        // Activar rectángulos con un retardo más corto después de las imágenes
-        setTimeout(() => this.activateRectangles(), 200);
-        
-        this.overlays.forEach((el, idx) => {
-          // Marcar como en transición para mantener visibilidad
-          el.classList.add('transitioning');
-          
-          // Crear elemento temporal para la nueva imagen
-          const newSrc = `assets/Thumbnails/${group}.${idx+1}.png`;
-          const tmp = document.createElement('img');
-          tmp.alt = el.alt || '';
-          tmp.className = `${el.className} visible thumb-temp`;
-          tmp.style.cssText = `
-            position: absolute;
-            top: ${getComputedStyle(el).top || '0%'};
-            left: ${getComputedStyle(el).left || '0'};
-            width: ${getComputedStyle(el).width || '100%'};
-            height: ${getComputedStyle(el).height || 'auto'};
-            object-fit: ${getComputedStyle(el).objectFit || 'contain'};
-            z-index: 100;
-            pointer-events: none;
-            opacity: 0;
-          `;
-          
-          // Configurar máscara con gradiente diagonal
-          const feather = '3%';
-          const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -10%) - ${feather}), rgba(0,0,0,1) var(--edge, -10%), rgba(0,0,0,0) calc(var(--edge, -10%) + ${feather}))`;
-          Object.assign(tmp.style, {
-            webkitMaskImage: mask,
-            maskImage: mask,
-            webkitMaskRepeat: 'no-repeat',
-            maskRepeat: 'no-repeat',
-            webkitMaskSize: '200% 200%',
-            maskSize: '200% 200%'
-          });
-          tmp.style.setProperty('--edge', '-10%');
-
-          tmp.addEventListener('load', () => {
-            // Hacer visible inmediatamente para evitar espacios en blanco
-            tmp.style.opacity = '1';
-            el.parentElement.appendChild(tmp);
-            
-            // Animación diagonal suave
-            const duration = 1600;
-            const start = performance.now();
-            const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
-            
-            const step = now => {
-              let p = Math.min(1, Math.max(0, (now - start) / duration));
-              const eased = easeInOut(p);
-              const edge = -10 + 120 * eased;
-              const edgeValue = edge.toFixed(2) + '%';
-              
-              // Aplicar valor de --edge solo a la imagen nueva
-              tmp.style.setProperty('--edge', edgeValue);
-              
-              if (p < 1) {
-                requestAnimationFrame(step);
-              } else {
-                // Finalizar: primero cambiar src, luego esperar un frame antes de limpiar
-                el.src = newSrc;
-                
-                // Esperar a que la nueva imagen se renderice antes de limpiar
-                requestAnimationFrame(() => {
-                  el.classList.remove('transitioning');
-                  tmp.remove();
-                  
-                  // Marcar transición completa cuando se procese el último overlay
-                  if (idx === this.overlays.length - 1) {
-                    // Dar un pequeño delay adicional para evitar parpadeos
-                    setTimeout(() => {
-                      this.isTransitioning = false;
-                    }, 50);
-                  }
-                });
-              }
-            };
-            requestAnimationFrame(step);
-          }, {once: true});
-          
-          tmp.src = newSrc;
-        });
-        
-        this.currentGroup = group;
-        this.setTextGroup(group);
-      },
-      activateRectangles() {
-        // Activar los cuatro rectángulos con el efecto de barrido simultáneo
-        const rectangles = document.querySelectorAll('#p10 .thumb-mask');
-        const duration = 1400;
-        const start = performance.now();
-        const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
-        
-        rectangles.forEach((rect) => {
-          // Configurar máscara diagonal
-          const feather = '3%';
-          const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - ${feather}), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + ${feather}))`;
-          Object.assign(rect.style, {
-            webkitMaskImage: mask,
-            maskImage: mask,
-            webkitMaskRepeat: 'no-repeat',
-            maskRepeat: 'no-repeat',
-            webkitMaskSize: '200% 200%',
-            maskSize: '200% 200%'
-          });
-          rect.style.setProperty('--edge', '-20%');
-          
-          // Hacer visible el rectángulo
-          rect.classList.add('active');
-        });
-        
-        // Animación sincronizada para todos los rectángulos
-        const step = now => {
-          let p = Math.min(1, Math.max(0, (now - start) / duration));
-          const eased = easeInOut(p);
-          const edge = -20 + 140 * eased;
-          const edgeValue = edge.toFixed(2) + '%';
-          
-          // Aplicar a todos los rectángulos simultáneamente
-          rectangles.forEach(rect => {
-            rect.style.setProperty('--edge', edgeValue);
-          });
-          
-          if (p < 1) {
-            requestAnimationFrame(step);
-          } else {
-            // Al finalizar, ocultar todos los rectángulos
-            rectangles.forEach(rect => {
-              rect.classList.remove('active');
-            });
-          }
-        };
-        requestAnimationFrame(step);
-      },
-      setTextGroup(group) {
-        // Transición suave de textos sin ocultar todos al mismo tiempo
-        const all = Array.from(document.querySelectorAll('#p10 .text-group'));
-        const current = Array.from(document.querySelectorAll(`#p10 .text-group-${group}`));
-        
-        // Ocultar textos no actuales gradualmente
-        all.forEach(el => {
-          if (!current.includes(el)) {
-            el.classList.remove('visible');
-          }
-        });
-        
-        // Mostrar textos actuales con escalonado
-        const baseDelay = 150;
-        current.forEach((el, i) => {
-          setTimeout(() => el.classList.add('visible'), baseDelay + i * 80);
-        });
-      },
-      nextGroup() {
-        if (this.isTransitioning) return; // Evitar cambios durante transición
-        const next = this.currentGroup === 3 ? 1 : this.currentGroup + 1;
-        this.setGroup(next);
-      },
-      start() {
-        this.preload();
-        this.initCache();
-        if (!this.overlays.length) return;
-        if (this.timer) return;
-        
-        // Asegurar que las imágenes base están visibles
-        this.overlays.forEach(el => el.classList.add('visible'));
-        
-        // Inicializar textos del grupo 1
-        document.querySelectorAll('#p10 .text-group').forEach(el => {
-          if (el.style) el.style.display = '';
-          el.classList.remove('visible');
-        });
-        this.setTextGroup(1);
-        
-        // Iniciar ciclo automático
-        this.timer = setInterval(() => this.nextGroup(), 5000);
-      },
-      stop() {
-        if (this.timer) {
-          clearInterval(this.timer);
-          this.timer = null;
-        }
-        this.isTransitioning = false;
-        
-        // Limpiar elementos temporales y estados
-        document.querySelectorAll('.thumb-temp').forEach(el => el.remove());
-        this.overlays.forEach(el => {
-          el.classList.remove('transitioning');
-          el.style.opacity = '';
-          el.style.filter = '';
-        });
-        
-        // Limpiar rectángulos
-        document.querySelectorAll('#p10 .thumb-mask').forEach(rect => {
-          rect.classList.remove('active');
-          rect.style.removeProperty('--edge');
-        });
-      }
-    };
-
-    // ===== CARRUSEL AUTOMÁTICO =====
-    const Carousel = {
-      images: null,
-      currentIndex: 0,
-      autoTimer: null,
-      isMenuActive: false,
-      
-      init() {
-        this.images = document.querySelectorAll('.carousel img');
-        if (!this.images.length) return;
-        
-        // Establecer primera imagen como activa
-        this.setActive(0);
-        
-        // Añadir event listeners
-        this.images.forEach((img, index) => {
-          img.addEventListener('click', () => {
-            this.setActive(index);
-            this.restartTimer();
-          });
-        });
-      },
-      
-      setActive(index) {
-        this.images.forEach(img => img.classList.remove('active'));
-        this.images[index].classList.add('active');
-        this.currentIndex = index;
-      },
-      
-      next() {
-        const nextIndex = (this.currentIndex + 1) % this.images.length;
-        this.setActive(nextIndex);
-      },
-      
-      start() {
-        if (this.autoTimer) return;
-        this.isMenuActive = true;
-        this.autoTimer = setInterval(() => {
-          if (this.isMenuActive) {
-            this.next();
-          }
-        }, 4000); // Cambiar cada 4 segundos
-      },
-      
-      stop() {
-        if (this.autoTimer) {
-          clearInterval(this.autoTimer);
-          this.autoTimer = null;
-        }
-        this.isMenuActive = false;
-      },
-      
-      restartTimer() {
-        this.stop();
-        setTimeout(() => this.start(), 1000); // Pausa 1 segundo después de interacción manual
-      }
-    };
-
-    const Intro = {
-      init() {
-        const [video, overlay] = ['intro-video', 'intro-overlay'].map(id => document.getElementById(id));
-        if (!video || !overlay) return;
-        
-        [$.html, $.body].forEach(el => el.classList.add('intro-active'));
-        
-        video.src = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent) ? 'Jmotion_1.mov' : 'Jmotion_FINAL.webm';
-        Object.assign(video, {muted: true, autoplay: true, playsInline: true});
-        
-        const tryPlay = () => video.play().catch(() => 
-          ['touchstart', 'click'].forEach(event => 
-            document.addEventListener(event, () => video.play(), {once: true})));
-        
-        video.addEventListener('canplaythrough', tryPlay, {once: true});
-        setTimeout(tryPlay, 2000);
-        
-        setTimeout(() => {
-          overlay.classList.add('fade-out');
-          [$.html, $.body].forEach(el => el.classList.remove('intro-active'));
-          setTimeout(() => overlay.remove(), 1600);
-        }, 3000);
-      }
-    };
-    
-    // ===== INICIALIZACIÓN OPTIMIZADA =====
-    const init = () => {
-      [Layout, Nav, Overlays, Lang, Intro, Carousel].forEach(comp => comp.init());
-      setupNormalOverlays();
-      
-      // Event listeners optimizados
-      [
-        [window, 'scroll', () => Scroll.handleMain()],
-        [window, 'resize', () => debounce('resize', () => { 
-          $.isMobile = window.innerWidth <= 768; 
-          Layout.update(); 
-        }, 100)],
-        [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
-          Overlays.update(); 
-          Scroll.updateFooter(); 
-        })]
-      ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
-      
-      // Observer para proyectos
-      const proyectos = document.getElementById('proyectos');
-      if (proyectos) {
-        new MutationObserver(mutations => {
-          if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
-                             proyectos.classList.contains('active'))) {
-            setTimeout(() => { Videos.init(); Thumbnails.start(); }, 100);
-          } else if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
-                              !proyectos.classList.contains('active'))) {
-            Thumbnails.stop();
-          }
-        }).observe(proyectos, {attributes: true, attributeFilter: ['class']});
-      }
-      
-      // Iniciar carrusel si el menú está activo
-      setTimeout(() => {
-        if (document.getElementById('menu')?.classList.contains('active')) {
-          Carousel.start();
-        }
-      }, 1000);
-    };
-    
-    ['load', 'DOMContentLoaded'].forEach(event => window.addEventListener(event, init, {once: true}));
-  </script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
