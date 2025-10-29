@@ -468,8 +468,8 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   gap: clamp(24px, 3vw, 36px) clamp(48px, 6vw, 96px);
   align-items: start;
   width: 100.608%;
-  max-width: 130%;
-  margin: 0 auto;
+  max-width: 1400px;
+  gap: 24px;
   padding: 0;
 }
 .clients-logos {
@@ -1089,28 +1089,160 @@ html.intro-active, body.intro-active { overflow: hidden; }
 #sobremi { max-width: 1100px; margin: 0 auto; padding: 10px 24px 80px 24px; }
 #sobremi > h1 { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: 1px; font-size: clamp(32px, 6vw, 64px); margin: 0 0 18px 0; text-align: left; }
 
-.about-hero { display: grid; grid-template-columns: 1fr 1.4fr; gap: 28px; align-items: center; margin-bottom: 36px; }
-.about-photo img { width: 100%; height: auto; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+.about-hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 100px;
+  margin-top: -32px;
+}
+.about-photo img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none !important;
+  border: none !important;
+  position: relative;
+  display: block;
+  /* Degradado de transparencia en el borde inferior */
+  /* Degradado doble: abajo y derecha */
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, black 85%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-composite: destination-in;
+}
 .about-intro { display: flex; flex-direction: column; gap: 12px; }
 .about-subtitle { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.5vw, 36px); margin: 0; }
 .about-intro p { font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; margin: 0; }
 
-.about-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; margin: 6px 0 40px 0; }
-.about-programs h3, .about-edu h3 { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; }
-.programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px 18px; align-items: center; justify-items: center; background: #fff; border: 1px solid #e6ebf2; border-radius: 14px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,.05); }
+.about-columns {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 1.5vw) 1fr;
+  gap: 28px;
+  align-items: start;
+  margin: 6px 0 40px 0;
+  position: relative;
+}
+.about-columns > .about-programs { grid-column: 1; }
+.about-columns::before {
+  content: "";
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-self: center;
+  width: 2px;
+  height: 100%;
+  background: #d1d5db;
+  border-radius: 1px;
+  z-index: 1;
+  display: block;
+}
+.about-columns > .about-edu { grid-column: 3; }
+.about-programs h3 { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: center; }
+.about-edu h3, .about-langs { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: left; }
+.programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px 18px; align-items: center; justify-items: center; background: transparent !important; border: none !important; border-radius: 0 !important; padding: 16px; box-shadow: none !important; }
 .programs-grid img { width: 56px; height: 56px; object-fit: contain; filter: saturate(.95) contrast(1.02); opacity: .98; transition: transform .18s ease, filter .18s ease, opacity .18s ease; }
 .programs-grid img:hover { transform: translateY(-3px) scale(1.05); filter: saturate(1.1) contrast(1.06); opacity: 1; }
 
 .about-list { list-style: none; padding-left: 0; display: grid; gap: 10px; margin: 0 0 14px 0; }
-.about-list li { background: #fff; border: 1px solid #e6ebf2; border-radius: 12px; padding: 10px 12px; font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(15px, 2vw, 18px); line-height: 1.45; box-shadow: 0 3px 12px rgba(0,0,0,.04); }
+.about-langs + .about-list { gap: 4px; }
+.about-list li { background: transparent !important; border: none !important; border-radius: 0 !important; padding: 10px 12px; font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(15px, 2vw, 18px); line-height: 1.45; box-shadow: none !important; }
 
-.about-references { margin-top: 10px; }
-.references-title { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.2vw, 32px); margin: 0 0 14px 0; text-align: left; }
-.references-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.quote-card { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: start; background: #ffffff; border: 1px solid #e6ebf2; border-radius: 16px; padding: 14px; box-shadow: 0 6px 18px rgba(0,0,0,.06); position: relative; overflow: hidden; }
-.quote-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px rgba(0,0,0,.08); background: #e9eef5; }
+.about-references {
+  /* Aumentado el espacio entre 'Sobre mí' y 'Referencias' */
+  margin-top: 48px;
+  max-width: 100%;
+}
+.references-title { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; /* tamaño aumentado solo para este título */ font-size: clamp(28px, 4.2vw, 44px); margin: 0 0 18px 0; text-align: center; }
+.references-grid {
+  display: grid;
+  /* Columnas fijas de 720px y centradas en el contenedor.
+     Esto garantiza que cada tarjeta tenga 720px de ancho y que,
+     en pantallas suficientemente anchas, se muestren dos tarjetas
+     una al lado de la otra centradas en la página. */
+  grid-template-columns: repeat(2, 630px);
+  gap: 28px 40px; /* fila-gap 28px, column-gap 40px */
+  width: 100%;
+  max-width: none;
+  justify-content: center; /* centra las columnas rígidas */
+  justify-items: stretch;
+  align-items: start;
+  margin: 0 auto; /* asegurar centrado en su contenedor */
+}
+.quote-card {
+  display: grid;
+  /* Ajustado para avatar más grande (90px = 72px * 1.25) */
+  grid-template-columns: 90px 1fr;
+  gap: 16px;
+  align-items: start;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 18px 16px;
+  box-shadow: none !important;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: none;
+  width: 100%;
+  min-width: 0;
+}
+.quote-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; box-shadow: none !important; background: #e9eef5; }
+.quote-card > a { display: inline-block; position: relative; border-radius: 50%; overflow: hidden; line-height: 0; }
+.quote-card > a:focus-visible { outline: 3px solid #ffd700; outline-offset: 3px; }
+.quote-card > a::before {
+  /* overlay oscuro */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.38);
+  opacity: 0;
+  transition: opacity .18s ease;
+  pointer-events: none;
+}
+.quote-card > a::after {
+  /* badge con texto */
+  content: "Linkedin";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -40%);
+  color: #ffffff;
+  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  /* aumentar el tamaño del badge para mejor legibilidad, responsivo */
+  font-size: clamp(14px, 2.6vw, 18px);
+  letter-spacing: 0.6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+
+/* Badge específico para el enlace de Moifez (YouTube) */
+.quote-card > a.quote-link--youtube::after {
+  content: "YouTube";
+}
+.quote-card > a:hover::before,
+.quote-card > a:focus-visible::before {
+  opacity: 1;
+}
+.quote-card > a:hover::after,
+.quote-card > a:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
 .quote-content { display: flex; flex-direction: column; gap: 8px; }
-.quote-text { position: relative; font-family: 'Playfair Display', Georgia, serif; color: #1f2a44; font-size: clamp(16px, 2.2vw, 20px); line-height: 1.5; padding: 10px 8px; }
+.quote-text {
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #1f2a44;
+  font-size: clamp(13px, 1.6vw, 16px); /* Más pequeño */
+  line-height: 1.6;
+  padding: 10px 8px;
+}
 /* Comillas gigantes alrededor del texto */
 .quote-text::before, .quote-text::after { content: '“'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
 .quote-text::before { left: -6px; top: -22px; font-size: 120px; transform: translateY(-10%); }
@@ -1120,13 +1252,21 @@ html.intro-active, body.intro-active { overflow: hidden; }
 /* Responsive ajustes para SOBRE MÍ */
 @media (max-width: 1024px) {
   .about-hero { grid-template-columns: 1fr; }
+  .about-photo img {
+    mask-image: none;
+    -webkit-mask-image: none;
+    mask-composite: initial;
+    -webkit-mask-composite: initial;
+  }
 }
 @media (max-width: 768px) {
   #sobremi { padding: 10px 18px 70px 18px; }
   .about-columns { grid-template-columns: 1fr; gap: 20px; }
   .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
-  .quote-card { grid-template-columns: 56px 1fr; }
-  .quote-avatar { width: 56px; height: 56px; }
+  /* En móvil, aumentar avatar también un 25%: 56px -> 70px (aprox) */
+  .quote-card { grid-template-columns: 70px 1fr; }
+  .quote-avatar { width: 70px; height: 70px; }
+  .quote-text { font-size: clamp(12px, 1.4vw, 15px); }
   .quote-text::before, .quote-text::after { font-size: 96px; }
 }
