@@ -91,7 +91,11 @@
             </div>
             <span>Diseño Gráfico</span>
           </div>
-          <div class="service-circle service-2"><span>Desarrollo Web</span></div>
+          <div class="service-circle service-2">
+            <!-- Mini carrusel sincronizado (rellenado por JS) -->
+            <div class="mini-carousel" aria-hidden="true"></div>
+            <span>Desarrollo Web</span>
+          </div>
           <div class="service-circle service-3"><span>Edición de Vídeo</span>
             <div class="circle-slideshow">
               <div class="frame f1" data-src="assets/circulos/EdicionVideo/EdicionVideo.gif"></div>
@@ -123,14 +127,18 @@
 
         <!-- Descripción dinámica bajo los círculos -->
         <div class="services-description" aria-live="polite" aria-atomic="true">
-          <span id="services-description-text" data-es="En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie." data-en="Hover over a service to see a description.">En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.</span>
+          <span id="services-description-text" data-es="En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie." data-en="Hover over a service to see a description.">En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.</span>
         </div>
-
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
         <!-- CTA: ver proyectos / descargar CV -->
         <div class="cta-portfolio" aria-labelledby="cta-title">
           <h3 id="cta-title" class="cta-title">
             <span data-es="¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!" data-en="Want to see a sample of my work? Check out my project gallery, or download my resume!">¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!</span>
           </h3>
+          <span></span>
           <div class="cta-buttons">
             <a id="btn-ver-proyectos" href="#proyectos" class="btn-napoleon">
               <span data-es="Ver proyectos" data-en="See projects">Ver proyectos</span>
@@ -138,25 +146,37 @@
             <a id="btn-cv" href="assets/CV/Curriculum_JaimeCereijo.pdf" class="btn-napoleon" download>
               <span data-es="Descargar CV" data-en="Download resume">Descargar CV</span>
             </a>
+            <span></span>
           </div>
         </div>
+        
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
 
         <!-- Colaboradores y clientes -->
-        <div class="clients" aria-labelledby="clients-title">
-          <div class="clients-logos">
-            <img src="assets/Clientes/systemtronic.webp" alt="Systemtronic" loading="lazy" decoding="async">
-            <img src="assets/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
-            <img src="assets/Clientes/upv.jpg" alt="Universidad Politécnica de Valencia" loading="lazy" decoding="async">
-            <img src="assets/Clientes/etsiadi.jpg" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
-            <img src="assets/Clientes/etsiamn.jpg" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
-            <img src="assets/Clientes/cultura.jpg" alt="Área de Cultura" loading="lazy" decoding="async">
-          </div>
-          <div class="clients-copy">
-            <h3 id="clients-title"><span data-es="Clientes y colaboradores" data-en="Partners and clients">Colaboradores y clientes</span></h3>
-            <p>
-              <span data-es="He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente."
-                    data-en="I’ve worked with companies, institutions and content creators to deliver campaigns, editorial pieces, visual identity and promotional materials. I bring ideas, structure and execution to every stage, adapting to each client’s scope and goals.">He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente.</span>
-            </p>
+        <div class="clients-block">
+          <h3 id="clients-title"><span data-es="Clientes y colaboradores" data-en="Partners and clients">Clientes y colaboradores</span></h3>
+          <div class="clients" aria-labelledby="clients-title">
+            <div class="clients-logos">
+              <img src="assets/Clientes/Ajuntament_de_València.png" alt="Ajuntament de València" loading="lazy" decoding="async">
+              <img src="assets/Clientes/Cultura.png" alt="Cultura" loading="lazy" decoding="async">
+              <img src="assets/Clientes/etsiadi.png" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Clientes/etsiamn.png" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Clientes/Feria de Valencia.png" alt="Feria de Valencia" loading="lazy" decoding="async">
+              <img src="assets/Clientes/institut cultura.png" alt="Institut de Cultura" loading="lazy" decoding="async">
+              <img src="assets/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
+              <img src="assets/Clientes/systemtronic.png" alt="Systemtronic" loading="lazy" decoding="async">
+              <img src="assets/Clientes/Teatro Circulo.png" alt="Teatro Círculo" loading="lazy" decoding="async">
+              <img src="assets/Clientes/unautavaca.png" alt="Unautavaca" loading="lazy" decoding="async">
+            </div>
+            <div class="clients-copy">
+              <p>
+                <span data-es="A lo largo de mi trayectoria he trabajado con empresas, instituciones y creadores de contenido en el desarrollo de productos gráficos de todo tipo. Entre mis trabajos destacados, diseñé la campaña grafica de Reflejos del Multiverso por encargo del Área de Acción Cultural; participé en el diseño del perchero Hira, presentado por Systemtronic en la Feria Hábitat Valencia 2025; trabajo de forma recurrente con el youtuber Moifez, diseñando miniaturas, clips e ilustraciones; y desarrollé el branding para vinos Nostre, propuesta ganadora de un concurso organizado en colaboración por la ETSIADI y la ETSIAMN."
+                      data-en="Throughout my career I have worked with companies, institutions and content creators in the development of all kinds of graphic products. Among my outstanding works, I designed the graphic campaign for Reflejos del Multiverso on behalf of the Cultural Action Area; I participated in the design of the Hira coat rack, presented by Systemtronic at the Feria Hábitat Valencia 2025; I work recurrently with the YouTuber Moifez, designing thumbnails, clips and illustrations; and I developed the branding for Nostre wines, the winning proposal of a contest organized in collaboration with ETSIADI and ETSIAMN.">He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente.</span>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -346,9 +366,40 @@ After a redesign, I created two panels with mockups like this and prepared a pre
     </section>
 
     <section id="redes">
-      <h1><span data-es="Redes" data-en="Social"></span></h1>
-      <p data-es="Encuéntrame en Instagram, Behance y LinkedIn para seguir mis proyectos y actualizaciones."
-         data-en="Find me on Instagram, Behance, and LinkedIn to follow my projects and updates."></p>
+      <h1><span data-es="Encuéntrame en mis redes sociales:" data-en="Find me on my social networks:"></span></h1>
+      <!-- Redes sociales: círculos interactivos -->
+      <div class="social-links" aria-label="Redes sociales">
+        <!-- Instagram -->
+        <!-- TODO: Reemplaza # por el enlace a tu perfil de Instagram -->
+        <a class="social-link instagram" href="https://www.instagram.com/cereijo_design?igsh=MXBnY3Jhd3c0MTkwag==" target="_blank" rel="noopener noreferrer nofollow" aria-label="Instagram">
+          <img class="icon" src="assets/Redes/Instagram.png" alt="" loading="lazy" decoding="async" />
+        </a>
+
+        <!-- LinkedIn -->
+        <!-- TODO: Reemplaza # por el enlace a tu perfil de LinkedIn -->
+        <a class="social-link linkedin" href="https://www.linkedin.com/in/jaime-cereijo-botana-64b24735a/" target="_blank" rel="noopener noreferrer nofollow" aria-label="LinkedIn">
+          <img class="icon" src="assets/Redes/Linkedin.png" alt="" loading="lazy" decoding="async" />
+        </a>
+
+        <!-- Behance -->
+        <!-- TODO: Reemplaza # por el enlace a tu perfil de Behance -->
+        <a class="social-link behance" href="https://www.behance.net/jaimecereijo#" target="_blank" rel="noopener noreferrer nofollow" aria-label="Behance">
+          <img class="icon" src="assets/Redes/Behance.png" alt="" loading="lazy" decoding="async" />
+        </a>
+
+        <!-- WhatsApp -->
+        <!-- Enlace directo a chat de WhatsApp con tu número -->
+        <a class="social-link whatsapp" href="https://wa.me/34644432686" target="_blank" rel="noopener noreferrer nofollow" aria-label="WhatsApp">
+          <img class="icon" src="assets/Redes/Whatsapp.png" alt="" loading="lazy" decoding="async" />
+        </a>
+
+        <!-- Mail -->
+        <a class="social-link mail" href="mailto:jaimecereijobotana@gmail.com" aria-label="Enviar correo">
+          <img class="icon" src="assets/Redes/Mail.png" alt="" loading="lazy" decoding="async" />
+        </a>
+      </div>
+    <p data-es="Sígueme en Instagram, Behance y LinkedIn para estar al día de mis proyectos y actualizaciones."
+      data-en="Follow me on Instagram, Behance, and LinkedIn to stay updated on my projects and updates."></p>
     </section>
 
     <section id="contacto">
@@ -358,9 +409,125 @@ After a redesign, I created two panels with mockups like this and prepared a pre
     </section>
 
     <section id="sobremi">
-      <h1><span data-es="Sobre mí" data-en="About me"></span></h1>
-      <p data-es="Soy Jaime, diseñador con intereses en arte, comunicación y creación multidisciplinar. Me apasiona combinar diseño gráfico, ilustración y narrativa visual."
-         data-en="I'm Jaime, a designer interested in art, communication, and multidisciplinary creation. I love combining graphic design, illustration, and visual storytelling."></p>
+
+      <!-- QUIÉN SOY YO -->
+      <div class="about-hero">
+        <div class="about-photo">
+          <img src="assets/jaime.jpg" alt="Retrato de Jaime" loading="lazy" decoding="async">
+        </div>
+        <div class="about-intro">
+          <h2 class="about-subtitle"><span data-es="¿Quién soy yo?" data-en="Who am I?"></span></h2>
+          <p>
+            <span data-es="Diseñador con proyectos galardonados y expuestos en festivales. Siempre impulsado por una gran inquietud creativa y un deseo de aprender nuevas habilidades. Experimentado en diseño gráfico e ilustración. Muy diestro en comunicación y presentación de proyectos. Siempre dispuesto a explorar nuevos desafíos y expandir un set de habilidades multidisciplinario."
+                  data-en="Designer with award-winning projects showcased at festivals. Always driven by a strong creative restlessness and a desire to learn new skills. Experienced in graphic design and illustration. Highly skilled in communication and project presentation. Always ready to explore new challenges and expand a multidisciplinary skill set."></span>
+          </p>
+        </div>
+      </div>
+
+      <!-- PROGRAMAS / ESTUDIOS + IDIOMAS -->
+      <div class="about-columns">
+        <div class="about-programs">
+          <h3><span data-es="Programas" data-en="Software"></span></h3>
+          <div class="programs-grid" aria-label="Programas que manejo">
+            <img src="assets/Programas/Photoshop.png" alt="Photoshop" loading="lazy" decoding="async">
+            <img src="assets/Programas/Illustrator.png" alt="Illustrator" loading="lazy" decoding="async">
+            <img src="assets/Programas/Premiere.png" alt="Premiere" loading="lazy" decoding="async">
+            <img src="assets/Programas/After_Effects.png" alt="After Effects" loading="lazy" decoding="async">
+            <img src="assets/Programas/InDesign.png" alt="InDesign" loading="lazy" decoding="async">
+            <img src="assets/Programas/Firefly.png" alt="Adobe Firefly" loading="lazy" decoding="async">
+            <img src="assets/Programas/Podcast.png" alt="Podcast" loading="lazy" decoding="async">
+            <img src="assets/Programas/Figma.png" alt="Figma" loading="lazy" decoding="async">
+            <img src="assets/Programas/Excel.png" alt="Excel" loading="lazy" decoding="async">
+            <img src="assets/Programas/Teams.png" alt="Microsoft Teams" loading="lazy" decoding="async">
+            <img src="assets/Programas/PowerPoint.png" alt="PowerPoint" loading="lazy" decoding="async">
+            <img src="assets/Programas/Word.png" alt="Word" loading="lazy" decoding="async">
+            <img src="assets/Programas/html.png" alt="HTML" loading="lazy" decoding="async">
+            <img src="assets/Programas/css.png" alt="CSS" loading="lazy" decoding="async">
+            <img src="assets/Programas/JavaScript.png" alt="JavaScript" loading="lazy" decoding="async">
+            <img src="assets/Programas/Bootstrap.png" alt="Bootstrap" loading="lazy" decoding="async">
+            <img src="assets/Programas/GitHub.png" alt="GitHub" loading="lazy" decoding="async">
+            <img src="assets/Programas/Copilot.png" alt="GitHub Copilot" loading="lazy" decoding="async">
+            <img src="assets/Programas/VS.png" alt="Visual Studio" loading="lazy" decoding="async">
+            <img src="assets/Programas/VSCode.png" alt="Visual Studio Code" loading="lazy" decoding="async">
+            <img src="assets/Programas/Autocad.png" alt="AutoCAD" loading="lazy" decoding="async">
+            <img src="assets/Programas/rhino.png" alt="Rhinoceros" loading="lazy" decoding="async">
+            <img src="assets/Programas/grasshopper.png" alt="Grasshopper" loading="lazy" decoding="async">
+            <img src="assets/Programas/SolidWorks.png" alt="SolidWorks" loading="lazy" decoding="async">
+            <img src="assets/Programas/Keyshot.png" alt="KeyShot" loading="lazy" decoding="async">
+            <img src="assets/Programas/Krita.png" alt="Krita" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="about-edu">
+          <h3><span data-es="Estudios" data-en="Education"></span></h3>
+          <ul class="about-list">
+            <li><span data-es="Universidad Politécnica de Valencia — Ingeniería del Diseño Industrial y Desarrollo de Productos.
+              Septiembre 2021 – Junio 2025" data-en="Universidad Politécnica de Valencia — BSc in Industrial Design Engineering and Product Development.
+              September 2021 – June 2025"></span></li>
+          </ul>
+          <h3 class="about-langs"><span data-es="Idiomas" data-en="Languages"></span></h3>
+          <ul class="about-list">
+            <li><span data-es="Español — Nativo" data-en="Spanish — Native"></span></li>
+            <li><span data-es="Inglés — C1 certificado por Cambridge" data-en="English — C1 certified by Cambridge"></span></li>
+            <li><span data-es="Francés — Básico" data-en="French — Basic"></span></li>
+            <li><span data-es="Portugués — Básico" data-en="Portuguese — Basic"></span></li>
+            <li><span data-es="Gallego — Nativo" data-en="Galician — Native"></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- REFERENCIAS / TESTIMONIOS -->
+      <div class="about-references">
+        <h3 class="references-title"><span data-es="Referencias" data-en="References"></span></h3>
+        <div class="references-grid">
+          <article class="quote-card">
+            <img class="quote-avatar" alt="Foto de Persona 1" loading="lazy" decoding="async"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23e9eef5'/><circle cx='48' cy='36' r='18' fill='%238aa3c5'/><rect x='14' y='60' width='68' height='24' rx='12' fill='%238aa3c5'/></svg>">
+            <div class="quote-content">
+              <div class="quote-text">
+                <span data-es="Texto de referencia de ejemplo que resume una opinión profesional de forma breve y rotunda."
+                      data-en="Sample reference text that briefly and strongly summarizes a professional opinion."></span>
+              </div>
+              <div class="quote-author"><span data-es="Nombre Apellido" data-en="Name Surname"></span></div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <img class="quote-avatar" alt="Foto de Persona 2" loading="lazy" decoding="async"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23e9eef5'/><circle cx='48' cy='36' r='18' fill='%238aa3c5'/><rect x='14' y='60' width='68' height='24' rx='12' fill='%238aa3c5'/></svg>">
+            <div class="quote-content">
+              <div class="quote-text">
+                <span data-es="Jaime y yo hemos trabajado juntos en diferentes proyectos a lo largo de los últimos cuatro años. Es la persona que siempre escojo como compañero de trabajo, porque muchos de los proyectos en los que hemos estado juntos han alcanzado resultados satisfactorios. Es responsable y hace muy fácil trabajar con él, y suele aportar puntos de vista que son diferentes y originales (esto último es probablemente lo que más valoro de él como compañero)."
+                      data-en="Jaime and I have worked together on various projects over the last four years. He is the person I always choose as a work partner because many of the projects we have been involved in have achieved satisfactory results. He is responsible and makes it very easy to work with him, and he often brings different and original points of view (this last point is probably what I value most about him as a colleague)."></span>
+              </div>
+              <div class="quote-author"><span data-es="Álvaro Selma Cerezo" data-en="Álvaro Selma Cerezo"></span></div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <img class="quote-avatar" alt="Foto de Persona 3" loading="lazy" decoding="async"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23e9eef5'/><circle cx='48' cy='36' r='18' fill='%238aa3c5'/><rect x='14' y='60' width='68' height='24' rx='12' fill='%238aa3c5'/></svg>">
+            <div class="quote-content">
+              <div class="quote-text">
+                <span data-es="Trabajar con Jaime ha sido una experiencia muy positiva. Es alguien que, incluso en los momentos de mayor estrés, transmite confianza y hace que quieras seguir adelante con el proyecto. Nunca descarta ideas sin más, siempre aporta algo y no tiene miedo a hacer críticas constructivas cuando es necesario. Además, tiene un talento especial para improvisar soluciones que realmente funcionan en muy poco tiempo. En definitiva, es un compañero con el que da gusto trabajar, porque suma en todos los sentidos."
+                      data-en="Working with Jaime has been a very positive experience. He is someone who, even in the most stressful moments, conveys confidence and makes you want to keep going with the project. He never dismisses ideas outright, always contributes something, and is not afraid to make constructive criticism when necessary. In addition, he has a special talent for improvising solutions that really work in no time. Ultimately, he is a colleague who is a pleasure to work with because he adds value in every way."></span>
+              </div>
+              <div class="quote-author"><span data-es="Martín Pérez" data-en="Martín Pérez"></span></div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <img class="quote-avatar" alt="Foto de Persona 4" loading="lazy" decoding="async"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'><rect width='96' height='96' fill='%23e9eef5'/><circle cx='48' cy='36' r='18' fill='%238aa3c5'/><rect x='14' y='60' width='68' height='24' rx='12' fill='%238aa3c5'/></svg>">
+            <div class="quote-content">
+              <div class="quote-text">
+                <span data-es="Llevo años contratando los servicios de Jaime y pretendo seguir haciéndolo. Es talentoso, dedicado y autoexigente. Siempre entiende lo que quiero muy rápidamente, y siempre se asegura de ser lo más útil posible. Por último, además de darle forma a mis ideas exactamente como me las imagino, siempre añade cosas que las vuelven mejor de lo que eran en mi cabeza. Como ya he dicho, Jaime siempre será mi primera opción en lo que respecta a diseño."
+                      data-en="I have been hiring Jaime's services for years and I intend to continue doing so. He is talented, dedicated, and self-demanding. He always understands what I want very quickly, and he always makes sure to be as helpful as possible. Finally, in addition to shaping my ideas exactly as I imagine them, he always adds things that make them better than they were in my head. As I said, Jaime will always be my first choice when it comes to design."></span>
+              </div>
+              <div class="quote-author"><span data-es="Moisés Fernández, 'Moifez'" data-en="Moisés Fernández, 'Moifez'"></span></div>
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
   </main>
 

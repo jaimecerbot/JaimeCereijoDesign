@@ -39,6 +39,11 @@ const Layout = {
     $.galeria = document.getElementById('galeria');
     this.update();
     TopNav.init();
+    // Si la sección activa al cargar es 'menu', activar el observador del footer
+    const activeSection = document.querySelector('section.active');
+    if (activeSection && activeSection.id === 'menu') {
+      FooterIO.observeMenu();
+    }
   },
   update() {
     if (!$.header || !$.main) return;
@@ -230,10 +235,9 @@ function mostrarSeccion(id) {
   $.isProyectosActive = (id === 'proyectos');
   $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
   
-  // Manejo del carrusel
+  // Manejo del carrusel y footer IO para menú
   if (id === 'menu') {
     setTimeout(() => Carousel.start(), 500);
-    // Activar observación de fondo para mostrar footer al llegar al final en Menú
     FooterIO.observeMenu();
   } else {
     Carousel.stop();
@@ -1066,6 +1070,143 @@ const Carousel = {
   }
 };
 
+// ===== MINI CARRUSEL EN "DESARROLLO WEB" (ESPEJO EN TIEMPO REAL) =====
+const WebdevMini = {
+  host: null,
+  scaleWrap: null,
+  clone: null,
+  main: null,
+  mo: null,
+  created: false,
+  snapping: false,
+  init() {
+    // Contenedor del mini carrusel dentro del círculo de servicio 2
+    this.host = document.querySelector('.service-2 .mini-carousel');
+    this.main = document.querySelector('#menu .carousel');
+    if (!this.host || !this.main) return;
+
+    // Crear bajo demanda para no duplicar recursos si no se usa
+    const circle = document.querySelector('.service-2');
+    if (circle) {
+      circle.addEventListener('mouseenter', () => this.ensureCreated(), {passive: true});
+      // En caso de navegación por teclado
+      circle.addEventListener('focus', () => this.ensureCreated(), {passive: true});
+    }
+
+    // Recalcular escala en resize
+    window.addEventListener('resize', () => debounce('mini-scale', () => this.updateScale(), 120), {passive: true});
+  },
+  ensureCreated() {
+    if (this.created) {
+      // Alinear primero la transición y luego el transform para evitar animaciones indebidas
+      this.copyTransition();
+      this.copyTransform();
+      this.updateScale();
+      return;
+    }
+    this.createClone();
+    this.observeMain();
+    this.updateScale();
+    // Inicial: copiar transición antes que transform
+    this.copyTransition();
+    this.copyTransform();
+    this.created = true;
+  },
+  createClone() {
+    // Wrapper que aplicará la escala y centrado
+    this.scaleWrap = document.createElement('div');
+    this.scaleWrap.className = 'mini-scale';
+
+    // Clonar carrusel principal (deep) y marcarlo como mini
+    this.clone = this.main.cloneNode(true);
+    this.clone.setAttribute('data-mini', 'true');
+    // No queremos que el mini capture eventos ni clics
+    this.clone.style.pointerEvents = 'none';
+
+    // Alinear transición con el principal (si existiera)
+    try { this.clone.style.transition = getComputedStyle(this.main).transition; } catch {}
+
+    this.scaleWrap.appendChild(this.clone);
+    this.host.appendChild(this.scaleWrap);
+  },
+  observeMain() {
+    if (this.mo) return;
+    this.mo = new MutationObserver(entries => {
+      for (const e of entries) {
+        if (e.type === 'attributes' && e.attributeName === 'style') {
+          // Al cambiar estilos en el carrusel principal (transform o transition),
+          // sincronizar SIEMPRE transición antes que transform para que el mini
+          // desactive la animación durante el teletransporte y no se vea el movimiento
+          // Si estamos en medio de un snap forzado, evitamos re-aplicar con transición
+          if (this.snapping) return;
+          this.copyTransition();
+          this.copyTransform();
+        }
+      }
+    });
+    this.mo.observe(this.main, {attributes: true, attributeFilter: ['style']});
+
+    // En cada fin de transición del carrusel grande, el propio carrusel puede teletransportar.
+    // Forzamos el snap del mini: desactivar transición -> copiar transform -> reactivar transición.
+    const onMainTransitionEnd = () => {
+      try { this.snapNow(); } catch {}
+    };
+    this.main.addEventListener('transitionend', onMainTransitionEnd);
+  },
+  copyTransform() {
+    if (!this.clone || !this.main) return;
+    // Reflejar el translateX exacto del carrusel principal
+    this.clone.style.transform = this.main.style.transform || '';
+  },
+  copyTransition() {
+    if (!this.clone || !this.main) return;
+    try {
+      // Usar el estilo computado para capturar tanto 'none' (snap) como el easing completo
+      const t = getComputedStyle(this.main).transition || '';
+      // Normalizar valores que equivalen a 'sin transición'
+      if (!t || /none/.test(t) || /\b0s\b/.test(t)) {
+        this.clone.style.transition = 'none';
+      } else {
+        this.clone.style.transition = t;
+      }
+    } catch {}
+  },
+  snapNow() {
+    if (!this.clone || !this.main) return;
+    this.snapping = true;
+    // Desactivar cualquier transición para que el cambio de transform sea instantáneo
+    const prev = this.clone.style.transition;
+    this.clone.style.transition = 'none';
+    // Copiar la posición final exacta del principal
+    this.clone.style.transform = this.main.style.transform || '';
+    // Forzar reflow para aplicar el cambio inmediatamente sin animación
+    // eslint-disable-next-line no-unused-expressions
+    this.clone.offsetHeight;
+    // Restaurar la transición a la del principal para próximos movimientos
+    this.copyTransition();
+    // Pequeña ventana para ignorar mutaciones coalescidas del mismo tick
+    setTimeout(() => { this.snapping = false; }, 0);
+  },
+  updateScale() {
+    if (!this.scaleWrap || !this.main) return;
+    try {
+      const circle = this.host.closest('.service-circle');
+      if (!circle) return;
+      const circleRect = circle.getBoundingClientRect();
+      const refImg = this.main.querySelector('img:not(.carousel-buffer)');
+      if (!refImg) return;
+      const imgRect = refImg.getBoundingClientRect();
+      if (!imgRect.height || !circleRect.width) return;
+      // Ajuste: que la altura del slide encaje dentro del diámetro del círculo y reducir un poco el tamaño
+      const diameter = Math.min(circleRect.width, circleRect.height);
+      const baseScale = diameter / imgRect.height;
+      const factor = 0.45; // hacerlo aún más pequeño
+      const finalScale = Math.max(0.1, Math.min(1.0, baseScale * factor));
+      this.scaleWrap.style.setProperty('--mini-scale', finalScale.toString());
+    } catch {}
+  }
+};
+
 const Intro = {
   init() {
     const [video, overlay] = ['intro-video', 'intro-overlay'].map(id => document.getElementById(id));
@@ -1125,17 +1266,17 @@ const ServicesDesc = {
   animTimers: [], // timeouts activos de animación para poder cancelarlos
   isAnimating: false,
   generic: {
-    es: 'En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.',
+    es: 'En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño, desarrollo web, edición de vídeo, gráficos móviles… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.',
     en: 'Hover over a service to see a description.'
   },
   descriptions: {
     es: {
-      'service-1': 'Branding, maquetación, edición de imagen, pruebas de impresión… Si quieres que tu marca o campaña destaque más que ninguna otra, si buscas un diseño icónico y atemporal que se quede grabado en quienquiera que lo vea, no busques más. Mi creatividad y mi ingenio, sumados a mi gran capacidad técnica, son las herramientas que necesitas para darle a tus proyectos una identidad única.',
-      'service-2': 'Desde marcas personales y pequeños negocios hasta las mayores multinacionales; toda marca necesita una página web. Yo puedo crear tu propio espacio en la red, adaptado a tus preferencias y necesidades, y qué mejor ejemplo que esta misma web. Aquí podrás ver un ejemplo de lo que podría ser tu propia página o, si ya tienes una, de las mejoras que yo podría implementarle.',
-      'service-3': 'Un buen vídeo no solo se ve, se siente. Con una edición cuidada, ritmo preciso y narrativa visual efectiva, puedo transformar cualquier conjunto de clips en una pieza profesional y emocionante. Ya se trate de un spot, un tráiler o contenido para redes, me aseguraré de que transmita justo lo que quieres contar, con un acabado fluido, dinámico y visualmente impecable.',
-      'service-4': 'Toda campaña gráfica está incompleta sin movimiento. En el mundo digital, la atención del usuario lo es todo, y nada es más llamativo que un movimiento orquestado precisamente para destacar. Mediante los gráficos animados, puedo dar vida a tus ideas para comunicar en un instante lo que un texto tardaría minutos enteros. En un entorno donde todo se mueve, tus diseños también deberían hacerlo.',
-      'service-5': 'Incluso las grandes ideas se ven ignoradas si uno no las comunica de forma efectiva. Ya quieras darles a tus presentaciones un acabado pulido y profesional, con transiciones fluidas y naturales; crear imágenes híper realistas o fotomontajes de realidades y productos que no existen aún; o construir un discurso contundente; yo te ayudaré a comunicar tus ideas de forma atractiva y convincente para asegurar su éxito.',
-      'service-6': '¿Buscas un artista que ilustre tus historias o que diseñe una mascota para tu marca? ¿Alguien creativo que se pueda adaptar a cualquier estilo? ¡Soy justo lo que necesitas! Con un porfolio entero dedicado al diseño de personajes, no hay nadie más indicado para darle cara a tus proyectos. Si te interesa, contáctame a través de mis redes y te mostraré decenas de ejemplos de otros trabajos.'
+      'service-1': 'Branding, maquetación, edición de imagen, impresión… Si quieres que tu marca o campaña destaque más que ninguna otra, si buscas un diseño icónico y atemporal que se quede grabado en todo el que lo vea, no busques más. Mi creatividad y mi ingenio sumados a mi capacidad técnica son las herramientas que necesitas para darle a tus proyectos una identidad única.',
+      'service-2': 'Desde marcas personales y pequeños negocios hasta las mayores multinacionales; toda marca necesita una web. Yo puedo crear tu propio espacio en la red, adaptado a tus preferencias y necesidades, y qué mejor ejemplo que esta misma web. Aquí podrás ver lo que podría ser tu propia página o, si ya tienes una, de las mejoras que yo podría implementarle.',
+      'service-3': 'Un buen vídeo no solo se ve, se siente. Con una edición cuidada, ritmo preciso y narrativa visual efectiva, puedo transformar cualquier conjunto de clips en una pieza profesional y emocionante. Ya sea un spot, un tráiler o contenido para redes, me aseguraré de que transmita justo lo que quieres contar, con un acabado fluido, dinámico y visualmente impecable.',
+      'service-4': 'Toda campaña gráfica está incompleta sin movimiento. En redes, la atención del usuario lo es todo, y nada es más llamativo que un movimiento orquestado para destacar. Mediante gráficos animados, puedo dar vida a tus ideas para comunicar en instantes lo que un texto tardaría minutos. En un entorno donde todo se mueve, tus diseños también deberían hacerlo.',
+      'service-5': 'Incluso las grandes ideas son ignoradas si no las comunicas correctamente. Ya quieras darles a tus presentaciones un acabado profesional con transiciones fluidas; crear fotomontajes híper realistas de productos que no existen aún; o construir un discurso contundente; yo te ayudaré a comunicar tus ideas de forma atractiva y convincente para asegurar su éxito.',
+      'service-6': '¿Buscas un artista que ilustre tus historias o que diseñe una mascota para tu marca? ¿Alguien creativo que se pueda adaptar a cualquier estilo? ¡Soy justo lo que necesitas! Con un porfolio entero dedicado al diseño de personajes, no hay nadie mejor para darle cara a tus proyectos. Contáctame a través de redes y te mostraré decenas de ejemplos de otros trabajos.'
     },
     en: {
       'service-1': 'Graphic design: visual identities, posters, layout, and promotional pieces.',
@@ -1400,7 +1541,7 @@ const ServicesDesc = {
 const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
-  [Layout, Nav, Overlays, Lang, Intro, Carousel, ServicesDesc].forEach(comp => comp.init());
+  [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc].forEach(comp => comp.init());
   // Botón Ver proyectos: ir a la sección proyectos
   try {
     const verBtn = document.getElementById('btn-ver-proyectos');
