@@ -150,19 +150,43 @@ const Scroll = {
 };
 
 const Nav = {
-  grupos: [
-    {ids: ["p1", "p2"], link: "#p1"}, {ids: ["p3", "p4", "p5", "p6"], link: "#p3"},
-    {ids: ["p7", "p8"], link: "#p7"}, {ids: ["p9", "p10"], link: "#p9"},
-    {ids: ["p11", "p12", "p13", "p14"], link: "#p11"}, {ids: ["p15", "p16", "p17"], link: "#p15"},
-    {ids: ["p18", "p19"], link: "#p18"}
-  ],
+  // grupos se construirá dinámicamente a partir del HTML del índice para
+  // permanecer sincronizado si se añaden/eliminan secciones.
+  grupos: [],
   links: null, activeGroup: null, elements: new Map(),
   init() {
     this.links = document.querySelectorAll("#indice a");
+
+    // Tomar el orden real de los elementos dentro del contenedor #galeria
+    // (incluye .image-wrap, videos o imgs sueltos). Esto nos permite crear
+    // rangos para cada enlace del índice: cada link será activo desde su
+    // primera imagen hasta la primera imagen del siguiente link.
+    const linkTargets = Array.from(this.links).map(a => a.getAttribute('href').substring(1));
+    const galleryNodes = Array.from(document.querySelectorAll('#galeria [id]'))
+                              .filter(el => /^p\d+$/.test(el.id));
+    const galleryOrder = galleryNodes.map(el => el.id);
+
+    this.grupos = linkTargets.map((target, i) => {
+      const startIdx = galleryOrder.indexOf(target);
+      const nextTarget = linkTargets[i + 1];
+      const endIdx = nextTarget ? galleryOrder.indexOf(nextTarget) : galleryOrder.length;
+      let ids = [];
+      if (startIdx >= 0) {
+        ids = galleryOrder.slice(startIdx, endIdx >= 0 ? endIdx : galleryOrder.length);
+      } else {
+        // Si el id del índice no está en la galería (por alguna discrepancia),
+        // mantenerlo como único id para que el clic siga funcionando.
+        ids = [target];
+      }
+      return { ids, link: `#${target}` };
+    });
+
+    // Cachear los elementos reales disponibles en la galería
     this.grupos.forEach(g => g.ids.forEach(id => {
       const el = document.getElementById(id);
       el && this.elements.set(id, el);
     }));
+
     this.links.forEach(link => {
       link.onclick = e => {
         e.preventDefault();
@@ -173,12 +197,28 @@ const Nav = {
   },
   updateActive(scrollPos) {
     let active = null;
-    this.grupos.some(g => g.ids.some(id => {
-      const el = this.elements.get(id);
-      if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
-        active = g.link; return true;
+
+    for (const g of this.grupos) {
+      // Buscar primer y último elemento válido del grupo
+      const firstEl = g.ids.map(id => this.elements.get(id)).find(Boolean);
+      const lastEl = [...g.ids].reverse().map(id => this.elements.get(id)).find(Boolean);
+      if (!firstEl || !lastEl) continue;
+      const start = firstEl.offsetTop;
+      const end = lastEl.offsetTop + lastEl.offsetHeight;
+      if (scrollPos >= start && scrollPos < end) {
+        active = g.link;
+        break;
       }
-    }));
+    }
+
+    // Si no hay ninguno activo y estamos más abajo que el inicio del último
+    // grupo, marcar el último (útil al llegar al final de la galería).
+    if (!active && this.grupos.length) {
+      const lastGroup = this.grupos[this.grupos.length - 1];
+      const lastEl = [...lastGroup.ids].reverse().map(id => this.elements.get(id)).find(Boolean);
+      if (lastEl && scrollPos >= lastEl.offsetTop) active = lastGroup.link;
+    }
+
     if (this.activeGroup !== active) {
       this.links.forEach(l => l.classList.remove("active"));
       active && document.querySelector(`#indice a[href='${active}']`)?.classList.add("active");
@@ -600,7 +640,7 @@ const Effects = {
     // clear any cascade timers and visible classes for thumbnail overlays
     Overlays.cascadeTimers.forEach(arr => arr.forEach(t => clearTimeout(t)));
     Overlays.cascadeTimers.clear();
-    document.querySelectorAll('#p9 .overlay, #p10 .overlay, #p15 .overlay').forEach(o => o.classList.remove('visible'));
+    document.querySelectorAll('#p9 .overlay, #p11 .overlay, #p15 .overlay').forEach(o => o.classList.remove('visible'));
     this.handlers = new WeakMap();
   }
 };
@@ -696,8 +736,8 @@ const FooterIO = {
 const setupNormalOverlays = () => {
   document.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')
           .forEach(img => {
-    // Omitir hover en los thumbnails (p9, p10 y p15)
-    if (img.closest('#p9') || img.closest('#p10') || img.closest('#p15')) return;
+    // Omitir hover en los thumbnails (p9, p11 y p15)
+    if (img.closest('#p9') || img.closest('#p11') || img.closest('#p15')) return;
     const handleMouseMove = e => {
       // keep basic small parallax for overlays, but do not conflict with thumbnail translate animation
       const rect = img.getBoundingClientRect();
@@ -735,7 +775,7 @@ const Thumbnails = {
     this.preloaded = true;
   },
   initCache() {
-    this.overlays = Array.from(document.querySelectorAll('#p10 .overlay'));
+    this.overlays = Array.from(document.querySelectorAll('#p11 .overlay'));
   },
   setGroup(group) {
     if (!this.overlays.length) this.initCache();
@@ -831,7 +871,7 @@ const Thumbnails = {
   },
   activateRectangles() {
     // Activar los cuatro rectángulos con el efecto de barrido simultáneo
-    const rectangles = document.querySelectorAll('#p10 .thumb-mask');
+    const rectangles = document.querySelectorAll('#p11 .thumb-mask');
     const duration = 1400;
     const start = performance.now();
     const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
@@ -879,8 +919,8 @@ const Thumbnails = {
   },
   setTextGroup(group) {
     // Transición suave de textos sin ocultar todos al mismo tiempo
-    const all = Array.from(document.querySelectorAll('#p10 .text-group'));
-    const current = Array.from(document.querySelectorAll(`#p10 .text-group-${group}`));
+    const all = Array.from(document.querySelectorAll('#p11 .text-group'));
+    const current = Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
     
     // Ocultar textos no actuales gradualmente
     all.forEach(el => {
@@ -910,7 +950,7 @@ const Thumbnails = {
     this.overlays.forEach(el => el.classList.add('visible'));
     
     // Inicializar textos del grupo 1
-    document.querySelectorAll('#p10 .text-group').forEach(el => {
+    document.querySelectorAll('#p11 .text-group').forEach(el => {
       if (el.style) el.style.display = '';
       el.classList.remove('visible');
     });
