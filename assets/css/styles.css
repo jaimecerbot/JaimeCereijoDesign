@@ -783,6 +783,28 @@ footer.visible { transform: translateY(0); }
     0 12px 40px rgba(0, 0, 0, 0.6);
 }
 
+  /* Recortar el 1% inferior del GIF fondo_1 (p8) para eliminar cualquier espacio
+     entre esa imagen y la siguiente. Se usa clip-path para eliminar la franja
+     inferior y overflow en el contenedor para evitar huecos. */
+  .image-wrap#p8 { overflow: hidden; line-height: 0; }
+  /* Si el GIF está insertado como <img id="p8" class="base"> (sin wrapper),
+     aplicar recorte directamente al elemento imagen */
+  #p8.base, .image-wrap#p8 .base {
+    display: block; /* evitar espacio baseline */
+    width: 100%;
+    height: auto;
+    margin-bottom: 0;
+    -webkit-clip-path: inset(0 0 0.1% 0);
+    clip-path: inset(0 0 0.1% 0);
+    /* Fallback: small upward shift to hide any remaining seam on some browsers */
+    -webkit-transform: translateY(0.6px);
+    transform: translateY(0.6px);
+  }
+
+  /* Tiny negative margin on the following image-wrap as an additional fallback
+     to ensure both blocks visually touch. The values are sub-pixel and safe. */
+  .image-wrap#p9 { margin-top: -0.6px; }
+
 .overlay-botella { transform-origin: center center; opacity: 1; will-change: transform; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .overlay-botella.pulse { transform: scale(1.06); transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
 .overlay-botella.hover-active { transform: scale(1.06) !important; transition: transform 0.15s ease-out !important; }
@@ -802,21 +824,27 @@ footer.visible { transform: translateY(0); }
 .overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
 .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
 
+/* Quitar efecto hover del título en 'Concepto para baraja' (p16) */
+.image-wrap#p16 .overlay {
+  pointer-events: none;
+}
+
 /* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
-/* Aplica a overlays de p9 (videos.png), p10 (1.1..1.4) y p15 (titulo.png) */
-#p9 .overlay, #p10 .overlay, #p15 .overlay {
+/* Aplica a overlays de p9 (videos.png), p10/p11 (thumbnails 1.1..1.4) y p15/p16 (títulos) */
+#p9 .overlay, #p10 .overlay, #p11 .overlay, #p15 .overlay, #p16 .overlay {
   opacity: 0;
   transform: translateY(64px);
   transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-#p9 .overlay.visible, #p10 .overlay.visible, #p15 .overlay.visible {
+#p9 .overlay.visible, #p10 .overlay.visible, #p11 .overlay.visible, #p15 .overlay.visible, #p16 .overlay.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* THUMBNAILS: Prevención de espacios en blanco durante transiciones */
-#p10 .overlay {
+/* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
+#p11 .overlay, #p10 .overlay {
   position: absolute;
   top: var(--overlay-top, 0%);
   left: 0;
@@ -825,7 +853,7 @@ footer.visible { transform: translateY(0); }
 }
 
 /* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
-#p10 .overlay.transitioning {
+#p11 .overlay.transitioning, #p10 .overlay.transitioning {
   opacity: 1;
   transform: translateY(0);
 }

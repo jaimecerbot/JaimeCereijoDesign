@@ -630,6 +630,34 @@ const Effects = {
     
     ['mousemove', 'mouseleave'].forEach((e, i) => 
       container.addEventListener(e, [onMouseMove, onMouseLeave][i]));
+
+    // Hacer el contenedor focusable para accesibilidad y atender clicks/teclas
+    try { container.setAttribute('tabindex', '0'); container.setAttribute('role', 'button'); } catch {}
+
+    // Al hacer click en la zona de las botellas abrimos la imagen correspondiente
+    container.addEventListener('click', (evt) => {
+      // lastActive contiene el índice (1..9) de la botella calculada por onMouseMove
+      if (!lastActive) return;
+      const el = container.querySelector(`.overlay-botella[data-botella="${lastActive}"]`);
+      const rel = el && el.getAttribute && el.getAttribute('src');
+      if (!rel) return;
+      // Asumimos que en assets/Nostre/Botellas_PopUp/ existen las imágenes completas
+      const popupPath = rel.replace('assets/Nostre/', 'assets/Nostre/Botellas_PopUp/');
+      try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
+    });
+
+    // Soporte por teclado: Enter / Space abren la botella actualmente activa
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (!lastActive) return;
+        const el = container.querySelector(`.overlay-botella[data-botella="${lastActive}"]`);
+        const rel = el && el.getAttribute && el.getAttribute('src');
+        if (!rel) return;
+        const popupPath = rel.replace('assets/Nostre/', 'assets/Nostre/Botellas_PopUp/');
+        try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
+      }
+    });
   },
   
   reset() {
@@ -764,6 +792,7 @@ const Thumbnails = {
   overlays: [],
   preloaded: false,
   isTransitioning: false,
+  cascadeTimers: [],
   preload() {
     if (this.preloaded) return;
     const images = [];
@@ -946,8 +975,14 @@ const Thumbnails = {
     if (!this.overlays.length) return;
     if (this.timer) return;
     
-    // Asegurar que las imágenes base están visibles
-    this.overlays.forEach(el => el.classList.add('visible'));
+    // Asegurar que las imágenes base están visibles (cascada)
+    // Limpiar timers previos
+    this.cascadeTimers.forEach(t => clearTimeout(t));
+    this.cascadeTimers = [];
+    this.overlays.forEach((el, i) => {
+      const t = setTimeout(() => el.classList.add('visible'), i * 120);
+      this.cascadeTimers.push(t);
+    });
     
     // Inicializar textos del grupo 1
     document.querySelectorAll('#p11 .text-group').forEach(el => {
@@ -975,10 +1010,13 @@ const Thumbnails = {
     });
     
     // Limpiar rectángulos
-    document.querySelectorAll('#p10 .thumb-mask').forEach(rect => {
+    document.querySelectorAll('#p11 .thumb-mask').forEach(rect => {
       rect.classList.remove('active');
       rect.style.removeProperty('--edge');
     });
+    // Limpiar cascade timers si los hubiera
+    this.cascadeTimers.forEach(t => clearTimeout(t));
+    this.cascadeTimers = [];
   }
 };
 
