@@ -6,6 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap');
 
 /* FUENTES LOCALES */
 @font-face {
@@ -523,13 +524,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .service-circle .circle-slideshow { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 1; opacity: 0; transition: opacity var(--circle-hover-fade) var(--circle-easing); }
 .service-circle .circle-slideshow .frame { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; will-change: opacity; animation: ilustracionFade calc(var(--circle-frame) * 3) infinite; animation-timing-function: var(--circle-easing); animation-play-state: paused; }
 /* Ilustración (service-6) */
-.service-6 .circle-slideshow .f1 { background-image: url('../circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
-.service-6 .circle-slideshow .f2 { background-image: url('../circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
-.service-6 .circle-slideshow .f3 { background-image: url('../circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-6 .circle-slideshow .f1.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
+.service-6 .circle-slideshow .f2.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
+.service-6 .circle-slideshow .f3.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Diseño Gráfico (service-1) */
-.service-1 .circle-slideshow .f1 { background-image: url('../circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
-.service-1 .circle-slideshow .f2 { background-image: url('../circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
-.service-1 .circle-slideshow .f3 { background-image: url('../circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-1 .circle-slideshow .f1.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
+.service-1 .circle-slideshow .f2.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
+.service-1 .circle-slideshow .f3.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Desarrollo Web (service-2) → mini carrusel sincronizado */
 .service-2 .mini-carousel {
   position: absolute;
@@ -595,12 +596,12 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 /* Mantener visible el título "Desarrollo Web" incluso en hover */
 /* (El título ya tiene text-shadow reforzado en hover para legibilidad) */
 /* Comunicación de Proyectos (service-5) */
-.service-5 .circle-slideshow .f1 { background-image: url('../circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
-.service-5 .circle-slideshow .f2 { background-image: url('../circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
-.service-5 .circle-slideshow .f3 { background-image: url('../circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-5 .circle-slideshow .f1.loaded { background-image: url('../circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
+.service-5 .circle-slideshow .f2.loaded { background-image: url('../circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
+.service-5 .circle-slideshow .f3.loaded { background-image: url('../circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Gráficos Móviles (service-4) — un solo GIF: revelar suave en hover */
-.service-4 .circle-slideshow .frame { animation: none; opacity: 1; background-image: url("../circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
-.service-3 .circle-slideshow .frame { animation: none; opacity: 1; background-image: url("../circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
+.service-4 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
+.service-3 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
 /* Mostrar/ocultar el slideshow completo con un difuminado suave */
 .service-circle:hover .circle-slideshow { opacity: 1; }
 /* Control de animación: corre solo en hover */
@@ -829,6 +830,55 @@ footer.visible { transform: translateY(0); }
   pointer-events: none;
 }
 
+/* Hover transform para carteles en p9: escala + rotación controlada por variables
+   - --overlay-origin: permite al editor cambiar el punto de transformación fácilmente
+   - --overlay-rot: ángulo aplicado al hover (se asigna por JS como ±15deg)
+   - Se usa una transición corta y will-change para suavizar el efecto */
+.image-wrap#p9 .overlay {
+  --overlay-origin: 50% 50%; /* editable: cambia el origen de la rotación/scale */
+  --overlay-rot: 0deg;      /* JS asignará ±15deg por defecto */
+  pointer-events: none; /* las áreas (cartel-area) recibirán los eventos */
+  cursor: default;
+  will-change: transform, opacity;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease;
+}
+
+/* Activación mediante clase .active (usada por JS al pasar sobre el área asociada) */
+.image-wrap#p9 .overlay.active {
+  /* transform-origin será establecido por JS en px (centro geométrico del área) */
+  /* Mantener translateY(0) al activar para evitar saltos con la animación de entrada/salida */
+  transform: translateY(0) rotate(var(--overlay-rot)) scale(1.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+}
+
+/* Áreas rectangulares asociadas a cada cartel. Edítalas en el HTML añadiendo
+   elementos <div class="cartel-area" data-cartel="N" style="top:...;left:...;width:...;height:...;"></div>
+   Mantén background: transparent; para que sean invisibles en producción. */
+.image-wrap#p9 .cartel-area {
+  position: absolute;
+  pointer-events: auto;
+  background: transparent;
+}
+
+/* Justificar texto dentro de la sección 'Zona Zombi' (p9).
+   Aplica a cualquier .text-overlay que quieras que aparezca justificado
+   dentro del image-wrap p9. Forzamos wrapping y guionado para mejor
+   apariencia tipográfica en párrafos largos. */
+.image-wrap#p9 .text-overlay {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none; /* desactivar guionado automático */
+  white-space: normal; /* permitir quiebres de línea normales */
+}
+
+/* Pseudo-clase útil para desarrollo: mostrar contornos mientras ajustas áreas.
+  Por defecto las áreas están invisibles; para activar los contornos añade la
+  clase `dev-outline-visible` al elemento <body>, por ejemplo <body class="dev-outline-visible">. */
+.image-wrap#p9 .cartel-area.dev-outline { outline: none; }
+.dev-outline-visible .image-wrap#p9 .cartel-area.dev-outline { outline: 1px dashed rgba(255,0,0,0.45); }
+
 /* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
 /* Aplica a overlays de p9 (videos.png), p10/p11 (thumbnails 1.1..1.4) y p15/p16 (títulos) */
 #p9 .overlay, #p10 .overlay, #p11 .overlay, #p15 .overlay, #p16 .overlay {
@@ -841,6 +891,101 @@ footer.visible { transform: translateY(0); }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Entrada rápida para la sección Zona Zombi (p9)
+   - Aplicar a las overlays y a las sombras para que aparezcan de forma simultánea
+   - No afectamos otras clases como .active o behaviors de hover
+   - Uso: JS añade la clase .p9-entrance-hidden inicialmente y luego
+     reemplaza por .p9-entrance-shown al entrar en la sección. */
+.p9-entrance-hidden {
+  opacity: 0 !important;
+}
+.p9-entrance-shown {
+  opacity: 1 !important;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* === OVERRIDES para carteles en p9: comportamiento limpio y simétrico ===
+   - Aislar los carteles para que no hereden el translateY de las reglas de
+     thumbnails. Queremos que al desactivarse simplemente se revierta la
+     rotación/escala aplicada al activarse.
+   - Eliminamos sombras en hover/active para evitar cambios visuales bruscos. */
+.image-wrap#p9 .overlay {
+  /* estado base: sin translación, sin rotación, escala 1 */
+  transform: translateY(0) rotate(0deg) scale(1) !important;
+  /* transición únicamente sobre transform para que la entrada y salida sean
+     el inverso exacto (no animar box-shadow ni opacity aquí). */
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  box-shadow: none !important;
+}
+
+.image-wrap#p9 .overlay.active {
+  /* solo rotación y escala; la reversibilidad está garantizada por la
+     transición única sobre transform. No aplicamos sombra. */
+  transform: rotate(var(--overlay-rot)) scale(1.1) !important;
+  box-shadow: none !important;
+}
+
+/* Sombras de los carteles: detrás de las overlays pero por delante del fondo */
+.image-wrap#p9 .sombra {
+  position: absolute;
+  left: 0;
+  top: var(--overlay-top, 0%);
+  width: 100%;
+  height: auto;
+  z-index: 2; /* base=1, sombras=2, overlays=3 */
+  pointer-events: none;
+  opacity: 1;
+  will-change: transform, filter, opacity;
+  /* estado base: sin rotación ni escala (coincide con overlay base) */
+  transform: translateY(0) rotate(0deg) scale(1);
+  /* usar la misma transición/timing que las overlays para sincronizar movimientos */
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), filter 260ms ease, opacity 260ms ease;
+  filter: blur(0px) saturate(1);
+  /* Desplazamiento de sombra configurable: X negativo = izquierda; Y = 0 => sin desplazamiento vertical */
+  --sombra-offset-x: -12px;
+  --sombra-offset-y: 0px;
+  /* Difuminado aplicado a la sombra al activarse (ajustable) */
+  --sombra-blur: 6px;
+}
+
+/* Activar sombra: aplicar la misma rotación/escala que la overlay pero añadiendo
+   un desplazamiento y difuminado. Importante: usar la misma escala que la overlay
+   para que la sombra coincida exactamente y solo añadir la traslación/blur. */
+.image-wrap#p9 .sombra.active {
+  /* rotación de la sombra reducida respecto a la overlay: 11º cuando la overlay aplica 15º
+     usando cálculo proporcional para mantener el signo (+/-) asignado por JS. */
+  transform: translate(var(--sombra-offset-x), var(--sombra-offset-y)) rotate(calc(var(--overlay-rot) * 11 / 15)) scale(1.1) !important;
+  /* usar la variable para controlar el blur de forma centralizada */
+  filter: blur(var(--sombra-blur)) saturate(0.9);
+  opacity: 0.92;
+}
+
+/* Asegurar que las overlays queden por encima de las sombras */
+.image-wrap#p9 .overlay { z-index: 3 !important; }
+
+/* =============================
+  ZONA ZOMBI: FORZAR VISIBILIDAD
+  =============================
+  Hacemos que los carteles (overlays) y sus sombras en la sección p9
+  ("Zona Zombi") estén siempre visibles por defecto. Conservamos las
+  transiciones sobre transform para que los efectos de hover/active sigan
+  funcionando como antes, pero eliminamos las animaciones de aparición
+  inicial (opacity/translateY) y anulamos clases JS que oculten los elementos.
+*/
+.image-wrap#p9 .overlay,
+#p9 .overlay,
+.image-wrap#p9 .sombra {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  /* Transición únicamente sobre transform para mantener hover suave */
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Evitar que la clase global de entrada (.p9-entrance-hidden) o similares
+  oculten los carteles en p9. */
+#p9 .p9-entrance-hidden { opacity: 1 !important; }
+
 
 /* THUMBNAILS: Prevención de espacios en blanco durante transiciones */
 /* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */

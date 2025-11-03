@@ -418,32 +418,37 @@ const Overlays = {
       this.elements.forEach(({wrap, base, overlays, stands, rollos}) => {
         const info = this.getViewportInfo(base);
         
-        // -- Overlays: normal single overlay or multiple overlays (cascade for those that share base)
-        if (overlays && overlays.length) {
-          if (info.visible) {
-            // if multiple overlays in same wrap, cascade them only when first not already visible
-            if (overlays.length > 1) {
-              if (!overlays[0].classList.contains('visible')) {
-                // clear any previous cascade timers
-                const prev = this.cascadeTimers.get(wrap.id);
-                if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
-                const timers = [];
-                overlays.forEach((o, i) => {
-                  const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
-                  timers.push(t);
-                });
-                this.cascadeTimers.set(wrap.id, timers);
+          // -- Overlays: normal single overlay or multiple overlays (cascade for those that share base)
+          // Excluir explicitamente la galería p9 (Zona Zombi) para que sus carteles/sombras
+          // no reciban efectos de llegada/salida adicionales desde este flujo. p9 usa su
+          // propio mecanismo de aparición controlado en Effects.setupCartels().
+          if (wrap && wrap.id === 'p9') {
+            // Skip overlays handling for p9 entirely
+          } else if (overlays && overlays.length) {
+            if (info.visible) {
+              // if multiple overlays in same wrap, cascade them only when first not already visible
+              if (overlays.length > 1) {
+                if (!overlays[0].classList.contains('visible')) {
+                  // clear any previous cascade timers
+                  const prev = this.cascadeTimers.get(wrap.id);
+                  if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
+                  const timers = [];
+                  overlays.forEach((o, i) => {
+                    const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
+                    timers.push(t);
+                  });
+                  this.cascadeTimers.set(wrap.id, timers);
+                }
+              } else {
+                overlays.forEach(o => o.classList.add('visible'));
               }
             } else {
-              overlays.forEach(o => o.classList.add('visible'));
+              // not visible -> remove classes and clear timers
+              overlays.forEach(o => o.classList.remove('visible'));
+              const prev = this.cascadeTimers.get(wrap.id);
+              if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
             }
-          } else {
-            // not visible -> remove classes and clear timers
-            overlays.forEach(o => o.classList.remove('visible'));
-            const prev = this.cascadeTimers.get(wrap.id);
-            if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
           }
-        }
 
         this.processStands(stands, info);
         this.processRollos(rollos, info);
@@ -491,7 +496,7 @@ const Effects = {
   handlers: new WeakMap(),
   
   setup() {
-    ['stands', 'bottles', 'rollos'].forEach((type, i) => 
+    ['stands', 'bottles', 'rollos', 'cartels'].forEach((type, i) => 
       debounce(`setup-${type}`, () => this[`setup${type.charAt(0).toUpperCase() + type.slice(1)}`](), 100 + i * 50));
   },
   
@@ -638,11 +643,8 @@ const Effects = {
     container.addEventListener('click', (evt) => {
       // lastActive contiene el índice (1..9) de la botella calculada por onMouseMove
       if (!lastActive) return;
-      const el = container.querySelector(`.overlay-botella[data-botella="${lastActive}"]`);
-      const rel = el && el.getAttribute && el.getAttribute('src');
-      if (!rel) return;
-      // Asumimos que en assets/Nostre/Botellas_PopUp/ existen las imágenes completas
-      const popupPath = rel.replace('assets/Nostre/', 'assets/Nostre/Botellas_PopUp/');
+      // Construir la ruta asumida dentro de Botellas_PopUp usando extensión .jpg
+      const popupPath = `assets/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
       try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
     });
 
@@ -653,11 +655,216 @@ const Effects = {
         if (!lastActive) return;
         const el = container.querySelector(`.overlay-botella[data-botella="${lastActive}"]`);
         const rel = el && el.getAttribute && el.getAttribute('src');
-        if (!rel) return;
-        const popupPath = rel.replace('assets/Nostre/', 'assets/Nostre/Botellas_PopUp/');
+        if (!lastActive) return;
+        const popupPath = `assets/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
         try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
       }
     });
+  },
+
+  setupCartels() {
+    const container = document.querySelector('.image-wrap#p9');
+    if (!container || container.hasAttribute('data-cartels-configured')) return;
+
+    const areas = Array.from(container.querySelectorAll('.cartel-area[data-cartel]'));
+    if (!areas.length) {
+      container.setAttribute('data-cartels-configured', 'true');
+      return;
+    }
+
+    // Helper: compute and persist transform-origin for each area-overlay pair.
+    const computeAllOrigins = () => {
+      areas.forEach(area => {
+        const id = area.getAttribute('data-cartel');
+        const overlay = container.querySelector(`.overlay[data-cartel="${id}"]`);
+        const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
+        if (!overlay && !sombra) return;
+        // Ensure overlays/sombras don't intercept pointer events (areas will control interaction)
+        overlay && (overlay.style.pointerEvents = 'none');
+        sombra && (sombra.style.pointerEvents = 'none');
+
+        const areaRect = area.getBoundingClientRect();
+        // Compute origins relative to overlay/sombra bounding boxes if present
+        const centerX = areaRect.left + areaRect.width / 2;
+        const centerY = areaRect.top + areaRect.height / 2;
+        if (overlay) {
+          const overlayRect = overlay.getBoundingClientRect();
+          // compute origin as percentage to keep the same relative pivot across
+          // elements that may have different intrinsic sizes
+          const ox = Math.max(0, Math.min(overlayRect.width, centerX - overlayRect.left));
+          const oy = Math.max(0, Math.min(overlayRect.height, centerY - overlayRect.top));
+          const px = (overlayRect.width > 0) ? (ox / overlayRect.width) * 100 : 50;
+          const py = (overlayRect.height > 0) ? (oy / overlayRect.height) * 100 : 50;
+          overlay.style.transformOrigin = `${px.toFixed(2)}% ${py.toFixed(2)}%`;
+        }
+        if (sombra) {
+          const sombraRect = sombra.getBoundingClientRect();
+          const sx = Math.max(0, Math.min(sombraRect.width, centerX - sombraRect.left));
+          const sy = Math.max(0, Math.min(sombraRect.height, centerY - sombraRect.top));
+          const spx = (sombraRect.width > 0) ? (sx / sombraRect.width) * 100 : 50;
+          const spy = (sombraRect.height > 0) ? (sy / sombraRect.height) * 100 : 50;
+          sombra.style.transformOrigin = `${spx.toFixed(2)}% ${spy.toFixed(2)}%`;
+        }
+      });
+    };
+
+    // Initial computation
+    computeAllOrigins();
+    // Recompute on resize (debounced) so origins stay correct if layout changes
+    window.addEventListener('resize', () => debounce('cartel-origins', computeAllOrigins, 120));
+
+    areas.forEach(area => {
+      const id = area.getAttribute('data-cartel');
+      const overlay = container.querySelector(`.overlay[data-cartel="${id}"]`);
+      const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
+      // If neither element present, skip
+      if (!overlay && !sombra) return;
+
+      const onEnter = () => {
+        overlay && overlay.classList.add('active');
+        sombra && sombra.classList.add('active');
+      };
+      const onLeave = () => {
+        overlay && overlay.classList.remove('active');
+        sombra && sombra.classList.remove('active');
+      };
+
+      // Attach listeners (areas control interactivity)
+      area.addEventListener('mouseenter', onEnter);
+      area.addEventListener('mouseleave', onLeave);
+      area.addEventListener('pointerenter', onEnter);
+      area.addEventListener('pointerleave', onLeave);
+      // Also support keyboard focus/blur to mirror hover behavior
+      area.addEventListener('focus', onEnter);
+      area.addEventListener('blur', onLeave);
+      // Click: abrir popup con la imagen grande correspondiente (mismo patrón que las botellas)
+      area.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        const popupPath = `assets/Zombis/Carteles_PopUp/cartel${id}.png`;
+        try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
+        // Tras abrir el popup, desactivar la overlay/sombra y quitar el foco del área
+        try { onLeave(); } catch (ignore) {}
+        try { area.blur(); } catch (ignore) {}
+      });
+      // Teclado: Enter / Space abren el popup y también desactivan la overlay/sombra
+      area.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const popupPath = `assets/Zombis/Carteles_PopUp/cartel${id}.png`;
+          try { window.open(popupPath, '_blank', 'noopener'); } catch (err) { window.location.href = popupPath; }
+          try { onLeave(); } catch (ignore) {}
+          try { area.blur(); } catch (ignore) {}
+        }
+      });
+    });
+
+    // Inicializar efecto de aparición al entrar en la sección 'Zona Zombi' (p9)
+    // Aplicar clase inicial que oculta por opacidad tanto a los carteles como a las sombras,
+    // y observar el contenedor de galería para hacer la aparición una vez la sección sea visible.
+    try {
+      const p9Overlays = Array.from(container.querySelectorAll('.overlay'));
+      const p9Sombras = Array.from(container.querySelectorAll('.sombra'));
+      const all = p9Overlays.concat(p9Sombras).filter(Boolean);
+
+      // Queremos que SOLO los carteles impares participen en la animación de entrada
+      // y en el orden específico pedido por el usuario: 3, 7, 1, 5.
+      const desiredOrder = ['3', '7', '1', '5'];
+
+      // Añadir clase inicial solo a los elementos que correspondan a carteles impares
+      all.forEach(el => {
+        const id = el.getAttribute && el.getAttribute('data-cartel');
+        if (id && parseInt(id) % 2 === 1) {
+          el.classList.add('p9-entrance-hidden');
+        }
+      });
+
+      // Función que activa la aparición: reemplaza la clase hidden por la clase shown
+      // y además simula brevemente el efecto 'hover' (clase .active) en cascada,
+      // en el orden fijo para los carteles impares.
+      const triggerEntrance = () => {
+        try {
+          // Agrupar elementos por su data-cartel para activar overlay+sombra juntos
+          const groups = new Map();
+          container.querySelectorAll('.overlay[data-cartel], .sombra[data-cartel]').forEach(el => {
+            const id = el.getAttribute('data-cartel');
+            if (!id) return;
+            // Sólo incluir carteles impares
+            if (parseInt(id) % 2 === 0) return;
+            if (!groups.has(id)) groups.set(id, []);
+            groups.get(id).push(el);
+          });
+
+          // Construir la lista de ids en el orden solicitado, ignorando los que no existan
+          const ids = desiredOrder.filter(id => groups.has(id));
+
+          const cssTransition = 220; // tiempo de la transición CSS (ms)
+          // Aumentar 'overlap' reduce el solapamiento (más tiempo entre inicios).
+          // Valor aumentado a 220ms para un solapamiento notablemente menor.
+          const overlap = 220; // ms entre inicios
+          const activeDuration = Math.max(260, cssTransition + 40);
+
+          ids.forEach((id, idx) => {
+            const delay = idx * overlap; // sin variación aleatoria para respetar el orden exacto
+            setTimeout(() => {
+              const els = groups.get(id) || [];
+              els.forEach(el => {
+                el.classList.remove('p9-entrance-hidden');
+                // Forzar reflow mínimo antes de añadir la clase de shown para asegurar la transición
+                void el.offsetWidth;
+                el.classList.add('p9-entrance-shown');
+              });
+
+              // Simular el hover: activar la clase .active en overlay+sombra durante un instante
+              els.forEach(el => el.classList.add('active'));
+              setTimeout(() => els.forEach(el => el.classList.remove('active')), activeDuration);
+            }, Math.max(0, Math.round(delay)));
+          });
+        } catch (err) { /* silencioso */ }
+      };
+
+      // Si $.galeriaContainer está disponible, usamos IntersectionObserver con root=shell
+      const root = $.galeriaContainer || null;
+      const io = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // Ejecutar la aparición y el efecto hover en cascada cada vez
+            // que la sección entre en el viewport suficiente.
+            triggerEntrance();
+            // No desconectamos el observer: permitimos que se vuelva a
+            // ejecutar cuando el usuario salga y regrese a la sección.
+            break;
+          }
+        }
+      }, { root, threshold: 0.45 });
+
+      // Observar la propia sección (container)
+      io.observe(container);
+
+      // Si la sección ya está dentro del viewport suficiente en el momento de la carga,
+      // disparar inmediatamente sin esperar al IO.
+      try {
+        if (root) {
+          const rootRect = root.getBoundingClientRect();
+          const secRect = container.getBoundingClientRect();
+          const visibleHeight = Math.max(0, Math.min(secRect.bottom, rootRect.bottom) - Math.max(secRect.top, rootRect.top));
+          if (visibleHeight / secRect.height >= 0.45) {
+            triggerEntrance();
+            // keep observing so the effect can run again on re-entry
+          }
+        } else {
+          // Si no hay root, fallback a viewport check
+          const secRect = container.getBoundingClientRect();
+          const winH = window.innerHeight || document.documentElement.clientHeight;
+          const visibleHeight = Math.max(0, Math.min(secRect.bottom, winH) - Math.max(secRect.top, 0));
+          if (visibleHeight / secRect.height >= 0.45) {
+            triggerEntrance();
+            // keep observing so the effect can run again on re-entry
+          }
+        }
+      } catch (e) { /* silencioso */ }
+    } catch (e) { /* silencioso */ }
+
+    container.setAttribute('data-cartels-configured', 'true');
   },
   
   reset() {
@@ -1312,13 +1519,49 @@ const Intro = {
 
 // ===== CACHE-BUSTING PARA SLIDESHOWS DE SERVICIOS =====
 function hydrateCircleSlides() {
+  // Añadir versión a data-src para cache-busting, pero NO aplicar el background
+  // directamente: lo cargaremos perezosamente desde lazyLoadFrames().
   const assetVersion = '2025-10-24-1';
   const frames = document.querySelectorAll('.circle-slideshow .frame[data-src]');
   frames.forEach(el => {
     const src = el.getAttribute('data-src');
     if (!src) return;
     const url = src + (src.includes('?') ? '&' : '?') + 'v=' + assetVersion;
-    el.style.backgroundImage = `url("${url}")`;
+    el.setAttribute('data-src', url);
+  });
+}
+
+// Carga perezosa de fondos para .frame[data-src]. Se activa por IntersectionObserver
+// o por hover/focus en el service-circle padre. Una vez cargada, añade la clase .loaded
+function lazyLoadFrames() {
+  const frames = document.querySelectorAll('.circle-slideshow .frame[data-src]');
+  if (!frames.length) return;
+
+  const load = (el) => {
+    if (!el || el.classList.contains('loaded')) return;
+    const src = el.getAttribute('data-src');
+    if (!src) return;
+    el.style.backgroundImage = `url("${src}")`;
+    el.classList.add('loaded');
+  };
+
+  const io = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        load(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { root: null, threshold: 0.08 });
+
+  frames.forEach(f => {
+    io.observe(f);
+    const circle = f.closest('.service-circle');
+    if (circle) {
+      // al pasar el ratón o al recibir focus cargamos la imagen si no está
+      circle.addEventListener('mouseenter', () => load(f), {once: true});
+      circle.addEventListener('focus', () => load(f), {once: true});
+    }
   });
 }
 
@@ -1620,6 +1863,31 @@ const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
   [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc].forEach(comp => comp.init());
+  // Asignar direcciones de rotación aleatorias (±15deg) a los overlays de p9
+  try {
+    const p9Overlays = document.querySelectorAll('#p9 .overlay');
+    p9Overlays.forEach((el) => {
+      // asignar ángulo de rotación aleatorio: 15deg o -15deg
+      const sign = Math.random() > 0.5 ? 1 : -1;
+      el.style.setProperty('--overlay-rot', `${15 * sign}deg`);
+      // dejar --overlay-origin editable en línea o en CSS; por defecto ya está en CSS
+    });
+    // Asegurar que las sombras (si existen) reciben la misma variable de rotación
+    const p9Sombras = document.querySelectorAll('#p9 .sombra');
+    if (p9Sombras && p9Sombras.length) {
+      // Re-use the same random sign strategy but match per-index to overlays when possible
+      p9Sombras.forEach((s, i) => {
+        // Try to find a corresponding overlay to copy the rotation value
+        const overlay = document.querySelector(`#p9 .overlay[data-cartel="${s.getAttribute('data-cartel')}"]`);
+        if (overlay && overlay.style && overlay.style.getPropertyValue('--overlay-rot')) {
+          s.style.setProperty('--overlay-rot', overlay.style.getPropertyValue('--overlay-rot'));
+        } else {
+          const sign = Math.random() > 0.5 ? 1 : -1;
+          s.style.setProperty('--overlay-rot', `${15 * sign}deg`);
+        }
+      });
+    }
+  } catch (e) { /* silent */ }
   // Botón Ver proyectos: ir a la sección proyectos
   try {
     const verBtn = document.getElementById('btn-ver-proyectos');
@@ -1627,6 +1895,8 @@ const init = () => {
   } catch {}
   setupNormalOverlays();
   hydrateCircleSlides();
+  // Cargar perezosamente las imágenes de los slides (via IO o hover)
+  lazyLoadFrames();
   enhanceA11y();
   lazyMedia();
   
