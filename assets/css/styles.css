@@ -1169,10 +1169,13 @@ footer.visible { transform: translateY(0); }
   /* Ancho del texto al 90% del contenedor para mayor ocupación visual */
   .clients-copy p { width: 90%; max-width: none; margin-left: auto; margin-right: auto; }
   .clients-logos { gap: 24px 32px; }
+  /* Logo más grande en pantallas estrechas (casi el doble) */
+  .logo { height: 260px !important; width: 260px !important; }
 }
 @media (max-width: 768px) {
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
-  .logo { height: 135px !important; width: 135px !important; order: -1; }
+  /* Logo casi el doble en móvil */
+  .logo { height: 260px !important; width: 260px !important; order: -1; }
   .menu-toggle { display: block !important; order: 2; margin-left: auto; }
   #idioma-btn { display: none !important; }
   #idioma-list { display: none !important; }
