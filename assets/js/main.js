@@ -2,18 +2,44 @@
 const MobileMenu = {
   toggle: null,
   nav: null,
+  idiomaBtn: null,
+  idiomaList: null,
+  showingLanguages: false,
   init() {
     this.toggle = document.getElementById('menu-toggle');
     this.nav = document.getElementById('main-nav');
+    this.idiomaBtn = document.getElementById('idioma-mobile-btn');
+    this.idiomaList = document.getElementById('idioma-mobile-list');
     if (!this.toggle || !this.nav) return;
     
     this.toggle.addEventListener('click', () => this.toggleMenu());
     
-    // Cerrar menú al hacer clic en un enlace
-    const navLinks = this.nav.querySelectorAll('a');
+    // Cerrar menú al hacer clic en enlaces de sección
+    const navLinks = this.nav.querySelectorAll('a[data-section]');
     navLinks.forEach(link => {
       link.addEventListener('click', () => this.closeMenu());
     });
+    
+    // Manejar clic en botón de idioma móvil
+    if (this.idiomaBtn) {
+      this.idiomaBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.toggleLanguages();
+      });
+    }
+    
+    // Manejar selección de idioma
+    if (this.idiomaList) {
+      const langLinks = this.idiomaList.querySelectorAll('a[data-lang]');
+      langLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const lang = link.getAttribute('data-lang');
+          cambiarIdioma(lang);
+          this.closeMenu();
+        });
+      });
+    }
     
     // Cerrar menú al hacer clic fuera
     document.addEventListener('click', (e) => {
@@ -27,10 +53,32 @@ const MobileMenu = {
   toggleMenu() {
     this.toggle.classList.toggle('active');
     this.nav.classList.toggle('active');
+    if (!this.nav.classList.contains('active')) {
+      this.hideLanguages();
+    }
   },
   closeMenu() {
     this.toggle.classList.remove('active');
     this.nav.classList.remove('active');
+    this.hideLanguages();
+  },
+  toggleLanguages() {
+    if (this.showingLanguages) {
+      this.hideLanguages();
+    } else {
+      this.showLanguages();
+    }
+  },
+  showLanguages() {
+    if (!this.idiomaList) return;
+    this.idiomaList.style.display = 'block';
+    this.showingLanguages = true;
+    this.nav.style.maxHeight = '500px';
+  },
+  hideLanguages() {
+    if (!this.idiomaList) return;
+    this.idiomaList.style.display = 'none';
+    this.showingLanguages = false;
   }
 };
 

@@ -1110,6 +1110,9 @@ footer.visible { transform: translateY(0); }
   z-index: 1001;
   position: relative;
 }
+.idioma-mobile-only {
+  display: none;
+}
 .menu-toggle span {
   display: block;
   width: 28px;
@@ -1133,8 +1136,11 @@ footer.visible { transform: translateY(0); }
 @media (max-width: 1024px) { #indice { width: 250px; } }
 @media (max-width: 768px) {
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
-  .logo { height: 45px !important; width: 45px !important; }
-  .menu-toggle { display: block !important; }
+  .logo { height: 135px !important; width: 135px !important; order: -1; }
+  .menu-toggle { display: block !important; order: 2; margin-left: auto; }
+  #idioma-btn { display: none !important; }
+  #idioma-list { display: none !important; }
+  .idioma-mobile-only { display: block !important; }
   nav { 
     position: fixed;
     top: 60px;
@@ -1151,7 +1157,7 @@ footer.visible { transform: translateY(0); }
     border-top: 1px solid rgba(255, 255, 0, 0.2);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
-  nav.active { max-height: 400px; }
+  nav.active { max-height: 500px; }
   nav a { 
     margin: 0; 
     padding: 16px 20px; 
@@ -1163,7 +1169,10 @@ footer.visible { transform: translateY(0); }
     background: rgba(255, 255, 0, 0.1);
     transform: none;
   }
-  #idioma-btn { order: -1; }
+  #idioma-mobile-list a {
+    padding-left: 40px;
+    background: rgba(0, 0, 0, 0.2);
+  }
   main { margin-top: 60px; }
   section { padding: 20px; padding-top: 0; }
   .proyectos-container { flex-direction: column; height: auto; }
@@ -1220,8 +1229,8 @@ footer.visible { transform: translateY(0); }
 }
 @media (max-width: 480px) {
   header { height: 55px !important; padding: 8px 15px !important; }
-  .logo { height: 40px !important; width: 40px !important; }
-  #idioma-btn { padding: 4px 8px; font-size: .9em; }
+  .logo { height: 120px !important; width: 120px !important; }
+  #idioma-btn { display: none !important; }
   nav { top: 55px !important; }
   main { margin-top: 55px !important; }
   section { padding: 15px; padding-top: 0; }
