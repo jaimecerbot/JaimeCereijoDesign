@@ -1150,6 +1150,13 @@ footer.visible { transform: translateY(0); }
     max-width: 80vw !important;
     object-fit: cover !important;
   }
+  /* Mini carrusel: rótulo ligeramente más pequeño y un poco más abajo en ≤1024px */
+  .service-2 .mini-carousel::after {
+    font-size: clamp(9px, 1.8vw, 13px);
+    bottom: 3%;
+    line-height: 1.05;
+    letter-spacing: 0.2px;
+  }
 }
 @media (max-width: 768px) {
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
@@ -1244,7 +1251,12 @@ footer.visible { transform: translateY(0); }
   /* Ajustes específicos en móvil */
   .service-5 span { font-size: clamp(11px, 2.8vw, 16px); }
   /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
-  .service-2 .mini-carousel::after { font-size: clamp(8px, 2.4vw, 12px); bottom: 1.5%; }
+  .service-2 .mini-carousel::after { 
+    font-size: clamp(7px, 2.0vw, 11px); 
+    bottom: 0.8%; 
+    line-height: 1.0;
+    letter-spacing: 0.2px;
+  }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
