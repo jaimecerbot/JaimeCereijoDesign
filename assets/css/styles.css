@@ -64,6 +64,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   overflow: visible; 
   gap: 20px; 
   padding: 40px 20px; 
+  margin-top: 20px;
   scrollbar-width: none; 
   -ms-overflow-style: none;
   justify-content: center;
