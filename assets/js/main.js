@@ -76,13 +76,15 @@ const MobileMenu = {
   },
   showLanguages() {
     if (!this.idiomaList || !this.mainMenuItems) return;
+    this.mainMenuItems.classList.add('hidden');
     this.mainMenuItems.style.display = 'none';
-    this.idiomaList.style.display = 'flex';
+    this.idiomaList.classList.add('active');
     this.showingLanguages = true;
   },
   hideLanguages() {
     if (!this.idiomaList || !this.mainMenuItems) return;
-    this.idiomaList.style.display = 'none';
+    this.idiomaList.classList.remove('active');
+    this.mainMenuItems.classList.remove('hidden');
     this.mainMenuItems.style.display = 'flex';
     this.showingLanguages = false;
   }

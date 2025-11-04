@@ -1169,10 +1169,18 @@ footer.visible { transform: translateY(0); }
     background: rgba(255, 255, 0, 0.1);
     transform: none;
   }
-  #main-menu-items, #idioma-mobile-list {
+  #main-menu-items {
     display: flex;
     flex-direction: column;
     width: 100%;
+  }
+  #idioma-mobile-list {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+  #idioma-mobile-list.active {
+    display: flex;
   }
   #back-to-menu {
     font-weight: bold;
