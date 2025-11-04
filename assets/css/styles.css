@@ -1187,6 +1187,8 @@ footer.visible { transform: translateY(0); }
   }
   main { margin-top: 60px; }
   section { padding: 20px; padding-top: 0; }
+  /* Menu: ocupar casi todo el ancho con leve margen lateral */
+  #menu { padding-left: 4vw !important; padding-right: 4vw !important; }
   .proyectos-container { flex-direction: column; height: auto; }
   #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 60px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
   .indice-content { padding: 0 15px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: visible; }
@@ -1199,40 +1201,41 @@ footer.visible { transform: translateY(0); }
   #galeria-container { height: calc(100vh - 130px); }
   #galeria { padding-bottom: 0; }
   .carousel { 
-    gap: 15px !important; 
+    gap: 12px !important; 
     width: 100% !important;
     max-width: 100vw !important;
     overflow: visible !important;
-    justify-content: flex-start !important;
-    padding: 30px 10vw !important;
+    justify-content: center !important; /* centrar perfectamente */
+    padding: 24px 4vw !important; /* leve margen lateral */
     box-sizing: border-box !important;
   }
   #menu { padding-top: 0 !important; }
   #menu .carousel { padding-top: 0 !important; }
-  .carousel-caption { bottom: 10% !important; max-width: 70% !important; }
+  .carousel-caption { bottom: 10% !important; max-width: 76% !important; }
   .carousel img { 
-    width: 80vw !important;
-    height: 80vw !important;
+    width: 92vw !important;  /* llenar ancho dejando ~4vw por lado desde padding del contenedor */
+    height: 92vw !important; /* mantener proporción cuadrada del diseño móvil */
     min-width: 250px !important;
     min-height: 250px !important;
-    max-width: 80vw !important;
-    max-height: 80vw !important;
+    max-width: 92vw !important;
+    max-height: 92vw !important;
     object-fit: cover !important;
   }
-.services { gap: 16px; padding: 0 8px; }
-.services-circles { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+ .services { gap: 16px; padding: 0 4vw; }
+ .services-circles { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .service-circle { width: 100%; }
 .service-circle span { font-size: clamp(13px, 3.6vw, 20px); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
-  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 18px; padding: 0 18px; margin-top: 20px; }
-  .cta-portfolio { padding: 0 18px; }
+  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 16px; padding: 0 4vw; margin-top: 16px; }
+  .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
   .btn-napoleon { padding: 10px 16px; font-size: clamp(13px, 3.2vw, 17px); }
-  .clients-logos { grid-template-columns: repeat(2, 1fr); gap: 14px 16px; margin-top: 0; }
-  .clients-logos img { max-height: clamp(28px, 8vw, 44px); }
+  /* Logos más pequeños, 3 columnas x 4 filas */
+  .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 12px 12px; margin-top: 0; }
+  .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
   .clients-copy h3 { text-align: center; }
   .clients-copy p { text-align: center; }
   /* En móvil, ajustar tipografía y layout, pero mantener comportamiento fijo/oculto por defecto */
