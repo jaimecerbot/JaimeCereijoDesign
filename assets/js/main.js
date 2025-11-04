@@ -48,7 +48,10 @@ const MobileMenu = {
           e.preventDefault();
           const lang = link.getAttribute('data-lang');
           cambiarIdioma(lang);
-          this.closeMenu();
+          // Mantener el menú abierto y seguir en la lista de idiomas
+          // (no cerrar ni volver automáticamente al menú principal)
+          // Si en el futuro prefieres volver al menú principal, descomenta:
+          // this.hideLanguages();
         });
       });
     }
@@ -65,7 +68,10 @@ const MobileMenu = {
   toggleMenu() {
     this.toggle.classList.toggle('active');
     this.nav.classList.toggle('active');
-    if (!this.nav.classList.contains('active')) {
+    if (this.nav.classList.contains('active')) {
+      // Al abrir el menú, asegúrate de mostrar el listado principal
+      this.hideLanguages();
+    } else {
       this.hideLanguages();
     }
   },
@@ -77,12 +83,12 @@ const MobileMenu = {
   showLanguages() {
     if (!this.idiomaList || !this.mainMenuItems) return;
     this.mainMenuItems.style.display = 'none';
-    this.idiomaList.classList.add('active');
+    this.idiomaList.style.display = 'flex';
     this.showingLanguages = true;
   },
   hideLanguages() {
     if (!this.idiomaList || !this.mainMenuItems) return;
-    this.idiomaList.classList.remove('active');
+    this.idiomaList.style.display = 'none';
     this.mainMenuItems.style.display = 'flex';
     this.showingLanguages = false;
   }
