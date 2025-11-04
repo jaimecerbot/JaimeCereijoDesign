@@ -467,7 +467,8 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   color: #001f3f;
   font-weight: 700;
   letter-spacing: 1px;
-  font-size: clamp(28px, 5vw, 52px);
+  /* Igualar escala a .services-title */
+  font-size: clamp(32px, 6vw, 64px);
   margin: 0 0 24px 0;
 }
 .clients {
@@ -1159,12 +1160,12 @@ footer.visible { transform: translateY(0); }
   }
   /* Clients: texto más ancho, título más grande y más espacio entre texto y logos en ventanas estrechas */
   .clients { 
-    grid-template-columns: 1fr 1.8fr; /* aún más ancho para el texto */
-    gap: 32px 48px; /* mantener separación */
-    padding: 0 2.5vw; /* reducir un poco más el margen lateral */
+    grid-template-columns: 1fr 2fr; /* ensanchar más el bloque de texto */
+    gap: 40px 56px; /* más espacio horizontal y vertical */
+    padding: 0 24px; /* mismo padding base que .services */
   }
-  .clients-copy { min-width: 78%; }
-  .clients-copy h3 { font-size: clamp(32px, 5.2vw, 60px); }
+  .clients-copy { min-width: 82%; }
+  .clients-copy h3 { font-size: clamp(34px, 5.6vw, 64px); }
   .clients-logos { gap: 24px 32px; }
 }
 @media (max-width: 768px) {
@@ -1269,17 +1270,19 @@ footer.visible { transform: translateY(0); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
-  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 28px; padding: 0 2vw; margin-top: 16px; }
+  /* Igualar formato móvil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
+  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 36px; padding: 0 4vw; margin-top: 16px; }
   .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
   .btn-napoleon { padding: 10px 16px; font-size: clamp(13px, 3.2vw, 17px); }
   /* Logos más pequeños, 3 columnas x 4 filas */
-  .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 14px 14px; margin-top: 8px; }
+  .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 16px 16px; margin-top: 16px; }
   .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
   .clients-copy { width: 100%; max-width: none; }
   .clients-copy h3 { text-align: center; font-size: clamp(32px, 8vw, 64px); }
-  .clients-copy p { text-align: center; max-width: none; }
+  /* Alinear tipografía de párrafo al formato de servicios en móvil */
+  .clients-copy p { text-align: center; max-width: none; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; }
   /* En móvil, ajustar tipografía y layout, pero mantener comportamiento fijo/oculto por defecto */
   footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; }
   #intro-video { max-width: 90vw; max-height: 90vh; }
