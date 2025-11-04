@@ -525,7 +525,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   font-size: clamp(16px, 2vw, 22px); /* Igual que .services-description */
   line-height: 1.55;
   margin: 0;
-  max-width: 150%;
+  max-width: 90%;
 }
 
 /* Hover slideshow base */
@@ -1171,12 +1171,15 @@ footer.visible { transform: translateY(0); }
   .clients-logos { gap: 24px 32px; }
   /* Logo en pantallas estrechas (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; }
+  /* Centrar logo en header en ventanas estrechas */
+  header { justify-content: center !important; position: relative; }
+  .logo { margin: 0 auto; }
 }
 @media (max-width: 768px) {
-  header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
+  header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
   /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
-  .menu-toggle { display: block !important; order: 2; margin-left: auto; }
+  .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
   #idioma-btn { display: none !important; }
   #idioma-list { display: none !important; }
   /* Mostrar únicamente el botón de Idioma dentro del menú; mantener oculta la lista */
