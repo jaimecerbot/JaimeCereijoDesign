@@ -34,8 +34,8 @@
 html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
 html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
 body { font-family: Coolvetica, sans-serif; background: #f8f8f8; display: flex; flex-direction: column; min-height: 100vh; }
-/* Compensar header fijo (70px en desktop) para evitar huecos en la parte superior/inferior */
-main { flex: 1; margin-top: 70px; overflow-x: hidden; min-height: calc(100vh - 70px); }
+/* No añadimos margen superior global en main: el contenido arranca justo bajo el header fijo */
+main { flex: 1; margin-top: 0; overflow-x: hidden; }
 /* Cuando el footer aparece, empujamos el contenido (salvo header) hacia arriba */
 main { transition: transform .3s ease; will-change: transform; }
 body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))); }
@@ -1242,8 +1242,8 @@ footer.visible { transform: translateY(0); }
   #back-to-menu {
     font-weight: bold;
   }
-  /* En móvil, header fijo mide 60px: ajustar margen y alto mínimo del main para eliminar hueco blanco */
-  main { margin-top: 60px; min-height: calc(100vh - 60px); }
+  /* En móvil, sin margen superior en main para que no exista hueco bajo el header */
+  main { margin-top: 0; }
   section { padding: 20px; padding-top: 0; }
   /* Evitar hueco bajo el header en secciones: quitar margen superior del primer hijo */
   section > *:first-child { margin-top: 0 !important; }
