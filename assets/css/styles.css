@@ -1153,7 +1153,7 @@ footer.visible { transform: translateY(0); }
   /* Mini carrusel: rótulo ligeramente más pequeño y un poco más abajo en ≤1024px */
   .service-2 .mini-carousel::after {
     font-size: clamp(9px, 1.8vw, 13px);
-    bottom: 4.8%;
+    bottom: 6.0%;
     line-height: 1.05;
     letter-spacing: 0.2px;
   }
@@ -1253,7 +1253,7 @@ footer.visible { transform: translateY(0); }
   /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
   .service-2 .mini-carousel::after { 
     font-size: clamp(7px, 2.0vw, 11px); 
-    bottom: 2.0%; 
+    bottom: 2.8%; 
     line-height: 1.0;
     letter-spacing: 0.2px;
   }
