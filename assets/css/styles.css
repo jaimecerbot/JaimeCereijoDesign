@@ -1144,6 +1144,10 @@ footer.visible { transform: translateY(0); }
 
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) {
+  /* En pantallas estrechas, evitar trucos de footer fijo para simplificar layout */
+  body.footer-visible main { transform: none; }
+  footer { position: static; transform: none; }
+  footer.visible { transform: none; }
   #indice { width: 250px; }
   /* Carrusel en pantallas estrechas de escritorio: imagen al 80% del viewport
      para que se insinúen las adyacentes por los lados */
@@ -1184,6 +1188,10 @@ footer.visible { transform: translateY(0); }
   .logo { margin: 0 auto; }
 }
 @media (max-width: 768px) {
+  /* En móvil, desactivar empuje del main y el footer fijo para evitar comportamientos extraños */
+  body.footer-visible main { transform: none; }
+  footer { position: static; transform: none; }
+  footer.visible { transform: none; }
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
   /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
