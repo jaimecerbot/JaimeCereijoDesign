@@ -1139,7 +1139,18 @@ footer.visible { transform: translateY(0); }
 }
 
 /* RESPONSIVE - OPTIMIZADO */
-@media (max-width: 1024px) { #indice { width: 250px; } }
+@media (max-width: 1024px) {
+  #indice { width: 250px; }
+  /* Carrusel en pantallas estrechas de escritorio: imagen al 80% del viewport
+     para que se insinúen las adyacentes por los lados */
+  .carousel { justify-content: center; padding-left: 4vw; padding-right: 4vw; }
+  .carousel img {
+    width: 80vw !important;
+    height: calc(80vw * 0.58) !important; /* mantener proporción apaisada en escritorio estrecho */
+    max-width: 80vw !important;
+    object-fit: cover !important;
+  }
+}
 @media (max-width: 768px) {
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
   .logo { height: 135px !important; width: 135px !important; order: -1; }
@@ -1218,12 +1229,12 @@ footer.visible { transform: translateY(0); }
   #menu .carousel { padding-top: 0 !important; }
   .carousel-caption { bottom: 10% !important; max-width: 76% !important; }
   .carousel img { 
-    width: 92vw !important;  /* llenar ancho dejando ~4vw por lado desde padding del contenedor */
-    height: 92vw !important; /* mantener proporción cuadrada del diseño móvil */
+    width: 80vw !important;  /* ocupar ~80% del ancho para que se vean los bordes de las adyacentes */
+    height: 80vw !important; /* mantener formato cuadrado en móvil */
     min-width: 250px !important;
     min-height: 250px !important;
-    max-width: 92vw !important;
-    max-height: 92vw !important;
+    max-width: 80vw !important;
+    max-height: 80vw !important;
     object-fit: cover !important;
   }
  .services { gap: 16px; padding: 0 4vw; }
