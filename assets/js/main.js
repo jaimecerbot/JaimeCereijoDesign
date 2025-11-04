@@ -2,14 +2,18 @@
 const MobileMenu = {
   toggle: null,
   nav: null,
+  mainMenuItems: null,
   idiomaBtn: null,
   idiomaList: null,
+  backBtn: null,
   showingLanguages: false,
   init() {
     this.toggle = document.getElementById('menu-toggle');
     this.nav = document.getElementById('main-nav');
+    this.mainMenuItems = document.getElementById('main-menu-items');
     this.idiomaBtn = document.getElementById('idioma-mobile-btn');
     this.idiomaList = document.getElementById('idioma-mobile-list');
+    this.backBtn = document.getElementById('back-to-menu');
     if (!this.toggle || !this.nav) return;
     
     this.toggle.addEventListener('click', () => this.toggleMenu());
@@ -24,7 +28,15 @@ const MobileMenu = {
     if (this.idiomaBtn) {
       this.idiomaBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.toggleLanguages();
+        this.showLanguages();
+      });
+    }
+    
+    // Manejar clic en botón volver
+    if (this.backBtn) {
+      this.backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.hideLanguages();
       });
     }
     
@@ -62,22 +74,16 @@ const MobileMenu = {
     this.nav.classList.remove('active');
     this.hideLanguages();
   },
-  toggleLanguages() {
-    if (this.showingLanguages) {
-      this.hideLanguages();
-    } else {
-      this.showLanguages();
-    }
-  },
   showLanguages() {
-    if (!this.idiomaList) return;
-    this.idiomaList.style.display = 'block';
+    if (!this.idiomaList || !this.mainMenuItems) return;
+    this.mainMenuItems.style.display = 'none';
+    this.idiomaList.style.display = 'flex';
     this.showingLanguages = true;
-    this.nav.style.maxHeight = '500px';
   },
   hideLanguages() {
-    if (!this.idiomaList) return;
+    if (!this.idiomaList || !this.mainMenuItems) return;
     this.idiomaList.style.display = 'none';
+    this.mainMenuItems.style.display = 'flex';
     this.showingLanguages = false;
   }
 };

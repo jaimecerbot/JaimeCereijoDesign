@@ -1169,9 +1169,13 @@ footer.visible { transform: translateY(0); }
     background: rgba(255, 255, 0, 0.1);
     transform: none;
   }
-  #idioma-mobile-list a {
-    padding-left: 40px;
-    background: rgba(0, 0, 0, 0.2);
+  #main-menu-items, #idioma-mobile-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  #back-to-menu {
+    font-weight: bold;
   }
   main { margin-top: 60px; }
   section { padding: 20px; padding-top: 0; }
