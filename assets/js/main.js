@@ -38,7 +38,9 @@ const MobileMenu = {
 const $ = {
   header: null, indice: null, main: null, footer: null, galeriaContainer: null, galeria: null,
   body: document.body, html: document.documentElement,
-  lastScrollY: 0, headerHeight: 70, isMobile: window.innerWidth <= 768, 
+  lastScrollY: 0, 
+  get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
+  get isMobile() { return window.innerWidth <= 768; },
   isProyectosActive: false, lastScrollTop: 0, bottleEffectTriggered: false,
   throttles: new Set(), timers: new Map(), rafId: null,
   initialized: false
@@ -83,7 +85,7 @@ const Layout = {
   },
   update() {
     if (!$.header || !$.main) return;
-    const margin = $.isMobile ? $.headerHeight + 50 : $.headerHeight;
+    const margin = $.headerHeight;
     $.main.style.marginTop = `${margin}px`;
     $.indice && ($.indice.style.top = `${margin}px`);
   }
@@ -119,7 +121,7 @@ const Scroll = {
     throttle('scroll', () => {
       const delta = window.scrollY - $.lastScrollY;
       if (Math.abs(delta) > 5) {
-        const hide = delta > 0 && window.scrollY > ($.isMobile ? 50 : 100);
+        const hide = delta > 0 && window.scrollY > 100;
         $.header?.classList.toggle('hidden', hide);
         this.updateLayout();
         $.lastScrollY = window.scrollY;
@@ -131,7 +133,7 @@ const Scroll = {
     const visible = !$.header?.classList.contains('hidden');
     const top = visible ? $.headerHeight : 0;
     $.main && ($.main.style.marginTop = `${top}px`);
-    $.indice && ($.indice.style.top = `${$.isMobile && visible ? $.headerHeight + 50 : top}px`);
+    $.indice && ($.indice.style.top = `${top}px`);
   },
   updateFooter() {
     if (!$.footer) return;
@@ -1977,7 +1979,6 @@ const init = () => {
   [
     [window, 'scroll', () => Scroll.handleMain()],
     [window, 'resize', () => debounce('resize', () => { 
-      $.isMobile = window.innerWidth <= 768; 
       Layout.update(); 
       Scroll.syncFooterVar();
     }, 100)],

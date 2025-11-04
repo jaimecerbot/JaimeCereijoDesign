@@ -1218,11 +1218,11 @@ footer.visible { transform: translateY(0); }
   #intro-video { max-width: 90vw; max-height: 90vh; }
 }
 @media (max-width: 480px) {
-  header { height: 55px; padding: 8px 15px; }
-  .logo { height: 40px; width: 40px; }
+  header { height: 55px !important; padding: 8px 15px !important; }
+  .logo { height: 40px !important; width: 40px !important; }
   #idioma-btn { padding: 4px 8px; font-size: .9em; }
-  nav { top: 55px; }
-  main { margin-top: 55px; }
+  nav { top: 55px !important; }
+  main { margin-top: 55px !important; }
   section { padding: 15px; padding-top: 0; }
   .carousel { 
     gap: 10px !important; 
