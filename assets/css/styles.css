@@ -41,7 +41,7 @@ body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))
 /* HEADER */
 header { display: flex; align-items: center; justify-content: space-between; background: #001f3f; color: yellow; padding: 10px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px; will-change: transform; transition: transform .3s ease; }
 header.hidden { transform: translateY(-100%); }
-.logo { height: 50px; width: 50px; }
+.logo { height: 180px; width: 180px; }
 .logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 nav { display: flex; align-items: center; }
 nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; }
@@ -101,6 +101,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 }
 /* Items del carrusel con leyenda */
 .carousel-item { position: relative; display: flex; flex-shrink: 0; }
+.carousel-item picture { display: block; width: 100%; height: 100%; }
 .carousel-item img { display: block; }
 .carousel-caption {
   position: absolute;
@@ -524,13 +525,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .service-circle .circle-slideshow { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 1; opacity: 0; transition: opacity var(--circle-hover-fade) var(--circle-easing); }
 .service-circle .circle-slideshow .frame { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; will-change: opacity; animation: ilustracionFade calc(var(--circle-frame) * 3) infinite; animation-timing-function: var(--circle-easing); animation-play-state: paused; }
 /* Ilustración (service-6) */
-.service-6 .circle-slideshow .f1.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
-.service-6 .circle-slideshow .f2.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
-.service-6 .circle-slideshow .f3.loaded { background-image: url('../circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-6 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
+.service-6 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
+.service-6 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Diseño Gráfico (service-1) */
-.service-1 .circle-slideshow .f1.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
-.service-1 .circle-slideshow .f2.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
-.service-1 .circle-slideshow .f3.loaded { background-image: url('../circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-1 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
+.service-1 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
+.service-1 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Desarrollo Web (service-2) → mini carrusel sincronizado */
 .service-2 .mini-carousel {
   position: absolute;
@@ -596,12 +597,12 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 /* Mantener visible el título "Desarrollo Web" incluso en hover */
 /* (El título ya tiene text-shadow reforzado en hover para legibilidad) */
 /* Comunicación de Proyectos (service-5) */
-.service-5 .circle-slideshow .f1.loaded { background-image: url('../circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
-.service-5 .circle-slideshow .f2.loaded { background-image: url('../circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
-.service-5 .circle-slideshow .f3.loaded { background-image: url('../circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
+.service-5 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
+.service-5 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
+.service-5 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
 /* Gráficos Móviles (service-4) — un solo GIF: revelar suave en hover */
-.service-4 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
-.service-3 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
+.service-4 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
+.service-3 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
 /* Mostrar/ocultar el slideshow completo con un difuminado suave */
 .service-circle:hover .circle-slideshow { opacity: 1; }
 /* Control de animación: corre solo en hover */
@@ -824,6 +825,32 @@ footer.visible { transform: translateY(0); }
 .overlay-rollo.displaced-right { transform: translateX(-50%) translateX(5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
 .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
+
+/* Sincronización del texto con rollo2 en p13 - movimiento fluido conjunto */
+.image-wrap#p13 .text-overlay {
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 11; /* Por encima del rollo para visibilidad */
+}
+
+.image-wrap#p13 .text-overlay.displaced-left {
+  transform: translateX(-5%);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-wrap#p13 .text-overlay.displaced-right {
+  transform: translateX(5%);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.image-wrap#p13 .text-overlay.centered {
+  transform: translateX(0px);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.image-wrap#p13 .text-overlay.centered:hover {
+  transition: transform 0.05s ease-out;
+}
 
 /* Quitar efecto hover del título en 'Concepto para baraja' (p16) */
 .image-wrap#p16 .overlay {
@@ -1072,16 +1099,73 @@ footer.visible { transform: translateY(0); }
 
 /* EFECTOS - OPTIMIZACIONES ADICIONALES */
 
+/* HAMBURGER MENU */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1001;
+}
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: yellow;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) { #indice { width: 250px; } }
 @media (max-width: 768px) {
-  header { flex-direction: column; align-items: flex-start; padding: 10px; height: auto; }
-  nav { display: flex; flex-wrap: wrap; justify-content: space-around; width: 100%; margin-top: 10px; }
-  nav a { margin: 5px; font-size: .9em; }
-  main { margin-top: 120px; }
+  header { flex-direction: row; align-items: center; padding: 10px 20px; height: 60px; justify-content: space-between; }
+  .logo { height: 45px; width: 45px; }
+  .menu-toggle { display: block; }
+  nav { 
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #001f3f;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-top: 1px solid rgba(255, 255, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  nav.active { max-height: 400px; }
+  nav a { 
+    margin: 0; 
+    padding: 16px 20px; 
+    font-size: 1em;
+    border-bottom: 1px solid rgba(255, 255, 0, 0.1);
+    text-align: left;
+  }
+  nav a:hover { 
+    background: rgba(255, 255, 0, 0.1);
+    transform: none;
+  }
+  #idioma-btn { order: -1; }
+  main { margin-top: 60px; }
   section { padding: 20px; padding-top: 0; }
   .proyectos-container { flex-direction: column; height: auto; }
-  #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 120px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
+  #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 60px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
   .indice-content { padding: 0 15px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: visible; }
   #indice h2 { display: none; }
   #indice ul { display: flex; overflow-x: auto; gap: 8px; padding: 8px 0; height: 100%; align-items: center; margin: 0; scrollbar-width: none; -ms-overflow-style: none; }
@@ -1089,27 +1173,28 @@ footer.visible { transform: translateY(0); }
   #indice a { white-space: nowrap; padding: .6em 1.2em; border: none; border-radius: 20px; background: #f0f0f0; transition: all .2s; color: #333; font-size: .9em; box-shadow: 0 1px 3px rgba(0,0,0,.1); height: 40px; display: flex; align-items: center; justify-content: center; margin: 0; width: fit-content; min-width: auto; }
   #indice a.active { color: yellow; background: #001f3f; transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,31,63,.5); padding: .6em 1.4em; }
   #indice a:hover { color: #001f3f; transform: translateY(-2px); }
-  #galeria-container { height: calc(100vh - 190px); }
+  #galeria-container { height: calc(100vh - 130px); }
   #galeria { padding-bottom: 0; }
   .carousel { 
     gap: 15px; 
     width: 100%;
     max-width: 100vw;
     overflow: visible;
-    justify-content: center;
-    padding: 30px 15px;
+    justify-content: flex-start;
+    padding: 30px 10vw;
     box-sizing: border-box;
   }
   #menu { padding-top: 0; }
   #menu .carousel { padding-top: 0; }
   .carousel-caption { bottom: 10%; max-width: 70%; }
   .carousel img { 
-    width: calc((100vw - 80px) * 1.25); 
-    height: calc(((100vw - 80px) * 1.25) * 0.58); 
-    min-width: 315px;
-    min-height: 175px;
-    max-width: none;
-    max-height: none;
+    width: 80vw;
+    height: 80vw;
+    min-width: 250px;
+    min-height: 250px;
+    max-width: 80vw;
+    max-height: 80vw;
+    object-fit: cover;
   }
 .services { gap: 18px; padding: 0 18px; }
 .services-circles { grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -1132,27 +1217,32 @@ footer.visible { transform: translateY(0); }
   #intro-video { max-width: 90vw; max-height: 90vh; }
 }
 @media (max-width: 480px) {
+  header { height: 55px; padding: 8px 15px; }
   .logo { height: 40px; width: 40px; }
   #idioma-btn { padding: 4px 8px; font-size: .9em; }
-  main { margin-top: 100px; }
+  nav { top: 55px; }
+  main { margin-top: 55px; }
   section { padding: 15px; padding-top: 0; }
   .carousel { 
     gap: 10px; 
-    padding: 20px 10px;
+    padding: 20px 10vw;
     width: 100%;
     max-width: 100vw;
     overflow: visible;
-    justify-content: center;
+    justify-content: flex-start;
     box-sizing: border-box;
   }
   #menu { padding-top: 0; }
   #menu .carousel { padding-top: 0; }
   .carousel-caption { bottom: 8%; max-width: 80%; }
   .carousel img { 
-    width: calc((100vw - 60px) * 1.25); 
-    height: calc(((100vw - 60px) * 1.25) * 0.58); 
+    width: 80vw;
+    height: 80vw;
     min-width: 250px;
-    min-height: 140px;
+    min-height: 250px;
+    max-width: 80vw;
+    max-height: 80vw;
+    object-fit: cover;
   }
 .services { gap: 16px; padding: 0 14px; }
 .services-circles { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -1165,10 +1255,10 @@ footer.visible { transform: translateY(0); }
   .btn-napoleon { padding: 9px 14px; font-size: clamp(12px, 4.2vw, 16px); }
   .clients-logos { grid-template-columns: repeat(2, 1fr); gap: 12px 14px; }
   .clients-logos img { max-height: clamp(24px, 9vw, 36px); }
-  #indice { top: 100px; height: 60px; }
+  #indice { top: 55px; height: 60px; }
   .indice-content { padding: 0 10px; }
   #indice a { padding: 0.5em 1em; font-size: 0.85em; height: 36px; }
-  #galeria-container { height: calc(100vh - 160px); }
+  #galeria-container { height: calc(100vh - 115px); }
   .text-overlay { --text-size: 3.5cqw !important; }
 }
 

@@ -1,3 +1,39 @@
+// ===== MENÚ HAMBURGUESA =====
+const MobileMenu = {
+  toggle: null,
+  nav: null,
+  init() {
+    this.toggle = document.getElementById('menu-toggle');
+    this.nav = document.getElementById('main-nav');
+    if (!this.toggle || !this.nav) return;
+    
+    this.toggle.addEventListener('click', () => this.toggleMenu());
+    
+    // Cerrar menú al hacer clic en un enlace
+    const navLinks = this.nav.querySelectorAll('a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => this.closeMenu());
+    });
+    
+    // Cerrar menú al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (this.nav.classList.contains('active') && 
+          !this.nav.contains(e.target) && 
+          !this.toggle.contains(e.target)) {
+        this.closeMenu();
+      }
+    });
+  },
+  toggleMenu() {
+    this.toggle.classList.toggle('active');
+    this.nav.classList.toggle('active');
+  },
+  closeMenu() {
+    this.toggle.classList.remove('active');
+    this.nav.classList.remove('active');
+  }
+};
+
 // ===== ESTADO GLOBAL Y UTILIDADES =====
 const $ = {
   header: null, indice: null, main: null, footer: null, galeriaContainer: null, galeria: null,
@@ -351,7 +387,7 @@ const Lang = {
       try {
         const cvBtn = document.getElementById('btn-cv');
         if (cvBtn) {
-          const href = lang === 'en' ? 'assets/CV/Resume_JaimeCereijo.pdf' : 'assets/CV/Curriculum_JaimeCereijo.pdf';
+          const href = lang === 'en' ? 'assets/Secciones/Menu/CV/Resume_JaimeCereijo.pdf' : 'assets/Secciones/Menu/CV/Curriculum_JaimeCereijo.pdf';
           cvBtn.setAttribute('href', href);
         }
       } catch {}
@@ -487,6 +523,19 @@ const Overlays = {
           rollo.classList.add(dir);
         }
       }
+      
+      // Sincronizar texto asociado al rollo (especialmente rollo2)
+      const rolloNum = rollo.getAttribute('data-rollo');
+      if (rolloNum === '2') {
+        const wrap = rollo.closest('.image-wrap');
+        const associatedText = wrap?.querySelector('.text-overlay');
+        if (associatedText) {
+          // Copiar las mismas clases de estado del rollo al texto
+          associatedText.classList.toggle('centered', rollo.classList.contains('centered'));
+          associatedText.classList.toggle('displaced-left', rollo.classList.contains('displaced-left'));
+          associatedText.classList.toggle('displaced-right', rollo.classList.contains('displaced-right'));
+        }
+      }
     });
   }
 };
@@ -557,11 +606,27 @@ const Effects = {
       rollo.setAttribute('data-initial-direction', dir);
       Object.assign(rollo.style, {pointerEvents: 'auto', zIndex: '100'});
       
+      // Encontrar el texto asociado (especialmente para rollo2)
+      const rolloNum = rollo.getAttribute('data-rollo');
+      const wrap = rollo.closest('.image-wrap');
+      const associatedText = (rolloNum === '2' && wrap) ? wrap.querySelector('.text-overlay') : null;
+      
+      // Si hay texto asociado, aplicarle también las clases iniciales
+      if (associatedText) {
+        associatedText.classList.add(`displaced-${dir}`);
+        associatedText.setAttribute('data-initial-direction', dir);
+      }
+      
       const onMouseMove = e => {
         if (rollo.classList.contains('centered')) {
           const rect = rollo.getBoundingClientRect();
           const x = Math.max(-8, Math.min(8, (e.clientX - rect.left - rect.width / 2) * 0.06));
           rollo.style.transform = `translateX(-50%) translateX(${x}px)`;
+          
+          // Sincronizar movimiento del texto asociado
+          if (associatedText) {
+            associatedText.style.transform = `translateX(${x}px)`;
+          }
         }
       };
       
@@ -571,6 +636,14 @@ const Effects = {
           ? 'translateX(-50%) translateX(0px)'
           : `translateX(-50%) translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
         rollo.style.transform = transform;
+        
+        // Sincronizar reset del texto asociado
+        if (associatedText) {
+          const textTransform = rollo.classList.contains('centered')
+            ? 'translateX(0px)'
+            : `translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
+          associatedText.style.transform = textTransform;
+        }
       };
       
       rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'pointer', pointerEvents: 'auto', zIndex: '100'}));
@@ -644,7 +717,7 @@ const Effects = {
       // lastActive contiene el índice (1..9) de la botella calculada por onMouseMove
       if (!lastActive) return;
       // Construir la ruta asumida dentro de Botellas_PopUp usando extensión .jpg
-      const popupPath = `assets/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
+      const popupPath = `assets/Secciones/Proyectos/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
       try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
     });
 
@@ -656,7 +729,7 @@ const Effects = {
         const el = container.querySelector(`.overlay-botella[data-botella="${lastActive}"]`);
         const rel = el && el.getAttribute && el.getAttribute('src');
         if (!lastActive) return;
-        const popupPath = `assets/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
+        const popupPath = `assets/Secciones/Proyectos/Nostre/Botellas_PopUp/Botella${lastActive}.jpg`;
         try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
       }
     });
@@ -740,7 +813,7 @@ const Effects = {
       // Click: abrir popup con la imagen grande correspondiente (mismo patrón que las botellas)
       area.addEventListener('click', (evt) => {
         evt.preventDefault();
-        const popupPath = `assets/Zombis/Carteles_PopUp/cartel${id}.png`;
+        const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
         try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
         // Tras abrir el popup, desactivar la overlay/sombra y quitar el foco del área
         try { onLeave(); } catch (ignore) {}
@@ -750,7 +823,7 @@ const Effects = {
       area.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          const popupPath = `assets/Zombis/Carteles_PopUp/cartel${id}.png`;
+          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
           try { window.open(popupPath, '_blank', 'noopener'); } catch (err) { window.location.href = popupPath; }
           try { onLeave(); } catch (ignore) {}
           try { area.blur(); } catch (ignore) {}
@@ -1005,7 +1078,7 @@ const Thumbnails = {
     const images = [];
     [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
       const img = new Image();
-      img.src = `assets/Thumbnails/${g}.${i}.png`;
+      img.src = `assets/Secciones/Proyectos/Thumbnails/${g}.${i}.png`;
       images.push(img);
     }));
     this.preloaded = true;
@@ -1027,7 +1100,7 @@ const Thumbnails = {
       el.classList.add('transitioning');
       
       // Crear elemento temporal para la nueva imagen
-      const newSrc = `assets/Thumbnails/${group}.${idx+1}.png`;
+      const newSrc = `assets/Secciones/Proyectos/Thumbnails/${group}.${idx+1}.png`;
       const tmp = document.createElement('img');
       tmp.alt = el.alt || '';
       tmp.className = `${el.className} visible thumb-temp`;
@@ -1934,6 +2007,9 @@ const init = () => {
       Carousel.start();
     }
   }, 1000);
+  
+  // Inicializar menú hamburguesa
+  MobileMenu.init();
 };
 
 // Ejecutar una sola vez en cuanto el DOM esté listo

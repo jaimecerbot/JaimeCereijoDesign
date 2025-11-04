@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jaime Cereijo Design</title>
+  <link rel="icon" type="image/png" href="LogoChiquito.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/styles.css">
@@ -12,9 +13,14 @@
   <!-- HEADER -->
   <header id="main-header">
     <div class="logo">
-      <img src="Jmotion.png" alt="Logo">
+      <img src="Logo.png" alt="Logo">
     </div>
-    <nav>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="main-nav">
       <a data-section="menu"><span data-es="Menú" data-en="Menu"></span></a>
       <a data-section="proyectos"><span data-es="Proyectos" data-en="Projects"></span></a>
       <a data-section="redes"><span data-es="Redes" data-en="Social"></span></a>
@@ -36,28 +42,40 @@
       <div class="carousel">
         <!-- Imagen extra a la izquierda que no afecta la secuencia -->
         <figure class="carousel-item contrast-strong">
-          <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" class="carousel-buffer" onclick="irAProyecto('p7')" onerror="this.style.display='none';">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/ReflejosMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" class="carousel-buffer" onclick="irAProyecto('p7')" onerror="this.style.display='none';">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">Título del proyecto</div>
             <div class="carousel-subtitle">Subtítulo del proyecto</div>
           </div>
         </figure>
         <figure class="carousel-item">
-          <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto('p1')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Hira.png');">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/HiraMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto('p1')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Hira.png');">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">Perchero Hira</div>
             <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
           </div>
         </figure>
         <figure class="carousel-item">
-          <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto('p3')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Nostre.png');">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/NostreMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto('p3')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Nostre.png');">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">Etiquetado para vinos Nostre</div>
             <div class="carousel-subtitle">Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos.</div>
           </div>
         </figure>
         <figure class="carousel-item contrast-strong">
-          <img src="assets/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto('p7')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Reflejos.png');">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/ReflejosMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto('p7')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Reflejos.png');">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">"Reflejos del Multiverso"</div>
             <div class="carousel-subtitle">Campaña gráfica multiplataforma hecha por encargo para la obra de teatro "Reflejos del Multiverso".</div>
@@ -65,14 +83,20 @@
         </figure>
         <!-- Imágenes extra para transición suave (no forman parte de la lógica) -->
         <figure class="carousel-item">
-          <img src="assets/CarruselMenu/Hira.png" alt="Perchero Hira" class="carousel-buffer" onclick="irAProyecto('p1')" onerror="this.style.display='none';">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/HiraMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" class="carousel-buffer" onclick="irAProyecto('p1')" onerror="this.style.display='none';">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">Perchero Hira</div>
             <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
           </div>
         </figure>
         <figure class="carousel-item">
-          <img src="assets/CarruselMenu/Nostre.png" alt="Vinos Nostre" class="carousel-buffer" onclick="irAProyecto('p3')" onerror="this.style.display='none';">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/NostreMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Nostre.png" alt="Vinos Nostre" class="carousel-buffer" onclick="irAProyecto('p3')" onerror="this.style.display='none';">
+          </picture>
           <div class="carousel-caption">
             <div class="carousel-title">Etiquetado para vinos Nostre</div>
             <div class="carousel-subtitle">Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos.</div>
@@ -85,9 +109,9 @@
         <div class="services-circles">
           <div class="service-circle service-1">
             <div class="circle-slideshow">
-              <div class="frame f1" data-src="assets/circulos/DisenoGrafico/DisenoGrafico1.png"></div>
-              <div class="frame f2" data-src="assets/circulos/DisenoGrafico/DisenoGrafico2.png"></div>
-              <div class="frame f3" data-src="assets/circulos/DisenoGrafico/DisenoGrafico3.png"></div>
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico3.png"></div>
             </div>
             <span>Diseño Gráfico</span>
           </div>
@@ -98,28 +122,28 @@
           </div>
           <div class="service-circle service-3"><span>Edición de Vídeo</span>
             <div class="circle-slideshow">
-              <div class="frame f1" data-src="assets/circulos/EdicionVideo/EdicionVideo.gif"></div>
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/EdicionVideo/EdicionVideo.gif"></div>
             </div>
           </div>
           <div class="service-circle service-4">
             <div class="circle-slideshow">
-              <div class="frame f1" data-src="assets/circulos/GraficosMoviles/Secuencia 01_1.gif"></div>
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/GraficosMoviles/Secuencia 01_1.gif"></div>
             </div>
             <span>Gráficos Móviles</span>
           </div>
           <div class="service-circle service-5">
             <div class="circle-slideshow">
-              <div class="frame f1" data-src="assets/circulos/Comunicacion/Comunicacion1.png"></div>
-              <div class="frame f2" data-src="assets/circulos/Comunicacion/Comunicacion2.png"></div>
-              <div class="frame f3" data-src="assets/circulos/Comunicacion/Comunicacion3.png"></div>
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion3.png"></div>
             </div>
             <span>Comunicación de Proyectos</span>
           </div>
           <div class="service-circle service-6">
             <div class="circle-slideshow">
-              <div class="frame f1" data-src="assets/circulos/Ilustraciones/Ilustracion1.png"></div>
-              <div class="frame f2" data-src="assets/circulos/Ilustraciones/Ilustracion2.png"></div>
-              <div class="frame f3" data-src="assets/circulos/Ilustraciones/Ilustracion3.png"></div>
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion3.png"></div>
             </div>
             <span>Ilustración</span>
           </div>
@@ -143,7 +167,7 @@
             <a id="btn-ver-proyectos" href="#proyectos" class="btn-napoleon">
               <span data-es="Ver proyectos" data-en="See projects">Ver proyectos</span>
             </a>
-            <a id="btn-cv" href="assets/CV/Curriculum_JaimeCereijo.pdf" class="btn-napoleon" download>
+            <a id="btn-cv" href="assets/Secciones/Menu/CV/Curriculum_JaimeCereijo.pdf" class="btn-napoleon" download>
               <span data-es="Descargar CV" data-en="Download resume">Descargar CV</span>
             </a>
             <span></span>
@@ -160,18 +184,18 @@
           <h3 id="clients-title"><span data-es="Clientes y colaboradores" data-en="Partners and clients">Clientes y colaboradores</span></h3>
           <div class="clients" aria-labelledby="clients-title">
             <div class="clients-logos">
-              <img src="assets/Clientes/Ajuntament_de_València.png" alt="Ajuntament de València" loading="lazy" decoding="async">
-              <img src="assets/Clientes/Cultura.png" alt="Cultura" loading="lazy" decoding="async">
-              <img src="assets/Clientes/etsiadi.png" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
-              <img src="assets/Clientes/etsiamn.png" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
-              <img src="assets/Clientes/FeriaHabitat.png" alt="Feria Hábitat / Feria de Valencia" loading="lazy" decoding="async">
-              <img src="assets/Clientes/institut cultura.png" alt="Institut de Cultura" loading="lazy" decoding="async">
-              <img src="assets/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
-              <img src="assets/Clientes/systemtronic.png" alt="Systemtronic" loading="lazy" decoding="async">
-              <img src="assets/Clientes/Teatro Circulo.png" alt="Teatro Círculo" loading="lazy" decoding="async">
-              <img src="assets/Clientes/unautavaca.png" alt="Unautavaca" loading="lazy" decoding="async">
-              <img src="assets/Clientes/Clario.png" alt="Clario" loading="lazy" decoding="async">
-              <img src="assets/Clientes/logo_emperador.png" alt="Emperador" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Ajuntament_de_València.png" alt="Ajuntament de València" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Cultura.png" alt="Cultura" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/etsiadi.png" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/etsiamn.png" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/FeriaHabitat.png" alt="Feria Hábitat / Feria de Valencia" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/institut cultura.png" alt="Institut de Cultura" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/systemtronic.png" alt="Systemtronic" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Teatro Circulo.png" alt="Teatro Círculo" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/unautavaca.png" alt="Unautavaca" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Clario.png" alt="Clario" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/logo_emperador.png" alt="Emperador" loading="lazy" decoding="async">
             </div>
             <div class="clients-copy">
               <p>
@@ -208,13 +232,13 @@
           <div id="galeria">
             <div class="image-wrap" id="p1">
               <!-- Imagen base (inamovible) -->
-              <img id="p1" src="assets/Hira/focos.png" alt="Hira 1" class="base">
+              <img id="p1" src="assets/Secciones/Proyectos/Hira/focos.png" alt="Hira 1" class="base">
               <!-- Overlay vinculada a la base; ajustar --overlay-top para posicionarla
                    Ejemplo: --overlay-top:60% coloca la esquina superior de la overlay al 60% de la altura de la base -->
-              <img id="p1" src="assets/Hira/stand.png" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
+              <img id="p1" src="assets/Secciones/Proyectos/Hira/stand.png" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
             </div>
             <div class="image-wrap" id="p2">
-              <img id="p2" src="assets/Hira/render.png" alt="Hira 2" class="base">
+              <img id="p2" src="assets/Secciones/Proyectos/Hira/render.png" alt="Hira 2" class="base">
               <div class="text-overlay" style="--text-top: 8%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;"><span data-es="Perchero Hira" data-en="Hira Coat Rack"></span></div>
               <div class="text-overlay shadowed" style="--text-top: 20%; --text-left: 20.1%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw; white-space: pre-line; line-height: 1.4;"><span data-es="En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
 
@@ -223,31 +247,31 @@ Tras un rediseño, hice dos paneles con montajes como este y preparé un discurs
 After a redesign, I created two panels with mockups like this and prepared a presentation with which we managed to get Systemtronic to select the Hira coat rack over proposals from 12 other teams. Hira was presented at Hábitat València Fair 2025."></span></div>
             </div>
             <div class="image-wrap" id="p3">
-              <img id="p3" src="assets/Nostre/Nostre1.png" alt="Nostre 1" class="base">
+              <img id="p3" src="assets/Secciones/Proyectos/Nostre/Nostre1.png" alt="Nostre 1" class="base">
               <div class="text-overlay" style="--text-top: 10%; --text-left: 48%; --text-transform: translateX(-50%); --text-size: 4.5cqw; font-family: 'Cinzel', serif; color: black; white-space: nowrap; text-align: center;"><span data-es="ETIQUETADO DE VINOS Y CERVEZAS" data-en="WINE AND BEER LABELING"></span></div>
               <div class="text-overlay" style="--text-top: 30%; --text-left: 8.5%; font-family: 'Times New Roman', serif; color: black; --text-size: 2cqw; text-align: justify; max-width: 22%; white-space: normal;"><span data-es="En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia." data-en="In 2024 I was the winner, along with two classmates, in a labeling contest organized by the Polytechnic University of Valencia."></span></div>
               <div class="text-overlay" style="--text-top: 58.7%; --text-left: 68%; font-family: 'Times New Roman', serif; color:black; --text-size: 2cqw; text-align: justify; max-width: 25%; white-space: normal;"><span data-es="Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas que la UPV envió como obsequio a otros centros llevaron nuestras etiquetas." data-en="Alain Ferrer, Álvaro Selma and I won in the wine category. That's why, in 2025, the bottles that UPV sent as gifts to other centers bore our labels."></span></div>
             </div>
             <div class="image-wrap" id="p4">
-              <img id="p4" src="assets/Nostre/Nostre2.png" alt="Nostre 2" class="base">
-              <img id="p4" src="assets/Nostre/Botella9.png" alt="Botella9" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="9">
-              <img id="p4" src="assets/Nostre/Botella8.png" alt="Botella8" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="8">
-              <img id="p4" src="assets/Nostre/Botella7.png" alt="Botella7" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="7">
-              <img id="p4" src="assets/Nostre/Botella6.png" alt="Botella6" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="6">
-              <img id="p4" src="assets/Nostre/Botella5.png" alt="Botella5" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="5">
-              <img id="p4" src="assets/Nostre/Botella4.png" alt="Botella4" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="4">
-              <img id="p4" src="assets/Nostre/Botella3.png" alt="Botella3" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="3">
-              <img id="p4" src="assets/Nostre/Botella2.png" alt="Botella2" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="2">
-              <img id="p4" src="assets/Nostre/Botella1.png" alt="Botella1" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="1">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Nostre2.png" alt="Nostre 2" class="base">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella9.png" alt="Botella9" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="9">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella8.png" alt="Botella8" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="8">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella7.png" alt="Botella7" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="7">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella6.png" alt="Botella6" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="6">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella5.png" alt="Botella5" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="5">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella4.png" alt="Botella4" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="4">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella3.png" alt="Botella3" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="3">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella2.png" alt="Botella2" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="2">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella1.png" alt="Botella1" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="1">
               <div class="text-overlay" style="--text-top: 28%; --text-left: 60%; font-family: 'Aver', sans-serif; font-style: italic; font-size: 6cqw; color: black; max-width: 19cqw; line-height: 0.9;"><span data-es="Fraternidades Americanas" data-en="American Fraternities"></span></div>
               <div class="text-overlay" style="--text-top: 50%; --text-left: 60%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 35%;"><span data-es="La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses." data-en="The proposal we made in the beer category sought to adapt UPV's identity to the typical image of American university fraternities."></span></div>
             </div>
             <div class="image-wrap" id="p5">
-              <img id="p5" src="assets/Nostre/Nostre3.png" alt="Nostre 3" class="base">
-              <img id="p5" src="assets/Nostre/Manos.png" alt="Manos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <img id="p5" src="assets/Secciones/Proyectos/Nostre/Nostre3.png" alt="Nostre 3" class="base">
+              <img id="p5" src="assets/Secciones/Proyectos/Nostre/Manos.png" alt="Manos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
             </div>
             <div class="image-wrap" id="p6">
-              <img id="p6" src="assets/Nostre/Nostre4.png" alt="Nostre 4">
+              <img id="p6" src="assets/Secciones/Proyectos/Nostre/Nostre4.png" alt="Nostre 4">
               <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; font-family: 'CCTheStorySoNearWOO-Regular', serif; font-size: 5.5cqw; color: black; max-width: 31%; line-height: 0.95;"><span data-es="Romanticismo Mediterráneo" data-en="Mediterranean Romanticism"></span></div>
               <div class="text-overlay" style="--text-top: 42%; --text-left: 10%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 29.75%; text-align: justify; white-space: pre-line; line-height: 1.4;"><span data-es="En cuanto a los vinos, quisimos presentar un etiquetado más sobrio, y que además mostrase una visión romántica del Mediterráneo.
 
@@ -256,8 +280,8 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               For them, we used a thick font with soft serifs, concentrating all the color on the &quot;N&quot; to allude to capital letters, so popular during romanticism."></span></div>
             </div>
             <div class="image-wrap" id="p7">
-              <img id="p7" src="assets/Reflejos/fondo_2.gif" alt="Reflejos 1" class="base">
-              <img id="p7" src="assets/Reflejos/folletos.png" alt="folletos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <img id="p7" src="assets/Secciones/Proyectos/Reflejos/fondo_2.gif" alt="Reflejos 1" class="base">
+              <img id="p7" src="assets/Secciones/Proyectos/Reflejos/folletos.png" alt="folletos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
               <div class="text-overlay" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 3.33cqw;"><span data-es="Reflejos del" data-en="Reflections of the"></span></div>
               <div class="text-overlay" style="--text-top: 21%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;"><span data-es="Multiverso" data-en="Multiverse"></span></div>
               <div class="text-overlay" style="--text-top: 35.5%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;"><span data-es="Para promocionar la obra &quot;Reflejos del Multiverso&quot;, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
@@ -267,19 +291,19 @@ After a redesign, I created two panels with mockups like this and prepared a pre
                 In the end, I made two posters and integrated animated graphics into the social media material, and thanks to my services, all tickets for the 4 sessions of the play were sold."></span></div>
             </div>
             <div class="image-wrap" id="p8">
-              <img id="p8" src="assets/Reflejos/fondo_1.gif" alt="Reflejos 2" class="base">
+              <img id="p8" src="assets/Secciones/Proyectos/Reflejos/fondo_1.gif" alt="Reflejos 2" class="base">
             </div>
             <div class="image-wrap" id="p9">
-              <img id="p9" src="assets/Zombis/zombis.png" alt="zombis" class="base">
+              <img id="p9" src="assets/Secciones/Proyectos/Zombis/zombis.png" alt="zombis" class="base">
               <!-- Sombras por debajo de los carteles, por delante del fondo -->
-              <img src="assets/Zombis/sombra1.png" alt="Sombra 1" class="sombra" data-cartel="1" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra2.png" alt="Sombra 2" class="sombra" data-cartel="2" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra3.png" alt="Sombra 3" class="sombra" data-cartel="3" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra4.png" alt="Sombra 4" class="sombra" data-cartel="4" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra5.png" alt="Sombra 5" class="sombra" data-cartel="5" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra6.png" alt="Sombra 6" class="sombra" data-cartel="6" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra7.png" alt="Sombra 7" class="sombra" data-cartel="7" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/sombra8.png" alt="Sombra 8" class="sombra" data-cartel="8" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra1.png" alt="Sombra 1" class="sombra" data-cartel="1" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra2.png" alt="Sombra 2" class="sombra" data-cartel="2" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra3.png" alt="Sombra 3" class="sombra" data-cartel="3" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra4.png" alt="Sombra 4" class="sombra" data-cartel="4" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra5.png" alt="Sombra 5" class="sombra" data-cartel="5" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra6.png" alt="Sombra 6" class="sombra" data-cartel="6" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra7.png" alt="Sombra 7" class="sombra" data-cartel="7" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra8.png" alt="Sombra 8" class="sombra" data-cartel="8" style="--overlay-top:0%;" />
 
               <div class="text-overlay" style="--text-top: 10%; --text-left: 9.1%; --text-max-width: 33cqw; color: black; font-family:'Google Sans Code'; font-size: 1.2cqw;"><span data-es="En Halloween de 2025, en colaboración con el Ayuntamiento de Emperador, la empresa Clarió organizó una zona zombi que recorría toda la sede municipal. Como miembro del equipo de decorado, asistí en el diseño del recorrido y de la ambientación." data-en="During the Halloween celebrations of 2025, in collaboration with the Emperador City Council, the company Clarió organized a zombie area that ran throughout the municipal headquarters. As a member of the set design team, I assisted in the design of the route and the atmosphere."></span></div>
               <div class="text-overlay" style="--text-top: 70%; --text-left: 9.6%; --text-max-width: 33cqw; color: black; font-family:'Google Sans Code'; font-size: 1.2cqw;"><span data-es="Además, produje un número de señales con indicaciones varias. Combiné pictogramas con mensajes breves que explicaban normas del juego o bien aportaban a la ambientación. Las señales fueron impresas en alta calidad y situadas en puntos clave del recorrido, creando una experiencia mucho más completa." data-en="In addition, I was in charge of producing a number of signs with various indications. I combined pictograms with brief messages that explained game rules or contributed to the atmosphere. The signs were printed in high quality and placed at key points along the route, creating a much more complete experience."></span></div>
@@ -287,14 +311,14 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <div class="text-overlay" style="--text-top: 84.5%; --text-left: 65.65%; --text-max-width: 33cqw; color: rgb(243, 243, 243); font-family: Impact, 'Arial Black', sans-serif; font-size: 4cqw;"><span data-es="Emperador" data-en="Emperador"></span></div>
 
               <!-- Overlays de carteles para la sección 'Decorado de Zona Zombi' -->
-              <img src="assets/Zombis/cartel1.png" alt="Cartel 1" class="overlay" data-cartel="1" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel2.png" alt="Cartel 2" class="overlay" data-cartel="2" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel3.png" alt="Cartel 3" class="overlay" data-cartel="3" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel4.png" alt="Cartel 4" class="overlay" data-cartel="4" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel5.png" alt="Cartel 5" class="overlay" data-cartel="5" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel6.png" alt="Cartel 6" class="overlay" data-cartel="6" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel7.png" alt="Cartel 7" class="overlay" data-cartel="7" style="--overlay-top:0%;" />
-              <img src="assets/Zombis/cartel8.png" alt="Cartel 8" class="overlay" data-cartel="8" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel1.png" alt="Cartel 1" class="overlay" data-cartel="1" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel2.png" alt="Cartel 2" class="overlay" data-cartel="2" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel3.png" alt="Cartel 3" class="overlay" data-cartel="3" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel4.png" alt="Cartel 4" class="overlay" data-cartel="4" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel5.png" alt="Cartel 5" class="overlay" data-cartel="5" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel6.png" alt="Cartel 6" class="overlay" data-cartel="6" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel7.png" alt="Cartel 7" class="overlay" data-cartel="7" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel8.png" alt="Cartel 8" class="overlay" data-cartel="8" style="--overlay-top:0%;" />
               <!-- Áreas (hotspots) de ejemplo para activar cada cartel: ajusta 'left/top/width/height' en % o en px -->
               <div class="cartel-area dev-outline" data-cartel="1" tabindex="0" style="left:61%; top:11%; width:6%; height:15%;"></div>
               <div class="cartel-area dev-outline" data-cartel="2" tabindex="0" style="left:72%; top:11%; width:6%; height:15%;"></div>
@@ -306,8 +330,8 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <div class="cartel-area dev-outline" data-cartel="8" tabindex="0" style="left:77%; top:52%; width:6%; height:15%;"></div>
             </div>
             <div class="image-wrap" id="p10">
-              <img id="p10" src="assets/Thumbnails/fondo1.png" alt="Thumbnails 1" class="base">
-              <img id="p10" src="assets/Thumbnails/videos.png" alt="Videos" class="overlay" style="--overlay-top:0%;">
+              <img id="p10" src="assets/Secciones/Proyectos/Thumbnails/fondo1.png" alt="Thumbnails 1" class="base">
+              <img id="p10" src="assets/Secciones/Proyectos/Thumbnails/videos.png" alt="Videos" class="overlay" style="--overlay-top:0%;">
               <div class="text-overlay" style="--text-top: 14%; --text-left: 26.5%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 4.75cqw; "><span data-es="Thumbnails para Moifez" data-en="Thumbnails for Moifez"></span></div>
               <div class="text-overlay" style="--text-top: 25.5%; --text-left: 27.4%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.75cqw; max-width: 47cqw;"><span data-es="Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas." data-en="For more than four years, I have occasionally made thumbnails for some of Moifez's videos on his YouTube channel. Several of them have reached up to 400K views."></span></div>
               <div class="text-overlay" style="--text-top: 55%; --text-left: 50.75%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 3cqw; "><span data-es="Procedimiento Habitual" data-en="Usual Procedure"></span></div>
@@ -315,11 +339,11 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <div class="text-overlay" style="--text-top: 83.5%; --text-left: 50.8%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;"><span data-es="3,1K visualizaciones • Hace 3 años" data-en="3.1K views • 3 years ago"></span></div>
             </div>
             <div class="image-wrap" id="p11">
-              <img id="p11" src="assets/Thumbnails/fondo.png" alt="Thumbnails 1" class="base">
-              <img id="p11" src="assets/Thumbnails/1.1.png" alt="video" class="overlay" style="--overlay-top:0%;">
-              <img id="p11" src="assets/Thumbnails/1.2.png" alt="video" class="overlay" style="--overlay-top:0%;">
-              <img id="p11" src="assets/Thumbnails/1.3.png" alt="video" class="overlay" style="--overlay-top:0%;">
-              <img id="p11" src="assets/Thumbnails/1.4.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/fondo.png" alt="Thumbnails 1" class="base">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.1.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.2.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.3.png" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.4.png" alt="video" class="overlay" style="--overlay-top:0%;">
               <!-- Rectángulos para transición -->
               <div class="thumb-mask" data-thumb="1"></div>
               <div class="thumb-mask" data-thumb="2"></div>
@@ -355,52 +379,52 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <div class="text-overlay text-group text-group-3" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; display: none;">NOTICIAS de MIERDA S01E01</div>
             </div>
             <div class="image-wrap" id="p12">
-              <img id="p12" src="assets/Trenzas/maderas1.png" alt="Trenzas 1" class="base">
-              <img id="p12" src="assets/Trenzas/rollo1.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="1">
+              <img id="p12" src="assets/Secciones/Proyectos/Trenzas/maderas1.png" alt="Trenzas 1" class="base">
+              <img id="p12" src="assets/Secciones/Proyectos/Trenzas/rollo1.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="1">
             </div>
             <div class="image-wrap" id="p13">
-              <img id="p13" src="assets/Trenzas/maderas2.png" alt="Trenzas 2" class="base">
-              <img id="p13" src="assets/Trenzas/rollo2.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="2">
+              <img id="p13" src="assets/Secciones/Proyectos/Trenzas/maderas2.png" alt="Trenzas 2" class="base">
+              <img id="p13" src="assets/Secciones/Proyectos/Trenzas/rollo2.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="2">
               <div class="text-overlay" style="--text-top: 27.5%; --text-left: 52%; z-index: 9999; font-family: 'Caveat Brush'; font-size: 2cqw; color: black; max-width: 23cqw; line-height: 2.28cqw;"><span data-es="Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado &quot;Trenzas del Mar del Norte&quot;.
 
                 El cliente quería que el estilo fuera &quot;una mezcla de arte polinesio y vikingo&quot;, y el aspecto de casi todos los elementos venía definido por las descripciones del relato" data-en="Another commission I received from Moifez was a set of 30 illustrations for his self-published story &quot;Braids of the North Sea&quot;.
                 The client wanted the style of the drawings to be &quot;a mix between Polynesian and Viking art&quot;, and the appearance of almost all elements was defined by the descriptions given in the story."></span></div>
             </div>
             <div class="image-wrap" id="p14">
-              <img id="p14" src="assets/Trenzas/maderas4.png" alt="Trenzas 3" class="base">
-              <img id="p14" src="assets/Trenzas/rollo3.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="3">
+              <img id="p14" src="assets/Secciones/Proyectos/Trenzas/maderas4.png" alt="Trenzas 3" class="base">
+              <img id="p14" src="assets/Secciones/Proyectos/Trenzas/rollo3.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="3">
             </div>
             <div class="image-wrap" id="p15">
-              <img id="p15" src="assets/Trenzas/maderas5.png" alt="Trenzas 4" class="base">
-              <img id="p15" src="assets/Trenzas/rollo4.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="4">
+              <img id="p15" src="assets/Secciones/Proyectos/Trenzas/maderas5.png" alt="Trenzas 4" class="base">
+              <img id="p15" src="assets/Secciones/Proyectos/Trenzas/rollo4.png" alt="rollo" class="overlay2 overlay-rollo" data-rollo="4">
             </div>
             <div class="image-wrap" id="p16">
-              <img id="p16" src="assets/Cartas/fondotitulo.png" alt="Cartas 1" class="base">
-              <img id="p16" src="assets/Cartas/titulo.png" alt="logo" class="overlay" style="--overlay-top:0%;">
+              <img id="p16" src="assets/Secciones/Proyectos/Cartas/fondotitulo.png" alt="Cartas 1" class="base">
+              <img id="p16" src="assets/Secciones/Proyectos/Cartas/titulo.png" alt="logo" class="overlay" style="--overlay-top:0%;">
               <div class="text-overlay" style="--text-top: 46%; --text-left: 50%; --text-transform: translateX(-47.5%); text-align: center; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 40cqw;"><span data-es="Hace poco, como proyecto personal, planteé el concepto para una baraja de cartas inspiradas en el videojuego &quot;Outer Wilds&quot;.
 
                 El valor principal de estos diseños reside en una combinación de elementos icónicos del juego con los símbolos tradicionales de la baraja francesa." data-en="A few years ago, as a personal project, I developed the concept for a deck of cards inspired by the video game &quot;Outer Wilds&quot;.
                 The main value of these designs lies in a combination of various iconic game elements with traditional French deck symbols."></span></div>
             </div>
             <div class="image-wrap" id="p17">
-              <img id="p17" src="assets/Cartas/fondocartas1.png" alt="Cartas 2" class="base">
-              <img id="p17" src="assets/Cartas/cartas1.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <img id="p17" src="assets/Secciones/Proyectos/Cartas/fondocartas1.png" alt="Cartas 2" class="base">
+              <img id="p17" src="assets/Secciones/Proyectos/Cartas/cartas1.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
               <div class="text-overlay" style="--text-top: 30%; --text-left: 55%; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 30cqw;"><span data-es="Originalmente, enfoqué el proyecto como concepto para una baraja de colección, estilo tarot.
 
                 Más adelante, revisé los diseños para que se adaptasen a nuevas tipologías de baraja, como cartas de juego o para trucos de magia." data-en="Originally, I approached the project as a concept for a collectible deck, tarot style.
                 Later, I revised the designs so that the deck would adapt to other typologies, such as playing cards or magic tricks."></span></div>
             </div>
             <div class="image-wrap" id="p18">
-              <img id="p18" src="assets/Cartas/fondocartas2.png" alt="Cartas 3" class="base">
-              <img id="p18" src="assets/Cartas/cartas2.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <img id="p18" src="assets/Secciones/Proyectos/Cartas/fondocartas2.png" alt="Cartas 3" class="base">
+              <img id="p18" src="assets/Secciones/Proyectos/Cartas/cartas2.png" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
             </div>
             <div class="image-wrap" id="p19">
-              <img id="p19" src="assets/Libro/libro1.png" alt="Libro 1">
+              <img id="p19" src="assets/Secciones/Proyectos/Libro/libro1.png" alt="Libro 1">
               <div class="text-overlay" style="--text-top: 58%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Times New Roman'; font-size: 2cqw; background: linear-gradient(to bottom, #C9A961 0%, #C9A961 30%, #b58d07 100%); background-size: 100% 1.4em; background-repeat: repeat-y; background-attachment: local; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3); max-width: 42cqw; line-height: 1.4;"><span data-es="Como parte de un proyecto académico, se nos instó a diseñar las cubiertas de &quot;El Libro de la Selva&quot;.
                 Opté por un diseño simple, acorde con las tendencias actuales en diseño editorial, pero con un corte tradicional, ya que se trata de un clásico de la literatura inglesa." data-en="As part of an academic project, we were urged to design the covers of &quot;The Jungle Book&quot;.
                 I opted for a simple design, in line with current trends in editorial design, but with a traditional cut, since it is a classic of English literature."></span></div>
             </div>
-            <img id="p20" src="assets/Libro/libro2.png" alt="Libro 2">
+            <img id="p20" src="assets/Secciones/Proyectos/Libro/libro2.png" alt="Libro 2">
           </div>
         </div>
       </div>
@@ -413,30 +437,30 @@ After a redesign, I created two panels with mockups like this and prepared a pre
         <!-- Instagram -->
         <!-- TODO: Reemplaza # por el enlace a tu perfil de Instagram -->
         <a class="social-link instagram" href="https://www.instagram.com/cereijo_design?igsh=MXBnY3Jhd3c0MTkwag==" target="_blank" rel="noopener noreferrer nofollow" aria-label="Instagram">
-          <img class="icon" src="assets/Redes/Instagram.png" alt="" loading="lazy" decoding="async" />
+          <img class="icon" src="assets/Secciones/Redes/Instagram.png" alt="" loading="lazy" decoding="async" />
         </a>
 
         <!-- LinkedIn -->
         <!-- TODO: Reemplaza # por el enlace a tu perfil de LinkedIn -->
         <a class="social-link linkedin" href="https://www.linkedin.com/in/jaime-cereijo-botana-64b24735a/" target="_blank" rel="noopener noreferrer nofollow" aria-label="LinkedIn">
-          <img class="icon" src="assets/Redes/Linkedin.png" alt="" loading="lazy" decoding="async" />
+          <img class="icon" src="assets/Secciones/Redes/Linkedin.png" alt="" loading="lazy" decoding="async" />
         </a>
 
         <!-- Behance -->
         <!-- TODO: Reemplaza # por el enlace a tu perfil de Behance -->
         <a class="social-link behance" href="https://www.behance.net/jaimecereijo#" target="_blank" rel="noopener noreferrer nofollow" aria-label="Behance">
-          <img class="icon" src="assets/Redes/Behance.png" alt="" loading="lazy" decoding="async" />
+          <img class="icon" src="assets/Secciones/Redes/Behance.png" alt="" loading="lazy" decoding="async" />
         </a>
 
         <!-- WhatsApp -->
         <!-- Enlace directo a chat de WhatsApp con tu número -->
         <a class="social-link whatsapp" href="https://wa.me/34644432686" target="_blank" rel="noopener noreferrer nofollow" aria-label="WhatsApp">
-          <img class="icon" src="assets/Redes/Whatsapp.png" alt="" loading="lazy" decoding="async" />
+          <img class="icon" src="assets/Secciones/Redes/Whatsapp.png" alt="" loading="lazy" decoding="async" />
         </a>
 
         <!-- Mail -->
         <a class="social-link mail" href="mailto:jaimecereijobotana@gmail.com" aria-label="Enviar correo">
-          <img class="icon" src="assets/Redes/Mail.png" alt="" loading="lazy" decoding="async" />
+          <img class="icon" src="assets/Secciones/Redes/Mail.png" alt="" loading="lazy" decoding="async" />
         </a>
       </div>
     <p data-es="Sígueme en Instagram, Behance y LinkedIn para estar al día de mis proyectos y actualizaciones."
@@ -448,7 +472,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
 
       <div class="contact-inner">
         <div class="contact-photo">
-          <img src="assets/jaime_cropped.jpg" alt="Retrato de Jaime" loading="lazy" decoding="async">
+          <img src="assets/Secciones/Contacto/jaime_cropped.jpg" alt="Retrato de Jaime" loading="lazy" decoding="async">
         </div>
         <div class="contact-details">
           <p><strong>Jaime Cereijo Botana</strong></p>
@@ -469,7 +493,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           </p>
         </div>
         <div class="about-photo">
-          <img src="assets/jaime.png" alt="Retrato de Jaime" loading="lazy" decoding="async">
+          <img src="assets/Secciones/Sobre mi/jaime.png" alt="Retrato de Jaime" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -478,32 +502,32 @@ After a redesign, I created two panels with mockups like this and prepared a pre
         <div class="about-programs">
           <h3><span data-es="Programas" data-en="Software"></span></h3>
           <div class="programs-grid" aria-label="Programas que manejo">
-            <img src="assets/Programas/Photoshop.png" alt="Photoshop" loading="lazy" decoding="async">
-            <img src="assets/Programas/Illustrator.png" alt="Illustrator" loading="lazy" decoding="async">
-            <img src="assets/Programas/Premiere.png" alt="Premiere" loading="lazy" decoding="async">
-            <img src="assets/Programas/After_Effects.png" alt="After Effects" loading="lazy" decoding="async">
-            <img src="assets/Programas/InDesign.png" alt="InDesign" loading="lazy" decoding="async">
-            <img src="assets/Programas/Firefly.png" alt="Adobe Firefly" loading="lazy" decoding="async">
-            <img src="assets/Programas/Podcast.png" alt="Podcast" loading="lazy" decoding="async">
-            <img src="assets/Programas/Figma.png" alt="Figma" loading="lazy" decoding="async">
-            <img src="assets/Programas/Excel.png" alt="Excel" loading="lazy" decoding="async">
-            <img src="assets/Programas/Teams.png" alt="Microsoft Teams" loading="lazy" decoding="async">
-            <img src="assets/Programas/PowerPoint.png" alt="PowerPoint" loading="lazy" decoding="async">
-            <img src="assets/Programas/Word.png" alt="Word" loading="lazy" decoding="async">
-            <img src="assets/Programas/html.png" alt="HTML" loading="lazy" decoding="async">
-            <img src="assets/Programas/css.png" alt="CSS" loading="lazy" decoding="async">
-            <img src="assets/Programas/JavaScript.png" alt="JavaScript" loading="lazy" decoding="async">
-            <img src="assets/Programas/Bootstrap.png" alt="Bootstrap" loading="lazy" decoding="async">
-            <img src="assets/Programas/GitHub.png" alt="GitHub" loading="lazy" decoding="async">
-            <img src="assets/Programas/Copilot.png" alt="GitHub Copilot" loading="lazy" decoding="async">
-            <img src="assets/Programas/VS.png" alt="Visual Studio" loading="lazy" decoding="async">
-            <img src="assets/Programas/VSCode.png" alt="Visual Studio Code" loading="lazy" decoding="async">
-            <img src="assets/Programas/Autocad.png" alt="AutoCAD" loading="lazy" decoding="async">
-            <img src="assets/Programas/rhino.png" alt="Rhinoceros" loading="lazy" decoding="async">
-            <img src="assets/Programas/grasshopper.png" alt="Grasshopper" loading="lazy" decoding="async">
-            <img src="assets/Programas/SolidWorks.png" alt="SolidWorks" loading="lazy" decoding="async">
-            <img src="assets/Programas/Keyshot.png" alt="KeyShot" loading="lazy" decoding="async">
-            <img src="assets/Programas/Krita.png" alt="Krita" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Photoshop.png" alt="Photoshop" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Illustrator.png" alt="Illustrator" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Premiere.png" alt="Premiere" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/After_Effects.png" alt="After Effects" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/InDesign.png" alt="InDesign" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Firefly.png" alt="Adobe Firefly" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Podcast.png" alt="Podcast" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Figma.png" alt="Figma" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Excel.png" alt="Excel" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Teams.png" alt="Microsoft Teams" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/PowerPoint.png" alt="PowerPoint" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Word.png" alt="Word" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/html.png" alt="HTML" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/css.png" alt="CSS" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/JavaScript.png" alt="JavaScript" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Bootstrap.png" alt="Bootstrap" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/GitHub.png" alt="GitHub" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Copilot.png" alt="GitHub Copilot" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/VS.png" alt="Visual Studio" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/VSCode.png" alt="Visual Studio Code" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Autocad.png" alt="AutoCAD" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/rhino.png" alt="Rhinoceros" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/grasshopper.png" alt="Grasshopper" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/SolidWorks.png" alt="SolidWorks" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Keyshot.png" alt="KeyShot" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Krita.png" alt="Krita" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="about-edu">
@@ -532,7 +556,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           <article class="quote-card">
             <a href="https://www.linkedin.com/in/marcbrell/" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Álvaro Selma">
               <img class="quote-avatar" alt="Foto de Marc" loading="lazy" decoding="async"
-                   src="assets/Referencias/Marc.jpg">
+                   src="assets/Secciones/Sobre mi/Referencias/Marc.jpg">
             </a>
             <div class="quote-content">
               <div class="quote-author"><span data-es="Marc Brell i López (director de la obra 'Reflejos del Multiverso'):" data-en="Marc Brell i López, director of 'Reflections of the Multiverse'"></span></div>
@@ -546,7 +570,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           <article class="quote-card">
             <a href="https://www.linkedin.com/in/%C3%A1lvaro-jos%C3%A9-selma-cerezo-735474343/" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Marc">
               <img class="quote-avatar" alt="Foto de Alvaro" loading="lazy" decoding="async"
-                   src="assets/Referencias/Alvaro.jpg">
+                   src="assets/Secciones/Sobre mi/Referencias/Alvaro.jpg">
             </a>
             <div class="quote-content">
               <div class="quote-author"><span data-es="Álvaro Selma (compañero de trabajo, entre otros proyectos, en el etiquetado para vinos Nostre, galardonado por la ETSIAMN):" data-en="Álvaro Selma"></span></div>
@@ -560,7 +584,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           <article class="quote-card">
             <a href="https://www.linkedin.com/in/martin-perez-san-jose/?originalSubdomain=es" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Martín Pérez">
               <img class="quote-avatar" alt="Foto de Martín Pérez" loading="lazy" decoding="async"
-                   src="assets/Referencias/Martin.jpg">
+                   src="assets/Secciones/Sobre mi/Referencias/Martin.jpg">
             </a>
             <div class="quote-content">
               <div class="quote-author"><span data-es="Martín Pérez (compañero de trabajo, entre otros proyectos, en el perchero Hira, presentado en la Feria Hábitat Valencia 2025):" data-en="Martín Pérez"></span></div>
@@ -574,7 +598,7 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           <article class="quote-card">
             <a class="quote-link quote-link--youtube" href="https://www.youtube.com/@Moifez" target="_blank" rel="noopener noreferrer" aria-label="Abrir canal de YouTube de Moisés Fernández (Moifez)">
               <img class="quote-avatar" alt="Foto de Moisés Fernández" loading="lazy" decoding="async"
-                   src="assets/Referencias/Moifez.jpg">
+                   src="assets/Secciones/Sobre mi/Referencias/Moifez.jpg">
             </a>
             <div class="quote-content">
               <div class="quote-author"><span data-es="Moisés Fernández ('Moifez', cliente recurrente):" data-en="Moisés Fernández, 'Moifez'"></span></div>
