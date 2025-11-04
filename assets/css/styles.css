@@ -1180,7 +1180,7 @@ footer.visible { transform: translateY(0); }
     width: 100%;
   }
   #idioma-mobile-list.active {
-    display: flex;
+    display: flex !important;
   }
   #back-to-menu {
     font-weight: bold;
