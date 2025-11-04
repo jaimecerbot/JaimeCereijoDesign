@@ -499,7 +499,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   flex-direction: column;
   gap: 10px;
   margin-left: auto;
-  min-width: 60%;
+  max-width: 190%;
 }
 .clients-logos img {
   max-width: 100%;
@@ -525,7 +525,9 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   font-size: clamp(16px, 2vw, 22px); /* Igual que .services-description */
   line-height: 1.55;
   margin: 0;
-  max-width: 90%;
+  text-align: justify;
+  hyphens: auto;
+  max-width: 190cqw;
 }
 
 /* Hover slideshow base */
@@ -1162,12 +1164,13 @@ footer.visible { transform: translateY(0); }
   .clients { 
     grid-template-columns: 1fr 2fr; /* ensanchar más el bloque de texto */
     gap: 40px 56px; /* más espacio horizontal y vertical */
-    padding: 0 24px; /* mismo padding base que .services */
+    padding: 0 3vw; /* margen lateral más reducido para ganar ancho útil */
+    width: 100%; /* asegurar que no hereda el 100.608% del layout desktop */
   }
-  .clients-copy { min-width: 82%; }
+  .clients-copy { min-width: 82%; margin-left: 0; }
   .clients-copy h3 { font-size: clamp(34px, 5.6vw, 64px); }
-  /* Ancho del texto al 90% del contenedor para mayor ocupación visual */
-  .clients-copy p { width: 90%; max-width: none; margin-left: auto; margin-right: auto; }
+  /* Párrafo ocupa todo el ancho disponible dentro del padding lateral */
+  .clients-copy p { width: 100%; max-width: none; margin: 0; }
   .clients-logos { gap: 24px 32px; }
   /* Logo en pantallas estrechas (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; }
@@ -1279,7 +1282,9 @@ footer.visible { transform: translateY(0); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
   /* Igualar formato móvil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
-  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 36px; padding: 0 4vw; margin-top: 16px; }
+  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 36px; padding: 0 2vw; margin-top: 16px; width: 100%; }
+  /* Evitar doble padding lateral con el contenedor externo en móvil */
+  .clients-block { padding: 0; }
   .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
@@ -1287,10 +1292,10 @@ footer.visible { transform: translateY(0); }
   /* Logos más pequeños, 3 columnas x 4 filas */
   .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 16px 16px; margin-top: 16px; }
   .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
-  .clients-copy { width: 100%; max-width: none; }
+  .clients-copy { width: 100%; max-width: none; margin-left: 0; }
   .clients-copy h3 { text-align: center; font-size: clamp(32px, 8vw, 64px); }
   /* Alinear tipografía de párrafo al formato de servicios en móvil */
-  .clients-copy p { text-align: center; width: 90%; max-width: none; margin-left: auto; margin-right: auto; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; }
+  .clients-copy p { text-align: justify; width: 100%; max-width: none; margin: 0; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; hyphens: auto; }
   /* En móvil, ajustar tipografía y layout, pero mantener comportamiento fijo/oculto por defecto */
   footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; }
   #intro-video { max-width: 90vw; max-height: 90vh; }
