@@ -392,9 +392,9 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 }
 /* Ajustes puntuales de etiquetas dentro de los círculos (todas las pantallas) */
 /* "Comunicación de Proyectos" ligeramente más pequeña para encajar mejor */
-.service-5 span { font-size: clamp(16px, 1.6vw, 28px); }
+.service-5 span { font-size: clamp(14px, 1.4vw, 24px); }
 /* "Desarrollo Web": desplazar medio renglón hacia abajo para equilibrar visualmente */
-.service-2 span { display: inline-block; transform: translateY(0.45em); }
+.service-2 span { display: inline-block; transform: translateY(0.2em); }
 .service-circle:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
 /* Refuerzo de legibilidad del texto en hover (mucho más marcado) */
 .service-circle:hover span { 
@@ -1231,9 +1231,9 @@ footer.visible { transform: translateY(0); }
 .service-circle { width: 100%; }
 .service-circle span { font-size: clamp(13px, 3.6vw, 20px); }
   /* Ajustes específicos en móvil */
-  .service-5 span { font-size: clamp(12px, 3.2vw, 18px); }
+  .service-5 span { font-size: clamp(11px, 2.8vw, 16px); }
   /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
-  .service-2 .mini-carousel::after { font-size: clamp(9px, 2.8vw, 13px); bottom: 3%; }
+  .service-2 .mini-carousel::after { font-size: clamp(8px, 2.4vw, 12px); bottom: 1.5%; }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
