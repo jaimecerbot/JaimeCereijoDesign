@@ -1154,6 +1154,10 @@ footer.visible { transform: translateY(0); }
     max-width: 80vw !important;
     object-fit: cover !important;
   }
+  /* Evitar hueco bajo el header en secciones: quitar margen superior del primer hijo */
+  section > *:first-child { margin-top: 0 !important; }
+  /* En Menu, asegurar carrusel sin margen superior */
+  #menu .carousel { margin-top: 0 !important; }
   /* Mini carrusel: rótulo ligeramente más pequeño y un poco más abajo en ≤1024px */
   .service-2 .mini-carousel::after {
     font-size: clamp(9px, 1.8vw, 13px);
@@ -1233,6 +1237,12 @@ footer.visible { transform: translateY(0); }
   /* En móvil, header fijo mide 60px: ajustar margen y alto mínimo del main para eliminar hueco blanco */
   main { margin-top: 60px; min-height: calc(100vh - 60px); }
   section { padding: 20px; padding-top: 0; }
+  /* Evitar hueco bajo el header en secciones: quitar margen superior del primer hijo */
+  section > *:first-child { margin-top: 0 !important; }
+  /* En Menu, asegurar carrusel sin margen superior */
+  #menu .carousel { margin-top: 0 !important; }
+  /* En Sobre mí (#redes), alinear contenido al inicio para evitar espacio superior al centrar verticalmente */
+  #redes { place-content: start; align-content: start; }
   /* Menu: ocupar casi todo el ancho con leve margen lateral */
   #menu { padding-left: 4vw !important; padding-right: 4vw !important; }
   .proyectos-container { flex-direction: column; height: auto; }
