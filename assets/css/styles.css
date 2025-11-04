@@ -1220,9 +1220,11 @@ footer.visible { transform: translateY(0); }
     object-fit: cover !important;
   }
 .services { gap: 18px; padding: 0 18px; }
-.services-circles { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+/* Móvil: hacer los círculos más grandes usando 2 columnas */
+.services-circles { grid-template-columns: repeat(2, 1fr); gap: 22px; }
 .service-circle { width: 100%; }
-.service-circle span { font-size: clamp(11.2px, 3.04vw, 17.6px); }
+/* Acompañar el mayor tamaño con tipografía ligeramente más grande */
+.service-circle span { font-size: clamp(13px, 4vw, 21px); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
