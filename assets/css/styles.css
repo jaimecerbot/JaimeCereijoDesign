@@ -1157,6 +1157,15 @@ footer.visible { transform: translateY(0); }
     line-height: 1.05;
     letter-spacing: 0.2px;
   }
+  /* Clients: texto más ancho, título más grande y más espacio entre texto y logos en ventanas estrechas */
+  .clients { 
+    grid-template-columns: 1fr 1.5fr; /* dar más ancho al texto */
+    gap: 32px 48px; /* más espacio entre texto y logos */
+    padding: 0 3vw; /* un pelín menos de margen lateral para "ensanchar" el contenido */
+  }
+  .clients-copy { min-width: 70%; }
+  .clients-copy h3 { font-size: clamp(30px, 4.6vw, 56px); }
+  .clients-logos { gap: 24px 32px; }
 }
 @media (max-width: 768px) {
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: space-between !important; }
@@ -1260,16 +1269,17 @@ footer.visible { transform: translateY(0); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
-  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 16px; padding: 0 4vw; margin-top: 16px; }
+  .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 28px; padding: 0 3vw; margin-top: 16px; }
   .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
   .btn-napoleon { padding: 10px 16px; font-size: clamp(13px, 3.2vw, 17px); }
   /* Logos más pequeños, 3 columnas x 4 filas */
-  .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 12px 12px; margin-top: 0; }
+  .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 14px 14px; margin-top: 8px; }
   .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
-  .clients-copy h3 { text-align: center; }
-  .clients-copy p { text-align: center; }
+  .clients-copy { width: 100%; max-width: none; }
+  .clients-copy h3 { text-align: center; font-size: clamp(30px, 7vw, 60px); }
+  .clients-copy p { text-align: center; max-width: none; }
   /* En móvil, ajustar tipografía y layout, pero mantener comportamiento fijo/oculto por defecto */
   footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; }
   #intro-video { max-width: 90vw; max-height: 90vh; }
