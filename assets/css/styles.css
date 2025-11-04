@@ -5,7 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code&display=swap');
+/* Reemplazo: 'Google Sans Code' no existe públicamente en Google Fonts → usar Source Code Pro */
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap');
 
 /* FUENTES LOCALES */
@@ -1527,4 +1528,59 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .quote-avatar { width: 70px; height: 70px; }
   .quote-text { font-size: clamp(12px, 1.4vw, 15px); }
   .quote-text::before, .quote-text::after { font-size: 96px; }
+}
+
+/* ======================================================
+   Tipografías: compatibilidad total (Safari iOS/Android)
+   ======================================================
+   - Definimos la fuente base en Roboto
+   - Forzamos equivalentes para familias declaradas inline
+     que no existen como webfonts (p.ej. 'Kemco Pixel',
+     'Google Sans Code', 'Roboto black', 'Aver', 'SF Florencesans')
+   - Reforzamos títulos clave a Montserrat para consistencia
+*/
+
+/* Base del sitio */
+body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+/* Mapeo de familias inline no disponibles → webfonts disponibles */
+.text-overlay[style*="Google Sans Code"],
+.text-overlay[style*="'Google Sans Code'"] {
+  font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace !important;
+}
+.text-overlay[style*="'Roboto black'"],
+.text-overlay[style*="Roboto black"] {
+  font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
+  font-weight: 900 !important;
+}
+.text-overlay[style*="'Aver'"],
+.text-overlay[style*="Aver"] {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important;
+}
+.text-overlay[style*="'SF Florencesans'"],
+.text-overlay[style*="SF Florencesans"] {
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
+}
+.text-overlay[style*="'Kemco Pixel'"],
+.text-overlay[style*="Kemco Pixel"] {
+  font-family: 'Press Start 2P', cursive !important;
+}
+
+/* Refuerzo de títulos y elementos destacados a Montserrat */
+.carousel-title,
+.carousel-subtitle,
+.services-title,
+.service-circle span,
+.btn-napoleon,
+#clients-title,
+.clients-copy h3,
+#contacto .contact-title,
+.about-subtitle,
+.about-programs h3,
+.about-edu h3,
+.about-langs,
+.references-title,
+.quote-author,
+#redes > h1 {
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
 }
