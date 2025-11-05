@@ -1196,15 +1196,17 @@ footer.visible { transform: translateY(0); }
 @media (max-width: 768px) {
   /* En móvil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* En móvil, desactivar empuje del main y el footer fijo para evitar comportamientos extraños */
-  body.footer-visible main { transform: none; }
+  /* Footer: oculto por defecto y aparece solo al fondo, también en ventanas estrechas */
+  footer { position: fixed; left: 0; right: 0; bottom: 0; transform: translateY(100%); }
+  footer.visible { transform: translateY(0); }
   footer { position: static; transform: none; }
   footer.visible { transform: none; }
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
   /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
-  .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
-  #idioma-btn { display: none !important; }
+  /* Footer: oculto por defecto y aparece solo al fondo también en móvil */
+  footer { position: fixed; left: 0; right: 0; bottom: 0; transform: translateY(100%); }
+  footer.visible { transform: translateY(0); }
   #idioma-list { display: none !important; }
   /* Mostrar únicamente el botón de Idioma dentro del menú; mantener oculta la lista */
   #idioma-mobile-btn { display: block !important; }
