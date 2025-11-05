@@ -1464,6 +1464,11 @@ body.footer-visible #redes {
   .social-links { --gap: clamp(10px, 3.5vw, 18px); }
 }
 
+/* Ventanas estrechas (círculos): icono de Behance ligeramente mayor (un poco más pequeño que antes) */
+@media (max-width: 1024px) {
+  #redes .social-link.behance .icon { width: 54%; height: 54%; }
+}
+
 /* Redes: en móviles/ventanas estrechas, convertir círculos en barras horizontales */
 @media (max-width: 700px) {
   #redes .social-links {
@@ -1490,6 +1495,13 @@ body.footer-visible #redes {
     margin-right: 12px;
     filter: none;
   }
+  /* En móvil/barras: Behance un poco más pequeño que el ajuste previo */
+  #redes .social-link.behance .icon {
+    width: clamp(32px, 7vw, 40px);
+    height: clamp(32px, 7vw, 40px);
+  }
+  /* Asegurar cambio a negro en hover en móvil (gana a #redes .social-link .icon { filter:none }) */
+  #redes .social-link.behance:hover .icon { filter: brightness(0); }
   /* Etiqueta con nombre de la red a la derecha */
   #redes .social-link::after {
     content: attr(aria-label);
