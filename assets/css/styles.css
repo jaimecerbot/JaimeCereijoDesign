@@ -1343,10 +1343,43 @@ footer.visible { transform: translateY(0); }
 #contacto .contact-details a { color: #001f3f; text-decoration: none; font-weight: 600; }
 #contacto .contact-details a:hover { text-decoration: underline; }
 
+/* Contacto: que el footer NO empuje el contenido hacia arriba en esta sección */
+body.footer-visible #contacto { transform: translateY(var(--footer-h, 0px)); }
+/* Reservar espacio para el footer en ventanas estrechas para evitar solapamientos
+   y centrar verticalmente la sección entre header y footer */
+@media (max-width: 1024px) {
+  #contacto { 
+    margin: 0 auto;
+    padding-bottom: calc(var(--footer-h, 0px) + clamp(16px, 6svh, 120px));
+    padding-top: 0;
+    min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+    display: grid;
+    /* Mantener centrado horizontal pero empujar verticalmente hacia abajo */
+    justify-content: center;
+    align-content: end;
+    justify-items: center; /* asegura centrado de los hijos */
+  }
+}
+
 @media (max-width: 768px) {
   #contacto .contact-inner { grid-template-columns: 1fr; text-align: center; left: 0; top: 0; }
   #contacto .contact-photo { order: -1; }
   #contacto .contact-details { margin-top: 8px; }
+}
+
+/* Ventanas estrechas (tablets/ventanas medianas): centrar foto y texto */
+@media (max-width: 1024px) {
+  #contacto .contact-inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    left: 0;
+    top: 0;
+  }
+  #contacto .contact-photo img {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 html.intro-active, body.intro-active { overflow: hidden; }
