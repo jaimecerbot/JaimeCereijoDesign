@@ -209,7 +209,8 @@ const Scroll = {
     // Caso 1: sección Proyectos activa -> controlar por scroll del contenedor
     if ($.isProyectosActive && $.galeriaContainer) {
       const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
-      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+      // Tolerancia de 2px para considerar que está al fondo
+      const atBottom = (scrollTop + clientHeight) >= (scrollHeight - 2);
       if (atBottom) {
         this.showFooter();
       } else {
@@ -219,15 +220,25 @@ const Scroll = {
       return;
     }
 
-    // Caso 2: resto de secciones (incluye Menú) -> controlar por scroll de ventana
+    // Caso 2: resto de secciones -> controlar por scroll de ventana
     const doc = document.documentElement;
     const winH = window.innerHeight;
-    const pageHeight = doc.scrollHeight;
-    const scrollY = window.scrollY || window.pageYOffset || 0;
-    const scrollable = (pageHeight - winH) > 0; // hay algo de scroll real
-    // Fondo estricto: cuando el final de la página alcanza el borde inferior del viewport
-    const atBottomPage = scrollable && Math.ceil(scrollY + winH) >= pageHeight;
-    if (atBottomPage) this.showFooter(); else this.hideFooter();
+    const pageHeight = Math.max(doc.scrollHeight, doc.offsetHeight, doc.clientHeight);
+    const scrollY = window.scrollY || window.pageYOffset || doc.scrollTop || 0;
+    
+    // Si la página no tiene scroll (cabe en la ventana), mostrar footer
+    if (pageHeight <= winH) {
+      this.showFooter();
+      return;
+    }
+    
+    // Si tiene scroll, mostrar solo al llegar al fondo (tolerancia 5px)
+    const atBottom = (scrollY + winH) >= (pageHeight - 5);
+    if (atBottom) {
+      this.showFooter();
+    } else {
+      this.hideFooter();
+    }
   },
   showFooter() {
     if (this.footerVisible) return;
@@ -376,12 +387,16 @@ function addTextOverlay(imageId, text, options = {}) {
 function mostrarSeccion(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
+  
+  // Ocultar footer inmediatamente al cambiar de sección
+  Scroll.hideFooter();
+  
+  // Resetear scroll a la parte superior
   window.scrollTo({top: 0, behavior: 'smooth'});
+  if ($.galeriaContainer) $.galeriaContainer.scrollTop = 0;
+  
   // actualizar estado de nav superior
   TopNav.updateAria(id);
-  
-  // Ocultar footer al cambiar de sección
-  Scroll.hideFooter();
   
   $.isProyectosActive = (id === 'proyectos');
   $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
@@ -399,7 +414,11 @@ function mostrarSeccion(id) {
     Effects.reset(); Thumbnails.stop();
   }
   
-  setTimeout(() => { Layout.update(); Scroll.updateFooter(); }, 100);
+  // Evaluar footer después de que la sección se haya cargado completamente
+  setTimeout(() => { 
+    Layout.update(); 
+    Scroll.updateFooter(); 
+  }, 200);
 }
 
 function irAProyecto(targetRef) {
