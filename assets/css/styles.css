@@ -1148,10 +1148,10 @@ footer.visible { transform: translateY(0); }
      Nota: #desktop-version section es más específico que "section",
      por eso forzamos aquí el padding-top a 0. */
   #desktop-version section { padding-top: 0 !important; }
-  /* En pantallas estrechas, evitar trucos de footer fijo para simplificar layout */
+  /* En pantallas estrechas: footer fijo y oculto por defecto, aparece solo al fondo */
   body.footer-visible main { transform: none; }
-  footer { position: static; transform: none; }
-  footer.visible { transform: none; }
+  footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
+  footer.visible { transform: translateY(0); }
   #indice { width: 250px; }
   /* Dar un poco de aire entre header y carrusel en ventanas estrechas */
   #menu .carousel { margin-top: 12px !important; }
@@ -1196,17 +1196,15 @@ footer.visible { transform: translateY(0); }
 @media (max-width: 768px) {
   /* En móvil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* Footer: oculto por defecto y aparece solo al fondo, también en ventanas estrechas */
-  footer { position: fixed; left: 0; right: 0; bottom: 0; transform: translateY(100%); }
+  /* En móvil: footer fijo y oculto, solo visible al fondo via JS */
+  body.footer-visible main { transform: none; }
+  footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
   footer.visible { transform: translateY(0); }
-  footer { position: static; transform: none; }
-  footer.visible { transform: none; }
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
   /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
-  /* Footer: oculto por defecto y aparece solo al fondo también en móvil */
-  footer { position: fixed; left: 0; right: 0; bottom: 0; transform: translateY(100%); }
-  footer.visible { transform: translateY(0); }
+  .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
+  #idioma-btn { display: none !important; }
   #idioma-list { display: none !important; }
   /* Mostrar únicamente el botón de Idioma dentro del menú; mantener oculta la lista */
   #idioma-mobile-btn { display: block !important; }
