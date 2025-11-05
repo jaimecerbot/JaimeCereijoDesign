@@ -210,15 +210,23 @@ const Scroll = {
     if ($.isProyectosActive && $.galeriaContainer) {
       const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
       const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
-      atBottom ? this.showFooter() : (scrollTop < $.lastScrollTop && this.footerVisible && this.scheduleHide());
+      if (atBottom) {
+        this.showFooter();
+      } else {
+        this.hideFooter();
+      }
       $.lastScrollTop = scrollTop;
       return;
     }
 
     // Caso 2: resto de secciones (incluye Menú) -> controlar por scroll de ventana
-  const scrollable = (pageHeight - winH) > 0; // hay algo de scroll real
-  // Fondo estricto: cuando el final de la página alcanza el borde inferior del viewport
-  const atBottomPage = scrollable && Math.ceil(scrollY + winH) >= pageHeight;
+    const doc = document.documentElement;
+    const winH = window.innerHeight;
+    const pageHeight = doc.scrollHeight;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const scrollable = (pageHeight - winH) > 0; // hay algo de scroll real
+    // Fondo estricto: cuando el final de la página alcanza el borde inferior del viewport
+    const atBottomPage = scrollable && Math.ceil(scrollY + winH) >= pageHeight;
     if (atBottomPage) this.showFooter(); else this.hideFooter();
   },
   showFooter() {
@@ -371,6 +379,9 @@ function mostrarSeccion(id) {
   window.scrollTo({top: 0, behavior: 'smooth'});
   // actualizar estado de nav superior
   TopNav.updateAria(id);
+  
+  // Ocultar footer al cambiar de sección
+  Scroll.hideFooter();
   
   $.isProyectosActive = (id === 'proyectos');
   $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
@@ -2071,6 +2082,12 @@ const init = () => {
   
   // Inicializar menú hamburguesa
   MobileMenu.init();
+  
+  // Asegurar que el footer empiece oculto
+  Scroll.hideFooter();
+  
+  // Verificar footer en la carga inicial después de un breve delay
+  setTimeout(() => Scroll.updateFooter(), 300);
 };
 
 // Ejecutar una sola vez en cuanto el DOM esté listo
