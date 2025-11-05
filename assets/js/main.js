@@ -137,11 +137,7 @@ const Layout = {
     $.galeria = document.getElementById('galeria');
     this.update();
     TopNav.init();
-    // Si la sección activa al cargar es 'menu', activar el observador del footer
-    const activeSection = document.querySelector('section.active');
-    if (activeSection && activeSection.id === 'menu') {
-      FooterIO.observeMenu();
-    }
+    // El footer se controla globalmente por scroll: solo aparece al llegar al fondo
   },
   update() {
     if (!$.header || !$.main) return;
@@ -213,22 +209,16 @@ const Scroll = {
     // Caso 1: sección Proyectos activa -> controlar por scroll del contenedor
     if ($.isProyectosActive && $.galeriaContainer) {
       const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
-      const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
       atBottom ? this.showFooter() : (scrollTop < $.lastScrollTop && this.footerVisible && this.scheduleHide());
       $.lastScrollTop = scrollTop;
       return;
     }
 
     // Caso 2: resto de secciones (incluye Menú) -> controlar por scroll de ventana
-  const doc = document.documentElement;
-  const winH = window.innerHeight;
-  const pageHeight = doc.scrollHeight;
-  const scrollY = window.scrollY || window.pageYOffset || 0;
-  const remaining = pageHeight - winH - scrollY;
-  const scrollable = (pageHeight - winH) > 2; // hay algo de scroll real
-  // Umbral flexible: 3% del viewport o 16px (lo que sea mayor)
-  const threshold = Math.max(16, Math.round(winH * 0.03));
-  const atBottomPage = scrollable && remaining <= threshold;
+  const scrollable = (pageHeight - winH) > 0; // hay algo de scroll real
+  // Fondo estricto: cuando el final de la página alcanza el borde inferior del viewport
+  const atBottomPage = scrollable && Math.ceil(scrollY + winH) >= pageHeight;
     if (atBottomPage) this.showFooter(); else this.hideFooter();
   },
   showFooter() {
@@ -385,13 +375,11 @@ function mostrarSeccion(id) {
   $.isProyectosActive = (id === 'proyectos');
   $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
   
-  // Manejo del carrusel y footer IO para menú
+  // Manejo del carrusel (footer se controla globalmente por scroll)
   if (id === 'menu') {
     setTimeout(() => Carousel.start(), 500);
-    FooterIO.observeMenu();
   } else {
     Carousel.stop();
-    FooterIO.disconnect();
   }
   
   if ($.isProyectosActive) {
