@@ -1744,16 +1744,23 @@ body.footer-visible #redes {
      para que Idiomas/Estudios queden arriba y Programas debajo */
   .about-columns { grid-template-columns: 1fr; }
   .about-columns::before { display: none; }
-  .about-edu { grid-column: 1; grid-row: 1; justify-self: start; width: 100%; text-align: left; }
+  .about-columns { justify-items: stretch; }
+  .about-edu { grid-column: 1; grid-row: 1; justify-self: start; width: 100%; }
+  .about-edu .about-list { max-width: none; width: 100%; }
   .about-programs { grid-column: 1; grid-row: 2; justify-self: center; width: 100%; }
-  /* Aprovechar mejor el ancho disponible */
-  .about-edu .about-list { max-width: none; }
-  .programs-grid { width: 100%; justify-items: center; grid-template-columns: repeat(auto-fit, minmax(clamp(64px, 12vw, 96px), 1fr)); gap: 16px 18px; }
+  .about-programs .programs-grid {
+    width: min(100%, 900px);
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: repeat(5, minmax(64px, 1fr)); /* 5 columnas si caben */
+  }
 }
 @media (max-width: 768px) {
   #sobremi { padding: 10px 18px 70px 18px; }
-  .about-columns { grid-template-columns: 1fr; gap: 20px; }
-  .programs-grid { grid-template-columns: repeat(auto-fit, minmax(clamp(64px, 18vw, 104px), 1fr)); gap: 14px 16px; }
+  .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; }
+  /* En móvil, usar 4 columnas en Programas para mayor legibilidad */
+  .about-programs .programs-grid { grid-template-columns: repeat(4, minmax(56px, 1fr)); width: min(100%, 820px); }
+  .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
   /* En móvil, aumentar avatar también un 25%: 56px -> 70px (aprox) */
   .quote-card { grid-template-columns: 70px 1fr; }
