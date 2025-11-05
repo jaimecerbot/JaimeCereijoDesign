@@ -1744,13 +1744,16 @@ body.footer-visible #redes {
      para que Idiomas/Estudios queden arriba y Programas debajo */
   .about-columns { grid-template-columns: 1fr; }
   .about-columns::before { display: none; }
-  .about-edu { grid-column: 1; grid-row: 1; }
-  .about-programs { grid-column: 1; grid-row: 2; }
+  .about-edu { grid-column: 1; grid-row: 1; justify-self: start; width: 100%; text-align: left; }
+  .about-programs { grid-column: 1; grid-row: 2; justify-self: center; width: 100%; }
+  /* Aprovechar mejor el ancho disponible */
+  .about-edu .about-list { max-width: none; }
+  .programs-grid { width: 100%; justify-items: center; grid-template-columns: repeat(auto-fit, minmax(clamp(64px, 12vw, 96px), 1fr)); gap: 16px 18px; }
 }
 @media (max-width: 768px) {
   #sobremi { padding: 10px 18px 70px 18px; }
   .about-columns { grid-template-columns: 1fr; gap: 20px; }
-  .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
+  .programs-grid { grid-template-columns: repeat(auto-fit, minmax(clamp(64px, 18vw, 104px), 1fr)); gap: 14px 16px; }
   .references-grid { grid-template-columns: 1fr; }
   /* En móvil, aumentar avatar también un 25%: 56px -> 70px (aprox) */
   .quote-card { grid-template-columns: 70px 1fr; }
