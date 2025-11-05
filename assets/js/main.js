@@ -229,6 +229,14 @@ const Scroll = {
       this.hideFooter();
       return;
     }
+    // En móvil, no mostrar footer en Redes ni Contacto para evitar desplazamientos
+    try {
+      const activeId = activeSection.id;
+      if ($.isMobile && (activeId === 'redes' || activeId === 'contacto')) {
+        this.hideFooter();
+        return;
+      }
+    } catch {}
 
     const doc = document.documentElement;
     const winH = window.innerHeight;
@@ -409,6 +417,11 @@ function mostrarSeccion(id) {
   
   // Ocultar footer inmediatamente al cambiar de sección
   Scroll.hideFooter();
+  // En móvil: bloquear scroll cuando estemos en secciones de pantalla completa
+  try {
+    const lock = $.isMobile && (id === 'redes' || id === 'contacto');
+    document.body.classList.toggle('lock-scroll', lock);
+  } catch {}
   
   // Resetear scroll a la parte superior
   window.scrollTo({top: 0, behavior: 'smooth'});
