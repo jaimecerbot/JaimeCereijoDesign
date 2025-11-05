@@ -1460,18 +1460,7 @@ body.footer-visible #redes {
   /* En móvil (barras tipo pill), un poco más de aire aún */
   #redes > .social-links { margin-top: clamp(28px, 8vw, 72px); }
 }
-/* Asegurar que la cuadrícula de círculos queda centrada horizontalmente dentro de #redes */
-#redes .social-links { 
-  justify-self: center; 
-@media (max-width: 768px) {
-  html.lock-scroll {
-    overflow: hidden !important;
-    height: 100svh;
-    overscroll-behavior: none;
-  }
-}
-  margin-inline: auto; 
-}
+
 
 /* Redes sociales: círculos e interacciones */
 .social-links {
@@ -1751,6 +1740,12 @@ body.footer-visible #redes {
   }
   /* En ventanas estrechas, mostrar la foto por encima del texto */
   .about-photo { order: -1; }
+  /* Sobre mí columnas: pasar a 1 columna, ocultar separador y reordenar
+     para que Idiomas/Estudios queden arriba y Programas debajo */
+  .about-columns { grid-template-columns: 1fr; }
+  .about-columns::before { display: none; }
+  .about-edu { grid-column: 1; grid-row: 1; }
+  .about-programs { grid-column: 1; grid-row: 2; }
 }
 @media (max-width: 768px) {
   #sobremi { padding: 10px 18px 70px 18px; }
