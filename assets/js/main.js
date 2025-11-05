@@ -204,13 +204,15 @@ const Scroll = {
     }
   },
   updateFooter() {
+    // Si estamos usando el observador por sección, no recalcular aquí
+    if (typeof FooterWatch !== 'undefined' && FooterWatch.usingObserver) return;
     if (!$.footer) return;
 
     // Caso 1: sección Proyectos activa -> controlar por scroll del contenedor
     if ($.isProyectosActive && $.galeriaContainer) {
       const {scrollTop, scrollHeight, clientHeight} = $.galeriaContainer;
-      // Tolerancia de 2px para considerar que está al fondo
-      const atBottom = (scrollTop + clientHeight) >= (scrollHeight - 2);
+      // Aumentar tolerancia a 50px para detectar mejor el final
+      const atBottom = (scrollTop + clientHeight) >= (scrollHeight - 50);
       if (atBottom) {
         this.showFooter();
       } else {
@@ -221,19 +223,36 @@ const Scroll = {
     }
 
     // Caso 2: resto de secciones -> controlar por scroll de ventana
+    // Buscar la sección activa actual
+    const activeSection = document.querySelector('section.active');
+    if (!activeSection) {
+      this.hideFooter();
+      return;
+    }
+
     const doc = document.documentElement;
     const winH = window.innerHeight;
-    const pageHeight = Math.max(doc.scrollHeight, doc.offsetHeight, doc.clientHeight);
     const scrollY = window.scrollY || window.pageYOffset || doc.scrollTop || 0;
     
-    // Si la página no tiene scroll (cabe en la ventana), mostrar footer
-    if (pageHeight <= winH) {
+    // Calcular el alto total de la sección activa
+    const sectionRect = activeSection.getBoundingClientRect();
+    const sectionTop = scrollY + sectionRect.top;
+    const sectionHeight = activeSection.scrollHeight || sectionRect.height;
+    const sectionBottom = sectionTop + sectionHeight;
+    
+    // Calcular cuánto hemos scrolleado dentro de la sección
+    const scrollBottom = scrollY + winH;
+    
+    // Si la sección cabe completamente en la ventana, mostrar footer inmediatamente
+    if (sectionHeight <= winH) {
       this.showFooter();
       return;
     }
     
-    // Si tiene scroll, mostrar solo al llegar al fondo (tolerancia 5px)
-    const atBottom = (scrollY + winH) >= (pageHeight - 5);
+    // Mostrar footer cuando estamos a 100px o menos del final de la sección
+    // Esto da un margen generoso para que siempre aparezca
+    const atBottom = scrollBottom >= (sectionBottom - 100);
+    
     if (atBottom) {
       this.showFooter();
     } else {
@@ -400,6 +419,8 @@ function mostrarSeccion(id) {
   
   $.isProyectosActive = (id === 'proyectos');
   $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
+  // Reconfigurar observador del footer para la sección activa
+  try { FooterWatch.attachToCurrentSection(); } catch {}
   
   // Manejo del carrusel (footer se controla globalmente por scroll)
   if (id === 'menu') {
@@ -415,10 +436,22 @@ function mostrarSeccion(id) {
   }
   
   // Evaluar footer después de que la sección se haya cargado completamente
+  // Aumentar el delay y verificar múltiples veces para asegurar detección correcta
   setTimeout(() => { 
     Layout.update(); 
-    Scroll.updateFooter(); 
+    // Si el observador está activo, no hace falta; en fallback, recalcular
+    if (!FooterWatch.usingObserver) Scroll.updateFooter(); 
   }, 200);
+  
+  // Verificar de nuevo después de que las animaciones se hayan completado
+  setTimeout(() => { 
+    if (!FooterWatch.usingObserver) Scroll.updateFooter(); 
+  }, 600);
+  
+  // Una última verificación para secciones que cargan contenido dinámicamente
+  setTimeout(() => { 
+    if (!FooterWatch.usingObserver) Scroll.updateFooter(); 
+  }, 1200);
 }
 
 function irAProyecto(targetRef) {
@@ -1130,6 +1163,78 @@ const FooterIO = {
   },
   disconnect() {
     if (this.io) { this.io.disconnect(); this.io = null; }
+  }
+};
+
+// ===== OBSERVADOR GENERAL DE FOOTER POR SECCIÓN =====
+// Emula el comportamiento de "Proyectos" en escritorio (usar el contenedor que scrollea)
+// pero aplicado a todas las secciones: mostramos el footer cuando un sentinel al final
+// de la sección entra en el viewport del scroll correspondiente.
+const FooterWatch = {
+  io: null,
+  sentinel: null,
+  parent: null,
+  usingObserver: false,
+  ensureSentinel() {
+    if (!this.sentinel) {
+      this.sentinel = document.createElement('div');
+      this.sentinel.id = 'footer-sentinel-generic';
+      this.sentinel.style.cssText = 'width:100%;height:1px;pointer-events:none;';
+    }
+    return this.sentinel;
+  },
+  detach() {
+    try { this.io && this.io.disconnect(); } catch {}
+    this.io = null;
+    if (this.sentinel && this.sentinel.parentNode) {
+      try { this.sentinel.parentNode.removeChild(this.sentinel); } catch {}
+    }
+    this.parent = null;
+    this.usingObserver = false;
+  },
+  attachToCurrentSection() {
+    if (!$.footer) { this.detach(); return; }
+    const active = document.querySelector('section.active');
+    if (!active) { this.detach(); return; }
+
+    // Determinar el contenedor de scroll y el padre donde insertar el sentinel
+    let parent = active;
+    let root = null;
+    if ($.isProyectosActive && $.galeriaContainer) {
+      parent = $.galeriaContainer;
+      root = $.galeriaContainer; // observar respecto al contenedor interno
+    }
+
+    // Evitar re-adjuntar si ya está en el mismo parent
+    if (this.parent === parent && this.io) {
+      // Asegurar que seguimos activos
+      this.usingObserver = true;
+      return;
+    }
+
+    // Reiniciar y adjuntar
+    this.detach();
+    const sentinel = this.ensureSentinel();
+    try { parent.appendChild(sentinel); } catch { /* ignora si falla */ }
+    this.parent = parent;
+
+    // Crear el IO con root apropiado; usamos threshold bajo para activar al tocar fondo
+    try {
+      this.io = new IntersectionObserver((entries) => {
+        const entry = entries && entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          Scroll.showFooter();
+        } else {
+          Scroll.hideFooter();
+        }
+      }, { root, threshold: 0.01 });
+      this.io.observe(sentinel);
+      this.usingObserver = true;
+    } catch (e) {
+      // Fallback si IO no está disponible
+      this.usingObserver = false;
+    }
   }
 };
 
@@ -2064,6 +2169,8 @@ const init = () => {
   lazyLoadFrames();
   enhanceA11y();
   lazyMedia();
+  // Configurar observador de footer para la sección activa
+  try { FooterWatch.attachToCurrentSection(); } catch {}
   
   // Event listeners optimizados
   [
@@ -2071,10 +2178,14 @@ const init = () => {
     [window, 'resize', () => debounce('resize', () => { 
       Layout.update(); 
       Scroll.syncFooterVar();
+      try { FooterWatch.attachToCurrentSection(); } catch {}
+      // Verificar footer también en resize (fallback si no hay IO)
+      if (!FooterWatch.usingObserver) Scroll.updateFooter();
     }, 100)],
     [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
       Overlays.update(); 
-      Scroll.updateFooter(); 
+      // En contenedor interno, si no hay IO, seguir con cálculo manual
+      if (!FooterWatch.usingObserver) Scroll.updateFooter(); 
     })]
   ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
   
@@ -2106,7 +2217,7 @@ const init = () => {
   Scroll.hideFooter();
   
   // Verificar footer en la carga inicial después de un breve delay
-  setTimeout(() => Scroll.updateFooter(), 300);
+  setTimeout(() => { if (!FooterWatch.usingObserver) Scroll.updateFooter(); }, 300);
 };
 
 // Ejecutar una sola vez en cuanto el DOM esté listo
