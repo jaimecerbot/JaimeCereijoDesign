@@ -40,6 +40,10 @@ main { flex: 1; margin-top: 0; overflow-x: hidden; }
 main { transition: transform .3s ease; will-change: transform; }
 body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))); }
 
+/* Variables de altura del header (desktop/móvil) para cálculos de alto de secciones */
+:root { --header-h: 70px; }
+@media (max-width: 768px) { :root { --header-h: 60px; } }
+
 /* HEADER */
 header { display: flex; align-items: center; justify-content: space-between; background: #001f3f; color: yellow; padding: 10px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 70px; will-change: transform; transition: transform .3s ease; }
 header.hidden { transform: translateY(-100%); }
@@ -1148,8 +1152,7 @@ footer.visible { transform: translateY(0); }
      Nota: #desktop-version section es más específico que "section",
      por eso forzamos aquí el padding-top a 0. */
   #desktop-version section { padding-top: 0 !important; }
-  /* En pantallas estrechas: footer fijo y oculto por defecto, aparece solo al fondo */
-  body.footer-visible main { transform: none; }
+  /* En pantallas estrechas: permitir que el main se empuje hacia arriba igual que en desktop */
   footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
   footer.visible { transform: translateY(0); }
   #indice { width: 250px; }
@@ -1196,8 +1199,7 @@ footer.visible { transform: translateY(0); }
 @media (max-width: 768px) {
   /* En móvil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* En móvil: footer fijo y oculto, solo visible al fondo via JS */
-  body.footer-visible main { transform: none; }
+  /* En móvil: empujar contenido al mostrarse el footer igual que en desktop */
   footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
   footer.visible { transform: translateY(0); }
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
@@ -1356,12 +1358,34 @@ html.intro-active, body.intro-active { overflow: hidden; }
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 24px 24px; /* padding-top aún más reducido */
-  min-height: calc(100vh - 70px);
-  min-height: calc(100svh - 70px);
+  /* Altura visible bajo el header (usar svh para móviles) */
+  min-height: calc(100svh - var(--header-h));
   display: grid;
   place-content: center;
   place-items: center;
   row-gap: clamp(90px, 14vw, 200px);
+}
+#redes { box-sizing: border-box; }
+/* Cuando el footer sea visible, limitar la altura de #redes al espacio libre
+   entre header y footer y evitar scroll interno SOLO en esta sección */
+body.footer-visible #redes {
+  min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+  max-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+  overflow: hidden;
+}
+/* En móviles y ventanas estrechas: centrar verticalmente y reservar espacio para el footer */
+@media (max-width: 1024px) {
+  #redes {
+    min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+    max-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
+    place-content: center;
+    align-content: center;
+    overflow: hidden;
+    padding-bottom: var(--footer-h, 0px);
+  }
+  /* Compensar el translateY aplicado al main cuando aparece el footer,
+     para que Redes no "salte" visualmente */
+  body.footer-visible #redes { transform: translateY(var(--footer-h, 0px)); }
 }
 #redes > h1 { 
   font-family: Coolvetica, Helvetica, Arial, sans-serif; 
@@ -1382,7 +1406,12 @@ html.intro-active, body.intro-active { overflow: hidden; }
   margin-top: 1.2em;
 }
 #redes > .social-links {
-  margin-top: -2.5em;
+  /* Más espacio entre el título y las barras, sin afectar el gap interno entre barras */
+  margin-top: clamp(24px, 6vw, 64px);
+}
+@media (max-width: 700px) {
+  /* En móvil (barras tipo pill), un poco más de aire aún */
+  #redes > .social-links { margin-top: clamp(28px, 8vw, 72px); }
 }
 /* Asegurar que la cuadrícula de círculos queda centrada horizontalmente dentro de #redes */
 #redes .social-links { 
@@ -1433,6 +1462,48 @@ html.intro-active, body.intro-active { overflow: hidden; }
 }
 @media (max-width: 480px) {
   .social-links { --gap: clamp(10px, 3.5vw, 18px); }
+}
+
+/* Redes: en móviles/ventanas estrechas, convertir círculos en barras horizontales */
+@media (max-width: 700px) {
+  #redes .social-links {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+    max-width: 720px;
+  }
+  #redes .social-link {
+    width: 100%;
+    height: 64px;
+    border-radius: 9999px; /* máximo redondeo (pill) */
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.18);
+  }
+  #redes .social-link .icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    filter: none;
+  }
+  /* Etiqueta con nombre de la red a la derecha */
+  #redes .social-link::after {
+    content: attr(aria-label);
+    margin-left: auto;
+    color: #ffffff;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: .3px;
+    font-size: clamp(16px, 4.5vw, 20px);
+  }
+  /* Mejorar contraste cuando Behance invierte a fondo blanco en hover */
+  #redes .social-link.behance:hover::after { color: #111111; }
+  /* Ocultar texto descriptivo inferior en móvil/estrecho */
+  #redes > p { display: none !important; }
 }
 
 #sobremi { max-width: 1100px; margin: 0 auto; padding: 10px 24px 80px 24px; }
