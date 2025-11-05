@@ -1144,6 +1144,10 @@ footer.visible { transform: translateY(0); }
 
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) {
+  /* Eliminar el hueco bajo el header en ventanas estrechas
+     Nota: #desktop-version section es más específico que "section",
+     por eso forzamos aquí el padding-top a 0. */
+  #desktop-version section { padding-top: 0 !important; }
   /* En pantallas estrechas, evitar trucos de footer fijo para simplificar layout */
   body.footer-visible main { transform: none; }
   footer { position: static; transform: none; }
@@ -1188,6 +1192,8 @@ footer.visible { transform: translateY(0); }
   .logo { margin: 0 auto; }
 }
 @media (max-width: 768px) {
+  /* En móvil, asegurar que no hay espacio blanco bajo el header */
+  #desktop-version section { padding-top: 0 !important; }
   /* En móvil, desactivar empuje del main y el footer fijo para evitar comportamientos extraños */
   body.footer-visible main { transform: none; }
   footer { position: static; transform: none; }

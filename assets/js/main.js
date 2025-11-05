@@ -145,9 +145,16 @@ const Layout = {
   },
   update() {
     if (!$.header || !$.main) return;
-    const margin = $.headerHeight;
+    // En móvil el header NO es fijo: no debemos empujar el contenido
+    const margin = $.isMobile ? 0 : $.headerHeight;
     $.main.style.marginTop = `${margin}px`;
-    $.indice && ($.indice.style.top = `${margin}px`);
+    // Ajustar el índice solo en escritorio; en móvil lo gobierna el CSS (top: 60px)
+    if (!$.isMobile && $.indice) {
+      $.indice.style.top = `${margin}px`;
+    } else if ($.isMobile && $.indice) {
+      // Limpiar override inline para respetar CSS responsive
+      $.indice.style.top = '';
+    }
   }
 };
 
@@ -191,9 +198,14 @@ const Scroll = {
   },
   updateLayout() {
     const visible = !$.header?.classList.contains('hidden');
-    const top = visible ? $.headerHeight : 0;
-    $.main && ($.main.style.marginTop = `${top}px`);
-    $.indice && ($.indice.style.top = `${top}px`);
+    // En móvil no empujar: header es relativo
+    const top = $.isMobile ? 0 : (visible ? $.headerHeight : 0);
+    if ($.main) $.main.style.marginTop = `${top}px`;
+    if (!$.isMobile && $.indice) {
+      $.indice.style.top = `${top}px`;
+    } else if ($.isMobile && $.indice) {
+      $.indice.style.top = '';
+    }
   },
   updateFooter() {
     if (!$.footer) return;
