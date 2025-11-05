@@ -1,0 +1,114 @@
+/* =========================================================================
+   CORRECCIONES PARA VERSIÓN MÓVIL DE "SOBRE MÍ"
+   =========================================================================
+   Estas reglas deben añadirse o reemplazar las existentes en styles.css
+   dentro del bloque @media (max-width: 768px)
+*/
+
+@media (max-width: 768px) {
+  /* Padding equilibrado en móvil para centrado horizontal */
+  #sobremi { 
+    padding: 10px 16px 70px 16px; 
+  }
+  
+  .about-columns { 
+    grid-template-columns: 1fr; 
+    gap: 20px; 
+    justify-items: center;
+    align-items: center;
+  }
+  
+  /* Educación e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
+  .about-edu {
+    justify-self: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .about-edu h3, 
+  .about-edu .about-langs {
+    text-align: center;
+  }
+  
+  .about-edu .about-list {
+    text-align: left;
+    width: 100%;
+  }
+  
+  /* Programas: centrar horizontalmente */
+  .about-programs {
+    justify-self: center;
+    width: 100%;
+  }
+  
+  .about-programs .programs-grid {
+    grid-template-columns: repeat(5, minmax(48px, max-content));
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    justify-content: center;
+  }
+  
+  .about-programs .programs-grid img { 
+    width: 48px; 
+    height: 48px; 
+  }
+}
+
+/* Para @media (max-width: 1024px) - ventanas estrechas */
+@media (max-width: 1024px) {
+  .about-columns { 
+    grid-template-columns: 1fr; 
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .about-columns::before { 
+    display: none; 
+  }
+  
+  /* Estudios / Idiomas centrados horizontalmente */
+  .about-edu { 
+    grid-column: 1; 
+    grid-row: 1; 
+    justify-self: center; 
+    width: 100%; 
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  .about-edu .about-list { 
+    max-width: 100%; 
+    width: 100%; 
+  }
+  
+  .about-edu .about-list li { 
+    padding-left: 0; 
+    padding-right: 0; 
+  }
+  
+  .about-edu h3, 
+  .about-edu .about-langs {
+    text-align: center;
+  }
+  
+  /* Programas centrado horizontalmente con 5 columnas compactas */
+  .about-programs { 
+    grid-column: 1; 
+    grid-row: 2; 
+    justify-self: center; 
+    width: 100%; 
+  }
+  
+  .about-programs .programs-grid {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    grid-template-columns: repeat(5, minmax(56px, max-content));
+    justify-content: center;
+  }
+}

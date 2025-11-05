@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Carga directa de Google Fonts por <link> para máxima compatibilidad (incluye pesos necesarios) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;700;900&family=Press+Start+2P&family=Playfair+Display:wght@700&family=Cinzel:wght@700&family=Uncial+Antiqua&family=Caveat+Brush&family=Trade+Winds&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=5">
 </head>
 <body>
   <!-- HEADER -->
@@ -505,10 +505,10 @@ After a redesign, I created two panels with mockups like this and prepared a pre
           </p>
         </div>
         <div class="about-photo">
-          <picture>
-            <source media="(max-width: 768px)" srcset="assets/Secciones/Sobre mi/jaimemovil.png">
-            <img src="assets/Secciones/Sobre mi/jaimemovil.png" alt="Retrato de Jaime" loading="lazy" decoding="async">
-          </picture>
+          <!-- Desktop/wide: imagen horizontal -->
+          <img class="about-photo__img about-photo__img--desktop" src="assets/Secciones/Sobre mi/jaime.png" alt="Retrato de Jaime" loading="lazy" decoding="async">
+          <!-- Móvil/vertical: imagen jaimemovil -->
+          <img class="about-photo__img about-photo__img--mobile" src="assets/Secciones/Sobre mi/jaimemovil.png?v=4" alt="Retrato de Jaime (móvil)" loading="lazy" decoding="async">
         </div>
       </div>
 

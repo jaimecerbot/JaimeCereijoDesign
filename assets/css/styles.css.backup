@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
@@ -1197,20 +1197,6 @@ footer.visible { transform: translateY(0); }
   /* Centrar logo en header en ventanas estrechas */
   header { justify-content: center !important; position: relative; }
   .logo { margin: 0 auto; }
-  /* Referencias (≤1024px): avatar a la izquierda solo del nombre; la cita queda debajo a ancho completo */
-  .quote-card {
-    grid-template-columns: 84px 1fr; /* avatar + nombre */
-    grid-template-rows: auto auto;   /* fila 1: avatar+autor, fila 2: cita */
-    align-items: start; /* alinear arriba avatar y autor */
-  }
-  .quote-card > a { grid-column: 1; grid-row: 1; justify-self: start; align-self: start; margin-bottom: 0; }
-  /* Permitir que .quote-author y .quote-text sean items del grid padre */
-  .quote-content { display: contents; }
-  .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: start; padding: 0 8px 0; margin: 0; }
-  .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* Avatares un poco más grandes en ventanas estrechas */
-  .quote-avatar { width: 84px; height: 84px; }
-  .quote-card > a .quote-avatar { display: block; }
 }
 @media (max-width: 768px) {
   /* En móvil, asegurar que no hay espacio blanco bajo el header */
@@ -1609,19 +1595,9 @@ body.footer-visible #redes {
   mask-composite: intersect;
   -webkit-mask-composite: destination-in;
 }
-/* Mostrar/ocultar imágenes específicas de Sobre mí */
-.about-photo .about-photo__img--mobile { display: none; }
-@media (max-width: 1024px), (orientation: portrait) {
-  .about-photo .about-photo__img--desktop { display: none; }
-  .about-photo .about-photo__img--mobile { display: block; }
-}
 .about-intro { display: flex; flex-direction: column; gap: 12px; }
 .about-subtitle { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.5vw, 36px); margin: 0; }
 .about-intro p { font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; margin: 0; }
-/* Centrado del título y texto de "¿Quién soy yo?" */
-#sobremi .about-intro { align-items: center; }
-#sobremi .about-intro .about-subtitle { text-align: center; }
-#sobremi .about-intro p { text-align: center; }
 
 .about-columns {
   display: grid;
@@ -1741,12 +1717,18 @@ body.footer-visible #redes {
   transform: translate(-50%, -50%);
 }
 .quote-content { display: flex; flex-direction: column; gap: 8px; }
-/* Asegurar que las comillas se posicionen relativas al cuerpo del texto */
-.quote-text { position: relative; }
+.quote-text {
+  position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #1f2a44;
+  font-size: clamp(13px, 1.6vw, 16px); /* Más pequeño */
+  line-height: 1.6;
+  padding: 10px 8px;
+}
 /* Comillas gigantes alrededor del texto */
 .quote-text::before, .quote-text::after { content: '“'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
-.quote-text::before { left: -18px; top: -22px; font-size: 120px; transform: translateY(-10%); }
-.quote-text::after { content: '”'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
+.quote-text::before { left: -6px; top: -22px; font-size: 120px; transform: translateY(-10%); }
+.quote-text::after { content: '”'; right: -4px; bottom: -28px; font-size: 120px; transform: translateY(10%); }
 .quote-author { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(14px, 1.8vw, 16px); padding: 0 8px 2px; }
 
 /* Responsive ajustes para SOBRE MÍ */
@@ -1764,51 +1746,32 @@ body.footer-visible #redes {
      para que Idiomas/Estudios queden arriba y Programas debajo */
   .about-columns { 
     grid-template-columns: 1fr; 
-    justify-items: stretch; /* que los hijos ocupen todo el ancho */
-    align-items: start;
-    /* Centrar el grid dentro del contenedor si sobra espacio */
-    justify-content: center;
-    padding-left: 0;
-    padding-right: 0;
-    width: 100%;
+    justify-items: center;
+    align-items: center;
   }
   .about-columns::before { display: none; }
   /* Estudios / Idiomas centrados horizontalmente */
-  .about-columns > .about-edu { 
+  .about-edu { 
     grid-column: 1; 
     grid-row: 1; 
-    justify-self: stretch; /* ocupar todo el ancho disponible del grid */
-    width: 100%;
-    max-width: none; /* sin límite para que alinee con el padding del contenedor */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0;
-    padding-right: 0;
-    box-sizing: border-box;
-  }
-  /* Programas debajo en segunda fila y mismo ancho completo */
-  .about-columns > .about-programs {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: stretch;
-    width: 100%;
-  }
-  /* Centrar el bloque en anchuras estrechas manteniendo el texto a la izquierda */
-  .about-edu { margin-top: 0; }
-  .about-edu .about-list { 
+    justify-self: center; 
+    width: 100%; 
     max-width: 100%;
-    width: 100%;
     margin-left: 0;
     margin-right: 0;
     padding-left: 0;
     padding-right: 0;
+  }
+  .about-edu .about-list { 
+    max-width: 100%; 
+    width: 100%; 
   }
   .about-edu .about-list li { 
     padding-left: 0; 
     padding-right: 0; 
   }
   .about-edu h3, .about-edu .about-langs {
-    text-align: left;
+    text-align: center;
   }
   /* Programas centrado horizontalmente con 5 columnas compactas */
   .about-programs { 
@@ -1827,33 +1790,8 @@ body.footer-visible #redes {
 }
 @media (max-width: 768px) {
   /* Aún menos padding en móvil para que “Estudios/Idiomas” queden mucho más a la izquierda */
-  #sobremi { padding: 10px 16px 70px 16px; }
-  .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; align-items: start; }
-  /* Educación e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
-  .about-columns > .about-edu {
-    justify-self: stretch; /* ocupar todo el ancho */
-    width: 100%;
-    max-width: none;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box;
-  }
-  .about-columns > .about-programs {
-    justify-self: stretch;
-    width: 100%;
-  }
-  .about-edu h3, .about-edu .about-langs {
-    text-align: left;
-  }
-  .about-edu .about-list {
-    text-align: left;
-    width: 100%;
-  }
-  /* Programas: centrar horizontalmente */
-  .about-programs {
-    justify-self: center;
-    width: 100%;
-  }
+  #sobremi { padding: 10px 8px 70px 8px; }
+  .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; }
   /* En móvil, 5 columnas compactas y perfectamente centradas */
   .about-programs .programs-grid {
     grid-template-columns: repeat(5, minmax(48px, max-content));
@@ -1865,18 +1803,9 @@ body.footer-visible #redes {
   .about-programs .programs-grid img { width: 48px; height: 48px; }
   .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
-  /* En móvil: avatar a la izquierda del nombre; texto debajo a ancho completo */
-  .quote-card {
-    grid-template-columns: 96px 1fr;
-    grid-template-rows: auto auto;
-    align-items: center; /* alinear verticalmente avatar y autor */
-  }
-  .quote-card > a { grid-column: 1; grid-row: 1; justify-self: start; align-self: center; margin-bottom: 0; }
-  .quote-content { display: contents; }
-  .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: center; }
-  .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* En móvil: avatares más grandes para mejor legibilidad */
-  .quote-avatar { width: 96px; height: 96px; }
+  /* En móvil, aumentar avatar también un 25%: 56px -> 70px (aprox) */
+  .quote-card { grid-template-columns: 70px 1fr; }
+  .quote-avatar { width: 70px; height: 70px; }
   .quote-text { font-size: clamp(12px, 1.4vw, 15px); }
   .quote-text::before, .quote-text::after { font-size: 96px; }
 }
@@ -1935,4 +1864,3 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 #redes > h1 {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
 }
-

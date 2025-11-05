@@ -530,6 +530,8 @@ const Lang = {
           cvBtn.setAttribute('href', href);
         }
       } catch {}
+      // Re-formatear autores de referencias: salto de línea antes del rol
+      try { formatQuoteAuthors(); } catch {}
     };
     
     this.change(localStorage.getItem('idioma') || 'es');
@@ -537,6 +539,30 @@ const Lang = {
 };
 
 function cambiarIdioma(idioma) { Lang.change(idioma); }
+
+// Inserta un salto de línea entre el nombre del autor y su rol (entre paréntesis o tras coma)
+function formatQuoteAuthors() {
+  const spans = document.querySelectorAll('.quote-author span');
+  spans.forEach(span => {
+    if (!span) return;
+    // Usar el texto actualmente visible (ya aplicado por Lang.change)
+    const text = span.textContent || '';
+    if (!text) return;
+    let splitIdx = text.indexOf('(');
+    if (splitIdx === -1) {
+      const comma = text.indexOf(',');
+      if (comma !== -1) splitIdx = comma;
+    }
+    if (splitIdx > 0 && splitIdx < text.length) {
+      const name = text.slice(0, splitIdx).trim();
+      const rest = text.slice(splitIdx).trim();
+      span.innerHTML = `${name}<br><span class="quote-author-role">${rest}</span>`;
+    } else {
+      // Mantener el texto tal cual si no hay separador
+      span.textContent = text;
+    }
+  });
+}
 
 // ===== OVERLAYS Y EFECTOS OPTIMIZADOS =====
 const Overlays = {
