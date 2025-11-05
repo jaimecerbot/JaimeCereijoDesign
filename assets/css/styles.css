@@ -1749,6 +1749,8 @@ body.footer-visible #redes {
     mask-composite: initial;
     -webkit-mask-composite: initial;
   }
+  /* En ventanas estrechas, mostrar la foto por encima del texto */
+  .about-photo { order: -1; }
 }
 @media (max-width: 768px) {
   #sobremi { padding: 10px 18px 70px 18px; }
