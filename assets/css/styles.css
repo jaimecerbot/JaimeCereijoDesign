@@ -1148,6 +1148,8 @@ footer.visible { transform: translateY(0); }
 
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) {
+  /* Empujar el contenido mucho más a la izquierda (menos padding lateral) */
+  #sobremi { padding-left: 8px; padding-right: 8px; }
   /* Eliminar el hueco bajo el header en ventanas estrechas
      Nota: #desktop-version section es más específico que "section",
      por eso forzamos aquí el padding-top a 0. */
@@ -1749,15 +1751,28 @@ body.footer-visible #redes {
   .about-edu { grid-column: 1; grid-row: 1; justify-self: start; width: 100%; margin-left: 0; }
   .about-edu .about-list { max-width: none; width: 100%; }
   .about-edu .about-list li { padding-left: 0; padding-right: 0; }
-  /* Programas centrado horizontalmente con 5 columnas */
+  /* Programas centrado horizontalmente con 5 columnas compactas (no se estiran a todo el ancho) */
   .about-programs { grid-column: 1; grid-row: 2; justify-self: center; width: 100%; }
-  .about-programs .programs-grid { width: min(100%, 900px); margin-inline: auto; grid-template-columns: repeat(5, minmax(56px, 1fr)); }
+  .about-programs .programs-grid {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    grid-template-columns: repeat(5, minmax(56px, max-content));
+    justify-content: center;
+  }
 }
 @media (max-width: 768px) {
-  #sobremi { padding: 10px 18px 70px 18px; }
+  /* Aún menos padding en móvil para que “Estudios/Idiomas” queden mucho más a la izquierda */
+  #sobremi { padding: 10px 8px 70px 8px; }
   .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; }
-  /* En móvil, 5 columnas (iconos algo más compactos) y centrado */
-  .about-programs .programs-grid { grid-template-columns: repeat(5, minmax(48px, 1fr)); width: min(100%, 820px); margin-inline: auto; }
+  /* En móvil, 5 columnas compactas y perfectamente centradas */
+  .about-programs .programs-grid {
+    grid-template-columns: repeat(5, minmax(48px, max-content));
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    justify-content: center;
+  }
   .about-programs .programs-grid img { width: 48px; height: 48px; }
   .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
