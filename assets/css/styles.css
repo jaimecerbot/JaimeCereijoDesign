@@ -1153,6 +1153,8 @@ footer.visible { transform: translateY(0); }
   footer { position: static; transform: none; }
   footer.visible { transform: none; }
   #indice { width: 250px; }
+  /* Dar un poco de aire entre header y carrusel en ventanas estrechas */
+  #menu .carousel { margin-top: 12px !important; }
   /* Carrusel en pantallas estrechas de escritorio: imagen al 80% del viewport
      para que se insinúen las adyacentes por los lados */
   .carousel { justify-content: center; padding-left: 4vw; padding-right: 4vw; }
@@ -1280,7 +1282,8 @@ footer.visible { transform: translateY(0); }
     box-sizing: border-box !important;
   }
   #menu { padding-top: 0 !important; }
-  #menu .carousel { padding-top: 0 !important; }
+  /* En móvil: más espacio visual bajo el header antes del carrusel */
+  #menu .carousel { margin-top: 16px !important; padding-top: 8px !important; }
   .carousel-caption { bottom: 10% !important; max-width: 76% !important; }
   .carousel img { 
     width: 80vw !important;  /* ocupar ~80% del ancho para que se vean los bordes de las adyacentes */
