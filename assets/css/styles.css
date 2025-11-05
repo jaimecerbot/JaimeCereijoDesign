@@ -1463,6 +1463,13 @@ body.footer-visible #redes {
 /* Asegurar que la cuadrícula de círculos queda centrada horizontalmente dentro de #redes */
 #redes .social-links { 
   justify-self: center; 
+@media (max-width: 768px) {
+  html.lock-scroll {
+    overflow: hidden !important;
+    height: 100svh;
+    overscroll-behavior: none;
+  }
+}
   margin-inline: auto; 
 }
 

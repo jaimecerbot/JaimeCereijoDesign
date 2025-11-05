@@ -421,6 +421,7 @@ function mostrarSeccion(id) {
   try {
     const lock = $.isMobile && (id === 'redes' || id === 'contacto');
     document.body.classList.toggle('lock-scroll', lock);
+    document.documentElement.classList.toggle('lock-scroll', lock);
   } catch {}
   
   // Resetear scroll a la parte superior
