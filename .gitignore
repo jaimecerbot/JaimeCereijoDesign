@@ -13,3 +13,8 @@ Thumbs.db
 
 # Node/npm (if any)
 node_modules/
+
+# Design binaries (track with Git LFS if needed)
+*.psd
+*.ai
+*.indd

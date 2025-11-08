@@ -1936,3 +1936,50 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
   font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
 }
 
+/* =============================
+   GALERÍA: versión móvil/estrecha
+   =============================
+   En móviles y ventanas estrechas, sustituimos todas las imágenes/textos
+   de cada sección de la galería por un único fondo específico, ubicado
+   en assets/Secciones/Proyectos/<Proyecto>/movil/.
+   El orden de las secciones se mantiene. Solo visibles en ≤1024px.
+*/
+/* Asegurar que las imágenes de fondo móviles NO aparezcan en escritorio */
+#galeria .image-wrap > img.mobile-bg { display: none; }
+@media (max-width: 1024px) {
+  /* Versión móvil de la galería basada en <img class="mobile-bg"> */
+  /* 1) Invisibilizar por defecto todos los wrappers de la galería */
+  #galeria .image-wrap { display: none; margin: 0 !important; position: relative; min-height: auto; }
+
+  /* 2) Mostrar solo los necesarios (uno por fondo; dos si el proyecto tiene dos fondos) */
+  #galeria .image-wrap#p1,
+  #galeria .image-wrap#p3,
+  #galeria .image-wrap#p4,
+  #galeria .image-wrap#p7,
+  #galeria .image-wrap#p8,
+  #galeria .image-wrap#p9,
+  #galeria .image-wrap#p10,
+  #galeria .image-wrap#p12,
+  #galeria .image-wrap#p16,
+  #galeria .image-wrap#p19 { display: block; }
+
+  /* 3) Dentro de los visibles, ocultar todo salvo la imagen móvil y usar ancho completo */
+  #galeria .image-wrap > :not(.mobile-bg) { display: none !important; }
+  #galeria .image-wrap > img.mobile-bg {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* 4) Anular ajustes finos de desktop que causaban solapes entre p8 y p9 */
+  .image-wrap#p9 { margin-top: 0 !important; }
+
+  /* 5) Desactivar cualquier fondo inyectado por ::before (en caso de herencia) */
+  #galeria .image-wrap::before { content: none !important; }
+}
+
