@@ -303,12 +303,10 @@ const Nav = {
   init() {
     this.links = document.querySelectorAll("#indice a");
 
-    // Tomar el orden real de los elementos dentro del contenedor #galeria
-    // (incluye .image-wrap, videos o imgs sueltos). Esto nos permite crear
-    // rangos para cada enlace del índice: cada link será activo desde su
-    // primera imagen hasta la primera imagen del siguiente link.
+    // Tomar sólo los wrappers de proyecto (.image-wrap con id pN) para evitar
+    // confusiones con elementos internos que comparten id pN en imágenes u overlays.
     const linkTargets = Array.from(this.links).map(a => a.getAttribute('href').substring(1));
-    const galleryNodes = Array.from(document.querySelectorAll('#galeria [id]'))
+    const galleryNodes = Array.from(document.querySelectorAll('#galeria .image-wrap[id]'))
                               .filter(el => /^p\d+$/.test(el.id));
     const galleryOrder = galleryNodes.map(el => el.id);
 
@@ -1829,6 +1827,18 @@ const Intro = {
   }
 };
 
+// ===== MEJORA PROGRESIVA DE IMÁGENES =====
+function enhanceImagesAttributes() {
+  try {
+    const imgs = document.querySelectorAll('img');
+    imgs.forEach(img => {
+      // Evitar tocar iconos de social si ya están configurados
+      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+    });
+  } catch {}
+}
+
 // ===== CACHE-BUSTING PARA SLIDESHOWS DE SERVICIOS =====
 function hydrateCircleSlides() {
   // Añadir versión a data-src para cache-busting, pero NO aplicar el background
@@ -2597,3 +2607,10 @@ function lazyMedia() {
     try { img.decoding = 'async'; } catch {}
   });
 }
+
+// Ejecutar mejoras progresivas tras carga completa para no bloquear interacción inicial
+window.addEventListener('load', () => {
+  try { enhanceImagesAttributes(); } catch {}
+  try { lazyMedia(); } catch {}
+  try { enhanceA11y(); } catch {}
+});

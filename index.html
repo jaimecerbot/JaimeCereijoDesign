@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="Portfolio multidisciplinar de diseño gráfico, desarrollo web, ilustración y edición de vídeo de Jaime Cereijo en Valencia.">
+  <meta name="theme-color" content="#001f3f">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>Jaime Cereijo Design</title>
   <link rel="icon" type="image/png" href="LogoChiquito.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +16,7 @@
   <link rel="stylesheet" href="assets/css/styles.css?v=6">
 </head>
 <body>
+  <a href="#menu" class="skip-link">Saltar al contenido</a>
   <!-- HEADER -->
   <header id="main-header">
     <div class="logo">
@@ -701,5 +706,13 @@ After a redesign, I created two panels with mockups like this and prepared a pre
   </div>
 
   <script src="assets/js/main.js" defer></script>
+  <script>
+    // Registro básico del Service Worker para funcionamiento offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registro fallido', err));
+      });
+    }
+  </script>
 </body>
 </html>

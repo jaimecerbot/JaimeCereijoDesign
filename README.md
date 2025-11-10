@@ -1,46 +1,61 @@
-# JaimeCereijoDesign
+# Jaime Cereijo Design
 
-This repository contains the source for the Jaime Cereijo portfolio site.
+Portfolio web de Jaime Cereijo: diseño gráfico, desarrollo web, ilustración, edición de vídeo y más.
 
-## Overview
+## Objetivos de optimización recientes
 
-- Single HTML entry point: `index.html`
-- Assets under `assets/` (images, videos, thumbnails, circles, projects)
-- Local fonts in `CCTheStorySoNear W00 Regular/` and `UnciaDis.ttf`
-- Externalized styles and scripts for maintainability:
-	- CSS: `assets/css/styles.css`
-	- JS: `assets/js/main.js`
+Se ha realizado una mejora sistemática para:
 
-No visual or behavioral changes were made during the refactor; styles and logic were moved verbatim out of `index.html`.
+1. Reducir transferencia inicial: lazy-loading y `decoding="async"` en imágenes.
+2. Mejorar accesibilidad: enlace "Saltar al contenido", roles ARIA, navegación por teclado.
+3. Añadir funcionamiento offline básico: Service Worker (`sw.js`) y `offline.html`.
+4. Preparar PWA ligera: `manifest.webmanifest` y `theme-color`.
+5. Optimizar fuentes: uso consolidado de `<link>` en lugar de múltiples `@import`, `font-display: swap` para fuentes locales.
+6. Ajustar JS para no bloquear: script principal con `defer` y mejoras progresivas tras `load`.
 
-## Local development
+## Estructura
 
-You can open `index.html` directly in your browser. For more accurate behavior with relative paths and caching, run a static server from the repo root and then visit http://localhost:8000 (or the displayed port).
+| Recurso | Descripción |
+|---------|-------------|
+| `index.html` | Entrada principal y registro del Service Worker |
+| `assets/css/styles.css` | Hoja de estilos global (pendiente futura minificación) |
+| `assets/js/main.js` | Lógica interactiva (carrusel, galería, accesibilidad, idioma) |
+| `sw.js` | Cache offline: network-first para navegaciones, stale-while-revalidate para estáticos |
+| `offline.html` | Página de respaldo cuando no hay conexión |
+| `manifest.webmanifest` | Metadatos PWA básicos |
+| `assets/Secciones/...` | Imágenes y medios de proyectos |
 
-Optional commands (choose one):
+## Desarrollo local
+
+Abrir directamente `index.html` funciona, pero para probar SW/PWA usa un servidor local:
 
 ```powershell
-# Python 3
 python -m http.server 8000
-
-# Node (if installed)
+# o
 npx serve . -l 8000
 ```
+Visita: http://localhost:8000
 
-## Structure
+## Pruebas rápidas
 
-- `index.html` — Site markup, links to external CSS/JS.
-- `assets/css/styles.css` — All styles previously inlined.
-- `assets/js/main.js` — All scripts previously inlined.
-- `assets/…` — Project media and UI imagery.
-- `CCTheStorySoNear W00 Regular/` — Local font files (TTF at root, web formats under `Web Fonts/`).
-- `UnciaDis.ttf` — Local font.
+1. Modo offline: abre DevTools > Application > Service Workers, marca "Offline" y recarga. Debes ver `offline.html` si navegas a una página no cacheada.
+2. Lighthouse (recomendado): auditar Performance / PWA / Accessibility.
+3. Caché: en DevTools > Application > Cache Storage verifica `jc-design-v2`.
 
-## Notes
+## Próximos pasos sugeridos
 
-- The header logo expects `Jmotion.png` at the repo root. If missing, add the file or update the CSS rule for `.logo` in `assets/css/styles.css`.
-- The font-face sources include TTF (present). WOFF/WOFF2 variants can be wired to the hashed files in `CCTheStorySoNear W00 Regular/Web Fonts/` if desired for improved performance.
+- Minificar y generar hash de CSS/JS (`styles.min.css`, `main.min.js`).
+- Generar variantes modernas de imágenes (WebP/AVIF) y `picture` con fallback.
+- Extraer Critical CSS (header + hero inicial) inline en `<head>` para reducir FCP.
+- Auditoría de reglas CSS no usadas (usar Cover de DevTools) y limpieza.
+- Split lógico del JS (código del carrusel vs. galería) para reducir parse inicial.
 
-## Change log
+## Registro de cambios
 
-- 2025-10-25: Extracted CSS/JS from `index.html` into `assets/css/styles.css` and `assets/js/main.js`. Fixed relative URLs inside CSS.
+- 2025-11-10: Accesibilidad (skip link), meta tags, manifest, Service Worker v2 con `offline.html`.
+- 2025-10-25: Extracción de CSS/JS desde `index.html`.
+
+## Licencia
+
+Ver `License.txt`.
+

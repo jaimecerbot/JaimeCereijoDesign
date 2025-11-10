@@ -1,0 +1,12 @@
+{
+  "name": "Jaime Cereijo Design",
+  "short_name": "JCDesign",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#001f3f",
+  "theme_color": "#001f3f",
+  "lang": "es",
+  "icons": [
+    {"src": "LogoChiquito.png", "sizes": "192x192", "type": "image/png"}
+  ]
+}
