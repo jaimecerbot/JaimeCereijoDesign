@@ -2032,7 +2032,8 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
   /* Rollo móvil deslizable (p12) */
   #galeria .image-wrap#p12 {
     cursor: grab;
-    overflow: hidden; /* Ocultar la parte que sobresale del rollo */
+    overflow-x: auto; /* Permitir scroll horizontal */
+    overflow-y: hidden; /* Evitar scroll vertical accidental */
   }
   #galeria .image-wrap#p12:active {
     cursor: grabbing;

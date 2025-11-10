@@ -2252,6 +2252,8 @@ const MobileRollo = {
   mouseMoveHandler: null,
   mouseUpHandler: null,
   init() {
+    // Desactivado en móvil y ventanas estrechas (<=1024px): usar scroll nativo CSS
+    if (window.innerWidth <= 1024) return;
     if (this.initialized) return;
     this.wrap = document.querySelector('#p12');
     if (!this.wrap) return;
