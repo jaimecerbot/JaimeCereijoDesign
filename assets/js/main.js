@@ -2248,79 +2248,159 @@ const MobileRollo = {
   isDragging: false,
   startX: 0,
   currentX: 0,
+  minX: 0,
+  pointerId: null,
   initialized: false,
-  mouseMoveHandler: null,
-  mouseUpHandler: null,
+  onPointerDown: null,
+  onPointerMove: null,
+  onPointerUp: null,
+  onTouchStart: null,
+  onTouchMove: null,
+  onTouchEnd: null,
+  onMouseDown: null,
+  onMouseMove: null,
+  onMouseUp: null,
+  onResize: null,
   init() {
-    // Desactivado en móvil y ventanas estrechas (<=1024px): usar scroll nativo CSS
-    if (window.innerWidth <= 1024) return;
     if (this.initialized) return;
-    this.wrap = document.querySelector('#p12');
+    this.wrap = document.querySelector('.image-wrap#p12');
     if (!this.wrap) return;
     this.img = this.wrap.querySelector('.mobile-rollo-scroll');
     if (!this.img) return;
 
-    // Touch events en el wrap y la imagen
-    const handleTouchStart = (e) => {
-      this.handleStart(e.touches[0].clientX);
-    };
-    const handleTouchMove = (e) => {
-      if (this.isDragging) {
-        e.preventDefault(); // Evitar scroll vertical mientras se arrastra
-        this.handleMove(e.touches[0].clientX);
-      }
-    };
-    const handleTouchEnd = () => this.handleEnd();
+    // Recalcular límites una vez que la imagen esté cargada y en cada resize/orientación.
+    const updateBoundsNow = () => this.updateBounds(true);
+    if (!this.img.complete) {
+      this.img.addEventListener('load', updateBoundsNow, {once: true});
+    }
+    updateBoundsNow();
+    this.onResize = () => debounce('mobile-rollo-resize', updateBoundsNow, 120);
+    window.addEventListener('resize', this.onResize, {passive: true});
 
-    this.wrap.addEventListener('touchstart', handleTouchStart, {passive: true});
-    this.wrap.addEventListener('touchmove', handleTouchMove, {passive: false});
-    this.wrap.addEventListener('touchend', handleTouchEnd);
+    if (window.PointerEvent) {
+      this.onPointerDown = (e) => {
+        if (e.pointerType === 'mouse' && e.buttons !== 1) return;
+        if (!this.canDrag()) return;
+        this.pointerId = e.pointerId;
+        this.wrap.setPointerCapture?.(e.pointerId);
+        this.handleStart(e.clientX);
+        this.wrap.classList.add('mobile-rollo-dragging');
+        e.preventDefault();
+      };
+      this.onPointerMove = (e) => {
+        if (!this.isDragging || e.pointerId !== this.pointerId) return;
+        this.handleMove(e.clientX);
+        e.preventDefault();
+      };
+      this.onPointerUp = (e) => {
+        if (e.pointerId !== this.pointerId) return;
+        this.wrap.releasePointerCapture?.(e.pointerId);
+        this.handleEnd();
+      };
+      this.wrap.addEventListener('pointerdown', this.onPointerDown);
+      this.wrap.addEventListener('pointermove', this.onPointerMove);
+      this.wrap.addEventListener('pointerup', this.onPointerUp);
+      this.wrap.addEventListener('pointercancel', this.onPointerUp);
+      this.wrap.addEventListener('pointerleave', this.onPointerUp);
+    } else {
+      // Touch fallback
+      this.onTouchStart = (e) => {
+        if (!this.canDrag()) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+        this.handleStart(touch.clientX);
+      };
+      this.onTouchMove = (e) => {
+        if (!this.isDragging) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+        e.preventDefault();
+        this.handleMove(touch.clientX);
+      };
+      this.onTouchEnd = () => this.handleEnd();
+      this.wrap.addEventListener('touchstart', this.onTouchStart, {passive: true});
+      this.wrap.addEventListener('touchmove', this.onTouchMove, {passive: false});
+      this.wrap.addEventListener('touchend', this.onTouchEnd);
+      this.wrap.addEventListener('touchcancel', this.onTouchEnd);
 
-    // Mouse events en el wrap (para pruebas en desktop/ventanas estrechas)
-    this.wrap.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      this.handleStart(e.clientX);
-    });
-    
-    // Los eventos mousemove y mouseup deben estar en document para capturar el arrastre
-    // incluso cuando el cursor sale del wrap - usar referencias para poder limpiar
-    this.mouseMoveHandler = (e) => {
-      if (this.isDragging) {
+      // Mouse fallback (para pruebas en escritorio estrecho)
+      this.onMouseDown = (e) => {
+        if (e.button !== 0 || !this.canDrag()) return;
+        e.preventDefault();
+        this.handleStart(e.clientX);
+      };
+      this.onMouseMove = (e) => {
+        if (!this.isDragging) return;
         e.preventDefault();
         this.handleMove(e.clientX);
-      }
-    };
-    this.mouseUpHandler = () => {
-      if (this.isDragging) this.handleEnd();
-    };
-    
-    document.addEventListener('mousemove', this.mouseMoveHandler);
-    document.addEventListener('mouseup', this.mouseUpHandler);
-    
+      };
+      this.onMouseUp = () => this.handleEnd();
+      this.wrap.addEventListener('mousedown', this.onMouseDown);
+      document.addEventListener('mousemove', this.onMouseMove);
+      document.addEventListener('mouseup', this.onMouseUp);
+    }
+
     this.initialized = true;
   },
-  handleStart(x) {
-    this.isDragging = true;
-    this.startX = x - this.currentX;
+  canDrag() {
+    return this.minX < 0;
   },
-  handleMove(x) {
+  updateBounds(adjustCurrent = false) {
+    if (!this.wrap || !this.img) return;
+    const wrapRect = this.wrap.getBoundingClientRect();
+    const imgRect = this.img.getBoundingClientRect();
+    const newMin = Math.min(0, wrapRect.width - imgRect.width);
+    this.minX = isFinite(newMin) ? newMin : 0;
+    this.wrap.classList.toggle('mobile-rollo-enabled', this.minX < 0);
+    if (adjustCurrent) {
+      const clamped = Math.max(this.minX, Math.min(0, this.currentX));
+      this.applyPosition(clamped);
+    }
+  },
+  handleStart(clientX) {
+    if (!this.canDrag()) return;
+    this.isDragging = true;
+    this.startX = clientX - this.currentX;
+    this.wrap.classList.add('mobile-rollo-dragging');
+    this.img.style.willChange = 'transform';
+  },
+  handleMove(clientX) {
     if (!this.isDragging || !this.img) return;
-    const deltaX = x - this.startX;
-    // Limitar el rango: desde 0 (inicio) hasta -200% (2/3 fuera de pantalla a la izquierda)
-    const maxOffset = -(this.img.offsetWidth * 2 / 3);
-    this.currentX = Math.max(maxOffset, Math.min(0, deltaX));
-    this.img.style.transform = `translateX(${this.currentX}px)`;
+    const deltaX = clientX - this.startX;
+    const clamped = Math.max(this.minX, Math.min(0, deltaX));
+    this.applyPosition(clamped);
   },
   handleEnd() {
+    if (!this.isDragging) return;
     this.isDragging = false;
+    this.wrap.classList.remove('mobile-rollo-dragging');
+    this.img.style.willChange = 'auto';
+    this.pointerId = null;
+  },
+  applyPosition(x) {
+    this.currentX = x;
+    this.img.style.setProperty('transform', `translateX(${x}px)`, 'important');
   },
   destroy() {
-    if (this.mouseMoveHandler) {
-      document.removeEventListener('mousemove', this.mouseMoveHandler);
+    if (!this.initialized) return;
+    if (window.PointerEvent) {
+      this.wrap?.removeEventListener('pointerdown', this.onPointerDown);
+      this.wrap?.removeEventListener('pointermove', this.onPointerMove);
+      this.wrap?.removeEventListener('pointerup', this.onPointerUp);
+      this.wrap?.removeEventListener('pointercancel', this.onPointerUp);
+      this.wrap?.removeEventListener('pointerleave', this.onPointerUp);
+    } else {
+      this.wrap?.removeEventListener('touchstart', this.onTouchStart);
+      this.wrap?.removeEventListener('touchmove', this.onTouchMove);
+      this.wrap?.removeEventListener('touchend', this.onTouchEnd);
+      this.wrap?.removeEventListener('touchcancel', this.onTouchEnd);
+      this.wrap?.removeEventListener('mousedown', this.onMouseDown);
+      document.removeEventListener('mousemove', this.onMouseMove);
+      document.removeEventListener('mouseup', this.onMouseUp);
     }
-    if (this.mouseUpHandler) {
-      document.removeEventListener('mouseup', this.mouseUpHandler);
-    }
+    window.removeEventListener('resize', this.onResize);
+    this.wrap?.classList.remove('mobile-rollo-dragging', 'mobile-rollo-enabled');
+    this.img?.style && (this.img.style.willChange = 'auto');
     this.initialized = false;
   }
 };

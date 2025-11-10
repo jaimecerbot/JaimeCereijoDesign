@@ -2031,11 +2031,13 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 
   /* Rollo móvil deslizable (p12) */
   #galeria .image-wrap#p12 {
-    cursor: grab;
-    overflow-x: auto; /* Permitir scroll horizontal */
-    overflow-y: hidden; /* Evitar scroll vertical accidental */
+    overflow: hidden; /* Ocultar la parte que sobresale del rollo */
   }
-  #galeria .image-wrap#p12:active {
+  #galeria .image-wrap#p12.mobile-rollo-enabled {
+    cursor: grab;
+  }
+  #galeria .image-wrap#p12.mobile-rollo-enabled:active,
+  #galeria .image-wrap#p12.mobile-rollo-dragging {
     cursor: grabbing;
   }
   #galeria .image-wrap#p12 .mobile-rollo-scroll {
