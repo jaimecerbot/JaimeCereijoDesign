@@ -1487,6 +1487,8 @@ const Thumbnails = {
     this.setGroup(next);
   },
   start() {
+    // Evitar iniciar en móvil: la versión móvil usa MobileThumbnails
+    if (window.innerWidth <= 1024) return;
     this.preload();
     this.initCache();
     if (!this.overlays.length) return;
@@ -2168,11 +2170,247 @@ const ServicesDesc = {
   }
 };
 
+// ===== OVERLAYS MÓVILES =====
+const MobileOverlays = {
+  io: null,
+  init() {
+    // Solo activar en pantallas móviles/estrechas
+    if (window.innerWidth > 1024) return;
+    
+    // Observador para detectar cuando los image-wrap entran en viewport
+    this.io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const wrap = entry.target;
+          // Activar TODAS las overlays de imagen dentro del wrap (p. ej., botellas 1..9)
+          const imgOverlays = wrap.querySelectorAll('.mobile-overlay');
+          if (imgOverlays && imgOverlays.length) {
+            imgOverlays.forEach((img, idx) => {
+              if (!img.classList.contains('visible')) {
+                // Pequeño escalonado para una entrada más agradable
+                setTimeout(() => img.classList.add('visible'), 150 + idx * 60);
+              }
+            });
+          }
+          // Activar overlay de texto (si existe)
+          const textOverlay = wrap.querySelector('.mobile-text-overlay');
+          if (textOverlay && !textOverlay.classList.contains('visible')) {
+            setTimeout(() => textOverlay.classList.add('visible'), 300);
+          }
+        }
+      });
+    }, {
+      root: document.getElementById('galeria-container'),
+      threshold: 0.3 // Activar cuando el 30% del wrap sea visible
+    });
+    
+    // Observar todos los image-wrap que tengan overlays móviles
+    document.querySelectorAll('.image-wrap').forEach(wrap => {
+      if (wrap.querySelector('.mobile-overlay') || wrap.querySelector('.mobile-text-overlay')) {
+        this.io.observe(wrap);
+      }
+    });
+
+    // Iniciar ciclo específico de thumbnails móviles si existe p10 con imágenes .thumb-mobile
+    try { MobileThumbnails.init(); } catch {}
+    
+    // Iniciar scroll horizontal del rollo móvil si existe
+    try { MobileRollo.init(); } catch {}
+  }
+};
+
+// ===== ROLLO MÓVIL DESLIZABLE (p12) =====
+const MobileRollo = {
+  wrap: null,
+  img: null,
+  isDragging: false,
+  startX: 0,
+  currentX: 0,
+  init() {
+    this.wrap = document.querySelector('#p12');
+    if (!this.wrap) return;
+    this.img = this.wrap.querySelector('.mobile-rollo-scroll');
+    if (!this.img) return;
+
+    // Touch events en el wrap y la imagen
+    const handleTouchStart = (e) => {
+      this.handleStart(e.touches[0].clientX);
+    };
+    const handleTouchMove = (e) => {
+      if (this.isDragging) {
+        e.preventDefault(); // Evitar scroll vertical mientras se arrastra
+        this.handleMove(e.touches[0].clientX);
+      }
+    };
+    const handleTouchEnd = () => this.handleEnd();
+
+    this.wrap.addEventListener('touchstart', handleTouchStart, {passive: true});
+    this.wrap.addEventListener('touchmove', handleTouchMove, {passive: false});
+    this.wrap.addEventListener('touchend', handleTouchEnd);
+
+    // Mouse events en el wrap (para pruebas en desktop/ventanas estrechas)
+    this.wrap.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      this.handleStart(e.clientX);
+    });
+    
+    // Los eventos mousemove y mouseup deben estar en document para capturar el arrastre
+    // incluso cuando el cursor sale del wrap
+    document.addEventListener('mousemove', (e) => {
+      if (this.isDragging) {
+        e.preventDefault();
+        this.handleMove(e.clientX);
+      }
+    });
+    document.addEventListener('mouseup', () => {
+      if (this.isDragging) this.handleEnd();
+    });
+  },
+  handleStart(x) {
+    this.isDragging = true;
+    this.startX = x - this.currentX;
+  },
+  handleMove(x) {
+    if (!this.isDragging) return;
+    const deltaX = x - this.startX;
+    // Limitar el rango: desde 0 (inicio) hasta -200% (2/3 fuera de pantalla a la izquierda)
+    const maxOffset = -(this.img.offsetWidth * 2 / 3);
+    this.currentX = Math.max(maxOffset, Math.min(0, deltaX));
+    this.img.style.transform = `translateX(${this.currentX}px)`;
+  },
+  handleEnd() {
+    this.isDragging = false;
+  }
+};
+
+// ===== THUMBNAILS MÓVILES (p10) =====
+// Ciclo simplificado reutilizando imágenes en assets/Secciones/Proyectos/Thumbnails/movil/
+// Grupos: 1.x, 2.x, 3.x cada uno con 4 imágenes (posiciones 1..4).
+// Efecto: fundido + leve desplazamiento diagonal, escalonado por imagen.
+const MobileThumbnails = {
+  wrap: null,
+  imgs: [],
+  group: 1,
+  timer: null,
+  duration: 5000,
+  transitioning: false,
+  preloaded: false,
+  preload() {
+    if (this.preloaded) return;
+    [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
+      const im = new Image();
+      im.src = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${i}.png`;
+    }));
+    this.preloaded = true;
+  },
+  init() {
+    this.wrap = document.querySelector('#p10');
+    if (!this.wrap) return;
+    this.imgs = Array.from(this.wrap.querySelectorAll('.thumb-mobile.mobile-overlay'));
+    if (!this.imgs.length) return;
+    this.preload();
+    // Asegurar z-index por encima del fondo móvil pero debajo de textos
+    this.imgs.forEach((img,i) => { img.style.zIndex = (2 + i).toString(); });
+    // Añadir clase visible escalonada inicial (si MobileOverlays ya los activó no pasa nada)
+    this.imgs.forEach((img,i) => setTimeout(() => img.classList.add('visible'), 180 + i*120));
+    // Iniciar ciclo
+    this.start();
+  },
+  next() {
+    if (this.transitioning) return;
+    const nextGroup = this.group === 3 ? 1 : this.group + 1;
+    this.setGroup(nextGroup);
+  },
+  setGroup(g) {
+    if (!this.imgs.length) return;
+    this.transitioning = true;
+    
+    this.imgs.forEach((img, idx) => {
+      const newSrc = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${idx+1}.png`;
+      if (img.getAttribute('src') === newSrc) return; // nada que cambiar
+      
+      // Crear imagen temporal con máscara diagonal (mismo método que desktop)
+      const tmp = document.createElement('img');
+      tmp.alt = img.alt || '';
+      tmp.className = `mobile-overlay thumb-mobile thumb-temp`;
+      tmp.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 1;
+      `;
+      
+      // Configurar máscara con gradiente diagonal (mismo que desktop)
+      const feather = '3%';
+      const mask = `linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -10%) - ${feather}), rgba(0,0,0,1) var(--edge, -10%), rgba(0,0,0,0) calc(var(--edge, -10%) + ${feather}))`;
+      Object.assign(tmp.style, {
+        webkitMaskImage: mask,
+        maskImage: mask,
+        webkitMaskRepeat: 'no-repeat',
+        maskRepeat: 'no-repeat',
+        webkitMaskSize: '200% 200%',
+        maskSize: '200% 200%'
+      });
+      tmp.style.setProperty('--edge', '-10%');
+
+      tmp.addEventListener('load', () => {
+        tmp.style.opacity = '1';
+        img.parentElement.appendChild(tmp);
+        
+        // Animación diagonal suave (mismo timing que desktop)
+        const duration = 1400;
+        const start = performance.now();
+        const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+        
+        const step = now => {
+          let p = Math.min(1, Math.max(0, (now - start) / duration));
+          const eased = easeInOut(p);
+          const edge = -10 + 120 * eased;
+          const edgeValue = edge.toFixed(2) + '%';
+          
+          tmp.style.setProperty('--edge', edgeValue);
+          
+          if (p < 1) {
+            requestAnimationFrame(step);
+          } else {
+            // Finalizar: cambiar src y limpiar
+            img.src = newSrc;
+            requestAnimationFrame(() => {
+              tmp.remove();
+              // Marcar transición completa cuando se procese la última imagen
+              if (idx === this.imgs.length - 1) {
+                setTimeout(() => {
+                  this.transitioning = false;
+                }, 50);
+              }
+            });
+          }
+        };
+        requestAnimationFrame(step);
+      }, {once: true});
+      
+      tmp.src = newSrc;
+    });
+    
+    this.group = g;
+  },
+  start() {
+    if (this.timer) return;
+    this.timer = setInterval(() => this.next(), this.duration);
+  },
+  stop() { if (this.timer) { clearInterval(this.timer); this.timer=null; } }
+};
+
 // ===== INICIALIZACIÓN OPTIMIZADA =====
 const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
-  [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc].forEach(comp => comp.init());
+  [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc, MobileOverlays].forEach(comp => comp.init());
   // Asignar direcciones de rotación aleatorias (±15deg) a los overlays de p9
   try {
     const p9Overlays = document.querySelectorAll('#p9 .overlay');
@@ -2235,10 +2473,15 @@ const init = () => {
     new MutationObserver(mutations => {
       if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
                          proyectos.classList.contains('active'))) {
-        setTimeout(() => { Videos.init(); Thumbnails.start(); }, 100);
+        setTimeout(() => { 
+          Videos.init(); 
+          Thumbnails.start(); 
+          try { if (window.innerWidth <= 1024) { MobileThumbnails.start && MobileThumbnails.start(); } } catch {}
+        }, 100);
       } else if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
                           !proyectos.classList.contains('active'))) {
         Thumbnails.stop();
+        try { MobileThumbnails.stop && MobileThumbnails.stop(); } catch {}
       }
     }).observe(proyectos, {attributes: true, attributeFilter: ['class']});
   }
