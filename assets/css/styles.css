@@ -1945,9 +1945,12 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
    El orden de las secciones se mantiene. Solo visibles en ≤1024px.
 */
 /* Asegurar que las imágenes de fondo móviles NO aparezcan en escritorio */
-#galeria .image-wrap > img.mobile-bg,
-#galeria .image-wrap > img.mobile-overlay,
-#galeria .image-wrap > .mobile-text-overlay { display: none; }
+@media (min-width: 1025px) {
+  #galeria .image-wrap > img.mobile-bg,
+  #galeria .image-wrap > img.mobile-overlay,
+  #galeria .image-wrap > .mobile-text-overlay { display: none !important; }
+}
+
 @media (max-width: 1024px) {
   /* Versión móvil de la galería basada en <img class="mobile-bg"> */
   /* 1) Invisibilizar por defecto todos los wrappers de la galería */
