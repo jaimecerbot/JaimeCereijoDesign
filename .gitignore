@@ -18,3 +18,7 @@ node_modules/
 *.psd
 *.ai
 *.indd
+
+# Large mobile GIF variants removed from history / keep ignored to prevent future >100MB pushes
+assets/Secciones/Proyectos/Reflejos/movil/fondoreflejos1.gif
+assets/Secciones/Proyectos/Reflejos/movil/fondoreflejos2.gif
