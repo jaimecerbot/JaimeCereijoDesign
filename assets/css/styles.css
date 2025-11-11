@@ -2021,6 +2021,19 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
     transform: translateY(0) scale(1);
   }
 
+  #galeria .image-wrap#p16 .mobile-overlay.mobile-card {
+    opacity: 0;
+    transition: opacity 1.4s ease-in-out;
+  }
+
+  #galeria .image-wrap#p16 .mobile-overlay.mobile-card.is-active {
+    opacity: 1;
+  }
+
+  #galeria .image-wrap#p16 .mobile-overlay.mobile-card.is-inactive {
+    opacity: 0;
+  }
+
   /* Thumbnails móviles (p10) - Anulación de animación genérica */
   #galeria .image-wrap#p10 img.thumb-mobile,
   #galeria .image-wrap#p10 img.thumb-temp {

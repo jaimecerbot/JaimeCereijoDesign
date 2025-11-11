@@ -2238,6 +2238,8 @@ const MobileOverlays = {
     
     // Iniciar scroll horizontal del rollo móvil si existe
     try { MobileRollo.init(); } catch (e) { console.warn('MobileRollo init failed:', e); }
+
+    try { MobileCards.init(); } catch (e) { console.warn('MobileCards init failed:', e); }
   }
 };
 
@@ -2261,6 +2263,7 @@ const MobileRollo = {
   onMouseMove: null,
   onMouseUp: null,
   onResize: null,
+  resizeObserver: null,
   init() {
     if (this.initialized) return;
     this.wrap = document.querySelector('.image-wrap#p12');
@@ -2273,9 +2276,14 @@ const MobileRollo = {
     if (!this.img.complete) {
       this.img.addEventListener('load', updateBoundsNow, {once: true});
     }
-    updateBoundsNow();
+    // Ejecutar tras un frame para asegurar que el wrapper ya no está display:none.
+    requestAnimationFrame(updateBoundsNow);
     this.onResize = () => debounce('mobile-rollo-resize', updateBoundsNow, 120);
     window.addEventListener('resize', this.onResize, {passive: true});
+    if (window.ResizeObserver) {
+      this.resizeObserver = new ResizeObserver(() => this.updateBounds(true));
+      try { this.resizeObserver.observe(this.wrap); } catch {}
+    }
 
     if (window.PointerEvent) {
       this.onPointerDown = (e) => {
@@ -2348,8 +2356,22 @@ const MobileRollo = {
   updateBounds(adjustCurrent = false) {
     if (!this.wrap || !this.img) return;
     const wrapRect = this.wrap.getBoundingClientRect();
-    const imgRect = this.img.getBoundingClientRect();
-    const newMin = Math.min(0, wrapRect.width - imgRect.width);
+    if (!wrapRect.width || !wrapRect.height) {
+      this.minX = 0;
+      this.wrap.classList.remove('mobile-rollo-enabled');
+      return;
+    }
+
+    let displayedWidth = this.img.getBoundingClientRect().width;
+    if ((!displayedWidth || !isFinite(displayedWidth)) && this.img.naturalWidth && this.img.naturalHeight) {
+      const scale = wrapRect.height / this.img.naturalHeight;
+      if (scale > 0) displayedWidth = this.img.naturalWidth * scale;
+    }
+    if (!displayedWidth || !isFinite(displayedWidth)) {
+      displayedWidth = wrapRect.width;
+    }
+
+    const newMin = Math.min(0, wrapRect.width - displayedWidth);
     this.minX = isFinite(newMin) ? newMin : 0;
     this.wrap.classList.toggle('mobile-rollo-enabled', this.minX < 0);
     if (adjustCurrent) {
@@ -2399,6 +2421,10 @@ const MobileRollo = {
       document.removeEventListener('mouseup', this.onMouseUp);
     }
     window.removeEventListener('resize', this.onResize);
+    if (this.resizeObserver) {
+      try { this.resizeObserver.disconnect(); } catch {}
+      this.resizeObserver = null;
+    }
     this.wrap?.classList.remove('mobile-rollo-dragging', 'mobile-rollo-enabled');
     this.img?.style && (this.img.style.willChange = 'auto');
     this.initialized = false;
@@ -2554,6 +2580,71 @@ const MobileThumbnails = {
       clearInterval(this.timer); 
       this.timer = null; 
     } 
+  }
+};
+
+const MobileCards = {
+  wrap: null,
+  cards: [],
+  index: 0,
+  timer: null,
+  interval: 4600,
+  observer: null,
+  initialized: false,
+  init() {
+    if (this.initialized) return;
+    if (window.innerWidth > 1024) return;
+    this.wrap = document.querySelector('.image-wrap#p16');
+    if (!this.wrap) return;
+    this.cards = Array.from(this.wrap.querySelectorAll('.mobile-overlay.mobile-card'));
+    if (this.cards.length < 2) return;
+
+    const root = document.getElementById('galeria-container') || null;
+    try {
+      this.observer = new IntersectionObserver((entries) => {
+        const entry = entries && entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          this.start();
+        } else {
+          this.stop();
+        }
+      }, { root, threshold: 0.4 });
+      this.observer.observe(this.wrap);
+    } catch (e) {
+      console.warn('MobileCards observer failed:', e);
+      // Fallback: arrancar inmediatamente
+      this.start();
+    }
+
+    this.initialized = true;
+  },
+  start() {
+    if (!this.cards.length) return;
+    this.activate(this.index);
+    if (!this.timer) {
+      this.timer = setInterval(() => this.next(), this.interval);
+    }
+  },
+  stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  },
+  activate(idx) {
+    if (!this.cards.length) return;
+    this.cards.forEach((card, i) => {
+      card.classList.add('visible');
+      card.classList.toggle('is-active', i === idx);
+      card.classList.toggle('is-inactive', i !== idx);
+      card.style.zIndex = i === idx ? '6' : '5';
+    });
+  },
+  next() {
+    if (!this.cards.length) return;
+    this.index = (this.index + 1) % this.cards.length;
+    this.activate(this.index);
   }
 };
 
