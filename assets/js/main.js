@@ -2203,10 +2203,14 @@ const MobileOverlays = {
                 }
               });
             }
-            // Activar overlay de texto (si existe)
-            const textOverlay = wrap.querySelector('.mobile-text-overlay');
-            if (textOverlay && !textOverlay.classList.contains('visible')) {
-              setTimeout(() => textOverlay.classList.add('visible'), 300);
+            // Activar overlays de texto (puede haber más de uno en un mismo wrap)
+            const textOverlays = wrap.querySelectorAll('.mobile-text-overlay');
+            if (textOverlays && textOverlays.length) {
+              textOverlays.forEach((textOverlay, textIdx) => {
+                if (!textOverlay.classList.contains('visible')) {
+                  setTimeout(() => textOverlay.classList.add('visible'), 300 + textIdx * 80);
+                }
+              });
             }
           }
         });
