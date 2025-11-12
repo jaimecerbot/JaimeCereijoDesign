@@ -2442,6 +2442,8 @@ const MobileRollo = {
 const MobileThumbnails = {
   wrap: null,
   imgs: [],
+  textBlocks: [],
+  textTimers: [],
   group: 1,
   timer: null,
   duration: 5000,
@@ -2466,6 +2468,8 @@ const MobileThumbnails = {
     if (!this.wrap) return;
     this.imgs = Array.from(this.wrap.querySelectorAll('.thumb-mobile.mobile-overlay'));
     if (!this.imgs.length) return;
+    this.textBlocks = Array.from(this.wrap.querySelectorAll('.mobile-text-overlay.thumb-text-block'));
+    this.updateTextGroup(this.group);
     
     try {
       this.preload();
@@ -2488,10 +2492,13 @@ const MobileThumbnails = {
   setGroup(g) {
     if (!this.imgs.length) return;
     this.transitioning = true;
+    this.updateTextGroup(g);
+    let changed = false;
     
     this.imgs.forEach((img, idx) => {
       const newSrc = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${idx+1}.png`;
       if (img.getAttribute('src') === newSrc) return; // nada que cambiar
+      changed = true;
       
       try {
         // Crear imagen temporal con máscara diagonal (mismo método que desktop)
@@ -2573,7 +2580,32 @@ const MobileThumbnails = {
       }
     });
     
+    if (!changed) {
+      this.transitioning = false;
+    }
     this.group = g;
+  },
+  updateTextGroup(g) {
+    if (!this.textBlocks.length) return;
+    this.textTimers.forEach(timer => clearTimeout(timer));
+    this.textTimers = [];
+
+    this.textBlocks.forEach(block => {
+      block.classList.remove('is-active');
+      block.setAttribute('aria-hidden', 'true');
+    });
+
+    const current = this.textBlocks.filter(block => (parseInt(block.getAttribute('data-group'), 10) || 0) === g);
+    const baseDelay = 150;
+    const stepDelay = 80;
+
+    current.forEach((block, idx) => {
+      const timer = setTimeout(() => {
+        block.classList.add('is-active');
+        block.setAttribute('aria-hidden', 'false');
+      }, baseDelay + idx * stepDelay);
+      this.textTimers.push(timer);
+    });
   },
   start() {
     if (this.timer || !this.imgs.length) return;
@@ -2584,6 +2616,8 @@ const MobileThumbnails = {
       clearInterval(this.timer); 
       this.timer = null; 
     } 
+    this.textTimers.forEach(timer => clearTimeout(timer));
+    this.textTimers = [];
   }
 };
 
