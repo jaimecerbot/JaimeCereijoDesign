@@ -564,99 +564,163 @@ function formatQuoteAuthors() {
 
 // ===== OVERLAYS Y EFECTOS OPTIMIZADOS =====
 const Overlays = {
-  container: null, updatePending: false, elements: new Map(), cache: new Map(),
+  container: null,
+  updatePending: false,
+  elements: new Map(),
   cascadeTimers: new Map(),
+  observer: null,
+  activeIds: new Set(),
   init() {
     this.container = $.galeriaContainer;
     if (!this.container) return;
-    
+
     // Cache elementos al inicio
     document.querySelectorAll('.image-wrap').forEach(wrap => {
       const base = wrap.querySelector('.base');
       if (base) {
         this.elements.set(wrap.id, {
-          wrap, base,
+          wrap,
+          base,
           overlays: Array.from(wrap.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')),
           stands: wrap.querySelectorAll('.overlay[data-stand="true"]'),
           rollos: wrap.querySelectorAll('.overlay-rollo')
         });
+        wrap.dataset.overlayId = wrap.id;
       }
     });
-    
-    this.container.addEventListener('scroll', () => throttle('overlay', () => this.update()), {passive: true});
-    window.addEventListener('resize', () => throttle('overlay-resize', () => this.update()), {passive: true});
+
+    const root = this.container || null;
+    try {
+      this.observer = new IntersectionObserver((entries) => this.handleIntersect(entries), {
+        root,
+        threshold: 0.12
+      });
+      this.elements.forEach(({wrap}) => wrap && this.observer.observe(wrap));
+    } catch {
+      this.observer = null;
+      // Fallback: activar todos los elementos
+      this.elements.forEach((_, id) => this.activeIds.add(id));
+    }
+
+    this.container.addEventListener('scroll', () => this.requestUpdate(), {passive: true});
+    window.addEventListener('resize', () => this.handleResize(), {passive: true});
+    this.requestUpdate(true);
   },
-  
-  getViewportInfo(img) {
-    const key = `${img.id}-${$.galeriaContainer.scrollTop}`;
-    if (this.cache.has(key)) return this.cache.get(key);
-    
-    const rect = img.getBoundingClientRect();
-    const containerRect = this.container.getBoundingClientRect();
+
+  handleResize() {
+    if (!$.isProyectosActive) return;
+    this.requestUpdate(true);
+  },
+
+  handleIntersect(entries) {
+    entries.forEach(entry => {
+      const id = entry.target?.dataset?.overlayId;
+      if (!id) return;
+      if (entry.isIntersecting) {
+        this.activeIds.add(id);
+      } else {
+        this.activeIds.delete(id);
+        this.resetWrap(id);
+      }
+    });
+    this.requestUpdate();
+  },
+
+  requestUpdate(force = false) {
+    if (!$.isProyectosActive) return;
+    if (this.updatePending && !force) return;
+    this.updatePending = true;
+    requestAnimationFrame(() => this.update());
+  },
+
+  getViewportInfo(base, containerRect) {
+    const rect = base.getBoundingClientRect();
     const visibleHeight = Math.max(0, Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top));
     const imgCenter = rect.top + rect.height / 2;
     const containerCenter = containerRect.top + containerRect.height / 2;
-    
-    const info = {
-      visible: (visibleHeight / rect.height) >= 0.6,
+    return {
+      visible: rect.height > 0 ? (visibleHeight / rect.height) >= 0.6 : false,
       centered: Math.abs(imgCenter - containerCenter) <= containerRect.height * 0.3,
       outOfView: rect.bottom <= containerRect.top || rect.top >= containerRect.bottom
     };
-    
-    // Limpiar cache viejo
-    this.cache.size > 20 && this.cache.clear();
-    this.cache.set(key, info);
-    return info;
   },
-  
+
+  resetWrap(id) {
+    const entry = this.elements.get(id);
+    if (!entry) return;
+    const {overlays, stands, rollos, wrap} = entry;
+    if (overlays?.length) {
+      overlays.forEach(o => o.classList.remove('visible'));
+      const prev = this.cascadeTimers.get(id);
+      if (prev) {
+        prev.forEach(t => clearTimeout(t));
+        this.cascadeTimers.delete(id);
+      }
+    }
+    stands?.forEach(stand => stand.classList.remove('immediate-visible', 'resetting'));
+    rollos?.forEach(rollo => {
+      const initial = rollo.getAttribute('data-initial-direction') || 'left';
+      rollo.classList.remove('centered', 'displaced-left', 'displaced-right');
+      rollo.classList.add(`displaced-${initial}`);
+      rollo.style.transform = rollo.classList.contains('overlay2') ? 'translateX(-50%)' : '';
+      const rolloNum = rollo.getAttribute('data-rollo');
+      if (rolloNum === '2' && wrap) {
+        const associatedText = wrap.querySelector('.text-overlay');
+        if (associatedText) {
+          associatedText.classList.remove('centered', 'displaced-left', 'displaced-right');
+          associatedText.classList.add(`displaced-${initial}`);
+          associatedText.style.transform = 'translateX(0px)';
+        }
+      }
+    });
+  },
+
   update() {
-    if (!$.isProyectosActive || this.updatePending) return;
-    this.updatePending = true;
-    
-    requestAnimationFrame(() => {
-      this.elements.forEach(({wrap, base, overlays, stands, rollos}) => {
-        const info = this.getViewportInfo(base);
-        
-          // -- Overlays: normal single overlay or multiple overlays (cascade for those that share base)
-          // Excluir explicitamente la galería p9 (Zona Zombi) para que sus carteles/sombras
-          // no reciban efectos de llegada/salida adicionales desde este flujo. p9 usa su
-          // propio mecanismo de aparición controlado en Effects.setupCartels().
-          if (wrap && wrap.id === 'p9') {
-            // Skip overlays handling for p9 entirely
-          } else if (overlays && overlays.length) {
-            if (info.visible) {
-              // if multiple overlays in same wrap, cascade them only when first not already visible
-              if (overlays.length > 1) {
-                if (!overlays[0].classList.contains('visible')) {
-                  // clear any previous cascade timers
-                  const prev = this.cascadeTimers.get(wrap.id);
-                  if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
-                  const timers = [];
-                  overlays.forEach((o, i) => {
-                    const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
-                    timers.push(t);
-                  });
-                  this.cascadeTimers.set(wrap.id, timers);
-                }
-              } else {
-                overlays.forEach(o => o.classList.add('visible'));
-              }
-            } else {
-              // not visible -> remove classes and clear timers
-              overlays.forEach(o => o.classList.remove('visible'));
+    if (!$.isProyectosActive) {
+      this.updatePending = false;
+      return;
+    }
+    const activeIds = this.activeIds.size ? Array.from(this.activeIds) : Array.from(this.elements.keys());
+    const containerRect = (this.container || document.documentElement).getBoundingClientRect();
+
+    activeIds.forEach(id => {
+      const entry = this.elements.get(id);
+      if (!entry) return;
+      const {wrap, base, overlays, stands, rollos} = entry;
+      const info = this.getViewportInfo(base, containerRect);
+
+      if (wrap && wrap.id === 'p9') {
+        // Sección especial gestionada aparte
+      } else if (overlays && overlays.length) {
+        if (info.visible) {
+          if (overlays.length > 1) {
+            if (!overlays[0].classList.contains('visible')) {
               const prev = this.cascadeTimers.get(wrap.id);
               if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
+              const timers = [];
+              overlays.forEach((o, i) => {
+                const t = setTimeout(() => { o.classList.add('visible'); }, i * 140);
+                timers.push(t);
+              });
+              this.cascadeTimers.set(wrap.id, timers);
             }
+          } else {
+            overlays.forEach(o => o.classList.add('visible'));
           }
+        } else {
+          overlays.forEach(o => o.classList.remove('visible'));
+          const prev = this.cascadeTimers.get(wrap.id);
+          if (prev) { prev.forEach(t => clearTimeout(t)); this.cascadeTimers.delete(wrap.id); }
+        }
+      }
 
-        this.processStands(stands, info);
-        this.processRollos(rollos, info);
-      });
-      
-      Nav.updateActive($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
-      !$.bottleEffectTriggered && Bottles.checkTrigger();
-      this.updatePending = false;
+      this.processStands(stands, info);
+      this.processRollos(rollos, info);
     });
+
+    Nav.updateActive($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
+    !$.bottleEffectTriggered && Bottles.checkTrigger();
+    this.updatePending = false;
   },
   
   processStands(stands, {outOfView, centered}) {
@@ -717,10 +781,20 @@ const Effects = {
       if (this.handlers.has(stand)) return;
       
       Object.assign(stand.style, {position: 'absolute', pointerEvents: 'auto', cursor: 'default'});
+      const rectState = {rect: null, ts: 0};
+      const getRect = () => {
+        const now = performance.now();
+        if (!rectState.rect || (now - rectState.ts) > 500) {
+          rectState.rect = stand.getBoundingClientRect();
+          rectState.ts = now;
+        }
+        return rectState.rect;
+      };
+      const invalidateRect = () => { rectState.rect = null; };
       
       let hovering = false, isHovering = false;
       const isOpaque = (x, y) => {
-        const rect = stand.getBoundingClientRect();
+        const rect = getRect();
         const [relX, relY] = [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
         return relX >= 0.25 && relX <= 0.75 && relY >= 0.15 && relY <= 0.85;
       };
@@ -740,7 +814,7 @@ const Effects = {
         }
         
         if (hovering && opaque) {
-          const rect = stand.getBoundingClientRect();
+          const rect = getRect();
           const [centerX, centerY] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
           const [deltaX, deltaY] = [(e.clientX - centerX) * 0.06, (e.clientY - centerY) * 0.06];
           const [x, y] = [Math.max(-8, Math.min(8, deltaX)), Math.max(-8, Math.min(8, deltaY))];
@@ -752,6 +826,7 @@ const Effects = {
         hovering = isHovering = false;
         Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)'});
         setTimeout(() => stand.style.willChange = 'auto', 200);
+        invalidateRect();
       };
       
       ['mousemove', 'mouseleave'].forEach((e, i) => 
@@ -768,6 +843,16 @@ const Effects = {
       rollo.classList.add(`displaced-${dir}`);
       rollo.setAttribute('data-initial-direction', dir);
       Object.assign(rollo.style, {pointerEvents: 'auto', zIndex: '100'});
+      const rectState = {rect: null, ts: 0};
+      const getRect = () => {
+        const now = performance.now();
+        if (!rectState.rect || (now - rectState.ts) > 500) {
+          rectState.rect = rollo.getBoundingClientRect();
+          rectState.ts = now;
+        }
+        return rectState.rect;
+      };
+      const invalidateRect = () => { rectState.rect = null; };
       
       // Encontrar el texto asociado (especialmente para rollo2)
       const rolloNum = rollo.getAttribute('data-rollo');
@@ -782,7 +867,7 @@ const Effects = {
       
       const onMouseMove = e => {
         if (rollo.classList.contains('centered')) {
-          const rect = rollo.getBoundingClientRect();
+          const rect = getRect();
           const x = Math.max(-8, Math.min(8, (e.clientX - rect.left - rect.width / 2) * 0.06));
           rollo.style.transform = `translateX(-50%) translateX(${x}px)`;
           
@@ -799,6 +884,7 @@ const Effects = {
           ? 'translateX(-50%) translateX(0px)'
           : `translateX(-50%) translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
         rollo.style.transform = transform;
+        invalidateRect();
         
         // Sincronizar reset del texto asociado
         if (associatedText) {
@@ -833,12 +919,22 @@ const Effects = {
     const ranges = [[0.0682, 0.1877], [0.1877, 0.266], [0.266, 0.33], [0.33, 0.375], [0.375, 0.43], 
                    [0.43, 0.48], [0.48, 0.52], [0.52, 0.555], [0.555, 0.585]];
     let lastActive = null, rafPending = false;
+    const rectState = {rect: null, ts: 0};
+    const getRect = () => {
+      const now = performance.now();
+      if (!rectState.rect || (now - rectState.ts) > 500) {
+        rectState.rect = container.getBoundingClientRect();
+        rectState.ts = now;
+      }
+      return rectState.rect;
+    };
+    const invalidateRect = () => { rectState.rect = null; };
     
     const onMouseMove = e => {
       if (rafPending) return;
       rafPending = true;
       requestAnimationFrame(() => {
-        const rect = container.getBoundingClientRect();
+        const rect = getRect();
         const [relX, relY] = [(e.clientX - rect.left) / rect.width, (e.clientY - rect.top) / rect.height];
         let active = null;
         
@@ -867,6 +963,7 @@ const Effects = {
       bottles.forEach(b => b.classList.remove('hover-active'));
       container.style.cursor = 'default';
       lastActive = null;
+        invalidateRect();
     };
     
     ['mousemove', 'mouseleave'].forEach((e, i) => 
@@ -1305,9 +1402,12 @@ const Thumbnails = {
   timer: null,
   currentGroup: 1,
   overlays: [],
+  overlayStates: [],
   preloaded: false,
   isTransitioning: false,
   cascadeTimers: [],
+  rectangles: null,
+  textGroups: null,
   preload() {
     if (this.preloaded) return;
     const images = [];
@@ -1320,6 +1420,25 @@ const Thumbnails = {
   },
   initCache() {
     this.overlays = Array.from(document.querySelectorAll('#p11 .overlay'));
+    this.overlayStates = this.overlays.map(el => {
+      const styles = window.getComputedStyle(el);
+      return {
+        el,
+        metrics: {
+          top: styles.top || '0%',
+          left: styles.left || '0',
+          width: styles.width || '100%',
+          height: styles.height || 'auto',
+          objectFit: styles.objectFit || 'contain'
+        },
+        baseZ: parseInt(styles.zIndex, 10) || 0
+      };
+    });
+    this.rectangles = Array.from(document.querySelectorAll('#p11 .thumb-mask'));
+    this.textGroups = [1,2,3].reduce((acc, group) => {
+      acc[group] = Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
+      return acc;
+    }, {1: [], 2: [], 3: []});
   },
   setGroup(group) {
     if (!this.overlays.length) this.initCache();
@@ -1331,6 +1450,9 @@ const Thumbnails = {
     setTimeout(() => this.activateRectangles(), 200);
     
     this.overlays.forEach((el, idx) => {
+      const state = this.overlayStates[idx];
+      const metrics = state?.metrics || {};
+      const zIndex = ((state?.baseZ ?? 99) + 1).toString();
       // Marcar como en transición para mantener visibilidad
       el.classList.add('transitioning');
       
@@ -1341,12 +1463,12 @@ const Thumbnails = {
       tmp.className = `${el.className} visible thumb-temp`;
       tmp.style.cssText = `
         position: absolute;
-        top: ${getComputedStyle(el).top || '0%'};
-        left: ${getComputedStyle(el).left || '0'};
-        width: ${getComputedStyle(el).width || '100%'};
-        height: ${getComputedStyle(el).height || 'auto'};
-        object-fit: ${getComputedStyle(el).objectFit || 'contain'};
-        z-index: 100;
+        top: ${metrics.top || '0%'};
+        left: ${metrics.left || '0'};
+        width: ${metrics.width || '100%'};
+        height: ${metrics.height || 'auto'};
+        object-fit: ${metrics.objectFit || 'contain'};
+        z-index: ${zIndex};
         pointer-events: none;
         opacity: 0;
       `;
@@ -1415,7 +1537,7 @@ const Thumbnails = {
   },
   activateRectangles() {
     // Activar los cuatro rectángulos con el efecto de barrido simultáneo
-    const rectangles = document.querySelectorAll('#p11 .thumb-mask');
+    const rectangles = this.rectangles && this.rectangles.length ? this.rectangles : Array.from(document.querySelectorAll('#p11 .thumb-mask'));
     const duration = 1400;
     const start = performance.now();
     const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
@@ -1463,8 +1585,8 @@ const Thumbnails = {
   },
   setTextGroup(group) {
     // Transición suave de textos sin ocultar todos al mismo tiempo
-    const all = Array.from(document.querySelectorAll('#p11 .text-group'));
-    const current = Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
+    const all = this.textGroups ? [...this.textGroups[1], ...this.textGroups[2], ...this.textGroups[3]] : Array.from(document.querySelectorAll('#p11 .text-group'));
+    const current = this.textGroups?.[group] || Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
     
     // Ocultar textos no actuales gradualmente
     all.forEach(el => {
@@ -1502,7 +1624,8 @@ const Thumbnails = {
     });
     
     // Inicializar textos del grupo 1
-    document.querySelectorAll('#p11 .text-group').forEach(el => {
+    const allTexts = this.textGroups ? [...this.textGroups[1], ...this.textGroups[2], ...this.textGroups[3]] : Array.from(document.querySelectorAll('#p11 .text-group'));
+    allTexts.forEach(el => {
       if (el.style) el.style.display = '';
       el.classList.remove('visible');
     });
@@ -1527,7 +1650,7 @@ const Thumbnails = {
     });
     
     // Limpiar rectángulos
-    document.querySelectorAll('#p11 .thumb-mask').forEach(rect => {
+    (this.rectangles || document.querySelectorAll('#p11 .thumb-mask')).forEach(rect => {
       rect.classList.remove('active');
       rect.style.removeProperty('--edge');
     });
@@ -1536,6 +1659,37 @@ const Thumbnails = {
     this.cascadeTimers = [];
   }
 };
+
+// Utilidad ligera para sincronizar el carrusel principal con réplicas (mini carrusel)
+const createSignal = () => {
+  const listeners = new Map();
+  const last = new Map();
+  return {
+    on(type, handler) {
+      if (!listeners.has(type)) listeners.set(type, new Set());
+      listeners.get(type).add(handler);
+    },
+    off(type, handler) {
+      listeners.get(type)?.delete(handler);
+    },
+    emit(type, detail) {
+      last.set(type, detail);
+      const payload = { detail };
+      listeners.get(type)?.forEach(handler => {
+        try {
+          handler(payload);
+        } catch (err) {
+          console.error('CarouselSync handler failed', err);
+        }
+      });
+    },
+    get(type) {
+      return last.get(type);
+    }
+  };
+};
+
+const CarouselSync = createSignal();
 
 // ===== CARRUSEL AUTOMÁTICO CON BUCLE INFINITO (centrado perfecto) =====
 const Carousel = {
@@ -1552,6 +1706,9 @@ const Carousel = {
   bufferAfterLastIndex: null,
   pendingSnap: false,
   onTransitionEnd: null,
+  transitionString: '',
+  currentTransition: '',
+  currentTransform: '',
 
   init() {
     this.container = document.querySelector('.carousel');
@@ -1575,7 +1732,9 @@ const Carousel = {
       ? this.lastSeqContainerIndex + 1 : null;
 
     // Configurar transición del contenedor
-    this.container.style.transition = `transform ${this.animationDuration}ms ease-in-out`;
+  this.transitionString = `transform ${this.animationDuration}ms ease-in-out`;
+  this.setTransition(this.transitionString);
+  this.setTransformString(this.container.style.transform || '');
 
     // Recentrar al redimensionar para mantener el slide activo centrado
     window.addEventListener('resize', () => debounce('carousel-resize', () => this.centerCurrent(true), 100));
@@ -1595,6 +1754,24 @@ const Carousel = {
     this.container.addEventListener('transitionend', this.onTransitionEnd);
   },
 
+  setTransition(value) {
+    if (!this.container) return;
+    this.currentTransition = value;
+    this.container.style.transition = value;
+    CarouselSync.emit('transition', { value });
+  },
+
+  setTransformString(value) {
+    if (!this.container) return;
+    this.currentTransform = value;
+    this.container.style.transform = value;
+    CarouselSync.emit('transform', { value });
+  },
+
+  getDefaultTransition() {
+    return this.transitionString || `transform ${this.animationDuration}ms ease-in-out`;
+  },
+
   // Centra un slide por su índice en allSlides (método base)
   centerByContainerIndex(containerIndex, immediate = false) {
     const target = this.allSlides[containerIndex];
@@ -1606,15 +1783,19 @@ const Carousel = {
     const targetCenter = wrapper.offsetLeft + wrapper.offsetWidth / 2;
     const translateX = (containerWidth / 2) - targetCenter;
 
+    const transformValue = `translateX(${translateX}px)`;
     if (immediate) {
-      const prev = this.container.style.transition;
-      this.container.style.transition = 'none';
-      this.container.style.transform = `translateX(${translateX}px)`;
+      const fallback = this.getDefaultTransition();
+      const prev = this.currentTransition || fallback;
+      this.setTransition('none');
+      this.setTransformString(transformValue);
       // Forzar reflow y restaurar transición
       this.container.offsetHeight;
-      this.container.style.transition = prev || `transform ${this.animationDuration}ms ease-in-out`;
+      this.setTransition(prev || fallback);
     } else {
-      this.container.style.transform = `translateX(${translateX}px)`;
+      const active = this.getDefaultTransition();
+      if (this.currentTransition !== active) this.setTransition(active);
+      this.setTransformString(transformValue);
     }
   },
 
@@ -1671,9 +1852,8 @@ const WebdevMini = {
   scaleWrap: null,
   clone: null,
   main: null,
-  mo: null,
   created: false,
-  snapping: false,
+  syncHandlers: null,
   init() {
     // Contenedor del mini carrusel dentro del círculo de servicio 2
     this.host = document.querySelector('.service-2 .mini-carousel');
@@ -1693,18 +1873,14 @@ const WebdevMini = {
   },
   ensureCreated() {
     if (this.created) {
-      // Alinear primero la transición y luego el transform para evitar animaciones indebidas
-      this.copyTransition();
-      this.copyTransform();
+      this.applyStateFromMain();
       this.updateScale();
       return;
     }
     this.createClone();
-    this.observeMain();
     this.updateScale();
-    // Inicial: copiar transición antes que transform
-    this.copyTransition();
-    this.copyTransform();
+    this.applyStateFromMain();
+    this.bindSync();
     this.created = true;
   },
   createClone() {
@@ -1724,63 +1900,48 @@ const WebdevMini = {
     this.scaleWrap.appendChild(this.clone);
     this.host.appendChild(this.scaleWrap);
   },
-  observeMain() {
-    if (this.mo) return;
-    this.mo = new MutationObserver(entries => {
-      for (const e of entries) {
-        if (e.type === 'attributes' && e.attributeName === 'style') {
-          // Al cambiar estilos en el carrusel principal (transform o transition),
-          // sincronizar SIEMPRE transición antes que transform para que el mini
-          // desactive la animación durante el teletransporte y no se vea el movimiento
-          // Si estamos en medio de un snap forzado, evitamos re-aplicar con transición
-          if (this.snapping) return;
-          this.copyTransition();
-          this.copyTransform();
-        }
-      }
-    });
-    this.mo.observe(this.main, {attributes: true, attributeFilter: ['style']});
-
-    // En cada fin de transición del carrusel grande, el propio carrusel puede teletransportar.
-    // Forzamos el snap del mini: desactivar transición -> copiar transform -> reactivar transición.
-    const onMainTransitionEnd = () => {
-      try { this.snapNow(); } catch {}
-    };
-    this.main.addEventListener('transitionend', onMainTransitionEnd);
-  },
-  copyTransform() {
-    if (!this.clone || !this.main) return;
-    // Reflejar el translateX exacto del carrusel principal
-    this.clone.style.transform = this.main.style.transform || '';
-  },
-  copyTransition() {
-    if (!this.clone || !this.main) return;
-    try {
-      // Usar el estilo computado para capturar tanto 'none' (snap) como el easing completo
-      const t = getComputedStyle(this.main).transition || '';
-      // Normalizar valores que equivalen a 'sin transición'
-      if (!t || /none/.test(t) || /\b0s\b/.test(t)) {
+  bindSync() {
+    if (this.syncHandlers || !this.clone) return;
+    const applyTransition = ({ detail }) => {
+      if (!this.clone) return;
+      const value = detail?.value || '';
+      if (!value || /none/.test(value) || /\b0s\b/.test(value)) {
         this.clone.style.transition = 'none';
       } else {
-        this.clone.style.transition = t;
+        this.clone.style.transition = value;
       }
-    } catch {}
+    };
+    const applyTransform = ({ detail }) => {
+      if (!this.clone) return;
+      this.clone.style.transform = detail?.value || '';
+    };
+    CarouselSync.on('transition', applyTransition);
+    CarouselSync.on('transform', applyTransform);
+    this.syncHandlers = { applyTransition, applyTransform };
   },
-  snapNow() {
+  applyStateFromMain() {
     if (!this.clone || !this.main) return;
-    this.snapping = true;
-    // Desactivar cualquier transición para que el cambio de transform sea instantáneo
-    const prev = this.clone.style.transition;
-    this.clone.style.transition = 'none';
-    // Copiar la posición final exacta del principal
-    this.clone.style.transform = this.main.style.transform || '';
-    // Forzar reflow para aplicar el cambio inmediatamente sin animación
-    // eslint-disable-next-line no-unused-expressions
-    this.clone.offsetHeight;
-    // Restaurar la transición a la del principal para próximos movimientos
-    this.copyTransition();
-    // Pequeña ventana para ignorar mutaciones coalescidas del mismo tick
-    setTimeout(() => { this.snapping = false; }, 0);
+    const stateTransition = CarouselSync.get('transition')?.value;
+    const stateTransform = CarouselSync.get('transform')?.value;
+    const normalizeTransition = (value) => {
+      if (!value || /none/.test(value) || /\b0s\b/.test(value)) return 'none';
+      return value;
+    };
+    if (stateTransition !== undefined) {
+      this.clone.style.transition = normalizeTransition(stateTransition);
+    } else {
+      try {
+        const t = getComputedStyle(this.main).transition || '';
+        this.clone.style.transition = normalizeTransition(t);
+      } catch {
+        this.clone.style.transition = 'none';
+      }
+    }
+    if (stateTransform !== undefined) {
+      this.clone.style.transform = stateTransform || '';
+    } else {
+      this.clone.style.transform = this.main.style.transform || '';
+    }
   },
   updateScale() {
     if (!this.scaleWrap || !this.main) return;
