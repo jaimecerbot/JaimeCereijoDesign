@@ -11,11 +11,11 @@ En la sección `#p1` (Hira) se añadieron:
 ```html
 <div class="image-wrap" id="p1">
   <!-- Fondo móvil existente -->
-  <img class="mobile-bg" src="assets/Secciones/Proyectos/Hira/movil/fondohira.png" alt="Hira (fondo móvil)">
+  <img class="mobile-bg" src="assets/Secciones/Proyectos/Hira/movil/fondohira.webp" alt="Hira (fondo móvil)">
   
   <!-- NUEVO: Overlay de imagen para móvil -->
   <img class="mobile-overlay" 
-       src="assets/Secciones/Proyectos/Hira/movil/stand.png" 
+  src="assets/Secciones/Proyectos/Hira/movil/stand-1.webp" 
        alt="Hira Stand (móvil)" 
        data-mobile-overlay="true">
   
@@ -27,8 +27,8 @@ En la sección `#p1` (Hira) se añadieron:
   </div>
   
   <!-- Elementos de escritorio (ocultos en móvil) -->
-  <img id="p1" src="assets/Secciones/Proyectos/Hira/focos.png" alt="Hira 1" class="base">
-  <img id="p1" src="assets/Secciones/Proyectos/Hira/stand.png" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
+  <img id="p1" src="assets/Secciones/Proyectos/Hira/focos.webp" alt="Hira 1" class="base">
+  <img id="p1" src="assets/Secciones/Proyectos/Hira/stand.webp" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
 </div>
 ```
 
@@ -137,7 +137,7 @@ Para añadir overlays en otras subsecciones (ej: Nostre, Reflejos, etc.):
 
 1. **Añadir elementos en HTML** dentro del `<div class="image-wrap" id="pX">`:
    ```html
-   <img class="mobile-overlay" src="ruta/a/overlay.png" alt="Descripción" data-mobile-overlay="true">
+  <img class="mobile-overlay" src="ruta/a/overlay.webp" alt="Descripción" data-mobile-overlay="true">
    <div class="mobile-text-overlay" style="--text-top: Y%; --text-left: X%; ...">
      <span data-es="Texto español" data-en="English text"></span>
    </div>
@@ -164,13 +164,13 @@ Para añadir overlays en otras subsecciones (ej: Nostre, Reflejos, etc.):
 ## Recursos Necesarios
 
 Para la subsección Hira ya existen:
-- ✅ `assets/Secciones/Proyectos/Hira/movil/fondohira.png` (fondo)
-- ✅ `assets/Secciones/Proyectos/Hira/movil/stand.png` (overlay)
+- ✅ `assets/Secciones/Proyectos/Hira/movil/fondohira.webp` (fondo)
+- ✅ `assets/Secciones/Proyectos/Hira/movil/stand-1.webp` (overlay)
 
 ## Resultado
 
 En la versión móvil de la galería de proyectos, la subsección Hira ahora muestra:
-1. Fondo estático (`fondohira.png`)
+1. Fondo estático (`fondohira.webp`)
 2. Imagen overlay del stand que aparece con animación desde abajo
 3. Texto descriptivo que aparece con efecto de desenfoque
 

@@ -1073,7 +1073,7 @@ const Effects = {
       // Click: abrir popup con la imagen grande correspondiente (mismo patrón que las botellas)
       area.addEventListener('click', (evt) => {
         evt.preventDefault();
-        const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
+  const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.webp`;
         try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
         // Tras abrir el popup, desactivar la overlay/sombra y quitar el foco del área
         try { onLeave(); } catch (ignore) {}
@@ -1083,7 +1083,7 @@ const Effects = {
       area.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
+          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.webp`;
           try { window.open(popupPath, '_blank', 'noopener'); } catch (err) { window.location.href = popupPath; }
           try { onLeave(); } catch (ignore) {}
           try { area.blur(); } catch (ignore) {}
@@ -1402,43 +1402,21 @@ const Thumbnails = {
   timer: null,
   currentGroup: 1,
   overlays: [],
-  overlayStates: [],
   preloaded: false,
   isTransitioning: false,
   cascadeTimers: [],
-  rectangles: null,
-  textGroups: null,
   preload() {
     if (this.preloaded) return;
     const images = [];
     [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
       const img = new Image();
-      img.src = `assets/Secciones/Proyectos/Thumbnails/${g}.${i}.png`;
+  img.src = `assets/Secciones/Proyectos/Thumbnails/${g}.${i}.webp`;
       images.push(img);
     }));
     this.preloaded = true;
   },
   initCache() {
     this.overlays = Array.from(document.querySelectorAll('#p11 .overlay'));
-    this.overlayStates = this.overlays.map(el => {
-      const styles = window.getComputedStyle(el);
-      return {
-        el,
-        metrics: {
-          top: styles.top || '0%',
-          left: styles.left || '0',
-          width: styles.width || '100%',
-          height: styles.height || 'auto',
-          objectFit: styles.objectFit || 'contain'
-        },
-        baseZ: parseInt(styles.zIndex, 10) || 0
-      };
-    });
-    this.rectangles = Array.from(document.querySelectorAll('#p11 .thumb-mask'));
-    this.textGroups = [1,2,3].reduce((acc, group) => {
-      acc[group] = Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
-      return acc;
-    }, {1: [], 2: [], 3: []});
   },
   setGroup(group) {
     if (!this.overlays.length) this.initCache();
@@ -1450,25 +1428,22 @@ const Thumbnails = {
     setTimeout(() => this.activateRectangles(), 200);
     
     this.overlays.forEach((el, idx) => {
-      const state = this.overlayStates[idx];
-      const metrics = state?.metrics || {};
-      const zIndex = ((state?.baseZ ?? 99) + 1).toString();
       // Marcar como en transición para mantener visibilidad
       el.classList.add('transitioning');
       
       // Crear elemento temporal para la nueva imagen
-      const newSrc = `assets/Secciones/Proyectos/Thumbnails/${group}.${idx+1}.png`;
+  const newSrc = `assets/Secciones/Proyectos/Thumbnails/${group}.${idx+1}.webp`;
       const tmp = document.createElement('img');
       tmp.alt = el.alt || '';
       tmp.className = `${el.className} visible thumb-temp`;
       tmp.style.cssText = `
         position: absolute;
-        top: ${metrics.top || '0%'};
-        left: ${metrics.left || '0'};
-        width: ${metrics.width || '100%'};
-        height: ${metrics.height || 'auto'};
-        object-fit: ${metrics.objectFit || 'contain'};
-        z-index: ${zIndex};
+        top: ${getComputedStyle(el).top || '0%'};
+        left: ${getComputedStyle(el).left || '0'};
+        width: ${getComputedStyle(el).width || '100%'};
+        height: ${getComputedStyle(el).height || 'auto'};
+        object-fit: ${getComputedStyle(el).objectFit || 'contain'};
+        z-index: 100;
         pointer-events: none;
         opacity: 0;
       `;
@@ -1537,7 +1512,7 @@ const Thumbnails = {
   },
   activateRectangles() {
     // Activar los cuatro rectángulos con el efecto de barrido simultáneo
-    const rectangles = this.rectangles && this.rectangles.length ? this.rectangles : Array.from(document.querySelectorAll('#p11 .thumb-mask'));
+    const rectangles = document.querySelectorAll('#p11 .thumb-mask');
     const duration = 1400;
     const start = performance.now();
     const easeInOut = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
@@ -1585,8 +1560,8 @@ const Thumbnails = {
   },
   setTextGroup(group) {
     // Transición suave de textos sin ocultar todos al mismo tiempo
-    const all = this.textGroups ? [...this.textGroups[1], ...this.textGroups[2], ...this.textGroups[3]] : Array.from(document.querySelectorAll('#p11 .text-group'));
-    const current = this.textGroups?.[group] || Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
+    const all = Array.from(document.querySelectorAll('#p11 .text-group'));
+    const current = Array.from(document.querySelectorAll(`#p11 .text-group-${group}`));
     
     // Ocultar textos no actuales gradualmente
     all.forEach(el => {
@@ -1624,8 +1599,7 @@ const Thumbnails = {
     });
     
     // Inicializar textos del grupo 1
-    const allTexts = this.textGroups ? [...this.textGroups[1], ...this.textGroups[2], ...this.textGroups[3]] : Array.from(document.querySelectorAll('#p11 .text-group'));
-    allTexts.forEach(el => {
+    document.querySelectorAll('#p11 .text-group').forEach(el => {
       if (el.style) el.style.display = '';
       el.classList.remove('visible');
     });
@@ -1650,7 +1624,7 @@ const Thumbnails = {
     });
     
     // Limpiar rectángulos
-    (this.rectangles || document.querySelectorAll('#p11 .thumb-mask')).forEach(rect => {
+    document.querySelectorAll('#p11 .thumb-mask').forEach(rect => {
       rect.classList.remove('active');
       rect.style.removeProperty('--edge');
     });
@@ -2616,7 +2590,7 @@ const MobileThumbnails = {
     try {
       [1,2,3].forEach(g => [1,2,3,4].forEach(i => {
         const im = new Image();
-        im.src = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${i}.png`;
+  im.src = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${i}.webp`;
       }));
       this.preloaded = true;
     } catch (e) {
@@ -2657,7 +2631,7 @@ const MobileThumbnails = {
     let changed = false;
     
     this.imgs.forEach((img, idx) => {
-      const newSrc = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${idx+1}.png`;
+  const newSrc = `assets/Secciones/Proyectos/Thumbnails/movil/${g}.${idx+1}.webp`;
       if (img.getAttribute('src') === newSrc) return; // nada que cambiar
       changed = true;
       
