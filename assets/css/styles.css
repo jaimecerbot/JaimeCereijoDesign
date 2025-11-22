@@ -1,5 +1,33 @@
 ﻿/* Eliminadas @import duplicadas de Google Fonts.
   Las fuentes se cargan desde <head> con <link> + display=swap para mayor rendimiento y compatibilidad. */
+/* BLOQUE DE CONTROL DE COLOR Y TIPOGRAFÍA (añadido)
+   - Fijamos esquema claro independientemente del modo oscuro del SO
+   - Centralizamos colores clave en variables para evitar ajustes automáticos
+   - Aplicamos forced-color-adjust sólo a elementos de identidad para no romper accesibilidad general */
+:root {
+  color-scheme: light;
+  --color-bg-page: #f8f8f8;
+  --color-bg-panel: #f9f9f9;
+  --color-brand-navy: #001f3f;
+  --color-brand-accent: yellow;
+  --color-text-primary: #111111;
+  --color-text-secondary: #333333;
+}
+/* Reforzar valores si el usuario fuerza dark mode: mantenemos paleta clara */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: light; }
+  body, main { background: var(--color-bg-page) !important; color: var(--color-text-primary) !important; }
+  /* Limitar fondo azul solo al header principal y su nav, no a otros <nav> como #indice */
+  #main-header, footer, #main-nav { background: var(--color-brand-navy) !important; color: var(--color-brand-accent) !important; }
+  /* Reafirmar fondo claro del índice de proyectos */
+  #indice { background: var(--color-bg-panel) !important; }
+}
+/* High Contrast / Forced Colors: preservar branding únicamente */
+@media (forced-colors: active) {
+  header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
+}
+/* Identidad fija también fuera de media queries (para motores que reescriben sin @media) */
+header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
 
 /* FUENTES LOCALES */
 @font-face {
@@ -20,12 +48,71 @@
   font-style: normal;
   font-display: swap;
 }
+/* === Fuentes locales añadidas === */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../Roboto/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../../Google_Sans_Code/GoogleSansCode-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Google Sans Code';
+  src: url('../../Google_Sans_Code/GoogleSansCode-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caveat Brush';
+  src: url('../../Caveat_Brush/CaveatBrush-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kemco Pixel';
+  src: url('../../Kemco Pixel Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* RESET Y BASE */
 *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
 html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
-body { font-family: Coolvetica, sans-serif; background: #f8f8f8; display: flex; flex-direction: column; min-height: 100vh; }
+body { font-family: Coolvetica, sans-serif; background: var(--color-bg-page); color: var(--color-text-primary); display: flex; flex-direction: column; min-height: 100vh; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* No añadimos margen superior global en main: el contenido arranca justo bajo el header fijo */
 main { flex: 1; margin-top: 0; overflow-x: hidden; }
 /* Cuando el footer aparece, empujamos el contenido (salvo header) hacia arriba */
@@ -42,12 +129,13 @@ header.hidden { transform: translateY(-100%); }
 .logo { height: 180px; width: 180px; }
 .logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 nav { display: flex; align-items: center; }
-nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; }
+nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; font-family: Coolvetica, Helvetica, Arial, sans-serif; text-align:center; }
 nav a:hover { transform: scale(1.1); z-index: 10; }
 nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform: scale(1.06); }
 
 /* IDIOMA Y SECCIONES */
 #idioma-btn { background: none; border: 1px solid yellow; color: yellow; padding: 5px 10px; cursor: pointer; position: relative; }
+#idioma-btn, #idioma-list div { font-family: Coolvetica, Helvetica, Arial, sans-serif; text-align:center; }
 #idioma-list { font-family: Helvetica; display: none; position: absolute; top: 30px; right: 0; background: #001f3f; color: yellow; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; z-index: 101; }
 #idioma-list div { padding: 5px 10px; cursor: pointer; }
 #idioma-list div:hover { background: #eee; color: #001f3f; }
@@ -379,16 +467,19 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   position: relative;
   overflow: hidden; /* Para usar el círculo como máscara del slideshow */
 }
+/* Texto de los círculos del menú: aumentado sin salir del contenedor */
 .service-circle span { 
   font-family: Coolvetica, Helvetica, Arial, sans-serif; 
   font-weight: 700; 
-  line-height: 1.1; 
-  font-size: clamp(18px, 1.92vw, 32px);
+  line-height: 1.07; 
+  font-size: clamp(20px, 2.3vw, 40px); /* ajuste más contenido */
   text-wrap: balance; 
+  padding: 4px 6px; /* ligero ajuste de padding */
+  box-sizing: border-box;
 }
 /* Ajustes puntuales de etiquetas dentro de los círculos (todas las pantallas) */
 /* "Comunicación de Proyectos" ligeramente más pequeña para encajar mejor */
-.service-5 span { font-size: clamp(14px, 1.4vw, 24px); }
+.service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 /* "Desarrollo Web": desplazar medio renglón hacia abajo para equilibrar visualmente */
 .service-2 span { display: inline-block; transform: translateY(0.2em); }
 .service-circle:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
@@ -670,7 +761,10 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
 .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
 /* Footer: fijo por defecto en desktop para evitar huecos en el layout cuando está oculto */
-footer { display: flex; justify-content: space-between; background: #001f3f; color: white; padding: 20px; font-size: .9em; z-index: 1100; position: fixed; left: 0; right: 0; bottom: 0; width: 100%; transform: translateY(100%); transition: transform .3s; }
+footer { display: flex; justify-content: space-between; background: #001f3f; color: #ffffff; padding: 20px; font-size: .9em; z-index: 1100; position: fixed; left: 0; right: 0; bottom: 0; width: 100%; transform: translateY(100%); transition: transform .3s; }
+/* Footer: forzar texto blanco y alinear bloque derecho */
+footer p, footer span, footer a { color:#ffffff !important; }
+footer > div:last-child { text-align: right; }
 footer.visible { transform: translateY(0); }
 @media (min-width: 769px) {
   /* Mantener comportamiento de proyectos (ya es fijo por defecto) */
@@ -1145,9 +1239,14 @@ footer.visible { transform: translateY(0); }
      Nota: #desktop-version section es más específico que "section",
      por eso forzamos aquí el padding-top a 0. */
   #desktop-version section { padding-top: 0 !important; }
-  /* En pantallas estrechas: permitir que el main se empuje hacia arriba igual que en desktop */
-  footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
-  footer.visible { transform: translateY(0); }
+  /* En ventanas estrechas (≤1024px): footer como elemento inline estático al final de cada sección */
+  footer { 
+    position: static !important; 
+    transform: none !important; 
+    transition: none !important;
+    display: none; /* Se mostrará inline vía JS en cada sección */
+  }
+  footer.inline-footer { display: flex !important; position: static !important; }
   #indice { width: 250px; }
   /* Dar un poco de aire entre header y carrusel en ventanas estrechas */
   #menu .carousel { margin-top: 12px !important; }
@@ -1206,10 +1305,17 @@ footer.visible { transform: translateY(0); }
 @media (max-width: 768px) {
   /* En móvil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* En móvil: empujar contenido al mostrarse el footer igual que en desktop */
-  footer { position: fixed; bottom: 0; left: 0; right: 0; transform: translateY(100%); transition: transform 0.3s ease; }
-  footer.visible { transform: translateY(0); }
-  header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: relative; }
+  /* En móvil: footer como elemento inline estático al final de cada sección */
+  footer { 
+    position: static !important; 
+    transform: none !important; 
+    transition: none !important;
+    display: none; /* Se mostrará inline vía JS en cada sección */
+  }
+  footer.inline-footer { display: flex !important; position: static !important; }
+  /* Header fijo con comportamiento de ocultación al scroll */
+  header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: fixed !important; top: 0; transition: transform 0.3s ease; }
+  header.hidden { transform: translateY(-100%); }
   /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
   .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
@@ -1271,6 +1377,9 @@ footer.visible { transform: translateY(0); }
   /* Menu: ocupar casi todo el ancho con leve margen lateral */
   #menu { padding-left: 4vw !important; padding-right: 4vw !important; }
   .proyectos-container { flex-direction: column; height: auto; }
+  /* Header fijo en móvil con comportamiento de ocultación al scroll */
+  header { position: fixed !important; top: 0; transition: transform 0.3s ease; }
+  header.hidden { transform: translateY(-100%); }
   #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 60px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
   .indice-content { padding: 0 15px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; overflow: visible; }
   #indice h2 { display: none; }
@@ -1306,9 +1415,11 @@ footer.visible { transform: translateY(0); }
  .services { gap: 16px; padding: 0 4vw; }
  .services-circles { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .service-circle { width: 100%; }
-.service-circle span { font-size: clamp(13px, 3.6vw, 20px); }
+/* Mobile: textos de círculos más grandes */
+/* Mobile ajuste: un pelín más pequeño */
+.service-circle span { font-size: clamp(16px, 4.6vw, 30px); }
   /* Ajustes específicos en móvil */
-  .service-5 span { font-size: clamp(11px, 2.8vw, 16px); }
+  .service-5 span { font-size: clamp(14px, 3.6vw, 26px); }
   /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
   .service-2 .mini-carousel::after { 
     font-size: clamp(7px, 2.0vw, 11px); 
@@ -1334,8 +1445,46 @@ footer.visible { transform: translateY(0); }
   .clients-copy h3 { text-align: center; font-size: clamp(32px, 8vw, 64px); }
   /* Alinear tipografía de párrafo al formato de servicios en móvil */
   .clients-copy p { text-align: justify; width: 100%; max-width: none; margin: 0; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; hyphens: auto; }
-  /* En móvil, ajustar tipografía y layout, pero mantener comportamiento fijo/oculto por defecto */
-  footer { flex-direction: column; text-align: center; font-size: .8em; gap: 10px; }
+  /* Footer inline en móvil: ancho completo de pantalla, sin espacio debajo */
+  footer.inline-footer { 
+    flex-direction: column; 
+    text-align: center; 
+    font-size: .8em; 
+    gap: 10px;
+    justify-content: center; 
+    align-items: center;
+    padding: 16px 0;
+    margin: 0;
+    margin-bottom: -1px; /* Eliminar línea residual blanca */
+    width: 100vw; /* Ancho completo de la pantalla */
+    margin-left: calc(-50vw + 50%); /* Centrar y extender al full width */
+    box-sizing: border-box;
+    position: relative;
+  }
+  footer.inline-footer > div, 
+  footer.inline-footer > div:last-child { text-align: center; }
+  /* Más margen entre contenido y footer en Menú y Sobre mí */
+  #menu footer.inline-footer {
+    margin-top: 60px; /* Más espacio en Menú */
+  }
+  #sobremi footer.inline-footer {
+    margin-top: 40px;
+  }
+  /* Eliminar padding/margin inferior de las secciones para que el footer toque el borde */
+  section { padding-bottom: 0 !important; margin-bottom: 0 !important; }
+  /* Eliminar cualquier espacio residual en body/html */
+  body, html { margin-bottom: 0 !important; padding-bottom: 0 !important; overflow-x: hidden; }
+  main { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+  /* Footer fijo en la parte inferior para Contacto y Redes (sin scroll vertical) */
+  #contacto footer.inline-footer,
+  #redes footer.inline-footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    margin-left: 0 !important;
+    z-index: 100;
+  }
   #intro-video { max-width: 90vw; max-height: 90vh; }
 }
 /* Eliminado el bloque de @media (max-width: 480px) para que móviles usen
@@ -1344,38 +1493,46 @@ footer.visible { transform: translateY(0); }
 /* CONTACTO: foto a la izquierda, datos a la derecha; título grande y centrado */
 #contacto { max-width: 1100px; margin: 36px auto 60px auto; padding: 0 24px; }
 #contacto .contact-title { text-align: center; font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: 1px; font-size: clamp(36px, 6.5vw, 72px); margin: 0 0 18px 0; }
-#contacto .contact-inner { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; padding: 18px 0; max-width: 760px; margin: 0 auto; position: relative; left: 6%; top: 30%; }
+#contacto .contact-inner { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; padding: 18px 0; max-width: 760px; margin: 0 auto; position: relative; left: 16%; top: 24%; }
 #contacto .contact-photo img { width: 100%; height: auto; max-width: 200px; border-radius: 0; object-fit: cover; display: block; }
 #contacto .contact-details { font-family: 'Roboto', sans-serif; color: #1f2a44; font-size: clamp(16px, 2.2vw, 20px); line-height: 1.6; }
 #contacto .contact-details a { color: #001f3f; text-decoration: none; font-weight: 600; }
 #contacto .contact-details a:hover { text-decoration: underline; }
 
-/* Contacto: que el footer NO empuje el contenido hacia arriba en esta sección */
-body.footer-visible #contacto { transform: translateY(var(--footer-h, 0px)); }
-/* Reservar espacio para el footer en ventanas estrechas para evitar solapamientos
-   y centrar verticalmente la sección entre header y footer */
+/* Desktop: footer NO empuja el contenido en Contacto */
+@media (min-width: 1025px) {
+  body.footer-visible #contacto { transform: translateY(var(--footer-h, 0px)); }
+}
+/* Móvil/ventanas estrechas: Contacto con footer fijo y contenido centrado entre header y footer */
 @media (max-width: 1024px) {
   #contacto { 
-    margin: 0 auto;
-    padding-bottom: calc(var(--footer-h, 0px) + clamp(16px, 6svh, 120px));
-    padding-top: 0;
-    min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
-    max-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
-    overflow: hidden; /* sin scroll interno en móvil */
+    margin: 0;
+    padding: 0;
+    padding-top: var(--header-h); /* Espacio para el header */
+    padding-bottom: 70px; /* Espacio para el footer fijo */
+    min-height: 100svh; /* Altura completa de la ventana */
+    max-height: 100svh;
+    height: 100svh;
     display: grid;
-    /* Mantener centrado horizontal pero empujar verticalmente hacia abajo */
     justify-content: center;
-    align-content: end;
-    justify-items: center; /* asegura centrado de los hijos */
+    align-content: center; /* Centrado vertical entre header y footer */
+    justify-items: center;
+    overflow: hidden; /* Sin scroll */
+    overflow-y: hidden !important; /* Forzar sin scroll vertical */
+    box-sizing: border-box;
+  }
+  #contacto .contact-title,
+  #contacto .contact-inner {
+    max-height: 100%;
   }
 }
 
 @media (max-width: 768px) {
-  #contacto .contact-title { font-size: clamp(27px, 4.9vw, 54px) !important; }
-  #contacto .contact-inner { grid-template-columns: 1fr; text-align: center; left: 0; top: 0; gap: 18px; }
+  #contacto .contact-title { font-size: clamp(30px, 6vw, 60px) !important; }
+  #contacto .contact-inner { grid-template-columns: 1fr; text-align: center; left: 0; top: -4vh; gap: 20px; }
   #contacto .contact-photo { order: -1; }
-  #contacto .contact-photo img { max-width: 150px; }
-  #contacto .contact-details { margin-top: 8px; font-size: clamp(12px, 1.65vw, 15px); }
+  #contacto .contact-photo img { max-width: 190px; }
+  #contacto .contact-details { margin-top: 10px; font-size: clamp(14px, 2.2vw, 18px); }
 }
 
 /* Ventanas estrechas (tablets/ventanas medianas): centrar foto y texto */
@@ -1411,35 +1568,46 @@ html.intro-active, body.intro-active { overflow: hidden; }
 #redes {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 24px 24px 24px; /* padding-top aún más reducido */
+  padding: 0 24px 24px 24px; /* sin padding-top extra; se centra con grid */
   /* Altura visible bajo el header (usar svh para móviles) */
   min-height: calc(100svh - var(--header-h));
   display: grid;
-  place-content: center;
+  place-content: center;  /* centra verticalmente entre header y, si aparece, el espacio del footer */
   place-items: center;
   row-gap: clamp(90px, 14vw, 200px);
+  transform: translateY(8vh); /* empuja visualmente el bloque algo más hacia abajo */
 }
 #redes { box-sizing: border-box; }
-/* Cuando el footer sea visible, limitar la altura de #redes al espacio libre
-   entre header y footer y evitar scroll interno SOLO en esta sección */
-body.footer-visible #redes {
-  min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
-  max-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
-  overflow: hidden;
-}
-/* En móviles y ventanas estrechas: centrar verticalmente y reservar espacio para el footer */
-@media (max-width: 1024px) {
-  #redes {
+/* Desktop: cuando el footer sea visible, limitar altura de Redes */
+@media (min-width: 1025px) {
+  body.footer-visible #redes {
     min-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
     max-height: calc(100svh - var(--header-h) - var(--footer-h, 0px));
-    place-content: center;
-    align-content: center;
     overflow: hidden;
-    padding-bottom: var(--footer-h, 0px);
   }
-  /* Compensar el translateY aplicado al main cuando aparece el footer,
-     para que Redes no "salte" visualmente */
-  body.footer-visible #redes { transform: translateY(var(--footer-h, 0px)); }
+}
+/* Móvil/ventanas estrechas: Redes con footer fijo y contenido centrado entre header y footer */
+@media (max-width: 1024px) {
+  #redes {
+    min-height: 100svh; /* Altura completa de la ventana */
+    max-height: 100svh;
+    height: 100svh;
+    place-content: center;
+    align-content: center; /* Centrado vertical */
+    overflow: hidden; /* Sin scroll */
+    overflow-y: hidden !important; /* Forzar sin scroll vertical */
+    padding: 0;
+    padding-top: var(--header-h); /* Espacio para el header */
+    padding-bottom: 70px; /* Espacio para el footer fijo */
+    margin: 0;
+    box-sizing: border-box;
+    transform: none; /* Eliminar el desplazamiento vertical en móvil */
+  }
+  #redes > h1,
+  #redes > p,
+  #redes > .social-links {
+    max-height: 100%;
+  }
 }
 #redes > h1 { 
   font-family: Coolvetica, Helvetica, Arial, sans-serif; 
@@ -1582,7 +1750,8 @@ body.footer-visible #redes {
   gap: 28px;
   align-items: center;
   margin-bottom: 100px;
-  margin-top: -32px;
+  /* Revertimos margen superior para no bajar también la imagen y resto del bloque */
+  margin-top: 0;
 }
 .about-photo img {
   width: 100%;
@@ -1613,6 +1782,24 @@ body.footer-visible #redes {
 #sobremi .about-intro { align-items: center; }
 #sobremi .about-intro .about-subtitle { text-align: center; }
 #sobremi .about-intro p { text-align: center; }
+@media (min-width: 1025px) {
+  /* Revertir a alineación izquierda solo en pantallas anchas */
+  #sobremi .about-intro { align-items: flex-start; }
+  #sobremi .about-intro .about-subtitle { text-align: left; }
+  #sobremi .about-intro p { text-align: left; }
+}
+
+/* Espaciado específico solo entre el título y el párrafo biográfico en pantallas anchas */
+@media (min-width: 1025px) {
+  .about-intro p { margin-top: 32px; }
+  /* Elevar la imagen respecto al bloque de texto */
+  .about-photo { margin-top: -20px; }
+}
+
+/* En pantallas más estrechas añadimos un espacio menor para mantener proporción */
+@media (max-width: 1024px) {
+  .about-intro p { margin-top: 24px; }
+}
 
 .about-columns {
   display: grid;
@@ -1640,7 +1827,7 @@ body.footer-visible #redes {
 .about-edu h3, .about-langs { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: left; }
 .programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px 18px; align-items: center; justify-items: center; background: transparent !important; border: none !important; border-radius: 0 !important; padding: 16px; box-shadow: none !important; }
 .programs-grid img { width: 56px; height: 56px; object-fit: contain; filter: saturate(.95) contrast(1.02); opacity: .98; transition: transform .18s ease, filter .18s ease, opacity .18s ease; }
-.programs-grid img:hover { transform: translateY(-3px) scale(1.05); filter: saturate(1.1) contrast(1.06); opacity: 1; }
+.programs-grid img:hover { transform: none; filter: none; opacity: 1; }
 
 .about-list { list-style: none; padding-left: 0; display: grid; gap: 10px; margin: 0 0 14px 0; }
 .about-langs + .about-list { gap: 4px; }
@@ -1738,7 +1925,11 @@ body.footer-visible #redes {
 .quote-text::before, .quote-text::after { content: '“'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
 .quote-text::before { left: -18px; top: -22px; font-size: 120px; transform: translateY(-10%); }
 .quote-text::after { content: '”'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
-.quote-author { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(14px, 1.8vw, 16px); padding: 0 8px 2px; }
+.quote-author { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(15px, 2vw, 18px); padding: 0 8px 2px; }
+@media (min-width: 769px) {
+  /* Alinear autores más a la izquierda en desktop (quitamos padding y compensamos) */
+  .quote-author { padding-left: 0; margin-left: -4px; }
+}
 
 /* Responsive ajustes para SOBRE MÍ */
 @media (max-width: 1024px) {
@@ -1903,7 +2094,7 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 /* Mapeo de familias inline no disponibles → webfonts disponibles */
 .text-overlay[style*="Google Sans Code"],
 .text-overlay[style*="'Google Sans Code'"] {
-  font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace !important;
+  font-family: 'Google Sans Code', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace !important;
 }
 .text-overlay[style*="'Roboto black'"],
 .text-overlay[style*="Roboto black"] {
@@ -1912,7 +2103,7 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 }
 .text-overlay[style*="'Aver'"],
 .text-overlay[style*="Aver"] {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important;
+  font-family: 'Aver', 'Playfair Display', Georgia, 'Times New Roman', serif !important;
 }
 .text-overlay[style*="'SF Florencesans'"],
 .text-overlay[style*="SF Florencesans"] {
@@ -1920,7 +2111,7 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 }
 .text-overlay[style*="'Kemco Pixel'"],
 .text-overlay[style*="Kemco Pixel"] {
-  font-family: 'Press Start 2P', cursive !important;
+  font-family: 'Kemco Pixel', 'Press Start 2P', cursive !important;
 }
 
 /* Refuerzo de títulos y elementos destacados a Montserrat */
@@ -1941,6 +2132,68 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 #redes > h1 {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
 }
+/* Reemplazo de Montserrat por Coolvetica en secciones solicitadas */
+#menu .carousel-title,
+#menu .carousel-subtitle,
+#menu .services-title,
+#menu .service-circle span,
+#menu .btn-napoleon,
+#contacto .contact-title,
+#redes > h1,
+#sobremi .about-subtitle,
+#sobremi .about-programs h3,
+#sobremi .about-edu h3,
+#sobremi .about-langs,
+#sobremi .references-title,
+#sobremi .quote-author {
+  font-family: Coolvetica, Helvetica, Arial, sans-serif !important;
+}
+/* Títulos Hira extra gruesos */
+.carousel-title.title-hira { font-weight: 900; }
+.text-overlay.title-hira { font-weight: 900; }
+/* Sombreado de esquina inferior izquierda en cada imagen del carrusel */
+.carousel-item { position: relative; overflow: hidden; }
+.carousel-item::after {
+  content:"";
+  position:absolute;
+  left:0; bottom:0;
+  width:54%; /* leve aumento de ancho para compensar blur */
+  height:24%; /* leve aumento de alto para compensar blur */
+  pointer-events:none;
+  z-index:0;
+  background: rgba(0,0,0,0.50);
+  filter: blur(26px); /* desenfoque gaussiano para bordes suaves */
+  /* Para que el interior conserve densidad tras el blur, añadir una capa nítida menor */
+}
+/* Capa interior nítida opcional (refuerzo de lectura) */
+.carousel-caption { position:absolute; z-index:1; }
+/* Reflejos del Multiverso: sombra moderada unificada (títulos + cuerpo + carrusel) */
+.image-wrap#p7 .text-overlay,
+.image-wrap#p7 .text-overlay.reflejos-shadow,
+.image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.82),
+    -1px 1px 2px rgba(0,0,0,0.82),
+    1px -1px 2px rgba(0,0,0,0.82),
+    -1px -1px 2px rgba(0,0,0,0.82),
+    0 4px 14px rgba(0,0,0,0.55);
+}
+.carousel-item.contrast-strong .carousel-title.reflejos-shadow,
+.carousel-item.contrast-strong .carousel-subtitle.reflejos-shadow {
+  -webkit-text-stroke: 0.4px rgba(0,0,0,0.75);
+  paint-order: stroke fill;
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.82),
+    -1px 1px 2px rgba(0,0,0,0.82),
+    1px -1px 2px rgba(0,0,0,0.82),
+    -1px -1px 2px rgba(0,0,0,0.82),
+    0 4px 14px rgba(0,0,0,0.55);
+}
+/* Aver @font-face (regular / italic / bold / bold italic) */
+@font-face { font-family:'Aver'; src:url('../../Aver.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Aver'; src:url('../../Aver Italic.ttf') format('truetype'); font-weight:400; font-style:italic; font-display:swap; }
+@font-face { font-family:'Aver'; src:url('../../Aver Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Aver'; src:url('../../Aver Bold Italic.ttf') format('truetype'); font-weight:700; font-style:italic; font-display:swap; }
 
 /* =============================
    GALERÍA: versión móvil/estrecha
@@ -1987,6 +2240,13 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
     object-fit: contain !important;
     border: 0 !important;
     box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Eliminar espacio entre última imagen de la galería y el footer en móvil */
+  #galeria .image-wrap#p19 {
+    margin-bottom: -1px !important;
   }
 
   /* Imagen overlay para móvil - posicionada sobre el fondo */
@@ -2077,13 +2337,16 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
   /* Rollo móvil deslizable (p12) */
   #galeria .image-wrap#p12 {
     overflow: hidden; /* Ocultar la parte que sobresale del rollo */
+    position: relative;
   }
   #galeria .image-wrap#p12.mobile-rollo-enabled {
     cursor: grab;
+    touch-action: pan-y pinch-zoom; /* Permitir scroll vertical y zoom */
   }
   #galeria .image-wrap#p12.mobile-rollo-enabled:active,
   #galeria .image-wrap#p12.mobile-rollo-dragging {
     cursor: grabbing;
+    touch-action: none; /* Solo cuando está arrastrando horizontalmente */
   }
   #galeria .image-wrap#p12 .mobile-rollo-scroll {
     position: absolute;
@@ -2096,12 +2359,15 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
     object-position: left center;
     z-index: 3;
     pointer-events: auto;
-    touch-action: pan-x;
     /* Anular animación de entrada genérica */
     opacity: 1 !important;
     user-select: none;
     -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     transform: translateX(0) !important;
+    transition: none; /* Sin transiciones automáticas, controlado por JS */
   }
 
   /* Texto overlay para móvil */
@@ -2143,6 +2409,16 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
     filter: blur(0);
   }
 
+  /* Reflejos del Multiverso: aplicar el mismo sombreado de desktop en móvil */
+  #galeria .image-wrap#p7 > .mobile-text-overlay {
+    text-shadow: 
+      1px 1px 2px rgba(0,0,0,0.82),
+      -1px 1px 2px rgba(0,0,0,0.82),
+      1px -1px 2px rgba(0,0,0,0.82),
+      -1px -1px 2px rgba(0,0,0,0.82),
+      0 4px 14px rgba(0,0,0,0.55) !important;
+  }
+
   /* 4) Anular ajustes finos de desktop que causaban solapes entre p8 y p9 */
   .image-wrap#p9 { margin-top: 0 !important; }
 
@@ -2174,6 +2450,11 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
   }
   #galeria .image-wrap#p9 img.overlay-stand[src*="/Zombis/movil/cartel"] {
     z-index: 3 !important;
+  }
+
+  /* Justificar el texto explicativo de los Zombis en móvil */
+  #galeria .image-wrap#p9 > .mobile-text-overlay:first-of-type {
+    text-align: justify !important;
   }
 }
 

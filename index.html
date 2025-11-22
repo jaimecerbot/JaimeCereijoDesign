@@ -14,6 +14,7 @@
   <!-- Carga directa de Google Fonts por <link> para máxima compatibilidad (incluye pesos necesarios) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;700;900&family=Press+Start+2P&family=Playfair+Display:wght@700&family=Cinzel:wght@700&family=Uncial+Antiqua&family=Caveat+Brush&family=Trade+Winds&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css?v=6">
+  <link rel="stylesheet" href="assets/css/styles-mobile-fixes.css">
 </head>
 <body>
   <a href="#menu" class="skip-link">Saltar al contenido</a>
@@ -74,7 +75,7 @@
             <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto('p1')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Hira.png');">
           </picture>
           <div class="carousel-caption">
-            <div class="carousel-title">Perchero Hira</div>
+            <div class="carousel-title title-hira">Perchero Hira</div>
             <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
           </div>
         </figure>
@@ -94,8 +95,8 @@
             <img src="assets/Secciones/Menu/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto('p7')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Reflejos.png');">
           </picture>
           <div class="carousel-caption">
-            <div class="carousel-title">"Reflejos del Multiverso"</div>
-            <div class="carousel-subtitle">Campaña gráfica multiplataforma hecha por encargo para la obra de teatro "Reflejos del Multiverso".</div>
+            <div class="carousel-title reflejos-shadow">"Reflejos del Multiverso"</div>
+            <div class="carousel-subtitle reflejos-shadow">Campaña gráfica multiplataforma hecha por encargo para la obra de teatro "Reflejos del Multiverso".</div>
           </div>
         </figure>
         <!-- Imágenes extra para transición suave (no forman parte de la lógica) -->
@@ -105,7 +106,7 @@
             <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" class="carousel-buffer" onclick="irAProyecto('p1')" onerror="this.style.display='none';">
           </picture>
           <div class="carousel-caption">
-            <div class="carousel-title">Perchero Hira</div>
+            <div class="carousel-title title-hira">Perchero Hira</div>
             <div class="carousel-subtitle">Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic.</div>
           </div>
         </figure>
@@ -271,7 +272,7 @@
             </div>
             <div class="image-wrap" id="p2">
               <img id="p2" src="assets/Secciones/Proyectos/Hira/render.webp" alt="Hira 2" class="base">
-              <div class="text-overlay" style="--text-top: 8%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;"><span data-es="Perchero Hira" data-en="Hira Coat Rack"></span></div>
+              <div class="text-overlay title-hira" style="--text-top: 8%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;"><span data-es="Perchero Hira" data-en="Hira Coat Rack"></span></div>
               <div class="text-overlay shadowed" style="--text-top: 20%; --text-left: 20.1%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw; white-space: pre-line; line-height: 1.4;"><span data-es="En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
 
 Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a las propuestas de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025." data-en="In September 2024, Systemtronic published a brief for developing a coat rack that would fit their catalog. My team designed and presented 4 options to the company, which showed great interest in one of them.
@@ -348,8 +349,8 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <!-- Overlay móvil de folletos sobre el fondo 1 -->
               <img class="mobile-overlay" src="assets/Secciones/Proyectos/Reflejos/movil/folletos.webp" alt="folletos" data-mobile-overlay="true">
               <img id="p7" src="assets/Secciones/Proyectos/Reflejos/fondo_2.gif" alt="Reflejos 1" class="base">
-              <div class="text-overlay" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 3.33cqw;"><span data-es="Reflejos del" data-en="Reflections of the"></span></div>
-              <div class="text-overlay" style="--text-top: 21%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;"><span data-es="Multiverso" data-en="Multiverse"></span></div>
+              <div class="text-overlay reflejos-shadow" style="--text-top: 15%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 3.33cqw;"><span data-es="Reflejos del" data-en="Reflections of the"></span></div>
+              <div class="text-overlay reflejos-shadow" style="--text-top: 21%; --text-left: 60%; --text-max-width: 45cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;"><span data-es="Multiverso" data-en="Multiverse"></span></div>
               <div class="text-overlay" style="--text-top: 35.5%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;"><span data-es="Para promocionar la obra &quot;Reflejos del Multiverso&quot;, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
 
                 Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra." data-en="To promote the play &quot;Reflections of the Multiverse&quot;, the UPV Performing Arts Classroom asked me to create an A3 poster, a program and graphics for social media.
@@ -380,9 +381,8 @@ After a redesign, I created two panels with mockups like this and prepared a pre
               <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel6.webp" alt="Cartel 6" data-cartel="6">
               <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel7.webp" alt="Cartel 7" data-cartel="7">
               <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel8.webp" alt="Cartel 8" data-cartel="8">
-              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 55%; --text-left: 7%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Google Sans Code'; color: black; line-height: 120%;">
-                <span data-es="En Halloween de 2025, en colaboración con el Ayuntamiento de Emperador, la empresa Clarió organizó una zona zombi que recorría toda la sede municipal. Como miembro del equipo de decorado, asistí en el diseño del recorrido y de la ambientación.
-Además, produje un número de señales con indicaciones varias. Combiné pictogramas con mensajes breves que explicaban normas del juego o bien aportaban a la ambientación. Las señales fueron impresas en alta calidad y situadas en puntos clave del recorrido, creando una experiencia mucho más completa." data-en="WINE AND BEER LABELING"></span>
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 60%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: left; --text-width: 75cqw; --text-max-width: 75cqw; --text-font-family: 'Google Sans Code'; color: black; line-height: 120%;">
+                <span data-es="En Halloween de 2025 trabajé con Clarió produciendo un número de carteles para la Zona Zombi que recorría el ayuntamiento de Emperador. Como miembro del equipo de decorado, también ayudé a diseñar el recorrido y la ambientación para asegurar una experiencia completa" data-en="WINE AND BEER LABELING"></span>
               </div>
               <div class="mobile-text-overlay" style="--text-size: 9cqw; --text-top: 84.2%; --text-left: 33.8%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Impact'; color: rgb(197, 27, 27); line-height: 120%;">
                 <span data-es="Zona Zombi" data-en="WINE AND BEER LABELING"></span>
@@ -431,7 +431,7 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
               <div class="mobile-text-overlay" style="--text-size: 5.75cqw; --text-top: 7.8%; --text-left: 27%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:900; line-height: 120%;">
                 <span data-es="Thumbnails para Moifez" data-en="WINE AND BEER LABELING"></span>
               </div>
-              <div class="mobile-text-overlay" style="--text-size: 2.9cqw; --text-top: 12.5%; --text-left: 28%; --text-align: left; --text-width: 72cqw; --text-max-width: 72cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:100; line-height: 120%;">
+              <div class="mobile-text-overlay" style="--text-size: 2.9cqw; --text-top: 12.5%; --text-left: 28%; --text-align: left; --text-width: 72cqw; --text-max-width: 72cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
                 <span data-es="Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas." data-en="WINE AND BEER LABELING"></span>
               </div>
               <div class="mobile-text-overlay thumb-text-block thumb-text-block--title" data-group="1" style="--text-top: 30%; --text-left: 5%; --text-max-width: 84cqw; --text-size: 3.6cqw; --text-font-family: 'Roboto'; --text-font-weight: 900; --text-letter-spacing: -0.015em; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: left;">el NUEVO UNIVERSO CINEMÁTICO que...</div>
@@ -455,13 +455,13 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
               <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="1" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;">5,1K visitas</div>
               <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="2" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;">42,4K visitas</div>
               <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="3" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;">6,7K visitas</div>
-              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 2.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:100; line-height: 120%;">
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 2.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
                 <span data-es="Boceto del cliente" data-en="WINE AND BEER LABELING"></span>
               </div>
-              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 33.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:100; line-height: 120%;">
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 33.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
                 <span data-es="Referencia 1" data-en="WINE AND BEER LABELING"></span>
               </div>
-              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 64.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:100; line-height: 120%;">
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 64.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
                 <span data-es="Referencia 2" data-en="WINE AND BEER LABELING"></span>
               </div>
               <img id="p10" src="assets/Secciones/Proyectos/Thumbnails/fondo1.webp" alt="Thumbnails 1" class="base">
@@ -547,7 +547,7 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
             </div>
             <div class="image-wrap" id="p16">
               <img class="mobile-bg" src="assets/Secciones/Proyectos/Cartas/movil/fondocartas.webp" alt="Cartas (fondo móvil)" loading="lazy" decoding="async">
-              <div class="mobile-text-overlay" style="--text-size: 4cqw; --text-top: 64%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-width: 80cqw; --text-max-width: 80cqw; --text-font-family: 'Google Sans Code'; color: white; --text-font-weight:100; line-height: 120%;">
+              <div class="mobile-text-overlay" style="--text-size: 3.5cqw; --text-top: 64%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-width: 80cqw; --text-max-width: 80cqw; --text-font-family: 'Google Sans Code'; color: white; --text-font-weight:100; line-height: 120%;">
                 <span data-es="Hace poco planteé el concepto para una baraja de cartas inspiradas en el videojuego &quot;Outer Wilds&quot;.
 
                 El valor principal de los diseños reside en una combinación de elementos icónicos del juego con los símbolos tradicionales de cada palo. Hice dos variaciones, una pensada como baraja de coleccionismo, estilo tarot; y otra pensada para cartas de juego o trucos de magia" data-en="WINE AND BEER LABELING"></span>
@@ -679,7 +679,6 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
             <img src="assets/Secciones/Sobre mi/Programas/html.png" alt="HTML" loading="lazy" decoding="async">
             <img src="assets/Secciones/Sobre mi/Programas/css.png" alt="CSS" loading="lazy" decoding="async">
             <img src="assets/Secciones/Sobre mi/Programas/JavaScript.png" alt="JavaScript" loading="lazy" decoding="async">
-            <img src="assets/Secciones/Sobre mi/Programas/Bootstrap.png" alt="Bootstrap" loading="lazy" decoding="async">
             <img src="assets/Secciones/Sobre mi/Programas/GitHub.png" alt="GitHub" loading="lazy" decoding="async">
             <img src="assets/Secciones/Sobre mi/Programas/Copilot.png" alt="GitHub Copilot" loading="lazy" decoding="async">
             <img src="assets/Secciones/Sobre mi/Programas/VS.png" alt="Visual Studio" loading="lazy" decoding="async">
@@ -706,7 +705,6 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
             <li><span data-es="Inglés — C1 certificado por Cambridge" data-en="English — C1 certified by Cambridge"></span></li>
             <li><span data-es="Francés — Básico" data-en="French — Basic"></span></li>
             <li><span data-es="Portugués — Básico" data-en="Portuguese — Basic"></span></li>
-            <li><span data-es="Gallego — Nativo" data-en="Galician — Native"></span></li>
           </ul>
         </div>
       </div>
@@ -721,7 +719,7 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
                    src="assets/Secciones/Sobre mi/Referencias/Marc.jpg">
             </a>
             <div class="quote-content">
-              <div class="quote-author"><span data-es="Marc Brell i López (director de la obra 'Reflejos del Multiverso'):" data-en="Marc Brell i López, director of 'Reflections of the Multiverse'"></span></div>
+              <div class="quote-author"><span data-es="Marc Brell i López (director de 'Reflejos del Multiverso'):" data-en="Marc Brell i López, director of 'Reflections of the Multiverse'"></span></div>
               <div class="quote-text">
                 <span data-es="Jaime es una persona comprometida con su trabajo. En el ámbito del diseño es capaz de escuchar tus necesidades, devolverte una batería de propuestas en forma de boceto sobre las que trabajar y partiendo de eso sacar un proyecto final desde el diálogo. Es eficaz y diligente. Estoy muy contento de haber contado con él en nuestro proyecto."
                       data-en="Jaime is a committed professional. In the field of design, he is able to listen to your needs, provide you with a range of proposals in the form of sketches to work on, and from that, deliver a final project through dialogue. He is efficient and diligent. I am very happy to have had him on our project."></span>
@@ -735,7 +733,7 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
                    src="assets/Secciones/Sobre mi/Referencias/Alvaro.jpg">
             </a>
             <div class="quote-content">
-              <div class="quote-author"><span data-es="Álvaro Selma (compañero de trabajo, entre otros proyectos, en el etiquetado para vinos Nostre, galardonado por la ETSIAMN):" data-en="Álvaro Selma"></span></div>
+              <div class="quote-author"><span data-es="Álvaro Selma (compañero en el desarrollo de vinos Nostre):" data-en="Álvaro Selma"></span></div>
               <div class="quote-text">
                 <span data-es="Jaime y yo hemos trabajado juntos en diferentes proyectos a lo largo de los últimos cuatro años. Es la persona que siempre escojo como compañero de trabajo, porque muchos de los proyectos en los que hemos estado juntos han alcanzado resultados satisfactorios. Es responsable y hace muy fácil trabajar con él, y suele aportar puntos de vista que son diferentes y originales."
                       data-en="Jaime and I have worked together on various projects over the last four years. He is the person I always choose as a work partner because many of the projects we have been involved in have achieved satisfactory results. He is responsible and makes it very easy to work with him, and he often brings different and original points of view (this last point is probably what I value most about him as a colleague)."></span>
@@ -749,7 +747,7 @@ Además, produje un número de señales con indicaciones varias. Combiné pictog
                    src="assets/Secciones/Sobre mi/Referencias/Martin.jpg">
             </a>
             <div class="quote-content">
-              <div class="quote-author"><span data-es="Martín Pérez (compañero de trabajo, entre otros proyectos, en el perchero Hira, presentado en la Feria Hábitat Valencia 2025):" data-en="Martín Pérez"></span></div>
+              <div class="quote-author"><span data-es="Martín Pérez (compañero en el desarrollo de Hira):" data-en="Martín Pérez"></span></div>
               <div class="quote-text">
                 <span data-es="Trabajar con Jaime ha sido una experiencia muy positiva. Es alguien que, incluso en los momentos de mayor estrés, transmite confianza y hace que quieras seguir adelante con el proyecto. Nunca descarta ideas sin más, siempre aporta algo y no tiene miedo a hacer críticas constructivas. Además, tiene un talento especial para improvisar soluciones eficaces en muy poco tiempo. Es un compañero con el que da gusto trabajar, porque suma en todos los sentidos."
                       data-en="Working with Jaime has been a very positive experience. He is someone who, even in the most stressful moments, conveys confidence and makes you want to keep going with the project. He never dismisses ideas outright, always contributes something, and is not afraid to make constructive criticism when necessary. In addition, he has a special talent for improvising solutions that really work in no time. Ultimately, he is a colleague who is a pleasure to work with because he adds value in every way."></span>

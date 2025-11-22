@@ -184,12 +184,22 @@ const Scroll = {
     throttle('scroll', () => {
       const delta = window.scrollY - $.lastScrollY;
       if (Math.abs(delta) > 5) {
-        const hide = delta > 0 && window.scrollY > 100;
-        $.header?.classList.toggle('hidden', hide);
+        // En móvil/ventanas estrechas: ocultar header al scrollear hacia abajo
+        if (window.innerWidth <= 1024) {
+          const hide = delta > 0 && window.scrollY > 100;
+          $.header?.classList.toggle('hidden', hide);
+        } else {
+          // En desktop: comportamiento existente
+          const hide = delta > 0 && window.scrollY > 100;
+          $.header?.classList.toggle('hidden', hide);
+        }
         this.updateLayout();
         $.lastScrollY = window.scrollY;
       }
-      this.updateFooter();
+      // Solo actualizar footer en desktop (>1024px)
+      if (window.innerWidth > 1024) {
+        this.updateFooter();
+      }
     });
   },
   updateLayout() {
@@ -2388,9 +2398,12 @@ const MobileRollo = {
   img: null,
   isDragging: false,
   startX: 0,
+  startY: 0,
   currentX: 0,
   minX: 0,
   pointerId: null,
+  dragDirection: null,
+  directionLocked: false,
   initialized: false,
   onPointerDown: null,
   onPointerMove: null,
@@ -2430,14 +2443,15 @@ const MobileRollo = {
         if (!this.canDrag()) return;
         this.pointerId = e.pointerId;
         this.wrap.setPointerCapture?.(e.pointerId);
-        this.handleStart(e.clientX);
-        this.wrap.classList.add('mobile-rollo-dragging');
-        e.preventDefault();
+        this.handleStart(e.clientX, e.clientY);
+        // No preventDefault aquí para permitir determinación de dirección
       };
       this.onPointerMove = (e) => {
         if (!this.isDragging || e.pointerId !== this.pointerId) return;
-        this.handleMove(e.clientX);
-        e.preventDefault();
+        const shouldPrevent = this.handleMove(e.clientX, e.clientY);
+        if (shouldPrevent) {
+          e.preventDefault();
+        }
       };
       this.onPointerUp = (e) => {
         if (e.pointerId !== this.pointerId) return;
@@ -2455,14 +2469,17 @@ const MobileRollo = {
         if (!this.canDrag()) return;
         const touch = e.touches[0];
         if (!touch) return;
-        this.handleStart(touch.clientX);
+        this.handleStart(touch.clientX, touch.clientY);
+        // No preventDefault para permitir detección de dirección
       };
       this.onTouchMove = (e) => {
         if (!this.isDragging) return;
         const touch = e.touches[0];
         if (!touch) return;
-        e.preventDefault();
-        this.handleMove(touch.clientX);
+        const shouldPrevent = this.handleMove(touch.clientX, touch.clientY);
+        if (shouldPrevent) {
+          e.preventDefault();
+        }
       };
       this.onTouchEnd = () => this.handleEnd();
       this.wrap.addEventListener('touchstart', this.onTouchStart, {passive: true});
@@ -2473,13 +2490,15 @@ const MobileRollo = {
       // Mouse fallback (para pruebas en escritorio estrecho)
       this.onMouseDown = (e) => {
         if (e.button !== 0 || !this.canDrag()) return;
-        e.preventDefault();
-        this.handleStart(e.clientX);
+        this.handleStart(e.clientX, e.clientY);
+        // No preventDefault para permitir detección de dirección
       };
       this.onMouseMove = (e) => {
         if (!this.isDragging) return;
-        e.preventDefault();
-        this.handleMove(e.clientX);
+        const shouldPrevent = this.handleMove(e.clientX, e.clientY);
+        if (shouldPrevent) {
+          e.preventDefault();
+        }
       };
       this.onMouseUp = () => this.handleEnd();
       this.wrap.addEventListener('mousedown', this.onMouseDown);
@@ -2518,18 +2537,48 @@ const MobileRollo = {
       this.applyPosition(clamped);
     }
   },
-  handleStart(clientX) {
+  handleStart(clientX, clientY) {
     if (!this.canDrag()) return;
     this.isDragging = true;
     this.startX = clientX - this.currentX;
-    this.wrap.classList.add('mobile-rollo-dragging');
+    this.startY = clientY || 0;
+    this.dragDirection = null;
+    this.directionLocked = false;
     this.img.style.willChange = 'transform';
   },
-  handleMove(clientX) {
+  handleMove(clientX, clientY) {
     if (!this.isDragging || !this.img) return;
-    const deltaX = clientX - this.startX;
-    const clamped = Math.max(this.minX, Math.min(0, deltaX));
-    this.applyPosition(clamped);
+    
+    // Detectar dirección del gesto en las primeras movidas
+    if (!this.directionLocked) {
+      const deltaX = Math.abs(clientX - (this.startX + this.currentX));
+      const deltaY = Math.abs(clientY - this.startY);
+      
+      // Necesitamos un movimiento mínimo para determinar dirección
+      if (deltaX > 5 || deltaY > 5) {
+        this.dragDirection = deltaX > deltaY ? 'horizontal' : 'vertical';
+        this.directionLocked = true;
+        
+        // Si es vertical, cancelar el drag del rollo para permitir scroll de página
+        if (this.dragDirection === 'vertical') {
+          this.isDragging = false;
+          this.wrap.classList.remove('mobile-rollo-dragging');
+          this.img.style.willChange = 'auto';
+          return false;
+        } else {
+          this.wrap.classList.add('mobile-rollo-dragging');
+        }
+      }
+    }
+    
+    // Solo mover si es horizontal
+    if (this.dragDirection === 'horizontal') {
+      const deltaX = clientX - this.startX;
+      const clamped = Math.max(this.minX, Math.min(0, deltaX));
+      this.applyPosition(clamped);
+      return true;
+    }
+    return false;
   },
   handleEnd() {
     if (!this.isDragging) return;
@@ -2821,11 +2870,50 @@ const MobileCards = {
   }
 };
 
+// ===== FOOTER INLINE EN MÓVIL =====
+const MobileFooter = {
+  initialized: false,
+  originalFooter: null,
+  init() {
+    if (this.initialized) return;
+    if (window.innerWidth > 1024) return; // Solo en móvil/ventanas estrechas
+    
+    this.originalFooter = document.querySelector('footer');
+    if (!this.originalFooter) return;
+    
+    // Insertar una copia del footer al final de cada sección
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+      // Verificar si ya tiene un footer inline
+      if (section.querySelector('footer.inline-footer')) return;
+      
+      // Clonar el footer
+      const footerClone = this.originalFooter.cloneNode(true);
+      footerClone.classList.add('inline-footer');
+      footerClone.classList.remove('visible');
+      
+      // Insertar al final de la sección
+      section.appendChild(footerClone);
+    });
+    
+    this.initialized = true;
+  },
+  cleanup() {
+    // Limpiar footers inline al cambiar a desktop
+    document.querySelectorAll('footer.inline-footer').forEach(f => f.remove());
+    this.initialized = false;
+  }
+};
+
 // ===== INICIALIZACIÓN OPTIMIZADA =====
 const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
   [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc, MobileOverlays].forEach(comp => comp.init());
+  
+  // Inicializar footer inline en móvil
+  MobileFooter.init();
+  
   // Asignar direcciones de rotación aleatorias (±15deg) a los overlays de p9
   try {
     const p9Overlays = document.querySelectorAll('#p9 .overlay');
@@ -2869,11 +2957,19 @@ const init = () => {
   [
     [window, 'scroll', () => Scroll.handleMain()],
     [window, 'resize', () => debounce('resize', () => { 
+      const wasMobile = $.isMobile;
       Layout.update(); 
       Scroll.syncFooterVar();
       try { FooterWatch.attachToCurrentSection(); } catch {}
       // Verificar footer también en resize (fallback si no hay IO)
       if (!FooterWatch.usingObserver) Scroll.updateFooter();
+      
+      // Gestionar footer inline al cambiar tamaño
+      if (window.innerWidth <= 1024 && !MobileFooter.initialized) {
+        MobileFooter.init();
+      } else if (window.innerWidth > 1024 && MobileFooter.initialized) {
+        MobileFooter.cleanup();
+      }
     }, 100)],
     [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
       Overlays.update(); 
