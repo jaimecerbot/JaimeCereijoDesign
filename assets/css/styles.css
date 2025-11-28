@@ -742,7 +742,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
 #indice ul { list-style: none; flex: 1; }
 #indice li { margin-bottom: .5em; }
-#indice a { text-decoration: none; color: black; display: block; padding: .6em 1.2em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; }
+#indice a { text-decoration: none; color: black; display: block; padding: .6em 1.2em; font-weight: normal; background: none; border: none; border-radius: 0; min-width: 180px; box-sizing: border-box; width: fit-content; will-change: transform, background-color; transition: all .3s ease; margin: 0; }
 @media (min-width: 769px) {
   #indice a.active { background: #001f3f; color: yellow; border-radius: 20px; transform: translateX(12px); box-shadow: 0 2px 8px rgba(0,31,63,.4); }
   #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }

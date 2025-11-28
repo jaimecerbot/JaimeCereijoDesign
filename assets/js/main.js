@@ -2054,8 +2054,10 @@ const ServicesDesc = {
   animTimers: [], // timeouts activos de animación para poder cancelarlos
   isAnimating: false,
   generic: {
-    es: 'En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño, desarrollo web, edición de vídeo, gráficos móviles… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.',
-    en: 'Hover over a service to see a description.'
+    es: 'En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.',
+    en: "In all of Valencia, you won't find a designer with a more complete profile. My range of services, all showcased in my project gallery, covers any need throughout a graphic campaign. Graphic design, web development, video editing, motion graphics, illustration… Whatever your project, I can bring it to life better than anyone.",
+    fr: "À Valence, vous ne trouverez pas de designer au profil plus complet. Ma gamme de services, tous illustrés dans ma galerie de projets, couvre tout besoin pouvant surgir lors d’une campagne graphique. Design graphique, développement web, montage vidéo, motion design, illustration… Quel que soit votre projet, je peux lui donner la meilleure vitrine.",
+    pt: "Em Valência, você não vai encontrar um designer com um perfil mais completo. Minha gama de serviços — todos exemplificados na galeria de projetos — cobre qualquer necessidade ao longo de uma campanha gráfica. Design gráfico, desenvolvimento web, edição de vídeo, motion graphics, ilustração… Seja qual for o seu projeto, posso dar a melhor cara a ele."
   },
   descriptions: {
     es: {
@@ -2067,12 +2069,28 @@ const ServicesDesc = {
       'service-6': '¿Buscas un artista que ilustre tus historias o que diseñe una mascota para tu marca? ¿Alguien creativo que se pueda adaptar a cualquier estilo? ¡Soy justo lo que necesitas! Con un porfolio entero dedicado al diseño de personajes, no hay nadie mejor para darle cara a tus proyectos. Contáctame a través de redes y te mostraré decenas de ejemplos de otros trabajos.'
     },
     en: {
-      'service-1': 'Graphic design: visual identities, posters, layout, and promotional pieces.',
-      'service-2': 'Web development: modern, fast websites—from landing pages to interactive portfolios.',
-      'service-3': 'Video editing: cuts, color, titles, and integrated graphics for social and promos.',
-      'service-4': 'Motion graphics: animations that enhance your message across digital platforms.',
-      'service-5': 'Project comms: boards, decks, and clear, persuasive visual materials.',
-      'service-6': 'Illustration: versatile styles for editorial, social media, and commercial work.'
+      'service-1': "Branding, layout, image editing, print… If you want your brand or campaign to stand out above the rest—if you're looking for an iconic, timeless design that stays with everyone who sees it—look no further. My creativity and ingenuity, combined with my technical skills, are the tools you need to give your projects a truly unique identity.",
+      'service-2': "From personal brands and small businesses to the largest multinationals, every brand needs a website. I can create your own space on the web, tailored to your preferences and needs—and this very site is the best example. Here you can see what your own page could be or, if you already have one, the improvements I could implement.",
+      'service-3': "A good video is not only seen; it's felt. With careful editing, precise rhythm, and effective visual storytelling, I can turn any set of clips into a professional and compelling piece. Whether it's a spot, a trailer, or social content, I'll make sure it conveys exactly what you want, with a fluid, dynamic, visually impeccable finish.",
+      'service-4': "No graphic campaign is complete without movement. On social platforms, user attention is everything, and nothing is more eye‑catching than motion crafted to stand out. Through animated graphics, I can bring your ideas to life and communicate in seconds what a text would take minutes to explain. In a world where everything moves, your designs should too.",
+      'service-5': "Even great ideas are ignored if you don’t communicate them properly. Whether you want to give your presentations a professional finish with smooth transitions; create hyper‑realistic photomontages of products that don’t exist yet; or build a compelling narrative—I’ll help you communicate your ideas attractively and convincingly to ensure their success.",
+      'service-6': "Looking for an artist to illustrate your stories or design a mascot for your brand? Someone creative who can adapt to any style? I’m exactly what you need. With an entire portfolio focused on character design, there’s no one better to give your projects a face. Contact me via social media and I’ll show you dozens of examples from other work."
+    },
+    fr: {
+      'service-1': "Branding, mise en page, retouche d’image, impression… Si vous voulez que votre marque ou votre campagne se distingue de toutes les autres — si vous cherchez un design iconique et intemporel qui marque quiconque le voit — ne cherchez plus. Ma créativité et mon ingéniosité, alliées à ma maîtrise technique, sont les outils dont vous avez besoin pour donner à vos projets une identité unique.",
+      'service-2': "Des marques personnelles et petites entreprises jusqu’aux plus grandes multinationales, toute marque a besoin d’un site web. Je peux créer votre espace sur le web, adapté à vos préférences et besoins — et ce site en est le meilleur exemple. Vous pouvez y voir ce que pourrait être votre propre page ou, si vous en avez déjà une, les améliorations que je peux y apporter.",
+      'service-3': "Une bonne vidéo ne se regarde pas seulement, elle se ressent. Avec un montage soigné, un rythme précis et une narration visuelle efficace, je peux transformer n’importe quel ensemble de plans en une pièce professionnelle et captivante. Qu’il s’agisse d’un spot, d’une bande‑annonce ou de contenu pour les réseaux, je veillerai à transmettre exactement ce que vous voulez, avec un rendu fluide, dynamique et visuellement impeccable.",
+      'service-4': "Aucune campagne graphique n’est complète sans mouvement. Sur les réseaux, l’attention est primordiale, et rien n’attire davantage l’œil qu’un mouvement pensé pour se démarquer. Grâce aux graphismes animés, je donne vie à vos idées et communique en quelques secondes ce qu’un texte mettrait des minutes à expliquer. Dans un monde où tout bouge, vos designs doivent bouger eux aussi.",
+      'service-5': "Même les grandes idées sont ignorées si elles ne sont pas bien communiquées. Que vous souhaitiez donner à vos présentations une finition professionnelle avec des transitions fluides, créer des photomontages hyperréalistes de produits qui n’existent pas encore, ou construire un discours percutant, je vous aiderai à communiquer vos idées de manière attractive et convaincante pour en assurer le succès.",
+      'service-6': "Vous cherchez un artiste pour illustrer vos histoires ou créer une mascotte pour votre marque ? Quelqu’un de créatif et capable de s’adapter à tous les styles ? Je suis exactement ce qu’il vous faut. Avec tout un portfolio dédié au character design, difficile de trouver mieux pour donner un visage à vos projets. Contactez‑moi sur les réseaux et je vous montrerai des dizaines d’exemples d’autres travaux."
+    },
+    pt: {
+      'service-1': "Branding, paginação, edição de imagem, impressão… Se pretende que a sua marca ou campanha se destaque como nenhuma outra — se procura um design icónico e intemporal que fique gravado em quem o vê — não procure mais. A minha criatividade e engenho, somados à minha capacidade técnica, são as ferramentas de que precisa para dar aos seus projetos uma identidade única.",
+      'service-2': "De marcas pessoais e pequenos negócios às maiores multinacionais, toda marca precisa de um site. Posso criar o seu espaço na web, adaptado às suas preferências e necessidades — e este próprio site é o melhor exemplo. Aqui pode ver como poderia ser a sua página ou, se já tiver uma, as melhorias que posso implementar.",
+      'service-3': "Um bom vídeo não só se vê, sente‑se. Com uma edição cuidada, ritmo preciso e narrativa visual eficaz, posso transformar qualquer conjunto de clips numa peça profissional e envolvente. Seja um spot, um trailer ou conteúdo para redes, garanto que transmite exatamente o que pretende, com um acabamento fluido, dinâmico e visualmente impecável.",
+      'service-4': "Nenhuma campanha gráfica fica completa sem movimento. Nas redes, a atenção do utilizador é tudo, e nada chama mais a atenção do que um movimento pensado para se destacar. Com gráficos animados, dou vida às suas ideias e comunico em segundos o que um texto levaria minutos a explicar. Num ambiente onde tudo se mexe, os seus designs também devem mexer‑se.",
+      'service-5': "Mesmo as grandes ideias são ignoradas se não forem bem comunicadas. Quer pretenda dar às suas apresentações um acabamento profissional com transições fluidas; criar fotomontagens hiper‑realistas de produtos que ainda não existem; ou construir um discurso contundente; eu ajudo a comunicar as suas ideias de forma atrativa e convincente para garantir o seu sucesso.",
+      'service-6': "Procura um artista para ilustrar as suas histórias ou criar uma mascote para a sua marca? Alguém criativo que se adapte a qualquer estilo? Sou exatamente o que precisa. Com um portfólio inteiro dedicado ao design de personagens, não há melhor para dar um rosto aos seus projetos. Fale comigo pelas redes e eu mostro‑lhe dezenas de exemplos de outros trabalhos."
     }
   },
   init() {
@@ -2201,6 +2219,8 @@ const ServicesDesc = {
     
     this.textEl.setAttribute('data-es', this.generic.es);
     this.textEl.setAttribute('data-en', this.generic.en);
+    this.textEl.setAttribute('data-fr', this.generic.fr);
+    this.textEl.setAttribute('data-pt', this.generic.pt);
     
     if (immediate) {
       // Primera carga: sin animación
@@ -2228,8 +2248,12 @@ const ServicesDesc = {
     
     const es = this.descriptions.es[key] || this.generic.es;
     const en = this.descriptions.en[key] || this.generic.en;
+    const fr = (this.descriptions.fr && this.descriptions.fr[key]) || this.generic.fr;
+    const pt = (this.descriptions.pt && this.descriptions.pt[key]) || this.generic.pt;
     this.textEl.setAttribute('data-es', es);
     this.textEl.setAttribute('data-en', en);
+    this.textEl.setAttribute('data-fr', fr);
+    this.textEl.setAttribute('data-pt', pt);
     
     this.animateTextChange(oldIndex, newIndex, oldEl, circle);
   },
