@@ -1843,7 +1843,7 @@ const Carousel = {
   currentTransition: '',
   currentTransform: '',
   pointerStartX: null,
-  swipeThreshold: 40,
+  swipeThreshold: 25,
 
   init() {
     this.container = document.querySelector('.carousel');
