@@ -206,15 +206,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   /* border: 1px solid #ddd; */
 }
 .carousel-item { position: relative; display: flex; flex-shrink: 0; border-radius: var(--carousel-radius); overflow: hidden; transition: border-radius 0.4s ease; }
-@media (min-width: 1025px) {
-  .carousel-item:hover { border-radius: 0; }
-}
+.carousel-item:hover { border-radius: 0; }
 .carousel-item picture { display: block; width: 100%; height: 100%; }
 .carousel-item img { display: block; }
 .carousel-caption {
   position: absolute;
   left: 3%;
-  bottom: calc(4% - 1.5em);
+  bottom: 4%;
   max-width: min(45%, 520px);
   display: flex;
   flex-direction: column;
@@ -225,14 +223,6 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   box-shadow: none;
   border: none;
   pointer-events: none; /* no bloquear clic sobre la imagen */
-}
-@media (max-width: 1024px) {
-  .carousel-title {
-    text-shadow: 0 3px 14px rgba(0,0,0,.95), 0 10px 32px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9);
-  }
-  .carousel-subtitle {
-    text-shadow: 0 2px 12px rgba(0,0,0,.95), 0 8px 28px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9);
-  }
 }
 .carousel-title {
   font-family: Coolvetica, Helvetica, Arial, sans-serif;

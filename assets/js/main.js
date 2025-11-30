@@ -1842,8 +1842,14 @@ const Carousel = {
   transitionString: '',
   currentTransition: '',
   currentTransform: '',
+  // Seguimiento de cursor para recalcular hover durante animaciones
+  lastMouseX: null,
+  lastMouseY: null,
+  hoverRecalcActive: false,
   pointerStartX: null,
-  swipeThreshold: 25,
+  pointerCurrentX: null,
+  isDragging: false,
+  swipeThreshold: 30,
 
   init() {
     this.container = document.querySelector('.carousel');
@@ -1904,6 +1910,12 @@ const Carousel = {
     };
     this.container.addEventListener('transitionend', this.onTransitionEnd);
 
+    // Registrar posición del cursor para recálculo continuo del hover
+    window.addEventListener('mousemove', (e) => {
+      this.lastMouseX = e.clientX;
+      this.lastMouseY = e.clientY;
+    }, {passive: true});
+
     // Preparar interactividad (clics y gestos)
     this.attachInteractions();
   },
@@ -1920,6 +1932,8 @@ const Carousel = {
     this.currentTransform = value;
     this.container.style.transform = value;
     CarouselSync.emit('transform', { value });
+    // Si hay cursor presente, forzar recálculo inmediato del hover
+    this.forceHoverRecalc();
   },
 
   getDefaultTransition() {
@@ -1950,7 +1964,12 @@ const Carousel = {
       const active = this.getDefaultTransition();
       if (this.currentTransition !== active) this.setTransition(active);
       this.setTransformString(transformValue);
+      // Durante la transición, activar bucle de recálculo de hover
+      this.startHoverRecalcLoop();
     }
+    
+    // Forzar actualización del estado hover después de que la transición complete
+    this.refreshHoverState();
   },
 
   centerCurrent(immediate = false) {
@@ -2015,6 +2034,7 @@ const Carousel = {
       this.autoTimer = null;
     }
     this.isMenuActive = false;
+    this.stopHoverRecalcLoop();
   }
 };
 
@@ -2071,24 +2091,66 @@ Carousel.attachInteractions = function() {
     }, true); // usar captura para adelantarnos al handler inline
   });
 
-  // Gestos de swipe (pointer) para móvil / táctil
+  // Gestos de swipe (pointer) para móvil / táctil con feedback visual
   this.container.addEventListener('pointerdown', (e) => {
     this.pointerStartX = e.clientX;
+    this.pointerCurrentX = e.clientX;
+    this.isDragging = false;
   });
+
+  this.container.addEventListener('pointermove', (e) => {
+    if (this.pointerStartX == null) return;
+    this.pointerCurrentX = e.clientX;
+    const dx = this.pointerCurrentX - this.pointerStartX;
+    
+    // Marcar como dragging si se ha movido lo suficiente
+    if (Math.abs(dx) > 5) {
+      this.isDragging = true;
+      // Aplicar efecto de arrastre visual (rubber-band con resistencia)
+      const resistance = 0.3; // factor de resistencia para efecto más natural
+      const offset = dx * resistance;
+      // Guardar transform actual y aplicar offset temporal
+      const baseTransform = this.currentTransform || 'translateX(0)';
+      const match = baseTransform.match(/translateX\(([^)]+)\)/);
+      const currentX = match ? parseFloat(match[1]) : 0;
+      this.container.style.transition = 'none';
+      this.container.style.transform = `translateX(${currentX + offset}px)`;
+    }
+  });
+
   this.container.addEventListener('pointerup', (e) => {
     if (this.pointerStartX == null) return;
     const dx = e.clientX - this.pointerStartX;
     this.pointerStartX = null;
-    if (Math.abs(dx) < this.swipeThreshold) return; // no es swipe
-    if (dx > 0) {
-      // Swipe hacia derecha: ver imagen previa
-      this.prev();
+    this.pointerCurrentX = null;
+    
+    // Restaurar transición suave
+    this.setTransition(this.getDefaultTransition());
+    
+    if (this.isDragging && Math.abs(dx) >= this.swipeThreshold) {
+      // Swipe válido: avanzar o retroceder
+      if (dx > 0) {
+        this.prev();
+      } else {
+        this.next();
+      }
+      this.resetAutoTimer();
     } else {
-      // Swipe hacia izquierda: ver imagen siguiente
-      this.next();
+      // No alcanzó umbral: volver a centrar la imagen actual
+      this.centerCurrent(false);
     }
-    // Reiniciar temporizador tras gesto
-    this.resetAutoTimer();
+    this.isDragging = false;
+  });
+
+  // Cancelar drag si el pointer sale del área
+  this.container.addEventListener('pointercancel', () => {
+    if (this.pointerStartX != null) {
+      this.setTransition(this.getDefaultTransition());
+      this.centerCurrent(false);
+      this.pointerStartX = null;
+      this.pointerCurrentX = null;
+      this.isDragging = false;
+    }
   });
 };
 
@@ -2103,6 +2165,62 @@ Carousel.resetAutoTimer = function() {
   this.autoTimer = setInterval(() => {
     if (this.isMenuActive) this.next();
   }, this.autoSpeed);
+};
+
+// Forzar actualización del estado hover tras cambios de posición del carrusel
+Carousel.refreshHoverState = function() {
+  if (!this.container) return;
+  // Obtener posición actual del cursor y recalcular qué elemento está debajo
+  // Usamos un temporizador para que ocurra después de que el DOM se haya actualizado
+  setTimeout(() => {
+    // Forzar recálculo de hover quitando y restaurando pointer-events
+    const originalPointerEvents = this.container.style.pointerEvents;
+    this.container.style.pointerEvents = 'none';
+    // Forzar reflow
+    void this.container.offsetHeight;
+    this.container.style.pointerEvents = originalPointerEvents || '';
+    
+    // Alternativamente, disparar mousemove en la posición actual del cursor
+    // para que el navegador recalcule el hover
+    if (typeof MouseEvent !== 'undefined') {
+      const x = this.lastMouseX ?? (window.innerWidth / 2);
+      const y = this.lastMouseY ?? (window.innerHeight / 2);
+      const target = document.elementFromPoint(x, y);
+      if (target) {
+        const evt = new MouseEvent('mousemove', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y });
+        target.dispatchEvent(evt);
+      }
+    }
+  }, this.animationDuration + 50); // Esperar a que termine la animación
+};
+
+// Recalcular hover continuamente durante la animación del carrusel
+Carousel.startHoverRecalcLoop = function() {
+  if (this.hoverRecalcActive) return;
+  this.hoverRecalcActive = true;
+  const tick = () => {
+    if (!this.hoverRecalcActive) return;
+    this.forceHoverRecalc();
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+};
+
+Carousel.stopHoverRecalcLoop = function() {
+  this.hoverRecalcActive = false;
+};
+
+Carousel.forceHoverRecalc = function() {
+  try {
+    const x = this.lastMouseX;
+    const y = this.lastMouseY;
+    if (x == null || y == null) return; // no cursor
+    const target = document.elementFromPoint(x, y);
+    if (target) {
+      const evt = new MouseEvent('mousemove', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y });
+      target.dispatchEvent(evt);
+    }
+  } catch {}
 };
 
 // ===== MINI CARRUSEL EN "DESARROLLO WEB" (ESPEJO EN TIEMPO REAL) =====

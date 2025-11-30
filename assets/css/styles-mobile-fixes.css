@@ -5,7 +5,49 @@
    dentro del bloque @media (max-width: 768px)
 */
 
+@media (max-width: 768px) and (hover: none) {
+  /* En móvil táctil verdadero (≤768px sin hover): mantener esquinas redondeadas siempre */
+  .carousel-item:hover {
+    border-radius: var(--carousel-radius) !important;
+  }
+}
+
 @media (max-width: 768px) {
+  /* Mover los textos del carrusel más abajo en móvil */
+  .carousel-caption {
+    bottom: 3% !important;
+  }
+
+  /* Sombras más pronunciadas para los textos del carrusel en móvil */
+  .carousel-title {
+    text-shadow: 0 3px 14px rgba(0,0,0,.95), 0 10px 32px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,1);
+  }
+  
+  .carousel-subtitle {
+    text-shadow: 0 2px 12px rgba(0,0,0,.95), 0 8px 28px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,1);
+  }
+
+  /* Sombras extra para Reflejos en móvil */
+  .carousel-item.contrast-strong .carousel-title,
+  .carousel-item.contrast-strong .carousel-subtitle {
+    -webkit-text-stroke: 0.6px rgba(0,0,0,.9);
+    paint-order: stroke fill;
+    text-shadow:
+      1px 0 0 rgba(0,0,0,1),
+      -1px 0 0 rgba(0,0,0,1),
+      0 1px 0 rgba(0,0,0,1),
+      0 -1px 0 rgba(0,0,0,1),
+      1px 1px 0 rgba(0,0,0,1),
+      -1px 1px 0 rgba(0,0,0,1),
+      1px -1px 0 rgba(0,0,0,1),
+      -1px -1px 0 rgba(0,0,0,1),
+      0 0 14px rgba(0,0,0,1),
+      0 0 26px rgba(0,0,0,1),
+      0 10px 36px rgba(0,0,0,.98),
+      0 14px 48px rgba(0,0,0,.98),
+      0 0 10px rgba(0,0,0,1);
+  }
+
   /* Padding equilibrado en móvil para centrado horizontal */
   #sobremi { 
     padding: 10px 16px 70px 16px; 
@@ -75,6 +117,41 @@
 
 /* Para @media (max-width: 1024px) - ventanas estrechas */
 @media (max-width: 1024px) {
+  /* Mover los textos del carrusel más abajo en ventanas estrechas */
+  .carousel-caption {
+    bottom: 3% !important;
+  }
+
+  /* Sombras más pronunciadas para los textos del carrusel en ventanas estrechas */
+  .carousel-title {
+    text-shadow: 0 3px 14px rgba(0,0,0,.95), 0 10px 32px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,1);
+  }
+  
+  .carousel-subtitle {
+    text-shadow: 0 2px 12px rgba(0,0,0,.95), 0 8px 28px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9), 0 0 8px rgba(0,0,0,1);
+  }
+
+  /* Sombras extra para Reflejos en ventanas estrechas */
+  .carousel-item.contrast-strong .carousel-title,
+  .carousel-item.contrast-strong .carousel-subtitle {
+    -webkit-text-stroke: 0.6px rgba(0,0,0,.9);
+    paint-order: stroke fill;
+    text-shadow:
+      1px 0 0 rgba(0,0,0,1),
+      -1px 0 0 rgba(0,0,0,1),
+      0 1px 0 rgba(0,0,0,1),
+      0 -1px 0 rgba(0,0,0,1),
+      1px 1px 0 rgba(0,0,0,1),
+      -1px 1px 0 rgba(0,0,0,1),
+      1px -1px 0 rgba(0,0,0,1),
+      -1px -1px 0 rgba(0,0,0,1),
+      0 0 14px rgba(0,0,0,1),
+      0 0 26px rgba(0,0,0,1),
+      0 10px 36px rgba(0,0,0,.98),
+      0 14px 48px rgba(0,0,0,.98),
+      0 0 10px rgba(0,0,0,1);
+  }
+
   .about-columns { 
     grid-template-columns: 1fr; 
     justify-items: center;
