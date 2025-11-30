@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="Galería de proyectos — Jaime Cereijo Design">
+  <meta name="theme-color" content="#001f3f">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Proyectos — Jaime Cereijo Design</title>
+  <link rel="icon" type="image/png" href="LogoChiquito.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;700;900&family=Press+Start+2P&family=Playfair+Display:wght@700&family=Cinzel:wght@700&family=Uncial+Antiqua&family=Caveat+Brush&family=Trade+Winds&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
+  <link rel="stylesheet" href="assets/css/styles-mobile-fixes.css">
+</head>
+<body class="proyectos-page proyectos-active">
+  <a href="#proyectos" class="skip-link">Saltar al contenido</a>
+  <header id="main-header">
+    <div class="logo"><img src="Logo.png" alt="Logo"></div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav id="main-nav">
+      <div id="main-menu-items">
+        <a href="menu.html" data-section="menu"><span data-es="Menú" data-en="Menu" data-fr="Menu" data-pt="Menu"></span></a>
+        <a href="proyectos.html" data-section="proyectos"><span data-es="Proyectos" data-en="Projects" data-fr="Projets" data-pt="Projetos"></span></a>
+        <a href="redes.html" data-section="redes"><span data-es="Redes" data-en="Social" data-fr="Réseaux" data-pt="Redes"></span></a>
+        <a href="contacto.html" data-section="contacto"><span data-es="Contacto" data-en="Contact" data-fr="Contact" data-pt="Contato"></span></a>
+        <a href="sobre-mi.html" data-section="sobremi"><span data-es="Sobre mí" data-en="About me" data-fr="À propos" data-pt="Sobre mim"></span></a>
+        <a id="idioma-mobile-btn" class="idioma-mobile-only"><span data-es="Idioma" data-en="Language" data-fr="Langue" data-pt="Idioma"></span></a>
+      </div>
+      <div id="idioma-mobile-list" class="idioma-mobile-only" style="display: none;">
+        <a id="back-to-menu"><span data-es="← Volver" data-en="← Back" data-fr="← Retour" data-pt="← Voltar"></span></a>
+        <a data-lang="es">Español</a>
+        <a data-lang="en">English</a>
+        <a data-lang="fr">Français</a>
+        <a data-lang="pt">Português</a>
+      </div>
+    </nav>
+    <div style="position:relative;">
+      <button id="idioma-btn">ES</button>
+      <div id="idioma-list">
+        <div data-lang="es">Español</div>
+        <div data-lang="en">English</div>
+        <div data-lang="fr">Français</div>
+        <div data-lang="pt">Português</div>
+      </div>
+    </div>
+  </header>
+
+  <main id="desktop-version">
+    <section id="proyectos" class="active">
+      <div class="proyectos-container">
+        <nav id="indice">
+          <div class="indice-content">
+            <h2><span data-es="Índice" data-en="Index" data-fr="Sommaire" data-pt="Índice"></span></h2>
+            <ul>
+              <li><a href="#p1" class="active"><span data-es="Hira x Systemtronic" data-en="Hira x Systemtronic" data-fr="Hira × Systemtronic" data-pt="Hira × Systemtronic"></span></a></li>
+              <li><a href="#p3"><span data-es="Etiquetado para Nostre" data-en="Label design for Nostre" data-fr="Étiquetage pour Nostre" data-pt="Rotulagem para a Nostre"></span></a></li>
+              <li><a href="#p7"><span data-es="Reflejos del Multiverso" data-en="Reflections of the Multiverse" data-fr="Reflets du Multivers" data-pt="Reflexos do Multiverso"></span></a></li>
+              <li><a href="#p9"><span data-es="Decorado de Zona Zombi" data-en="Zombie Zone set design" data-fr="Scénographie de la Zone Zombie" data-pt="Cenografia da Zona Zumbi"></span></a></li>
+              <li><a href="#p10"><span data-es="Thumbnails para Moifez" data-en="Thumbnails for Moifez" data-fr="Miniatures pour Moifez" data-pt="Miniaturas para Moifez"></span></a></li>
+              <li><a href="#p12"><span data-es="Ilustraciones para cuentos" data-en="Storybook illustrations" data-fr="Illustrations pour contes" data-pt="Ilustrações para contos"></span></a></li>
+              <li><a href="#p16"><span data-es="Concepto para baraja" data-en="Playing card concept" data-fr="Concept de jeu de cartes" data-pt="Conceito para baralho"></span></a></li>
+              <li><a href="#p19"><span data-es="Cubiertas de libros" data-en="Book covers" data-fr="Couvertures de livres" data-pt="Capas de livros"></span></a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- CONTENEDOR SEPARADO PARA LA GALERÍA CON SCROLL -->
+        <div id="galeria-container">
+          <div id="galeria">
+            <div class="image-wrap" id="p1">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Hira/movil/fondohira.webp" alt="Hira (fondo móvil)" loading="lazy" decoding="async">
+              <!-- Overlay de imagen para móvil: stand -->
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Hira/movil/stand-1.webp" alt="Hira Stand (móvil)" data-mobile-overlay="true">
+              <!-- Texto overlay para móvil -->
+              <div class="mobile-text-overlay" style="--text-size: 7cqw; --text-top: 18%; --text-left: 50%; --text-align: left; --text-max-width: 60cqw; --text-font-family: 'Montserrat', Helvetica, Arial, sans-serif; --text-font-weight: 900;">
+                <span data-es="Perchero
+                Hira" data-en="Hira
+                Coat Rack" data-fr="Porte‑manteau
+                Hira" data-pt="Cabide
+                Hira"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 54%; --text-left: 5%; --text-align: left; --text-max-width: 55cqw; --text-font-family: 'Roboto', sans-serif; --text-font-weight: 400; --text-shadow: 0 0 1cqw rgba(0, 0, 0, 1), 0 0 3cqw rgba(0, 0, 0, 1);">
+                <span data-es="En 2024 Systemtronic publicó un briefing para un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
+
+                Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a los de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025." data-en="In 2024, Systemtronic published a brief for a coat rack that would fit their catalog. My team designed and presented four options; the company showed strong interest in one of them.
+
+After a redesign, I prepared two presentation panels with mockups like this and a pitch that led Systemtronic to select the Hira coat rack over proposals from 12 other teams. Hira was presented at Feria Hábitat València 2025." data-fr="En 2024, Systemtronic a publié un cahier des charges pour un porte‑manteau qui s’intègre à son catalogue. Mon équipe a conçu et présenté quatre options ; l’entreprise a montré un fort intérêt pour l’une d’elles.
+
+Après une refonte, j’ai préparé deux panneaux de présentation avec des maquettes comme celle‑ci ainsi qu’un discours qui a conduit Systemtronic à sélectionner le porte‑manteau Hira face aux propositions de 12 autres équipes. Hira a été présenté à la Feria Hábitat València 2025." data-pt="Em 2024, a Systemtronic publicou um briefing para um cabide que se encaixasse no seu catálogo. A minha equipa concebeu e apresentou quatro opções; a empresa demonstrou grande interesse por uma delas.
+
+Após um redesenho, preparei dois painéis de apresentação com montagens como esta e um pitch que levou a Systemtronic a selecionar o cabide Hira em detrimento das propostas de outras 12 equipas. O Hira foi apresentado na Feria Hábitat València 2025."></span>
+              </div>
+              <!-- Imagen base (inamovible) -->
+              <img id="p1" src="assets/Secciones/Proyectos/Hira/focos.webp" alt="Hira 1" class="base">
+              <!-- Overlay vinculada a la base; ajustar --overlay-top para posicionarla
+                   Ejemplo: --overlay-top:60% coloca la esquina superior de la overlay al 60% de la altura de la base -->
+              <img id="p1" src="assets/Secciones/Proyectos/Hira/stand.webp" alt="Hira Stand" class="overlay overlay-stand" style="--overlay-top:-4%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p2">
+              <img id="p2" src="assets/Secciones/Proyectos/Hira/render.webp" alt="Hira 2" class="base">
+              <div class="text-overlay title-hira" style="--text-top: 8%; --text-left: 20%; --text-align: left; --text-max-width: 300px; font-family: 'Montserrat'; color: white; --text-size: 4cqw; white-space: nowrap;"><span data-es="Perchero Hira" data-en="Hira Coat Rack" data-fr="Porte‑manteau Hira" data-pt="Cabide Hira"></span></div>
+              <div class="text-overlay shadowed" style="--text-top: 20%; --text-left: 20.1%; --text-align: left; --text-max-width: 33cqw; font-family: 'Roboto'; color: white; --text-size: 1.5cqw; white-space: pre-line; line-height: 1.4;"><span data-es="En septiembre de 2024 Systemtronic publicó un briefing para el desarrollo de un perchero que encajase en su catálogo. Mi equipo diseñó y presenetó 4 opciones a la empresa, que se mostró muy interesada en una de ellas.
+
+Tras un rediseño, hice dos paneles con montajes como este y preparé un discurso con el que logramos que Systemtronic seleccionara el perchero Hira frente a las propuestas de otros 12 equipos. Hira se presentó en la Feria Hábitat València 2025." data-en="In September 2024, Systemtronic published a brief for developing a coat rack that would fit their catalog. My team designed and presented four options to the company, which showed great interest in one of them.
+
+After a redesign, I created two panels with mockups like this and prepared a pitch that led Systemtronic to select the Hira coat rack over proposals from 12 other teams. Hira was presented at Feria Hábitat València 2025." data-fr="En septembre 2024, Systemtronic a publié un cahier des charges pour le développement d’un porte‑manteau s’intégrant à son catalogue. Mon équipe a conçu et présenté quatre options ; l’entreprise a montré un grand intérêt pour l’une d’elles.
+
+Après une refonte, j’ai réalisé deux panneaux avec des maquettes comme celle‑ci et préparé un discours grâce auquel nous avons réussi à faire sélectionner le porte‑manteau Hira face aux propositions de 12 autres équipes. Hira a été présenté à la Feria Hábitat València 2025." data-pt="Em setembro de 2024, a Systemtronic publicou um briefing para desenvolver um cabide que se enquadrasse no seu catálogo. A minha equipa concebeu e apresentou quatro opções; a empresa demonstrou grande interesse por uma delas.
+
+Após um redesenho, fiz dois painéis com montagens como esta e preparei um pitch com o qual conseguimos que a Systemtronic selecionasse o cabide Hira em detrimento das propostas de outras 12 equipas. O Hira foi apresentado na Feria Hábitat València 2025."></span></div>
+            </div>
+            <div class="image-wrap" id="p3">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Nostre/movil/fondonostre1.webp" alt="Nostre (fondo 1 móvil)" loading="lazy" decoding="async">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella1.webp" alt="Botella1" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella2.webp" alt="Botella2" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella3.webp" alt="Botella3" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella4.webp" alt="Botella4" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella5.webp" alt="Botella5" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella6.webp" alt="Botella6" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella7.webp" alt="Botella7" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella8.webp" alt="Botella8" data-mobile-overlay="true">
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Nostre/movil/botella9.webp" alt="Botella9" data-mobile-overlay="true">
+              <div class="mobile-text-overlay" style="--text-size: 6cqw; --text-top: 5.5%; --text-left: 40%; --text-align: left; --text-max-width: 50cqw; --text-font-family: 'Cinzel', serif; color: black; --text-font-weight: 900; line-height: 120%;">
+                <span data-es="ETIQUETADO DE VINOS Y CERVEZAS" data-en="Wine and beer labeling" data-fr="Étiquetage de vins et bières" data-pt="Rotulagem de vinhos e cervejas"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 3.5cqw; --text-top: 18%; --text-left: 41%; --text-align: left; --text-max-width: 56cqw; --text-font-family: 'Times New Roman', serif; color: black; --text-font-weight: 100; line-height: 120%">
+                <span data-es="En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia. Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas que la UPV envió como obsequio a otros centros llevaron nuestras etiquetas." data-en="In 2024 I was the winner, along with two classmates, in a labeling contest organized by the Polytechnic University of Valencia. Alain Ferrer, Álvaro Selma and I won in the wine category. That's why, in 2025, the bottles that the UPV sent as gifts to other centers bore our labels." data-fr="En 2024, j’ai remporté avec deux camarades un concours d’étiquetage organisé par l’Université polytechnique de Valence. Alain Ferrer, Álvaro Selma et moi avons gagné dans la catégorie des vins. C’est pourquoi, en 2025, les bouteilles que l’UPV a offertes à d’autres centres portaient nos étiquettes." data-pt="Em 2024, fui vencedor, juntamente com dois colegas, de um concurso de etiquetagem organizado pela Universidade Politécnica de Valência. Alain Ferrer, Álvaro Selma e eu ganhámos na categoria de vinhos. Por isso, em 2025, as garrafas que a UPV enviou como presente para outros centros levavam as nossas etiquetas."></span>
+              </div>
+              <img id="p3" src="assets/Secciones/Proyectos/Nostre/Nostre1.webp" alt="Nostre 1" class="base">
+              <div class="text-overlay" style="--text-top: 10%; --text-left: 48%; --text-transform: translateX(-50%); --text-size: 4.5cqw; font-family: 'Cinzel', serif; color: black; white-space: nowrap; text-align: center;"><span data-es="ETIQUETADO DE VINOS Y CERVEZAS" data-en="Wine and beer labeling" data-fr="Étiquetage de vins et bières" data-pt="Rotulagem de vinhos e cervejas"></span></div>
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 8.5%; font-family: 'Times New Roman', serif; color: black; --text-size: 2cqw; text-align: justify; max-width: 22%; white-space: normal;"><span data-es="En 2024 fui ganador, junto a dos compañeros, en un concurso de etiquetado que organiza la Universidad Politécnica de Valencia." data-en="In 2024 I was the winner, along with two classmates, in a labeling contest organized by the Polytechnic University of Valencia." data-fr="En 2024, j’ai remporté avec deux camarades un concours d’étiquetage organisé par l’Université polytechnique de Valence." data-pt="Em 2024, fui vencedor, juntamente com dois colegas, de um concurso de etiquetagem organizado pela Universidade Politécnica de Valência."></span></div>
+              <div class="text-overlay" style="--text-top: 58.7%; --text-left: 68%; font-family: 'Times New Roman', serif; color:black; --text-size: 2cqw; text-align: justify; max-width: 25%; white-space: normal;"><span data-es="Alain Ferrer, Álvaro Selma y yo ganamos en la categoria de vinos. Por eso, en 2025, las botellas que la UPV envió como obsequio a otros centros llevaron nuestras etiquetas." data-en="Alain Ferrer, Álvaro Selma and I won in the wine category. That's why, in 2025, the bottles that UPV sent as gifts to other centers bore our labels." data-fr="Alain Ferrer, Álvaro Selma et moi avons gagné dans la catégorie des vins. C’est pourquoi, en 2025, les bouteilles que l’UPV a offertes à d’autres centres portaient nos étiquettes." data-pt="Alain Ferrer, Álvaro Selma e eu ganhámos na categoria de vinhos. Por isso, em 2025, as garrafas que a UPV enviou como presente para outros centros levavam as nossas etiquetas."></span></div>
+            </div>
+            <div class="image-wrap" id="p4">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Nostre/movil/fondonostre2.webp" alt="Nostre (fondo 2 móvil)" loading="lazy" decoding="async">
+              <div class="mobile-text-overlay" style="--text-size: 4cqw; --text-top: 3%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-width: 88cqw; --text-font-family: 'Times New Roman', serif; color: black; --text-font-weight: 100;">
+                <span data-es="La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses. Creamos nueve mascotas y usamos colores representativos para cada escuela." data-en="Our proposal for the beer category sought to adapt UPV’s identity to the typical imagery of American university fraternities. We created nine mascots and used representative colors for each school." data-fr="Notre proposition pour la catégorie des bières visait à adapter l’identité de l’UPV à l’imagerie typique des fraternités universitaires américaines. Nous avons créé neuf mascottes et utilisé des couleurs représentatives pour chaque école." data-pt="A nossa proposta para a categoria de cervejas procurou adaptar a identidade da UPV ao imaginário típico das fraternidades universitárias americanas. Criámos nove mascotes e utilizámos cores representativas para cada escola."></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 4cqw; --text-top: 73%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-max-width: 89cqw; --text-width: 99cqw; --text-font-family: 'Times New Roman', serif; color: black; --text-font-weight: 100;">
+                <span data-es="En cuanto a los vinos, quisimos presentar un etiquetado sobrio que mostrase una visión romántica del Mediterráneo. Para ello, usamos una fuente gruesa con serifas suaves, concentrando todo el color en la 'N' para aludir a las letras capitales, tan populares durante el romanticismo." data-en="For the wines we opted for a sober label that conveys a romantic vision of the Mediterranean. We used a bold typeface with soft serifs, concentrating all color in the ‘N’ to evoke illuminated initials, so popular during Romanticism." data-fr="Pour les vins, nous avons choisi un étiquetage sobre qui présente une vision romantique de la Méditerranée. Nous avons utilisé une typographie épaisse aux empattements doux, en concentrant toute la couleur sur le « N » afin d’évoquer les lettres capitales, très populaires à l’époque du romantisme." data-pt="Para os vinhos, optámos por uma etiqueta sóbria que apresenta uma visão romântica do Mediterrâneo. Usámos uma tipografia espessa com serifas suaves, concentrando toda a cor no «N» para evocar as letras capitais, muito populares durante o romantismo."></span>
+              </div>
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Nostre2.webp" alt="Nostre 2" class="base">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella9.webp" alt="Botella9" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="9">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella8.webp" alt="Botella8" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="8">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella7.webp" alt="Botella7" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="7">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella6.webp" alt="Botella6" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="6">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella5.webp" alt="Botella5" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="5">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella4.webp" alt="Botella4" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="4">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella3.webp" alt="Botella3" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="3">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella2.webp" alt="Botella2" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="2">
+              <img id="p4" src="assets/Secciones/Proyectos/Nostre/Botella1.webp" alt="Botella1" class="overlay overlay-botella" style="--overlay-top:0%;" data-botella="1">
+              <div class="text-overlay" style="--text-top: 28%; --text-left: 60%; font-family: 'Aver', sans-serif; font-style: italic; font-size: 6cqw; color: black; max-width: 19cqw; line-height: 0.9;"><span data-es="Fraternidades Americanas" data-en="American Fraternities" data-fr="Fraternités américaines" data-pt="Fraternidades americanas"></span></div>
+              <div class="text-overlay" style="--text-top: 50%; --text-left: 60%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 35%;"><span data-es="La propuesta que hicimos en la categoría de cervezas buscaba adaptar la identidad de la UPV la típica imagen de fraternidades universitarias estadounidenses." data-en="The proposal we made in the beer category sought to adapt UPV's identity to the typical image of American university fraternities." data-fr="Notre proposition dans la catégorie des bières visait à adapter l’identité de l’UPV à l’imagerie typique des fraternités universitaires américaines." data-pt="A proposta que apresentámos na categoria de cervejas procurava adaptar a identidade da UPV ao imaginário típico das fraternidades universitárias americanas."></span></div>
+            </div>
+            <div class="image-wrap" id="p5">
+              <img id="p5" src="assets/Secciones/Proyectos/Nostre/Nostre3.webp" alt="Nostre 3" class="base">
+              <img id="p5" src="assets/Secciones/Proyectos/Nostre/Manos.webp" alt="Manos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p6">
+              <img id="p6" src="assets/Secciones/Proyectos/Nostre/Nostre4.webp" alt="Nostre 4">
+              <div class="text-overlay" style="--text-top: 20%; --text-left: 10%; font-family: 'CCTheStorySoNearWOO-Regular', serif; font-size: 5.5cqw; color: black; max-width: 31%; line-height: 0.95;"><span data-es="Romanticismo Mediterráneo" data-en="Mediterranean Romanticism" data-fr="Romantisme méditerranéen" data-pt="Romantismo mediterrâneo"></span></div>
+              <div class="text-overlay" style="--text-top: 42%; --text-left: 10%; font-family: 'Times New Roman', Times, serif; color: black; --text-size: 2cqw; max-width: 29.75%; text-align: justify; white-space: pre-line; line-height: 1.4;"><span data-es="En cuanto a los vinos, quisimos presentar un etiquetado más sobrio, y que además mostrase una visión romántica del Mediterráneo.
+
+              Para ello, usamos una fuente gruesa con serifas suaves, concentrando todo el color en la &quot;N&quot; para aludir a las letras capitales, tan populares durante el romanticismo." data-en="For the wines we wanted to present a more sober labeling, showing a romantic vision of the Mediterranean.
+
+              For them, we used a thick font with soft serifs, concentrating all the color on the &quot;N&quot; to allude to capital letters, so popular during romanticism." data-fr="Pour les vins, nous avons choisi un étiquetage plus sobre, qui présente une vision romantique de la Méditerranée.
+
+              Pour cela, nous avons utilisé une typographie épaisse aux empattements doux, en concentrant toute la couleur sur le \"N\" afin d’évoquer les lettres capitales, très populaires à l’époque du romantisme." data-pt="Quanto aos vinhos, quisemos apresentar um etiquetado mais sóbrio, que também mostrasse uma visão romântica do Mediterrâneo.
+
+              Para isso, usámos uma fonte espessa com serifas suaves, concentrando toda a cor no \"N\" para aludir às letras capitais, tão populares durante o romantismo."></span></div>
+            </div>
+            <div class="image-wrap" id="p7">
+              <img id="p7" src="assets/Secciones/Proyectos/Reflejos/folletos.webp" alt="folletos" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Reflejos/movil/fondoreflejos1final.gif" alt="Reflejos (fondo 1 móvil)" loading="lazy" decoding="async">
+              <div class="mobile-text-overlay" style="--text-size: 9cqw; --text-top: 4%; --text-left: 4.5%; --text-align: left; --text-width: 111cqw; --text-max-width: 111cqw; --text-font-family: 'Kemco Pixel', serif; color: rgb(22, 216, 0); --text-font-weight: 900; line-height: 120%; --text-shadow: 0 0 1cqw rgba(0, 0, 0, 1), 0 0 2cqw rgba(0, 0, 0, 1);">
+                <span data-es="REFLEJOS DEL MULTIVERSO" data-en="Reflections of the Multiverse" data-fr="Reflets du Multivers" data-pt="Reflexos do Multiverso"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 4cqw; --text-top: 65%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-width: 80cqw; --text-max-width: 80cqw; --text-font-family: 'Roboto'; color: rgb(22, 216, 0); line-height: 120%; --text-shadow: 0 0 1cqw rgba(0, 0, 0, 1), 0 0 2cqw rgba(0, 0, 0, 1), 0 0 1cqw rgba(0, 0, 0, 1), 0 0 2cqw rgba(0, 0, 0, 1), 0 0 1cqw rgba(0, 0, 0, 1), 0 0 2cqw rgba(0, 0, 0, 1);">
+                <span data-es="Para promocionar la obra 'Reflejos del Multiverso', el Aula de Artes Escénicas de la UPV me pidió crear un cartel, un programa de mano y gráficos para redes.
+
+                Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra." data-en="To promote the play 'Reflections of the Multiverse', the UPV Performing Arts Classroom asked me to create a poster, a program and graphics for social media.
+
+In the end, I made two posters and integrated animated graphics into the social media material, and thanks to my services, all tickets for the four sessions of the play were sold." data-fr="Pour promouvoir la pièce « Reflets du Multivers », l’Aula de Artes Escénicas de l’UPV m’a demandé de créer une affiche, un programme et des visuels pour les réseaux.
+
+Au final, j’ai réalisé deux affiches et intégré des graphismes animés dans le matériel pour les réseaux ; grâce à ce travail, toutes les places ont été vendues pour les quatre représentations." data-pt="Para promover a peça «Reflexos do Multiverso», a Aula de Artes Cénicas da UPV pediu‑me para criar um cartaz, um programa e gráficos para as redes.
+
+No final, fiz dois cartazes e integrei gráficos animados no material das redes; graças a esse trabalho, todos os bilhetes foram vendidos para as quatro sessões da peça."></span>
+              </div>
+              <!-- Overlay móvil de folletos sobre el fondo 1 -->
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Reflejos/movil/folletos.webp" alt="folletos" data-mobile-overlay="true">
+              <img id="p7" src="assets/Secciones/Proyectos/Reflejos/fondo_2.gif" alt="Reflejos 1" class="base">
+              <div class="text-overlay reflejos-shadow" style="--text-top: 15%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 3.33cqw;"><span data-es="Reflejos del" data-en="Reflections of the" data-fr="Reflets du" data-pt="Reflexos do"></span></div>
+              <div class="text-overlay reflejos-shadow" style="--text-top: 21%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Kemco Pixel'; font-size: 4cqw;"><span data-es="Multiverso" data-en="Multiverse" data-fr="Multivers" data-pt="Multiverso"></span></div>
+              <div class="text-overlay" style="--text-top: 35.5%; --text-left: 60%; --text-max-width: 33cqw; color: rgb(22, 216, 0); font-family: 'Roboto'; font-size: 2cqw;"><span data-es="Para promocionar la obra &quot;Reflejos del Multiverso&quot;, el Aula de Artes Escénicas de la UPV me pidió crear un cartel A3, un programa de mano y gráficos para redes.
+
+                Al final, hice dos carteles e integré gráficos móviles en el material para redes, y gracias a mis servicios, se vendieron todas las entradas para las 4 sesiones de la obra." data-en="To promote the play &quot;Reflections of the Multiverse&quot;, the UPV Performing Arts Classroom asked me to create an A3 poster, a program and graphics for social media.
+
+                In the end, I made two posters and integrated animated graphics into the social media material, and thanks to my services, all tickets for the four sessions of the play were sold." data-fr="Pour promouvoir la pièce « Reflets du Multivers », l’Aula de Artes Escénicas de l’UPV m’a demandé de créer une affiche A3, un programme de main et des visuels pour les réseaux.
+
+                Au final, j’ai réalisé deux affiches et intégré des graphismes animés dans le matériel pour les réseaux ; grâce à ce travail, toutes les places ont été vendues pour les quatre représentations." data-pt="Para promover a peça «Reflexos do Multiverso», a Aula de Artes Cénicas da UPV pediu‑me para criar um cartaz A3, um programa e gráficos para as redes.
+
+                No final, fiz dois cartazes e integrei gráficos animados no material das redes; graças a esse trabalho, todos os bilhetes foram vendidos para as quatro sessões da peça."></span></div>
+            </div>
+            <div class="image-wrap" id="p8">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Reflejos/movil/fondoreflejos2final.gif" alt="Reflejos (fondo 2 móvil)" loading="lazy" decoding="async">
+              <img id="p8" src="assets/Secciones/Proyectos/Reflejos/fondo_1.gif" alt="Reflejos 2" class="base">
+            </div>
+            <div class="image-wrap" id="p9">
+              <!-- Fondo móvil específico -->
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Zombis/movil/fondozombis.webp" alt="Zona Zombi (fondo móvil)" loading="lazy" decoding="async">
+              <!-- Sombras y carteles versión móvil (marcados como mobile-overlay para ocultarse en desktop) -->
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra1.webp" alt="Sombra 1" data-cartel="1">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra2.webp" alt="Sombra 2" data-cartel="2">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra3.webp" alt="Sombra 3" data-cartel="3">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra4.webp" alt="Sombra 4" data-cartel="4">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra5.webp" alt="Sombra 5" data-cartel="5">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra6.webp" alt="Sombra 6" data-cartel="6">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra7.webp" alt="Sombra 7" data-cartel="7">
+              <img class="mobile-overlay sombra" src="assets/Secciones/Proyectos/Zombis/movil/sombra8.webp" alt="Sombra 8" data-cartel="8">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel1.webp" alt="Cartel 1" data-cartel="1">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel2.webp" alt="Cartel 2" data-cartel="2">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel3.webp" alt="Cartel 3" data-cartel="3">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel4.webp" alt="Cartel 4" data-cartel="4">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel5.webp" alt="Cartel 5" data-cartel="5">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel6.webp" alt="Cartel 6" data-cartel="6">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel7.webp" alt="Cartel 7" data-cartel="7">
+              <img class="mobile-overlay cartel" src="assets/Secciones/Proyectos/Zombis/movil/cartel8.webp" alt="Cartel 8" data-cartel="8">
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 60%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: left; --text-width: 75cqw; --text-max-width: 75cqw; --text-font-family: 'Google Sans Code'; color: black; line-height: 120%;">
+                <span data-es="En Halloween de 2025 trabajé con Clarió produciendo un número de carteles para la Zona Zombi que recorría el ayuntamiento de Emperador. Como miembro del equipo de decorado, también ayudé a diseñar el recorrido y la ambientación para asegurar una experiencia completa" data-en="On Halloween 2025 I worked with Clarió producing a set of posters for the Zombie Zone that ran through Emperador’s city hall. As part of the set design team, I also helped design the route and the atmosphere to ensure a complete experience." data-fr="Lors d’Halloween 2025, j’ai travaillé avec Clarió à la production d’une série d’affiches pour la Zone Zombie qui traversait l’hôtel de ville d’Emperador. En tant que membre de l’équipe de scénographie, j’ai également aidé à concevoir le parcours et l’ambiance afin d’assurer une expérience complète." data-pt="No Halloween de 2025, trabalhei com a Clarió na produção de um conjunto de cartazes para a Zona Zumbi que percorria a Câmara Municipal de Emperador. Como membro da equipa de cenografia, também ajudei a desenhar o percurso e a ambientação para garantir uma experiência completa."></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 9cqw; --text-top: 84.2%; --text-left: 33.8%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Impact'; color: rgb(197, 27, 27); line-height: 120%;">
+                <span data-es="Zona Zombi" data-en="Zombie Zone" data-fr="Zone Zombie" data-pt="Zona Zumbi"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 9cqw; --text-top: 89.15%; --text-left: 34.2%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Impact'; color: rgb(243, 243, 243); line-height: 120%;">
+                <span data-es="Emperador" data-en="Emperador" data-fr="Emperador" data-pt="Emperador"></span>
+              </div>
+              <!-- Base de escritorio (se ocultará en móvil por las reglas generales) -->
+              <img id="p9" src="assets/Secciones/Proyectos/Zombis/zombis.webp" alt="zombis" class="base">
+              <!-- Sombras de escritorio debajo (visibles solo en desktop) -->
+              <img src="assets/Secciones/Proyectos/Zombis/sombra1.webp" alt="Sombra 1" class="sombra" data-cartel="1" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra2.webp" alt="Sombra 2" class="sombra" data-cartel="2" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra3.webp" alt="Sombra 3" class="sombra" data-cartel="3" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra4.webp" alt="Sombra 4" class="sombra" data-cartel="4" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra5.webp" alt="Sombra 5" class="sombra" data-cartel="5" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra6.webp" alt="Sombra 6" class="sombra" data-cartel="6" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra7.webp" alt="Sombra 7" class="sombra" data-cartel="7" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/sombra8.webp" alt="Sombra 8" class="sombra" data-cartel="8" style="--overlay-top:0%;" />
+
+              <div class="text-overlay" style="--text-top: 10%; --text-left: 9.1%; --text-max-width: 33cqw; color: black; font-family:'Google Sans Code'; font-size: 1.2cqw;"><span data-es="En Halloween de 2025, en colaboración con el Ayuntamiento de Emperador, la empresa Clarió organizó una zona zombi que recorría toda la sede municipal. Como miembro del equipo de decorado, asistí en el diseño del recorrido y de la ambientación." data-en="During the Halloween celebrations of 2025, in collaboration with the Emperador City Council, the company Clarió organized a zombie area that ran throughout the municipal headquarters. As a member of the set design team, I assisted in the design of the route and the atmosphere." data-fr="Lors d’Halloween 2025, en collaboration avec la mairie d’Emperador, l’entreprise Clarió a organisé une zone zombie qui traversait tout le siège municipal. En tant que membre de l’équipe de scénographie, j’ai aidé à concevoir le parcours et l’ambiance." data-pt="No Halloween de 2025, em colaboração com a Câmara Municipal de Emperador, a empresa Clarió organizou uma zona zumbi que percorria toda a sede municipal. Como membro da equipa de cenografia, ajudei a conceber o percurso e a ambientação."></span></div>
+              <div class="text-overlay" style="--text-top: 70%; --text-left: 9.6%; --text-max-width: 33cqw; color: black; font-family:'Google Sans Code'; font-size: 1.2cqw;"><span data-es="Además, produje un número de señales con indicaciones varias. Combiné pictogramas con mensajes breves que explicaban normas del juego o bien aportaban a la ambientación. Las señales fueron impresas en alta calidad y situadas en puntos clave del recorrido, creando una experiencia mucho más completa." data-en="In addition, I was in charge of producing a number of signs with various indications. I combined pictograms with brief messages that explained game rules or contributed to the atmosphere. The signs were printed in high quality and placed at key points along the route, creating a much more complete experience." data-fr="En outre, j’ai produit un certain nombre de panneaux avec diverses indications. J’ai combiné des pictogrammes avec des messages brefs expliquant les règles du jeu ou contribuant à l’ambiance. Les panneaux ont été imprimés en haute qualité et placés à des points clés du parcours, créant une expérience bien plus complète." data-pt="Além disso, produzi vários sinais com indicações diversas. Combinei pictogramas com mensagens breves que explicavam regras do jogo ou contribuíam para a ambientação. Os sinais foram impressos em alta qualidade e colocados em pontos‑chave do percurso, criando uma experiência muito mais completa."></span></div>
+              <div class="text-overlay" style="--text-top: 75.5%; --text-left: 65.5%; --text-max-width: 33cqw; color: rgb(197, 27, 27); font-family: Impact, 'Arial Black', sans-serif; font-size: 4cqw;"><span data-es="Zona Zombi" data-en="Zombie Zone" data-fr="Zone Zombie" data-pt="Zona Zumbi"></span></div>
+              <div class="text-overlay" style="--text-top: 84.5%; --text-left: 65.65%; --text-max-width: 33cqw; color: rgb(243, 243, 243); font-family: Impact, 'Arial Black', sans-serif; font-size: 4cqw;"><span data-es="Emperador" data-en="Emperador" data-fr="Emperador" data-pt="Emperador"></span></div>
+
+              <!-- Overlays de carteles para la sección 'Decorado de Zona Zombi' -->
+              <img src="assets/Secciones/Proyectos/Zombis/cartel1.webp" alt="Cartel 1" class="overlay" data-cartel="1" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel2.webp" alt="Cartel 2" class="overlay" data-cartel="2" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel3.webp" alt="Cartel 3" class="overlay" data-cartel="3" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel4.webp" alt="Cartel 4" class="overlay" data-cartel="4" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel5.webp" alt="Cartel 5" class="overlay" data-cartel="5" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel6.webp" alt="Cartel 6" class="overlay" data-cartel="6" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel7.webp" alt="Cartel 7" class="overlay" data-cartel="7" style="--overlay-top:0%;" />
+              <img src="assets/Secciones/Proyectos/Zombis/cartel8.webp" alt="Cartel 8" class="overlay" data-cartel="8" style="--overlay-top:0%;" />
+              <!-- Áreas (hotspots) de ejemplo para activar cada cartel: ajusta 'left/top/width/height' en % o en px -->
+              <div class="cartel-area dev-outline" data-cartel="1" tabindex="0" style="left:61%; top:11%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="2" tabindex="0" style="left:72%; top:11%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="3" tabindex="0" style="left:83%; top:11%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="4" tabindex="0" style="left:61%; top:31%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="5" tabindex="0" style="left:72%; top:31%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="6" tabindex="0" style="left:83%; top:31%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="7" tabindex="0" style="left:66%; top:52%; width:6%; height:15%;"></div>
+              <div class="cartel-area dev-outline" data-cartel="8" tabindex="0" style="left:77%; top:52%; width:6%; height:15%;"></div>
+            </div>
+            <div class="image-wrap" id="p10">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Thumbnails/movil/fondovideos.webp" alt="Thumbnails (fondo móvil)" loading="lazy" decoding="async">
+              <!-- Imágenes móviles cíclicas (grupo inicial 1.x) necesarias para MobileThumbnails JS -->
+              <img class="mobile-overlay thumb-mobile" src="assets/Secciones/Proyectos/Thumbnails/movil/1.1.webp" alt="Thumbnail grupo 1 imagen 1" loading="lazy" decoding="async">
+              <img class="mobile-overlay thumb-mobile" src="assets/Secciones/Proyectos/Thumbnails/movil/1.2.webp" alt="Thumbnail grupo 1 imagen 2" loading="lazy" decoding="async">
+              <img class="mobile-overlay thumb-mobile" src="assets/Secciones/Proyectos/Thumbnails/movil/1.3.webp" alt="Thumbnail grupo 1 imagen 3" loading="lazy" decoding="async">
+              <img class="mobile-overlay thumb-mobile" src="assets/Secciones/Proyectos/Thumbnails/movil/1.4.webp" alt="Thumbnail grupo 1 imagen 4" loading="lazy" decoding="async">
+              <div class="mobile-text-overlay" style="--text-size: 5.75cqw; --text-top: 7.8%; --text-left: 27%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:900; line-height: 120%;">
+                <span data-es="Thumbnails para Moifez" data-en="Thumbnails for Moifez" data-fr="Miniatures pour Moifez" data-pt="Miniaturas para Moifez"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 2.9cqw; --text-top: 12.5%; --text-left: 28%; --text-align: left; --text-width: 72cqw; --text-max-width: 72cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
+                <span data-es="Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas." data-en="For more than four years, I have occasionally made thumbnails for some of Moifez’s videos on his YouTube channel. Several of them have reached up to 400K views." data-fr="Depuis plus de quatre ans, je réalise ponctuellement des miniatures pour certaines vidéos de Moifez sur sa chaîne YouTube. Plusieurs d’entre elles ont dépassé les 400 000 vues." data-pt="Há mais de quatro anos, faço ocasionalmente miniaturas para alguns vídeos do Moifez no seu canal do YouTube. Vários deles já chegaram às 400 mil visualizações."></span>
+              </div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--title" data-group="1" style="--text-top: 30%; --text-left: 5%; --text-max-width: 84cqw; --text-size: 3.6cqw; --text-font-family: 'Roboto'; --text-font-weight: 900; --text-letter-spacing: -0.015em; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: left;"><span data-es="el NUEVO UNIVERSO CINEMÁTICO que SUPERARÁ a MARVEL" data-en="the NEW CINEMATIC UNIVERSE that will SURPASS MARVEL" data-fr="le NOUVEL UNIVERS CINÉMATOGRAPHIQUE qui dépassera MARVEL" data-pt="o NOVO UNIVERSO CINEMATOGRÁFICO que vai SUPERAR a MARVEL"></span></div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--title" data-group="2" style="--text-top: 30%; --text-left: 5%; --text-max-width: 84cqw; --text-size: 3.6cqw; --text-font-family: 'Roboto'; --text-font-weight: 900; --text-letter-spacing: -0.015em; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: left;"><span data-es="por qué es IMPOSIBLE ver un JUEGO en 3D" data-en="why it’s IMPOSSIBLE to watch a GAME in 3D" data-fr="pourquoi il est IMPOSSIBLE de voir un JEU en 3D" data-pt="por que é IMPOSSÍVEL ver um JOGO em 3D"></span></div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--title" data-group="3" style="--text-top: 30%; --text-left: 5%; --text-max-width: 84cqw; --text-size: 3.6cqw; --text-font-family: 'Roboto'; --text-font-weight: 900; --text-letter-spacing: -0.015em; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: left;"><span data-es="NOTICIAS de MIERDA S01E01" data-en="CRAPPY NEWS S01E01" data-fr="ACTUS de MERDE S01E01" data-pt="NOTÍCIAS de MERDA T01E01"></span></div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--bullets" data-group="1" style="--text-top: 65%; --text-left: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-line-height: 1.35; --text-align: left;">
+                <p><span data-es="• Tipografías Badaboom y BentonSans" data-en="• Fonts: Badaboom and BentonSans" data-fr="• Typographies : Badaboom et BentonSans" data-pt="• Tipografias: Badaboom e BentonSans"></span></p>
+                <p><span data-es="• Portadas e Ilustraciones de varios libros" data-en="• Book covers and illustrations" data-fr="• Couvertures et illustrations de livres" data-pt="• Capas e ilustrações de livros"></span></p>
+                <p><span data-es="• Imágenes ordenadas cromáticamente" data-en="• Images sorted by color" data-fr="• Images ordonnées par couleur" data-pt="• Imagens ordenadas cromaticamente"></span></p>
+              </div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--bullets" data-group="2" style="--text-top: 65%; --text-left: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-line-height: 1.35; --text-align: left;">
+                <p><span data-es="• Tipografías Aver y SF Florencesans" data-en="• Fonts: Aver and SF Florencesans" data-fr="• Typographies : Aver et SF Florencesans" data-pt="• Tipografias: Aver e SF Florencesans"></span></p>
+                <p><span data-es="• Mismo estilo que las referencias" data-en="• Same style as the references" data-fr="• Même style que les références" data-pt="• Mesmo estilo que as referências"></span></p>
+                <p><span data-es="• Mascota del canal con gafas 3D" data-en="• Channel mascot with 3D glasses" data-fr="• Mascotte de la chaîne avec des lunettes 3D" data-pt="• Mascote do canal com óculos 3D"></span></p>
+              </div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--bullets" data-group="3" style="--text-top: 65%; --text-left: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-line-height: 1.35; --text-align: left;">
+                <p><span data-es="• Tipografías Nulshock RG y Bahnschrift" data-en="• Fonts: Nulshock RG and Bahnschrift" data-fr="• Typographies : Nulshock RG et Bahnschrift" data-pt="• Tipografias: Nulshock RG e Bahnschrift"></span></p>
+                <p><span data-es="• Misma composición que la referencia" data-en="• Same composition as the reference" data-fr="• Même composition que la référence" data-pt="• Mesma composição que a referência"></span></p>
+                <p><span data-es="• Mascota del canal adaptada al estilo" data-en="• Channel mascot adapted to the style" data-fr="• Mascotte de la chaîne adaptée au style" data-pt="• Mascote do canal adaptada ao estilo"></span></p>
+              </div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="1" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;"><span data-es="5,1K visitas" data-en="5.1K views" data-fr="5,1 K vues" data-pt="5,1 K visualizações"></span></div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="2" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;"><span data-es="42,4K visitas" data-en="42.4K views" data-fr="42,4 K vues" data-pt="42,4 K visualizações"></span></div>
+              <div class="mobile-text-overlay thumb-text-block thumb-text-block--metrics" data-group="3" style="--text-top: 65%; --text-right: 5%; --text-max-width: 86cqw; --text-size: 3cqw; --text-font-family: 'Roboto'; --text-font-weight: 500; --text-color: rgb(41, 41, 41); --text-padding: 0; --text-align: right;"><span data-es="6,7K visitas" data-en="6.7K views" data-fr="6,7 K vues" data-pt="6,7 K visualizações"></span></div>
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 2.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
+                <span data-es="Boceto del cliente" data-en="Client sketch" data-fr="Croquis du client" data-pt="Esboço do cliente"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 33.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
+                <span data-es="Referencia 1" data-en="Reference 1" data-fr="Référence 1" data-pt="Referência 1"></span>
+              </div>
+              <div class="mobile-text-overlay" style="--text-size: 3cqw; --text-top: 87.5%; --text-left: 64.5%; --text-align: left; --text-width: 90cqw; --text-max-width: 90cqw; --text-font-family: 'Roboto'; color: rgb(41, 41, 41); --text-font-weight:300; line-height: 120%;">
+                <span data-es="Referencia 2" data-en="Reference 2" data-fr="Référence 2" data-pt="Referência 2"></span>
+              </div>
+              <img id="p10" src="assets/Secciones/Proyectos/Thumbnails/fondo1.webp" alt="Thumbnails 1" class="base">
+              <img id="p10" src="assets/Secciones/Proyectos/Thumbnails/videos.webp" alt="Videos" class="overlay" style="--overlay-top:0%;">
+              <div class="text-overlay" style="--text-top: 14%; --text-left: 26.5%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 4.75cqw; "><span data-es="Thumbnails para Moifez" data-en="Thumbnails for Moifez" data-fr="Miniatures pour Moifez" data-pt="Miniaturas para Moifez"></span></div>
+              <div class="text-overlay" style="--text-top: 25.5%; --text-left: 27.4%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.75cqw; max-width: 47cqw;"><span data-es="Desde hace más de cuatro años, ocasionalmente hago thumbnails para algunos vídeos de Moifez en su canal de YouTube. Varios de ellos han llegado hasta las 400K visitas." data-en="For more than four years, I have occasionally made thumbnails for some of Moifez's videos on his YouTube channel. Several of them have reached up to 400K views." data-fr="Depuis plus de quatre ans, je réalise ponctuellement des miniatures pour certaines vidéos de Moifez sur sa chaîne YouTube. Plusieurs d’entre elles ont dépassé les 400 000 vues." data-pt="Há mais de quatro anos, faço ocasionalmente miniaturas para alguns vídeos do Moifez no seu canal do YouTube. Vários deles já chegaram às 400 mil visualizações."></span></div>
+              <div class="text-overlay" style="--text-top: 55%; --text-left: 50.75%; font-family: 'Roboto black'; color: rgb(40, 40, 40); font-size: 3cqw; "><span data-es="Procedimiento Habitual" data-en="Usual Procedure" data-fr="Procédure habituelle" data-pt="Procedimento habitual"></span></div>
+              <div class="text-overlay" style="--text-top: 62%; --text-left: 50.8%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 35cqw;"><span data-es="Normalmente, el cliente me envía un boceto y varias imágenes de referencia para que haga una primera versión del thumbnail, y tras recibir su feedback y hacer las modificaciones necesarias, llegamos al resultado final." data-en="Usually, the client sends me a sketch and several reference images for me to make a first version of the thumbnail, and after receiving their feedback and making the necessary modifications, we reach the final result." data-fr="En général, le client m’envoie un croquis et plusieurs images de référence pour que je réalise une première version de la miniature ; après ses retours et les ajustements nécessaires, nous arrivons au résultat final." data-pt="Normalmente, o cliente envia‑me um esboço e várias imagens de referência para que eu faça uma primeira versão da miniatura e, após o feedback e os ajustes necessários, chegamos ao resultado final."></span></div>
+              <div class="text-overlay" style="--text-top: 83.5%; --text-left: 50.8%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; max-width: 40cqw;"><span data-es="3,1K visualizaciones • Hace 3 años" data-en="3.1K views • 3 years ago"></span></div>
+            </div>
+            <div class="image-wrap" id="p11">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/fondo.webp" alt="Thumbnails 1" class="base">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.1.webp" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.2.webp" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.3.webp" alt="video" class="overlay" style="--overlay-top:0%;">
+              <img id="p11" src="assets/Secciones/Proyectos/Thumbnails/1.4.webp" alt="video" class="overlay" style="--overlay-top:0%;">
+              <div class="thumb-mask" data-thumb="1"></div>
+              <div class="thumb-mask" data-thumb="2"></div>
+              <div class="thumb-mask" data-thumb="3"></div>
+              <div class="thumb-mask" data-thumb="4"></div>
+              <div class="text-overlay" style="--text-top: 35.45%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Boceto del cliente" data-en="Client sketch" data-fr="Croquis du client" data-pt="Esboço do cliente"></span></div>
+              <div class="text-overlay" style="--text-top: 62.75%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Referencia 1" data-en="Reference 1" data-fr="Référence 1" data-pt="Referência 1"></span></div>
+              <div class="text-overlay" style="--text-top: 90.2%; --text-left: 6.1%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.7cqw;"><span data-es="Referencia 2" data-en="Reference 2" data-fr="Référence 2" data-pt="Referência 2"></span></div>
+              <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;"><span data-es="• Tipografías Aver y SF Florencesans" data-en="• Fonts: Aver and SF Florencesans" data-fr="• Typographies : Aver et SF Florencesans" data-pt="• Tipografias: Aver e SF Florencesans"></span></div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Tipografías Badaboom y BentonSans" data-en="• Fonts: Badaboom and BentonSans" data-fr="• Typographies : Badaboom et BentonSans" data-pt="• Tipografias: Badaboom e BentonSans"></span></div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 77%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Tipografías Nulshock RG y Bahnschrift" data-en="• Fonts: Nulshock RG and Bahnschrift" data-fr="• Typographies : Nulshock RG et Bahnschrift" data-pt="• Tipografias: Nulshock RG e Bahnschrift"></span></div>
+              <div class="text-overlay text-group text-group-2" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;"><span data-es="• Mismo estilo que las referencias" data-en="• Same style as the references" data-fr="• Même style que les références" data-pt="• Mesmo estilo que as referências"></span></div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Portadas e Ilustraciones de varios libros" data-en="• Book covers and illustrations" data-fr="• Couvertures et illustrations de livres" data-pt="• Capas e ilustrações de livros"></span></div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 82%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Misma composición que la referencia" data-en="• Same composition as the reference" data-fr="• Même composition que la référence" data-pt="• Mesma composição que a referência"></span></div>
+              <div class="text-overlay text-group text-group-2" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;"><span data-es="• Mascota del canal con gafas 3D" data-en="• Channel mascot with 3D glasses" data-fr="• Mascotte de la chaîne avec des lunettes 3D" data-pt="• Mascote do canal com óculos 3D"></span></div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Imágenes ordenadas cromáticamente" data-en="• Images sorted by color" data-fr="• Images ordonnées par couleur" data-pt="• Imagens ordenadas cromaticamente"></span></div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 87%; --text-left: 35%; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="• Mascota del canal adaptada al estilo" data-en="• Channel mascot adapted to the style" data-fr="• Mascotte de la chaîne adaptée au style" data-pt="• Mascote do canal adaptada ao estilo"></span></div>
+              <div class="text-overlay text-group text-group-2" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw;"><span data-es="42,4K visualizaciones • Hace 2 años" data-en="42.4K views • 2 years ago" data-fr="42,4 K vues • Il y a 2 ans" data-pt="42,4 K visualizações • Há 2 anos"></span></div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="5,1K visualizaciones • Hace 2 años" data-en="5.1K views • 2 years ago" data-fr="5,1 K vues • Il y a 2 ans" data-pt="5,1 K visualizações • Há 2 anos"></span></div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 77%; --text-right: 7%; text-align: right; font-family: 'Roboto'; color: rgb(41, 41, 41); font-size: 1.5cqw; display: none;"><span data-es="6,7K visualizaciones • Hace 3 años" data-en="6.7K views • 3 years ago" data-fr="6,7 K vues • Il y a 3 ans" data-pt="6,7 K visualizações • Há 3 anos"></span></div>
+              <div class="text-overlay text-group text-group-2" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw;"><span data-es="por qué es IMPOSIBLE ver un JUEGO en 3D" data-en="why it’s IMPOSSIBLE to watch a GAME in 3D" data-fr="pourquoi il est IMPOSSIBLE de voir un JEU en 3D" data-pt="por que é IMPOSSÍVEL ver um JOGO em 3D"></span></div>
+              <div class="text-overlay text-group text-group-1" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; display: none;"><span data-es="el NUEVO UNIVERSO CINEMÁTICO que SUPERARÁ a MARVEL" data-en="the NEW CINEMATIC UNIVERSE that will SURPASS MARVEL" data-fr="le NOUVEL UNIVERS CINÉMATOGRAPHIQUE qui dépassera MARVEL" data-pt="o NOVO UNIVERSO CINEMATOGRÁFICO que vai SUPERAR a MARVEL"></span></div>
+              <div class="text-overlay text-group text-group-3" style="--text-top: 3%; --text-left: 5.15%; text-align: left; font-family: 'Roboto black'; color: rgb(41, 41, 41); font-size: 2.5cqw; display: none;"><span data-es="NOTICIAS de MIERDA S01E01" data-en="CRAPPY NEWS S01E01" data-fr="ACTUS de MERDE S01E01" data-pt="NOTÍCIAS de MERDA T01E01"></span></div>
+            </div>
+            <div class="image-wrap" id="p12">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Trenzas/movil/fondotrenzas.webp" alt="Trenzas (fondo móvil)" loading="lazy" decoding="async">
+              <img class="mobile-overlay mobile-rollo-scroll" src="assets/Secciones/Proyectos/Trenzas/movil/rollo.webp" alt="Rollo móvil" loading="lazy" decoding="async">
+              <div class="mobile-text-overlay" style="--text-size: 4cqw; --text-top: 10%; --text-left: 51%; --text-align: left; --text-width: 49cqw; --text-max-width: 49cqw; --text-font-family: 'Caveat Brush'; color: black; --text-font-weight:100; line-height: 120%;">
+                <span data-es="Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado 'Trenzas del Mar del Norte'.
+
+                El cliente quería que el estilo fuera 'una mezcla de arte polinesio y vikingo', y el aspecto de casi todos los elementos venía definido por las descripciones del relato" data-en="Another commission I received from Moifez was a set of 30 illustrations for his self‑published story 'Braids of the North Sea'. The client wanted the style to be 'a mix of Polynesian and Viking art', and the appearance of almost all elements was defined by the descriptions in the story." data-fr="Un autre travail que j’ai réalisé pour Moifez a été un ensemble de 30 illustrations pour son récit auto‑publié « Tresses de la mer du Nord ».
+                Le client souhaitait un style 'un mélange d’art polynésien et viking', et l’aspect de presque tous les éléments était défini par les descriptions du récit." data-pt="Outro pedido que recebi de Moifez foi um conjunto de 30 ilustrações para o seu conto autopublicado «Tranças do Mar do Norte».
+                O cliente queria que o estilo fosse 'uma mistura de arte polinésia e viking', e o aspeto de quase todos os elementos era definido pelas descrições do conto."></span>
+              </div>
+              <img id="p12" src="assets/Secciones/Proyectos/Trenzas/maderas1.webp" alt="Trenzas 1" class="base">
+              <img id="p12" src="assets/Secciones/Proyectos/Trenzas/rollo1.webp" alt="rollo" class="overlay2 overlay-rollo" data-rollo="1">
+            </div>
+            <div class="image-wrap" id="p13">
+              <img id="p13" src="assets/Secciones/Proyectos/Trenzas/maderas2.webp" alt="Trenzas 2" class="base">
+              <img id="p13" src="assets/Secciones/Proyectos/Trenzas/rollo2.webp" alt="rollo" class="overlay2 overlay-rollo" data-rollo="2">
+              <div class="text-overlay" style="--text-top: 27.5%; --text-left: 52%; z-index: 9999; font-family: 'Caveat Brush'; font-size: 2cqw; color: black; max-width: 23cqw; line-height: 2.28cqw;"><span data-es="Otro encargo que recibí por parte de Moifez fue un conjunto de 30 ilustraciones para su cuento autopublicado &quot;Trenzas del Mar del Norte&quot;.
+
+                El cliente quería que el estilo fuera &quot;una mezcla de arte polinesio y vikingo&quot;, y el aspecto de casi todos los elementos venía definido por las descripciones del relato" data-en="Another commission I received from Moifez was a set of 30 illustrations for his self-published story &quot;Braids of the North Sea&quot;.
+                The client wanted the style of the drawings to be &quot;a mix between Polynesian and Viking art&quot;, and the appearance of almost all elements was defined by the descriptions given in the story." data-fr="Un autre travail que j’ai réalisé pour Moifez a été un ensemble de 30 illustrations pour son récit auto‑publié « Tresses de la mer du Nord ».
+                Le client souhaitait que le style des dessins soit « un mélange d’art polynésien et viking », et l’aspect de presque tous les éléments était défini par les descriptions du récit." data-pt="Outro pedido que recebi de Moifez foi um conjunto de 30 ilustrações para o seu conto autopublicado «Tranças do Mar do Norte».
+                O cliente pretendia que o estilo dos desenhos fosse «uma mistura de arte polinésia e viking», e o aspeto de quase todos os elementos era definido pelas descrições do conto."></span></div>
+            </div>
+            <div class="image-wrap" id="p14">
+              <img id="p14" src="assets/Secciones/Proyectos/Trenzas/maderas4.webp" alt="Trenzas 3" class="base">
+              <img id="p14" src="assets/Secciones/Proyectos/Trenzas/rollo3.webp" alt="rollo" class="overlay2 overlay-rollo" data-rollo="3">
+            </div>
+            <div class="image-wrap" id="p15">
+              <img id="p15" src="assets/Secciones/Proyectos/Trenzas/maderas5.webp" alt="Trenzas 4" class="base">
+              <img id="p15" src="assets/Secciones/Proyectos/Trenzas/rollo4.webp" alt="rollo" class="overlay2 overlay-rollo" data-rollo="4">
+            </div>
+            <div class="image-wrap" id="p16">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Cartas/movil/fondocartas.webp" alt="Cartas (fondo móvil)" loading="lazy" decoding="async">
+              <div class="mobile-text-overlay" style="--text-size: 3.5cqw; --text-top: 64%; --text-left: 50%; --text-transform: translateX(-50%); --text-align: center; --text-width: 80cqw; --text-max-width: 80cqw; --text-font-family: 'Google Sans Code'; color: white; --text-font-weight:100; line-height: 120%;">
+                <span data-es="Hace poco planteé el concepto para una baraja de cartas inspiradas en el videojuego &quot;Outer Wilds&quot;.
+
+                El valor principal de los diseños reside en una combinación de elementos icónicos del juego con los símbolos tradicionales de cada palo. Hice dos variaciones, una pensada como baraja de coleccionismo, estilo tarot; y otra pensada para cartas de juego o trucos de magia" data-en="Recently I developed the concept for a deck of cards inspired by the video game &quot;Outer Wilds&quot;.
+
+The main value of the designs lies in a combination of iconic elements from the game with the traditional symbols of each suit. I created two variations: one conceived as a collectible tarot‑style deck, and another intended for playing cards or magic tricks." data-fr="J’ai récemment conçu un jeu de cartes inspiré du jeu vidéo « Outer Wilds ».
+
+La valeur principale des designs réside dans la combinaison d’éléments iconiques du jeu avec les symboles traditionnels de chaque couleur. J’ai réalisé deux variantes : l’une pensée comme un jeu de collection, type tarot ; l’autre pensée pour des cartes à jouer ou des tours de magie." data-pt="Recentemente, desenvolvi o conceito de um baralho de cartas inspirado no videojogo «Outer Wilds».
+
+O valor principal dos designs reside na combinação de elementos icónicos do jogo com os símbolos tradicionais de cada naipe. Fiz duas variações: uma pensada como baralho de coleção, estilo tarô; e outra pensada para cartas de jogo ou truques de magia."></span>
+              </div>
+              <img class="mobile-overlay" src="assets/Secciones/Proyectos/Cartas/movil/titulo.webp" alt="titulo" data-mobile-overlay="true">
+              <img class="mobile-overlay mobile-card" src="assets/Secciones/Proyectos/Cartas/movil/cartas1.webp" alt="cartas1" data-mobile-overlay="true">
+              <img class="mobile-overlay mobile-card" src="assets/Secciones/Proyectos/Cartas/movil/cartas2.webp" alt="cartas2" data-mobile-overlay="true">
+              <img id="p16" src="assets/Secciones/Proyectos/Cartas/fondotitulo.webp" alt="Cartas 1" class="base">
+              <img id="p16" src="assets/Secciones/Proyectos/Cartas/titulo.webp" alt="logo" class="overlay" style="--overlay-top:0%;">
+              <div class="text-overlay" style="--text-top: 46%; --text-left: 50%; --text-transform: translateX(-47.5%); text-align: center; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 40cqw;"><span data-es="Hace poco, como proyecto personal, planteé el concepto para una baraja de cartas inspiradas en el videojuego &quot;Outer Wilds&quot;.
+
+                El valor principal de estos diseños reside en una combinación de elementos icónicos del juego con los símbolos tradicionales de la baraja francesa." data-en="Recently, as a personal project, I developed the concept for a deck of cards inspired by the video game &quot;Outer Wilds&quot;.
+                The main value of these designs lies in combining iconic elements from the game with traditional French deck symbols." data-fr="Récemment, dans le cadre d’un projet personnel, j’ai conçu un jeu de cartes inspiré du jeu vidéo « Outer Wilds ».
+                La valeur principale de ces designs réside dans la combinaison d’éléments iconiques du jeu avec les symboles traditionnels du jeu français." data-pt="Recentemente, como projeto pessoal, concebi um baralho de cartas inspirado no videojogo «Outer Wilds».
+                O valor principal destes designs está na combinação de elementos icónicos do jogo com os símbolos tradicionais da baralha francesa."></span></div>
+            </div>
+            <div class="image-wrap" id="p17">
+              <img id="p17" src="assets/Secciones/Proyectos/Cartas/fondocartas1.webp" alt="Cartas 2" class="base">
+              <img id="p17" src="assets/Secciones/Proyectos/Cartas/cartas1.webp" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+              <div class="text-overlay" style="--text-top: 30%; --text-left: 55%; font-family:'Google Sans Code'; font-size: 1.75cqw; color: white; max-width: 30cqw;"><span data-es="Originalmente, enfoqué el proyecto como concepto para una baraja de colección, estilo tarot.
+
+                Más adelante, revisé los diseños para que se adaptasen a nuevas tipologías de baraja, como cartas de juego o para trucos de magia." data-en="Originally, I approached the project as a concept for a collectible deck, tarot style.
+                Later, I revised the designs so that the deck would adapt to other typologies, such as playing cards or magic tricks." data-fr="À l’origine, j’ai pensé ce projet comme un concept de jeu de collection, de type tarot.
+                Par la suite, j’ai revu les designs afin qu’ils s’adaptent à d’autres typologies de jeux : cartes à jouer ou tours de magie." data-pt="Originalmente, abordei o projeto como conceito para um baralho de coleção, estilo tarô.
+                Mais tarde, revi os designs para que se adaptassem a outras tipologias de baralho, como cartas de jogar ou truques de magia."></span></div>
+            </div>
+            <div class="image-wrap" id="p18">
+              <img id="p18" src="assets/Secciones/Proyectos/Cartas/fondocartas2.webp" alt="Cartas 3" class="base">
+              <img id="p18" src="assets/Secciones/Proyectos/Cartas/cartas2.webp" alt="cartas" class="overlay overlay-stand" style="--overlay-top:0%;" data-stand="true">
+            </div>
+            <div class="image-wrap" id="p19">
+              <img class="mobile-bg" src="assets/Secciones/Proyectos/Libro/movil/fondolibro.webp" alt="Libro (fondo móvil)" loading="lazy" decoding="async">
+              <img id="p19" src="assets/Secciones/Proyectos/Libro/libro1.webp" alt="Libro 1">
+              <div class="text-overlay" style="--text-top: 58%; --text-left: 50%; --text-transform: translateX(-50%); text-align: center; font-family:'Times New Roman'; font-size: 2cqw; background: linear-gradient(to bottom, #C9A961 0%, #C9A961 30%, #b58d07 100%); background-size: 100% 1.4em; background-repeat: repeat-y; background-attachment: local; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3); max-width: 42cqw; line-height: 1.4;"><span data-es="Como parte de un proyecto académico, se nos instó a diseñar las cubiertas de &quot;El Libro de la Selva&quot;.
+                Opté por un diseño simple, acorde con las tendencias actuales en diseño editorial, pero con un corte tradicional, ya que se trata de un clásico de la literatura inglesa." data-en="As part of an academic project, we were asked to design the covers of &quot;The Jungle Book&quot;.
+                I opted for a simple design, in line with current editorial trends, but with a traditional approach, as it is a classic of English literature." data-fr="Dans le cadre d’un projet académique, nous avons été invités à concevoir les couvertures du « Livre de la jungle ».
+                J’ai opté pour un design simple, conforme aux tendances actuelles du design éditorial, mais avec une touche traditionnelle, puisqu’il s’agit d’un classique de la littérature anglaise." data-pt="Como parte de um projeto académico, fomos convidados a desenhar as capas de «O Livro da Selva».
+                Optei por um design simples, alinhado com as tendências atuais do design editorial, mas com um corte tradicional, por se tratar de um clássico da literatura inglesa."></span></div>
+            </div>
+            <div class="image-wrap" id="p20">
+              <img id="p20" src="assets/Secciones/Proyectos/Libro/libro2.webp" alt="Libro 2">
+            </div>
+            <!-- Continúa el resto de items (p11–p20) igual que en index.html -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div>
+      <p>Email: jaimecereijobotana@gmail.com</p>
+      <p data-es="Teléfono: +34 644 43 26 86" data-en="Phone: +34 644 43 26 86" data-fr="Téléphone : +34 644 43 26 86" data-pt="Telefone: +34 644 43 26 86"></p>
+    </div>
+    <div>
+      <p>Jaime Cereijo Design</p>
+      <p data-es="Valencia, España" data-en="Valencia, Spain" data-fr="Valence, Espagne" data-pt="Valência, Espanha"></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="Portfolio multidisciplinar de diseño gráfico, desarrollo web, ilustración y edición de vídeo de Jaime Cereijo en Valencia.">
+  <meta name="theme-color" content="#001f3f">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Menú — Jaime Cereijo Design</title>
+  <link rel="icon" type="image/png" href="LogoChiquito.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;700;900&family=Press+Start+2P&family=Playfair+Display:wght@700&family=Cinzel:wght@700&family=Uncial+Antiqua&family=Caveat+Brush&family=Trade+Winds&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
+  <link rel="stylesheet" href="assets/css/styles-mobile-fixes.css">
+</head>
+<body>
+  <a href="#menu" class="skip-link">Saltar al contenido</a>
+  <header id="main-header">
+    <div class="logo"><img src="Logo.png" alt="Logo"></div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav id="main-nav">
+      <div id="main-menu-items">
+        <a href="menu.html" data-section="menu"><span data-es="Menú" data-en="Menu" data-fr="Menu" data-pt="Menu"></span></a>
+        <a href="proyectos.html" data-section="proyectos"><span data-es="Proyectos" data-en="Projects" data-fr="Projets" data-pt="Projetos"></span></a>
+        <a href="redes.html" data-section="redes"><span data-es="Redes" data-en="Social" data-fr="Réseaux" data-pt="Redes"></span></a>
+        <a href="contacto.html" data-section="contacto"><span data-es="Contacto" data-en="Contact" data-fr="Contact" data-pt="Contato"></span></a>
+        <a href="sobre-mi.html" data-section="sobremi"><span data-es="Sobre mí" data-en="About me" data-fr="À propos" data-pt="Sobre mim"></span></a>
+        <a id="idioma-mobile-btn" class="idioma-mobile-only"><span data-es="Idioma" data-en="Language" data-fr="Langue" data-pt="Idioma"></span></a>
+      </div>
+      <div id="idioma-mobile-list" class="idioma-mobile-only" style="display: none;">
+        <a id="back-to-menu"><span data-es="← Volver" data-en="← Back" data-fr="← Retour" data-pt="← Voltar"></span></a>
+        <a data-lang="es">Español</a>
+        <a data-lang="en">English</a>
+        <a data-lang="fr">Français</a>
+        <a data-lang="pt">Português</a>
+      </div>
+    </nav>
+    <div style="position:relative;">
+      <button id="idioma-btn">ES</button>
+      <div id="idioma-list">
+        <div data-lang="es">Español</div>
+        <div data-lang="en">English</div>
+        <div data-lang="fr">Français</div>
+        <div data-lang="pt">Português</div>
+      </div>
+    </div>
+  </header>
+
+  <main id="desktop-version">
+    <section id="menu" class="active">
+      <div class="carousel">
+        <!-- Imagen extra a la izquierda que no afecta la secuencia -->
+        <figure class="carousel-item contrast-strong">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/ReflejosMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" class="carousel-buffer" onclick="irAProyecto('p7')" onerror="this.style.display='none';">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title"><span data-es="Título del proyecto" data-en="Project title" data-fr="Titre du projet" data-pt="Título do projeto"></span></div>
+            <div class="carousel-subtitle"><span data-es="Subtítulo del proyecto" data-en="Project subtitle" data-fr="Sous-titre du projet" data-pt="Subtítulo do projeto"></span></div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/HiraMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" onclick="irAProyecto('p1')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Hira.png');">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title title-hira"><span data-es="Perchero Hira" data-en="Hira Coat Rack" data-fr="Porte-manteau Hira" data-pt="Cabide Hira"></span></div>
+            <div class="carousel-subtitle"><span data-es="Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic." data-en="Design and communications for a coat rack commissioned by the Valencian furniture company Systemtronic." data-fr="Conception et communication d’un porte‑manteau commandé par l’entreprise valencienne de mobilier Systemtronic." data-pt="Design e comunicação de um cabide encomendado pela empresa valenciana de mobiliário Systemtronic."></span></div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/NostreMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Nostre.png" alt="Vinos Nostre" onclick="irAProyecto('p3')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Nostre.png');">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title"><span data-es="Etiquetado para vinos Nostre" data-en="Label design for Nostre wines" data-fr="Étiquetage pour les vins Nostre" data-pt="Rotulagem para os vinhos Nostre"></span></div>
+            <div class="carousel-subtitle"><span data-es="Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos." data-en="Branding project awarded by the School of Agronomy and selected to represent its wines." data-fr="Projet de branding primé par l’École d’Agronomie et choisi pour représenter ses vins." data-pt="Projeto de branding premiado pela Escola de Agronomia e selecionado para representar os seus vinhos."></span></div>
+          </div>
+        </figure>
+        <figure class="carousel-item contrast-strong">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/ReflejosMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Reflejos.png" alt="Reflejos del Multiverso" onclick="irAProyecto('p7')" onerror="this.style.display='none'; console.warn('Imagen no encontrada: Reflejos.png');">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title reflejos-shadow"><span data-es="Reflejos del Multiverso" data-en="Reflections of the Multiverse" data-fr="Reflets du Multivers" data-pt="Reflexos do Multiverso"></span></div>
+            <div class="carousel-subtitle reflejos-shadow"><span data-es="Campaña gráfica multiplataforma hecha por encargo para la obra de teatro ‘Reflejos del Multiverso’." data-en="Multi‑platform graphic campaign commissioned for the play ‘Reflections of the Multiverse’." data-fr="Campagne graphique multiplateforme commandée pour la pièce « Reflets du Multivers »." data-pt="Campanha gráfica multiplataforma encomendada para a peça «Reflexos do Multiverso»."></span></div>
+          </div>
+        </figure>
+        <!-- Imágenes extra para transición suave (no forman parte de la lógica) -->
+        <figure class="carousel-item">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/HiraMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Hira.png" alt="Perchero Hira" class="carousel-buffer" onclick="irAProyecto('p1')" onerror="this.style.display='none';">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title title-hira"><span data-es="Perchero Hira" data-en="Hira Coat Rack" data-fr="Porte-manteau Hira" data-pt="Cabide Hira"></span></div>
+            <div class="carousel-subtitle"><span data-es="Diseño y comunicación por encargo de un perchero para la empresa Valenciana de mobiliario Systemtronic." data-en="Design and communications for a coat rack commissioned by the Valencian furniture company Systemtronic." data-fr="Conception et communication d’un porte‑manteau commandé par l’entreprise valencienne de mobilier Systemtronic." data-pt="Design e comunicação de um cabide encomendado pela empresa valenciana de mobiliário Systemtronic."></span></div>
+          </div>
+        </figure>
+        <figure class="carousel-item">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/Secciones/Menu/CarruselMenu/NostreMovil.png">
+            <img src="assets/Secciones/Menu/CarruselMenu/Nostre.png" alt="Vinos Nostre" class="carousel-buffer" onclick="irAProyecto('p3')" onerror="this.style.display='none';">
+          </picture>
+          <div class="carousel-caption">
+            <div class="carousel-title"><span data-es="Etiquetado para vinos Nostre" data-en="Label design for Nostre wines" data-fr="Étiquetage pour les vins Nostre" data-pt="Rotulagem para os vinhos Nostre"></span></div>
+            <div class="carousel-subtitle"><span data-es="Proyecto de branding galardonado por la Escuela de Agronomía y seleccionado para ser la imagen de sus vinos." data-en="Branding project awarded by the School of Agronomy and selected to represent its wines." data-fr="Projet de branding primé par l’École d’Agronomie et choisi pour représenter ses vins." data-pt="Projeto de branding premiado pela Escola de Agronomia e selecionado para representar os seus vinhos."></span></div>
+          </div>
+        </figure>
+      </div>
+      <!-- SERVICIOS -->
+      <div class="services">
+        <div class="services-title"><span data-es="¿Qué puedo hacer por ti?" data-en="What can I do for you?" data-fr="Que puis‑je faire pour vous ?" data-pt="O que posso fazer por si?"></span></div>
+        <div class="services-circles">
+          <div class="service-circle service-1">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico3.png"></div>
+            </div>
+            <span data-es="Diseño Gráfico" data-en="Graphic Design" data-fr="Design graphique" data-pt="Design gráfico"></span>
+          </div>
+          <div class="service-circle service-2">
+            <!-- Mini carrusel sincronizado (rellenado por JS) -->
+            <div class="mini-carousel" aria-hidden="true"></div>
+            <span data-es="Desarrollo Web" data-en="Web Development" data-fr="Développement web" data-pt="Desenvolvimento web"></span>
+          </div>
+          <div class="service-circle service-3"><span data-es="Edición de Vídeo" data-en="Video Editing" data-fr="Montage vidéo" data-pt="Edição de vídeo"></span>
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/EdicionVideo/EdicionVideo.gif"></div>
+            </div>
+          </div>
+          <div class="service-circle service-4">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/GraficosMoviles/Secuencia 01_1.gif"></div>
+            </div>
+            <span data-es="Gráficos Móviles" data-en="Motion Graphics" data-fr="Motion design" data-pt="Motion graphics"></span>
+          </div>
+          <div class="service-circle service-5">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/Comunicacion/Comunicacion3.png"></div>
+            </div>
+            <span data-es="Comunicación de Proyectos" data-en="Project Communication" data-fr="Communication de projets" data-pt="Comunicação de projetos"></span>
+          </div>
+          <div class="service-circle service-6">
+            <div class="circle-slideshow">
+              <div class="frame f1" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion1.png"></div>
+              <div class="frame f2" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion2.png"></div>
+              <div class="frame f3" data-src="assets/Secciones/Menu/circulos/Ilustraciones/Ilustracion3.png"></div>
+            </div>
+            <span data-es="Ilustración" data-en="Illustration" data-fr="Illustration" data-pt="Ilustração"></span>
+          </div>
+        </div>
+
+        <!-- Descripción dinámica bajo los círculos -->
+        <div class="services-description" aria-live="polite" aria-atomic="true">
+          <span id="services-description-text" data-es="En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie." data-en="In all of Valencia, you won't find a designer with a more complete profile. My range of services, all showcased in my project gallery, covers any need throughout a graphic campaign. Graphic design, web development, video editing, motion graphics, illustration… Whatever your project, I can bring it to life better than anyone." data-fr="À Valence, vous ne trouverez pas de designer au profil plus complet. Ma gamme de services, tous illustrés dans ma galerie de projets, couvre tout besoin pouvant surgir lors d’une campagne graphique. Design graphique, développement web, montage vidéo, motion design, illustration… Quel que soit votre projet, je peux lui donner la meilleure vitrine." data-pt="Em Valência, você não vai encontrar um designer com um perfil mais completo. Minha gama de serviços — todos exemplificados na galeria de projetos — cobre qualquer necessidade ao longo de uma campanha gráfica. Design gráfico, desenvolvimento web, edição de vídeo, motion graphics, ilustração… Seja qual for o seu projeto, posso dar a melhor cara a ele.">En toda Valencia no encontrarás un diseñador con un perfil más completo. El abanico de servicios que ofrezco, todos ellos ejemplificados en mi galería de proyectos, cubre cualquier necesidad que pueda surgir durante el desarrollo de una campaña gráfica. Diseño gráfico, desarrollo web, edición de vídeo, gráficos móviles, ilustración… Sea cual sea tu proyecto, yo puedo darle cara mejor que nadie.</span>
+        </div>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <!-- CTA: ver proyectos / descargar CV -->
+        <div class="cta-portfolio" aria-labelledby="cta-title">
+          <h3 id="cta-title" class="cta-title">
+            <span data-es="¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!" data-en="Want to see a sample of my work? Visit my project gallery or download my résumé!" data-fr="Vous voulez voir un aperçu de mon travail ? Consultez ma galerie de projets ou téléchargez mon CV !" data-pt="Quer ver uma amostra do meu trabalho? Visite minha galeria de projetos ou baixe meu currículo!">¿Quieres ver una muestra de mi trabajo? ¡Pásate por mi galería de proyectos, o descarga mi currículum!</span>
+          </h3>
+          <span></span>
+          <div class="cta-buttons">
+            <a id="btn-ver-proyectos" href="proyectos.html" class="btn-napoleon">
+              <span data-es="Ver proyectos" data-en="See projects" data-fr="Voir les projets" data-pt="Ver projetos">Ver proyectos</span>
+            </a>
+            <a id="btn-cv" href="assets/Secciones/Menu/CV/Curriculum_JaimeCereijo.pdf" class="btn-napoleon" download>
+              <span data-es="Descargar CV" data-en="Download résumé" data-fr="Télécharger le CV" data-pt="Baixar currículo">Descargar CV</span>
+            </a>
+            <span></span>
+          </div>
+        </div>
+        
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <!-- Colaboradores y clientes -->
+        <div class="clients-block">
+          <h3 id="clients-title"><span data-es="Clientes y colaboradores" data-en="Partners and clients" data-fr="Clients et partenaires" data-pt="Clientes e parceiros">Clientes y colaboradores</span></h3>
+          <div class="clients" aria-labelledby="clients-title">
+            <div class="clients-logos">
+              <img src="assets/Secciones/Menu/Clientes/Ajuntament_de_València.png" alt="Ajuntament de València" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Cultura.png" alt="Cultura" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/etsiadi.png" alt="ETS de Ingeniería del Diseño (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/etsiamn.png" alt="ETS de Ingeniería Agronómica y del Medio Natural (UPV)" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/FeriaHabitat.png" alt="Feria Hábitat / Feria de Valencia" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/institut cultura.png" alt="Institut de Cultura" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/moifez.png" alt="Moifez" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/systemtronic.png" alt="Systemtronic" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Teatro Circulo.png" alt="Teatro Círculo" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/unautavaca.png" alt="Unautavaca" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/Clario.png" alt="Clario" loading="lazy" decoding="async">
+              <img src="assets/Secciones/Menu/Clientes/logo_emperador.png" alt="Emperador" loading="lazy" decoding="async">
+            </div>
+            <div class="clients-copy">
+              <p>
+                    <span data-es="A lo largo de mi trayectoria he trabajado con empresas, instituciones y creadores de contenido en el desarrollo de productos gráficos de todo tipo. Entre mis trabajos destacados, diseñé la campaña grafica de Reflejos del Multiverso por encargo del Área de Acción Cultural; participé en el diseño del perchero Hira, presentado por Systemtronic en la Feria Hábitat Valencia 2025; trabajo de forma recurrente con el youtuber Moifez, diseñando miniaturas, clips e ilustraciones; y desarrollé el branding para vinos Nostre, propuesta ganadora de un concurso organizado en colaboración por la ETSIADI y la ETSIAMN."
+                      data-en="Throughout my career I have worked with companies, institutions and content creators in the development of all kinds of graphic products. Among my outstanding works, I designed the graphic campaign for Reflejos del Multiverso on behalf of the Cultural Action Area; I participated in the design of the Hira coat rack, presented by Systemtronic at Feria Hábitat València 2025; I work regularly with the YouTuber Moifez, designing thumbnails, clips and illustrations; and I developed the branding for Nostre wines, the winning proposal of a contest organized in collaboration with ETSIADI and ETSIAMN."
+                      data-fr="Tout au long de ma carrière, j’ai travaillé avec des entreprises, des institutions et des créateurs de contenu sur des projets graphiques de toutes sortes. Parmi mes travaux marquants, j’ai conçu la campagne pour « Reflejos del Multiverso » à la demande de l’Área de Acción Cultural ; j’ai participé à la conception du porte‑manteau Hira, présenté par Systemtronic à la Feria Hábitat València 2025 ; je collabore régulièrement avec le YouTubeur Moifez (miniatures, clips, illustrations) ; et j’ai développé le branding des vins Nostre, la proposition gagnante d’un concours organisé en collaboration par l’ETSIADI et l’ETSIAMN."
+                      data-pt="Ao longo da minha carreira, trabalhei com empresas, instituições e criadores de conteúdo no desenvolvimento de produtos gráficos de todos os tipos. Entre os meus trabalhos de destaque, criei a campanha gráfica de «Reflejos del Multiverso» para a Área de Acción Cultural; participei no design do cabide Hira, apresentado pela Systemtronic na Feria Hábitat València 2025; colaboro regularmente com o YouTuber Moifez, criando miniaturas, clips e ilustrações; e desenvolvi o branding dos vinhos Nostre, proposta vencedora de um concurso organizado em colaboração pela ETSIADI e pela ETSIAMN.">He colaborado con empresas, instituciones y creadores de contenido para desarrollar campañas, piezas editoriales, identidad visual y material promocional. Aporto ideas, método y ejecución en cada fase del proyecto, adaptándome a la escala y objetivos de cada cliente.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div>
+      <p>Email: jaimecereijobotana@gmail.com</p>
+      <p data-es="Teléfono: +34 644 43 26 86" data-en="Phone: +34 644 43 26 86" data-fr="Téléphone : +34 644 43 26 86" data-pt="Telefone: +34 644 43 26 86"></p>
+    </div>
+    <div>
+      <p>Jaime Cereijo Design</p>
+      <p data-es="Valencia, España" data-en="Valencia, Spain" data-fr="Valence, Espagne" data-pt="Valência, Espanha"></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

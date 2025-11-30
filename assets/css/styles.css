@@ -111,10 +111,28 @@ header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-col
 /* RESET Y BASE */
 *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
+/* En la sección Proyectos (desktop y página autónoma), desactivar scroll global para evitar doble barra */
+body.proyectos-active, html.proyectos-active,
+body.proyectos-page, html.proyectos-page { overflow: hidden; }
+
+/* MODO MÓVIL PARA proyectos.html: usar scroll global y footer normal */
+@media (max-width: 768px) {
+  body.proyectos-page, html.proyectos-page { overflow-y: auto; overflow-x: hidden; }
+  body.proyectos-page #proyectos, body.proyectos-page .proyectos-container { min-height: auto !important; height: auto !important; display: block !important; }
+  body.proyectos-page #galeria-container { overflow: visible !important; height: auto !important; }
+  body.proyectos-page #galeria { height: auto !important; }
+  body.proyectos-page main { overflow: visible !important; }
+  /* Anular altura forzada previa (media queries que ponen calc(100vh-130px)) */
+  body.proyectos-page #galeria-container { max-height: none !important; }
+  footer { position: static; transform: none !important; }
+  body.footer-visible main { transform: none; }
+}
 html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
 body { font-family: Coolvetica, sans-serif; background: var(--color-bg-page); color: var(--color-text-primary); display: flex; flex-direction: column; min-height: 100vh; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* No añadimos margen superior global en main: el contenido arranca justo bajo el header fijo */
 main { flex: 1; margin-top: 0; overflow-x: hidden; }
+/* Contenedor principal sin scroll cuando Proyectos está activo: el scroll vive en #galeria-container */
+body.proyectos-active main { overflow: hidden; }
 /* Cuando el footer aparece, empujamos el contenido (salvo header) hacia arriba */
 main { transition: transform .3s ease; will-change: transform; }
 body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))); }
@@ -145,6 +163,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 #desktop-version section.active { display: block; }
 
 /* CAROUSEL Y PROYECTOS */
+:root { --carousel-radius: 12px; }
 .carousel { 
   display: flex; 
   overflow: visible; 
@@ -175,18 +194,19 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   min-height: 220px;
   object-fit: cover; 
   cursor: pointer; 
-  border-radius: 12px; 
+  border-radius: inherit; 
   flex-shrink: 0;
   opacity: 1;
   /* Sombra para mejorar visibilidad */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-radius 0.4s ease;
   /* Fondo de fallback en caso de error de carga */
   background: #f0f0f0;
   /* Border para debugging si es necesario */
   /* border: 1px solid #ddd; */
 }
-.carousel-item { position: relative; display: flex; flex-shrink: 0; }
+.carousel-item { position: relative; display: flex; flex-shrink: 0; border-radius: var(--carousel-radius); overflow: hidden; transition: border-radius 0.4s ease; }
+.carousel-item:hover { border-radius: 0; }
 .carousel-item picture { display: block; width: 100%; height: 100%; }
 .carousel-item img { display: block; }
 .carousel-caption {
@@ -250,6 +270,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   transform: scale(1.02);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
+.carousel-item:hover { border-radius: 0; }
 /* Variables para slideshows de Servicios */
 :root {
   --circle-frame: 3s; /* duración exacta por imagen */
@@ -734,7 +755,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   margin: 20px;
 }
 #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
-.proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; }
+.proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; overflow: hidden; }
 
 /* ÍNDICE */
 #indice { width: 280px; background: #f9f9f9; border-right: 1px solid #ddd; padding: 1.5em 0; flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px); align-self: flex-start; overflow-y: auto; z-index: 900; scrollbar-width: none; -ms-overflow-style: none; will-change: top; transition: top .3s ease; }
@@ -1207,7 +1228,12 @@ footer.visible { transform: translateY(0); }
   cursor: pointer;
   padding: 8px;
   z-index: 1001;
-  position: relative;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 24px;
 }
 .idioma-mobile-only {
   display: none;
@@ -1217,18 +1243,26 @@ footer.visible { transform: translateY(0); }
   width: 28px;
   height: 3px;
   background: yellow;
-  margin: 5px 0;
+  margin: 0;
   transition: all 0.3s ease;
   border-radius: 2px;
+  position: absolute;
+  left: 0;
+  transform-origin: center;
 }
+.menu-toggle span:nth-child(1) { top: 2px; }
+.menu-toggle span:nth-child(2) { top: 10px; }
+.menu-toggle span:nth-child(3) { top: 18px; }
 .menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(7px, 7px);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 .menu-toggle.active span:nth-child(2) {
   opacity: 0;
 }
 .menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 /* RESPONSIVE - OPTIMIZADO */
@@ -2456,5 +2490,30 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
   #galeria .image-wrap#p9 > .mobile-text-overlay:first-of-type {
     text-align: justify !important;
   }
+}
+
+/* Corrección específica para la página autónoma proyectos.html:
+   En algunos dispositivos estrechos la galería quedaba totalmente oculta.
+   Forzamos que los wrappers visibles definidos para móvil se muestren siempre
+   cuando el body tiene la clase proyectos-page (solo aplica a proyectos.html). */
+@media (max-width: 1024px) {
+  body.proyectos-page #galeria .image-wrap#p1,
+  body.proyectos-page #galeria .image-wrap#p3,
+  body.proyectos-page #galeria .image-wrap#p4,
+  body.proyectos-page #galeria .image-wrap#p7,
+  body.proyectos-page #galeria .image-wrap#p8,
+  body.proyectos-page #galeria .image-wrap#p9,
+  body.proyectos-page #galeria .image-wrap#p10,
+  body.proyectos-page #galeria .image-wrap#p12,
+  body.proyectos-page #galeria .image-wrap#p16,
+  body.proyectos-page #galeria .image-wrap#p19 { display: block !important; }
+  /* Permitir scroll vertical también en ventanas estrechas (≤1024px) */
+  body.proyectos-page, html.proyectos-page { overflow-y: auto !important; overflow-x: hidden; }
+  /* Mostrar todos los wrappers en la página autónoma si aún quedasen ocultos por reglas previas */
+  body.proyectos-page #galeria .image-wrap { display: block !important; }
+  /* Ocultar solo elementos de escritorio dentro de cada wrapper, mantener fondos y overlays móviles */
+  body.proyectos-page #galeria .image-wrap > img.base,
+  body.proyectos-page #galeria .image-wrap > img.overlay,
+  body.proyectos-page #galeria .image-wrap > .text-overlay { display: none !important; }
 }
 

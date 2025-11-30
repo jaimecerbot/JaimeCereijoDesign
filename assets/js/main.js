@@ -1,5 +1,6 @@
 // ===== MENÚ HAMBURGUESA =====
 const MobileMenu = {
+  initialized: false,
   toggle: null,
   nav: null,
   mainMenuItems: null,
@@ -15,6 +16,8 @@ const MobileMenu = {
     this.idiomaList = document.getElementById('idioma-mobile-list');
     this.backBtn = document.getElementById('back-to-menu');
     if (!this.toggle || !this.nav) return;
+    if (this.initialized) return;
+    this.initialized = true;
     
     this.toggle.addEventListener('click', () => this.toggleMenu());
     
@@ -100,8 +103,12 @@ const $ = {
   body: document.body, html: document.documentElement,
   lastScrollY: 0, 
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
+  // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
+  // isNarrow: modo "móvil/estrecho" de la galería/proyectos (≤1024px), alineado con CSS
+  get isNarrow() { return window.innerWidth <= 1024; },
   isProyectosActive: false, lastScrollTop: 0, bottleEffectTriggered: false,
+  lastIsNarrow: null,
   throttles: new Set(), timers: new Map(), rafId: null,
   initialized: false
 };
@@ -142,15 +149,99 @@ const Layout = {
   update() {
     if (!$.header || !$.main) return;
     // En móvil el header NO es fijo: no debemos empujar el contenido
-    const margin = $.isMobile ? 0 : $.headerHeight;
+    const margin = $.isNarrow ? 0 : $.headerHeight;
     $.main.style.marginTop = `${margin}px`;
     // Ajustar el índice solo en escritorio; en móvil lo gobierna el CSS (top: 60px)
-    if (!$.isMobile && $.indice) {
+    if (!$.isNarrow && $.indice) {
       $.indice.style.top = `${margin}px`;
-    } else if ($.isMobile && $.indice) {
+    } else if ($.isNarrow && $.indice) {
       // Limpiar override inline para respetar CSS responsive
       $.indice.style.top = '';
     }
+  }
+};
+
+// ===== INTRO OVERLAY (animación inicial) =====
+const IntroOverlay = {
+  key: 'introShownAt',
+  sessionKey: 'introPlayedSession',
+  thresholdHours: 12, // mostrar solo si han pasado 12 horas
+  overlay: null,
+  video: null,
+  shouldShow() {
+    try {
+      // No reproducir más de una vez por sesión del navegador
+      const playedSession = sessionStorage.getItem(this.sessionKey);
+      if (playedSession === '1') return false;
+
+      const last = localStorage.getItem(this.key);
+      if (!last) return true; // primera vez
+      const lastTs = parseInt(last, 10);
+      if (Number.isNaN(lastTs)) return true;
+      const hours = (Date.now() - lastTs) / (1000 * 60 * 60);
+      return hours >= this.thresholdHours;
+    } catch {
+      return false;
+    }
+  },
+  markShown() {
+    try {
+      localStorage.setItem(this.key, String(Date.now()));
+      sessionStorage.setItem(this.sessionKey, '1');
+    } catch {}
+  },
+  detectFormat() {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const v = document.createElement('video');
+    const canWebm = !!v.canPlayType && v.canPlayType('video/webm; codecs="vp9"');
+    // Heurística: Safari usa .mov con alpha; Chrome/Firefox/Edge usan .webm con alpha
+    if (!isSafari && canWebm) {
+      return { src: 'Jmotion_1.webm', type: 'video/webm' };
+    }
+    return { src: 'Jmotion_FINAL.mov', type: 'video/quicktime' };
+  },
+  createOverlay() {
+    if (document.getElementById('intro-overlay')) return; // ya existe
+    this.overlay = document.createElement('div');
+    this.overlay.id = 'intro-overlay';
+    // Color de fondo igual al header
+    this.overlay.style.background = '#001f3f';
+    this.video = document.createElement('video');
+    this.video.id = 'intro-video';
+    this.video.autoplay = true;
+    this.video.muted = true; // evitar bloqueo por autoplay
+    this.video.playsInline = true;
+    this.video.style.maxWidth = '60vw';
+    this.video.style.maxHeight = '60vh';
+    const fmt = this.detectFormat();
+    const source = document.createElement('source');
+    source.src = fmt.src;
+    source.type = fmt.type;
+    this.video.appendChild(source);
+    this.overlay.appendChild(this.video);
+    document.body.appendChild(this.overlay);
+  },
+  fadeOut() {
+    if (!this.overlay) return;
+    this.overlay.classList.add('fade-out');
+    setTimeout(() => {
+      try { this.overlay.remove(); } catch {}
+    }, 1500);
+  },
+  init() {
+    if (!this.shouldShow()) return;
+    // Marca inmediato para evitar que otras secciones o páginas en la misma sesión
+    // vuelvan a disparar la intro antes de que termine.
+    this.markShown();
+    this.createOverlay();
+    // Salida al finalizar o si falla la carga
+    const done = () => this.fadeOut();
+    this.video?.addEventListener('ended', done);
+    this.video?.addEventListener('error', done);
+    // Timeout de seguridad por si el evento ended no llega
+    setTimeout(done, 10000);
+    // Permitir cerrar manualmente al hacer clic
+    this.overlay?.addEventListener('click', done);
   }
 };
 
@@ -158,14 +249,23 @@ const TopNav = {
   init() {
     const links = document.querySelectorAll('header nav a[data-section]');
     links.forEach(a => {
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        const id = a.getAttribute('data-section');
-        if (id) mostrarSeccion(id);
-      });
-      a.setAttribute('role', 'button');
-      a.setAttribute('tabindex', '0');
-      a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); a.click(); } });
+      const href = a.getAttribute('href') || '';
+      const isHashOrEmpty = href === '' || href === null || href.startsWith('#');
+      if (isHashOrEmpty) {
+        // Monopágina: interceptar para alternar secciones
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          const id = a.getAttribute('data-section');
+          if (id) mostrarSeccion(id);
+        });
+        a.setAttribute('role', 'button');
+        a.setAttribute('tabindex', '0');
+        a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); a.click(); } });
+      } else {
+        // Multipágina: dejar que el navegador navegue
+        a.removeAttribute('role');
+        a.removeAttribute('tabindex');
+      }
     });
     // set initial aria-current
     this.updateAria(document.querySelector('section.active')?.id || 'menu');
@@ -205,11 +305,11 @@ const Scroll = {
   updateLayout() {
     const visible = !$.header?.classList.contains('hidden');
     // En móvil no empujar: header es relativo
-    const top = $.isMobile ? 0 : (visible ? $.headerHeight : 0);
+    const top = $.isNarrow ? 0 : (visible ? $.headerHeight : 0);
     if ($.main) $.main.style.marginTop = `${top}px`;
-    if (!$.isMobile && $.indice) {
+    if (!$.isNarrow && $.indice) {
       $.indice.style.top = `${top}px`;
-    } else if ($.isMobile && $.indice) {
+    } else if ($.isNarrow && $.indice) {
       $.indice.style.top = '';
     }
   },
@@ -418,6 +518,8 @@ function addTextOverlay(imageId, text, options = {}) {
   return textDiv;
 }
 
+// ===== Arranque (centralizado más abajo con init()) =====
+
 // ===== FUNCIONES DE NAVEGACIÓN Y IDIOMA =====
 function mostrarSeccion(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -440,13 +542,14 @@ function mostrarSeccion(id) {
   TopNav.updateAria(id);
   
   $.isProyectosActive = (id === 'proyectos');
-  $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isMobile);
+  // Desactivar scroll global sólo en escritorio ancho (>1024px)
+  $.body.classList.toggle('proyectos-active', $.isProyectosActive && !$.isNarrow);
   // Reconfigurar observador del footer para la sección activa
   try { FooterWatch.attachToCurrentSection(); } catch {}
   
   // Manejo del carrusel (footer se controla globalmente por scroll)
   if (id === 'menu') {
-    setTimeout(() => Carousel.start(), 500);
+    requestAnimationFrame(() => Carousel.start());
   } else {
     Carousel.stop();
   }
@@ -477,17 +580,30 @@ function mostrarSeccion(id) {
 }
 
 function irAProyecto(targetRef) {
+  // Si no estamos en la página de proyectos, navegar vía URL
+  const onProyectosPage = !!document.getElementById('proyectos');
+  const isStringRef = typeof targetRef === 'string';
+  if (!onProyectosPage) {
+    const anchor = isStringRef ? String(targetRef) : '';
+    const url = anchor ? `proyectos.html#${anchor}` : 'proyectos.html';
+    window.location.href = url;
+    return;
+  }
+
+  // En página de proyectos: comportamiento SPA, mostrar sección y hacer scroll
   mostrarSeccion('proyectos');
   setTimeout(() => {
     let target = null;
-    if (typeof targetRef === 'string') {
+    if (isStringRef) {
       // Ir a la sección (image-wrap) con id concreto, p.ej. 'p3', 'p7'
       target = document.getElementById(targetRef);
     } else {
-      // Compatibilidad con índices antiguos
+      // Compatibilidad con índices antiguos (por índice)
       target = $.galeria?.querySelectorAll('img, video')[targetRef];
     }
-    target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
+    if (target && $.galeriaContainer) {
+      $.galeriaContainer.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+    }
   }, 100);
 }
 
@@ -525,7 +641,29 @@ const Lang = {
     
     this.change = lang => {
       localStorage.setItem('idioma', lang);
-      btn.textContent = lang.toUpperCase();
+
+      // Actualizar URL y enlaces para persistencia entre páginas
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState({}, '', url);
+      
+      document.querySelectorAll('a[href]').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
+          try {
+            let [path, hash] = href.split('#');
+            let [base, query] = path.split('?');
+            // Evitar modificar enlaces a archivos que no sean html (opcional, pero recomendable)
+            if (base.endsWith('.pdf') || base.endsWith('.jpg') || base.endsWith('.png')) return;
+            
+            const params = new URLSearchParams(query);
+            params.set('lang', lang);
+            a.setAttribute('href', `${base}?${params.toString()}${hash ? '#' + hash : ''}`);
+          } catch (e) {}
+        }
+      });
+
+      if (btn) btn.textContent = lang.toUpperCase();
       elements.forEach(el => {
         const text = el.getAttribute(`data-${lang}`);
         text && (el.textContent = text);
@@ -542,7 +680,9 @@ const Lang = {
       try { formatQuoteAuthors(); } catch {}
     };
     
-    this.change(localStorage.getItem('idioma') || 'es');
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialLang = urlParams.get('lang') || localStorage.getItem('idioma') || 'es';
+    this.change(initialLang);
   }
 };
 
@@ -1342,6 +1482,14 @@ const FooterWatch = {
     const active = document.querySelector('section.active');
     if (!active) { this.detach(); return; }
 
+    // En página dedicada de proyectos (body.proyectos-page) desactivamos IO
+    // para forzar el cálculo manual vía Scroll.updateFooter sobre el contenedor interno.
+    if (document.body.classList.contains('proyectos-page')) {
+      this.detach();
+      this.usingObserver = false;
+      return;
+    }
+
     // Determinar el contenedor de scroll y el padre donde insertar el sentinel
     let parent = active;
     let root = null;
@@ -1688,11 +1836,14 @@ const Carousel = {
   firstSeqContainerIndex: null,
   lastSeqContainerIndex: null,
   bufferAfterLastIndex: null,
+  pendingSnapPrev: false,
   pendingSnap: false,
   onTransitionEnd: null,
   transitionString: '',
   currentTransition: '',
   currentTransform: '',
+  pointerStartX: null,
+  swipeThreshold: 40,
 
   init() {
     this.container = document.querySelector('.carousel');
@@ -1733,9 +1884,28 @@ const Carousel = {
           this.centerByContainerIndex(this.firstSeqContainerIndex, true);
           this.seqPos = 0;
         }
+        // Tras completar el snap, reiniciar el temporizador automático
+        this.resetAutoTimer();
+        return;
       }
+      if (this.pendingSnapPrev) {
+        this.pendingSnapPrev = false;
+        // Teletransporte al último elemento de la secuencia tras retroceder a buffer previo
+        if (this.lastSeqContainerIndex != null) {
+          this.centerByContainerIndex(this.lastSeqContainerIndex, true);
+          this.seqPos = this.sequenceIndices.length - 1;
+        }
+        // Tras completar el snap, reiniciar el temporizador automático
+        this.resetAutoTimer();
+        return;
+      }
+      // Transición normal completada: reiniciar temporizador para contar desde ahora
+      this.resetAutoTimer();
     };
     this.container.addEventListener('transitionend', this.onTransitionEnd);
+
+    // Preparar interactividad (clics y gestos)
+    this.attachInteractions();
   },
 
   setTransition(value) {
@@ -1806,6 +1976,24 @@ const Carousel = {
     }
   },
 
+  prev() {
+    // Si estamos al inicio de la secuencia, mover una imagen atrás (buffer previo) y luego teletransportar
+    if (this.seqPos <= 0) {
+      const bufferBeforeIndex = (this.firstSeqContainerIndex != null) ? this.firstSeqContainerIndex - 1 : null;
+      if (bufferBeforeIndex != null && bufferBeforeIndex >= 0) {
+        this.pendingSnapPrev = true;
+        this.centerByContainerIndex(bufferBeforeIndex, false);
+      } else {
+        // Fallback sin buffer: ir directamente al último
+        this.seqPos = this.sequenceIndices.length - 1;
+        this.centerCurrent(true);
+      }
+    } else {
+      this.seqPos -= 1;
+      this.centerCurrent(false);
+    }
+  },
+
   start() {
     if (!this.container || !this.sequenceIndices.length) return;
     if (this.autoTimer) return;
@@ -1828,6 +2016,93 @@ const Carousel = {
     }
     this.isMenuActive = false;
   }
+};
+
+// Añadir métodos de interacción al prototipo del objeto Carousel
+Carousel.attachInteractions = function() {
+  if (!this.container || !this.sequenceIndices.length) return;
+  // Asegurar que los eventos táctiles no interfieren con el scroll vertical
+  this.container.style.touchAction = 'pan-y';
+
+  // Clic en imágenes: si no es la central, recentrar; si es la central, permitir navegación
+  this.allSlides.forEach(img => {
+    if (img.dataset.clone) return; // ignorar clones; permitir buffers para casos especiales
+    img.addEventListener('click', (e) => {
+      const containerIndex = this.allSlides.indexOf(img);
+      const centralIndex = this.sequenceIndices[this.seqPos];
+      const isCentral = containerIndex === centralIndex;
+      if (!isCentral) {
+        // Interceptar navegación inline
+        e.preventDefault();
+        e.stopPropagation();
+        const bufferBeforeIndex = (this.firstSeqContainerIndex != null) ? this.firstSeqContainerIndex - 1 : null;
+        // Caso especial: clic en el buffer previo (imagen 1 duplicada)
+        if (bufferBeforeIndex != null && containerIndex === bufferBeforeIndex) {
+          // Teletransportar al buffer tras el final (imagen 5) y luego retroceder al último original (imagen 4)
+          if (this.bufferAfterLastIndex != null) {
+            this.centerByContainerIndex(this.bufferAfterLastIndex, true);
+            // Posicionar seqPos en la última posición válida (imagen 4)
+            // y animar directamente a ella en lugar de usar prev()
+            this.seqPos = this.sequenceIndices.length - 1;
+            requestAnimationFrame(() => {
+              this.centerCurrent(false); // animar a imagen 4
+            });
+            return;
+          }
+        }
+        // Caso especial: clic en el buffer posterior (imagen 5 duplicada)
+        if (this.bufferAfterLastIndex != null && containerIndex === this.bufferAfterLastIndex) {
+          // Avanzar a buffer y dejar que snap lleve al primer original (imagen 2)
+          this.pendingSnap = true;
+          this.centerByContainerIndex(this.bufferAfterLastIndex, false);
+          return;
+        }
+        // Clic en una imagen de la secuencia: mover esa al centro
+        const logicalPos = this.sequenceIndices.indexOf(containerIndex);
+        if (logicalPos >= 0) {
+          this.seqPos = logicalPos;
+          this.centerCurrent(false);
+        }
+        // Reiniciar temporizador tras interacción
+        this.resetAutoTimer();
+      } else {
+        // Central: dejar que el onclick HTML (irAProyecto) actúe
+      }
+    }, true); // usar captura para adelantarnos al handler inline
+  });
+
+  // Gestos de swipe (pointer) para móvil / táctil
+  this.container.addEventListener('pointerdown', (e) => {
+    this.pointerStartX = e.clientX;
+  });
+  this.container.addEventListener('pointerup', (e) => {
+    if (this.pointerStartX == null) return;
+    const dx = e.clientX - this.pointerStartX;
+    this.pointerStartX = null;
+    if (Math.abs(dx) < this.swipeThreshold) return; // no es swipe
+    if (dx > 0) {
+      // Swipe hacia derecha: ver imagen previa
+      this.prev();
+    } else {
+      // Swipe hacia izquierda: ver imagen siguiente
+      this.next();
+    }
+    // Reiniciar temporizador tras gesto
+    this.resetAutoTimer();
+  });
+};
+
+// Reiniciar el temporizador automático para que el siguiente avance
+// ocurra tras completar la transición actual
+Carousel.resetAutoTimer = function() {
+  if (!this.isMenuActive) return;
+  if (this.autoTimer) {
+    try { clearInterval(this.autoTimer); } catch {}
+    this.autoTimer = null;
+  }
+  this.autoTimer = setInterval(() => {
+    if (this.isMenuActive) this.next();
+  }, this.autoSpeed);
 };
 
 // ===== MINI CARRUSEL EN "DESARROLLO WEB" (ESPEJO EN TIEMPO REAL) =====
@@ -2355,6 +2630,7 @@ const MobileOverlays = {
   init() {
     // Solo activar en pantallas móviles/estrechas
     if (window.innerWidth > 1024) return;
+    if (this.io) return; // ya inicializado
     
     try {
       // Observador para detectar cuando los image-wrap entran en viewport
@@ -2929,14 +3205,161 @@ const MobileFooter = {
   }
 };
 
+// ===== SINCRONIZACIÓN DE SCROLL PROYECTOS (Desktop <-> Mobile) =====
+const ProyectosSync = {
+  initialized: false,
+  wasNarrow: null,
+  desktopToMobile: {
+    'p1': 'p1', 'p2': 'p1',
+    'p3': 'p3', 'p4': 'p3',
+    'p5': 'p4', 'p6': 'p4',
+    'p7': 'p7',
+    'p8': 'p8',
+    'p9': 'p9',
+    'p10': 'p10', 'p11': 'p10',
+    'p12': 'p12', 'p13': 'p12', 'p14': 'p12', 'p15': 'p12',
+    'p16': 'p16', 'p17': 'p16', 'p18': 'p16',
+    'p19': 'p19', 'p20': 'p19'
+  },
+  mobileToDesktop: {
+    'p1': 'p1',
+    'p3': 'p3',
+    'p4': 'p5',
+    'p7': 'p7',
+    'p8': 'p8',
+    'p9': 'p9',
+    'p10': 'p10',
+    'p12': 'p12',
+    'p16': 'p16',
+    'p19': 'p19'
+  },
+  lastVisibleId: null,
+
+  init() {
+    if (this.initialized) return;
+    // Solo activar en la página de proyectos
+    if (!document.body.classList.contains('proyectos-page')) return;
+    
+    this.wasNarrow = window.innerWidth <= 1024;
+    this.initialized = true;
+    
+    // Función para rastrear qué elemento está visible
+    const trackScroll = () => {
+      // Usar exclusivamente los wrappers `.image-wrap[id="pN"]` para evitar
+      // colisiones con elementos internos que también usan id="pN".
+      const wraps = Array.from(document.querySelectorAll('#galeria .image-wrap[id]'))
+                         .filter(el => /^p\d+$/.test(el.id));
+
+      let visibleId = null;
+      const viewportHeight = window.innerHeight;
+      const center = viewportHeight / 2;
+
+      for (const wrap of wraps) {
+        const rect = wrap.getBoundingClientRect();
+        if (rect.top <= center && rect.bottom >= center) {
+          visibleId = wrap.id;
+          break;
+        }
+      }
+
+      if (visibleId && visibleId !== this.lastVisibleId) {
+        console.log('Visible ID actualizado:', visibleId, 'isNarrow:', window.innerWidth <= 1024);
+        this.lastVisibleId = visibleId;
+      }
+    };
+    
+    // Escuchar scroll en window y en el contenedor de galería
+    window.addEventListener('scroll', trackScroll, {passive: true});
+    const galeriaContainer = document.getElementById('galeria-container');
+    if (galeriaContainer) {
+      galeriaContainer.addEventListener('scroll', trackScroll, {passive: true});
+    }
+    
+    // Chequeo inicial
+    trackScroll();
+    
+    // Escuchar resize para aplicar la sincronización
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      const isNarrow = window.innerWidth <= 1024;
+      if (this.wasNarrow !== isNarrow) {
+        // Guardar el ID del modo anterior antes de cambiar
+        const savedId = this.lastVisibleId;
+        const savedWasNarrow = this.wasNarrow;
+        
+        console.log('Resize detectado:', {
+          savedWasNarrow,
+          isNarrow,
+          savedId,
+          direction: savedWasNarrow ? 'narrow→wide' : 'wide→narrow'
+        });
+        
+        // Actualizar el estado inmediatamente
+        this.wasNarrow = isNarrow;
+        
+        // Esperar a que el layout se estabilice antes de hacer scroll
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          if (savedId) {
+            this.syncPosition(savedWasNarrow, isNarrow, savedId);
+            // Después de sincronizar, forzar una actualización del tracking
+            setTimeout(() => trackScroll(), 100);
+          }
+        }, 150);
+      }
+    });
+  },
+  
+  syncPosition(fromNarrow, toNarrow, currentId) {
+    let targetId = null;
+    if (fromNarrow && !toNarrow) {
+      // Mobile -> Desktop
+      targetId = this.mobileToDesktop[currentId];
+      // Fallback: si no está en el mapa, intentar usar el mismo ID
+      if (!targetId) targetId = currentId; 
+    } else if (!fromNarrow && toNarrow) {
+      // Desktop -> Mobile
+      targetId = this.desktopToMobile[currentId];
+    }
+    
+    if (targetId) {
+      // Buscar específicamente el .image-wrap con ese ID
+      const targetEl = document.querySelector(`#galeria .image-wrap[id="${targetId}"]`);
+      if (targetEl) {
+        // Timeout para asegurar que el layout se ha estabilizado después del resize
+        setTimeout(() => {
+          // En modo ancho (desktop), scrollear el contenedor; en estrecho, la ventana
+          if (!toNarrow) {
+            // Modo desktop: scroll en #galeria-container
+            const container = document.getElementById('galeria-container');
+            if (container) {
+              const containerRect = container.getBoundingClientRect();
+              const targetRect = targetEl.getBoundingClientRect();
+              const scrollTop = container.scrollTop + (targetRect.top - containerRect.top);
+              container.scrollTo({top: scrollTop, behavior: 'auto'});
+            }
+          } else {
+            // Modo móvil: scroll en window
+            targetEl.scrollIntoView({block: 'start', behavior: 'auto'});
+          }
+        }, 200);
+      }
+    }
+  }
+};
+
 // ===== INICIALIZACIÓN OPTIMIZADA =====
 const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
+  $.lastIsNarrow = $.isNarrow;
   [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc, MobileOverlays].forEach(comp => comp.init());
   
   // Inicializar footer inline en móvil
   MobileFooter.init();
+  
+  // Inicializar sincronización de scroll en proyectos
+  ProyectosSync.init();
   
   // Asignar direcciones de rotación aleatorias (±15deg) a los overlays de p9
   try {
@@ -2966,7 +3389,15 @@ const init = () => {
   // Botón Ver proyectos: ir a la sección proyectos
   try {
     const verBtn = document.getElementById('btn-ver-proyectos');
-    verBtn && verBtn.addEventListener('click', (e) => { e.preventDefault(); mostrarSeccion('proyectos'); });
+    verBtn && verBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const onProyectosPage = !!document.getElementById('proyectos');
+      if (!onProyectosPage) {
+        window.location.href = 'proyectos.html';
+        return;
+      }
+      mostrarSeccion('proyectos');
+    });
   } catch {}
   setupNormalOverlays();
   hydrateCircleSlides();
@@ -2981,7 +3412,8 @@ const init = () => {
   [
     [window, 'scroll', () => Scroll.handleMain()],
     [window, 'resize', () => debounce('resize', () => { 
-      const wasMobile = $.isMobile;
+      const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
+      const nowNarrow = $.isNarrow;
       Layout.update(); 
       Scroll.syncFooterVar();
       try { FooterWatch.attachToCurrentSection(); } catch {}
@@ -2994,6 +3426,25 @@ const init = () => {
       } else if (window.innerWidth > 1024 && MobileFooter.initialized) {
         MobileFooter.cleanup();
       }
+
+      // Si cambiamos de modo (≤1024 ⇄ >1024), ajustar estado de Proyectos y overlays
+      if (wasNarrow !== nowNarrow) {
+        const proyectos = document.getElementById('proyectos');
+        const proyectosActivo = proyectos?.classList.contains('active');
+        // En página de proyectos o si la sección proyectos está activa
+        if (document.body.classList.contains('proyectos-page') || proyectosActivo) {
+          // Usar contenedor interno sólo en escritorio ancho
+          $.isProyectosActive = !nowNarrow && !!proyectosActivo;
+          // Alternar clase que bloquea scroll global sólo en escritorio
+          $.body.classList.toggle('proyectos-active', $.isProyectosActive && !nowNarrow);
+          // Recalcular y reactivar overlays/animaciones según modo
+          try { Overlays.update && Overlays.update(); } catch {}
+          try { if (nowNarrow) { MobileOverlays.init && MobileOverlays.init(); } } catch {}
+          // Asegurar footer correcto tras el cambio de modo
+          if (!FooterWatch.usingObserver) Scroll.updateFooter();
+        }
+        $.lastIsNarrow = nowNarrow;
+      }
     }, 100)],
     [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
       Overlays.update(); 
@@ -3005,6 +3456,39 @@ const init = () => {
   // Observer para proyectos
   const proyectos = document.getElementById('proyectos');
   if (proyectos) {
+    // Marcar estado de proyectos activo en páginas dedicadas
+    $.isProyectosActive = proyectos.classList.contains('active');
+    // Si Proyectos ya está activo al cargar (página dedicada), iniciar módulos necesarios
+    if ($.isProyectosActive) {
+      // En móviles dentro de la página dedicada de proyectos queremos scroll global del documento
+      // y no el patrón de contenedor interno: desactivar flag para usar cálculo por ventana.
+      if (document.body.classList.contains('proyectos-page') && window.innerWidth <= 1024) {
+        $.isProyectosActive = false;
+      }
+      try {
+        Videos.init && Videos.init();
+      } catch {}
+      try {
+        Thumbnails.start && Thumbnails.start();
+      } catch {}
+      // Inicializar efectos interactivos (hover/parallax) en overlays/stands/rollos/carteles
+      try {
+        Effects.setup && Effects.setup();
+      } catch {}
+      // Asegurar que los overlays queden visibles y con hover activo al cargar esta página dedicada
+      try {
+        Overlays.update && Overlays.update();
+      } catch {}
+      // Activar hover/parallax en overlays "normales" (no-stand, no-botella, no-rollo)
+      try {
+        setupNormalOverlays && setupNormalOverlays();
+      } catch {}
+      try {
+        if (window.innerWidth <= 1024 && MobileThumbnails.start) {
+          MobileThumbnails.start();
+        }
+      } catch {}
+    }
     new MutationObserver(mutations => {
       if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
                          proyectos.classList.contains('active'))) {
@@ -3013,20 +3497,22 @@ const init = () => {
           Thumbnails.start(); 
           try { if (window.innerWidth <= 1024) { MobileThumbnails.start && MobileThumbnails.start(); } } catch {}
         }, 100);
+        $.isProyectosActive = true;
       } else if (mutations.some(m => m.type === 'attributes' && m.attributeName === 'class' && 
                           !proyectos.classList.contains('active'))) {
         Thumbnails.stop();
         try { MobileThumbnails.stop && MobileThumbnails.stop(); } catch {}
+        $.isProyectosActive = false;
       }
     }).observe(proyectos, {attributes: true, attributeFilter: ['class']});
   }
   
   // Iniciar carrusel si el menú está activo
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     if (document.getElementById('menu')?.classList.contains('active')) {
       Carousel.start();
     }
-  }, 1000);
+  });
   
   // Inicializar menú hamburguesa
   MobileMenu.init();
@@ -3036,6 +3522,25 @@ const init = () => {
   
   // Verificar footer en la carga inicial después de un breve delay
   setTimeout(() => { if (!FooterWatch.usingObserver) Scroll.updateFooter(); }, 300);
+
+  // Soporte de deeplinks: si hay hash #pN, hacer scroll al elemento en la galería
+  try {
+    const hash = (location.hash || '').replace('#','');
+    if (hash && /^p\d+$/.test(hash)) {
+      const target = document.getElementById(hash);
+      if (target && $.galeriaContainer) {
+        $.galeriaContainer.scrollTo({ top: target.offsetTop, behavior: 'instant' });
+        Nav.updateActive(target.offsetTop);
+      }
+    }
+  } catch {}
+
+  // Reflejar idioma almacenado en el botón de idioma del header
+  try {
+    const stored = (localStorage.getItem('idioma') || 'es').toUpperCase();
+    const btn = document.getElementById('idioma-btn');
+    if (btn) btn.textContent = stored;
+  } catch {}
 };
 
 // Ejecutar una sola vez en cuanto el DOM esté listo

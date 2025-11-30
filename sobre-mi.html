@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="Sobre mí — Jaime Cereijo Design">
+  <meta name="theme-color" content="#001f3f">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Sobre mí — Jaime Cereijo Design</title>
+  <link rel="icon" type="image/png" href="LogoChiquito.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Roboto:wght@400;700;900&family=Press+Start+2P&family=Playfair+Display:wght@700&family=Cinzel:wght@700&family=Uncial+Antiqua&family=Caveat+Brush&family=Trade+Winds&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
+  <link rel="stylesheet" href="assets/css/styles-mobile-fixes.css">
+</head>
+<body>
+  <a href="#sobremi" class="skip-link">Saltar al contenido</a>
+  <header id="main-header">
+    <div class="logo"><img src="Logo.png" alt="Logo"></div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav id="main-nav">
+      <div id="main-menu-items">
+        <a href="menu.html" data-section="menu"><span data-es="Menú" data-en="Menu" data-fr="Menu" data-pt="Menu"></span></a>
+        <a href="proyectos.html" data-section="proyectos"><span data-es="Proyectos" data-en="Projects" data-fr="Projets" data-pt="Projetos"></span></a>
+        <a href="redes.html" data-section="redes"><span data-es="Redes" data-en="Social" data-fr="Réseaux" data-pt="Redes"></span></a>
+        <a href="contacto.html" data-section="contacto"><span data-es="Contacto" data-en="Contact" data-fr="Contact" data-pt="Contato"></span></a>
+        <a href="sobre-mi.html" data-section="sobremi"><span data-es="Sobre mí" data-en="About me" data-fr="À propos" data-pt="Sobre mim"></span></a>
+        <a id="idioma-mobile-btn" class="idioma-mobile-only"><span data-es="Idioma" data-en="Language" data-fr="Langue" data-pt="Idioma"></span></a>
+      </div>
+      <div id="idioma-mobile-list" class="idioma-mobile-only" style="display: none;">
+        <a id="back-to-menu"><span data-es="← Volver" data-en="← Back" data-fr="← Retour" data-pt="← Voltar"></span></a>
+        <a data-lang="es">Español</a>
+        <a data-lang="en">English</a>
+        <a data-lang="fr">Français</a>
+        <a data-lang="pt">Português</a>
+      </div>
+    </nav>
+    <div style="position:relative;">
+      <button id="idioma-btn">ES</button>
+      <div id="idioma-list">
+        <div data-lang="es">Español</div>
+        <div data-lang="en">English</div>
+        <div data-lang="fr">Français</div>
+        <div data-lang="pt">Português</div>
+      </div>
+    </div>
+  </header>
+
+  <main id="desktop-version">
+    <section id="sobremi" class="active">
+      <div class="about-hero">
+        <div class="about-intro">
+          <h2 class="about-subtitle"><span data-es="¿Quién soy yo?" data-en="Who am I?" data-fr="Qui suis‑je ?" data-pt="Quem sou eu?"></span></h2>
+          <p>
+            <span data-es="Un fetichista del diseño y un perfeccionista compulsivo. No me detengo hasta que todo encaje al milímetro, sea cual sea la tarea. Soy polifacético, como demuestran esta web y mi galería de proyectos, e incluso más allá de eso: programo, diseño, pinto, escribo… No me puedo estar quieto. Siempre necesito un nuevo reto, una nueva meta, que desafíe mis capacidades y que me estimule a nivel creativo."
+              data-en="A design enthusiast and a compulsive perfectionist. I don't stop until everything fits perfectly, no matter the task. I am multifaceted, as demonstrated by this website and my project gallery, and even beyond that: I program, design, paint, write... I can't stay still. I always need a new challenge, a new goal, that pushes my abilities and stimulates me creatively."
+              data-fr="Passionné de design et perfectionniste compulsif. Je ne m’arrête que lorsque tout s’emboîte au millimètre, quelle que soit la tâche. Je suis polyvalent, comme le montrent ce site et ma galerie de projets — et au‑delà : je programme, je conçois, je peins, j’écris… Je ne peux pas rester tranquille. J’ai toujours besoin d’un nouveau défi, d’un nouvel objectif qui mette mes capacités à l’épreuve et qui me stimule créativement."
+              data-pt="Entusiasta do design e perfeccionista compulsivo. Não paro até que tudo encaixe ao milímetro, seja qual for a tarefa. Sou polivalente, como demonstram este site e a minha galeria de projetos — e para além disso: programo, desenho, pinto, escrevo… Não consigo ficar parado. Preciso sempre de um novo desafio, uma nova meta, que ponha à prova as minhas capacidades e me estimule criativamente."></span>
+          </p>
+        </div>
+        <div class="about-photo">
+          <img class="about-photo__img about-photo__img--desktop" src="assets/Secciones/Sobre mi/jaime.png" alt="Retrato de Jaime" loading="lazy" decoding="async">
+          <img class="about-photo__img about-photo__img--mobile" src="assets/Secciones/Sobre mi/jaimemovil.png?v=4" alt="Retrato de Jaime (móvil)" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <div class="about-columns">
+        <div class="about-programs">
+          <h3><span data-es="Programas" data-en="Software" data-fr="Logiciels" data-pt="Programas"></span></h3>
+          <div class="programs-grid" aria-label="Programas que manejo">
+            <img src="assets/Secciones/Sobre mi/Programas/Photoshop.png" alt="Photoshop" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Illustrator.png" alt="Illustrator" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Premiere.png" alt="Premiere" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/After_Effects.png" alt="After Effects" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/InDesign.png" alt="InDesign" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Firefly.png" alt="Adobe Firefly" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Podcast.png" alt="Podcast" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Figma.png" alt="Figma" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Excel.png" alt="Excel" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Teams.png" alt="Microsoft Teams" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/PowerPoint.png" alt="PowerPoint" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Word.png" alt="Word" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/html.png" alt="HTML" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/css.png" alt="CSS" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/JavaScript.png" alt="JavaScript" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/GitHub.png" alt="GitHub" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Copilot.png" alt="GitHub Copilot" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/VS.png" alt="Visual Studio" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/VSCode.png" alt="Visual Studio Code" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Autocad.png" alt="AutoCAD" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/rhino.png" alt="Rhinoceros" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/grasshopper.png" alt="Grasshopper" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/SolidWorks.png" alt="SolidWorks" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Keyshot.png" alt="KeyShot" loading="lazy" decoding="async">
+            <img src="assets/Secciones/Sobre mi/Programas/Krita.png" alt="Krita" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="about-edu">
+          <h3><span data-es="Estudios" data-en="Education" data-fr="Études" data-pt="Estudos"></span></h3>
+          <ul class="about-list">
+            <li><span data-es="Universidad Politécnica de Valencia
+              Ingeniería del Diseño Industrial y Desarrollo de Productos.
+              Septiembre 2021 – Junio 2025" data-en="Universidad Politécnica de Valencia — BSc in Industrial Design Engineering and Product Development.
+              September 2021 – June 2025" data-fr="Universidad Politécnica de Valencia — Licence en Ingénierie du design industriel et développement de produits.
+              Septembre 2021 – Juin 2025" data-pt="Universidade Politécnica de Valência — Licenciatura em Engenharia de Design Industrial e Desenvolvimento de Produtos.
+              Setembro de 2021 – Junho de 2025"></span></li>
+          </ul>
+          <h3 class="about-langs"><span data-es="Idiomas" data-en="Languages" data-fr="Langues" data-pt="Idiomas"></span></h3>
+          <ul class="about-list">
+            <li><span data-es="Español — Nativo" data-en="Spanish — Native" data-fr="Espagnol — Natif" data-pt="Espanhol — Nativo"></span></li>
+            <li><span data-es="Inglés — C1 certificado por Cambridge" data-en="English — C1 certified by Cambridge" data-fr="Anglais — C1 certifié par Cambridge" data-pt="Inglês — C1 certificado pela Cambridge"></span></li>
+            <li><span data-es="Francés — Básico" data-en="French — Basic" data-fr="Français — Basique" data-pt="Francês — Básico"></span></li>
+            <li><span data-es="Portugués — Básico" data-en="Portuguese — Basic" data-fr="Portugais — Basique" data-pt="Português — Básico"></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="about-references">
+        <h3 class="references-title"><span data-es="Referencias" data-en="References" data-fr="Références" data-pt="Referências"></span></h3>
+        <div class="references-grid">
+          <article class="quote-card">
+            <a href="https://www.linkedin.com/in/marcbrell/" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Álvaro Selma">
+              <img class="quote-avatar" alt="Foto de Marc" loading="lazy" decoding="async"
+                   src="assets/Secciones/Sobre mi/Referencias/Marc.jpg">
+            </a>
+            <div class="quote-content">
+              <div class="quote-author"><span data-es="Marc Brell i López (director de 'Reflejos del Multiverso'):" data-en="Marc Brell i López, director of 'Reflections of the Multiverse'" data-fr="Marc Brell i López (directeur de « Reflets du Multivers ») :" data-pt="Marc Brell i López (diretor de «Reflexos do Multiverso»):"></span></div>
+              <div class="quote-text">
+                    <span data-es="Jaime es una persona comprometida con su trabajo. En el ámbito del diseño es capaz de escuchar tus necesidades, devolverte una batería de propuestas en forma de boceto sobre las que trabajar y partiendo de eso sacar un proyecto final desde el diálogo. Es eficaz y diligente. Estoy muy contento de haber contado con él en nuestro proyecto."
+                      data-en="Jaime is a committed professional. In the field of design, he is able to listen to your needs, provide you with a range of proposals in the form of sketches to work on, and from that, deliver a final project through dialogue. He is efficient and diligent. I am very happy to have had him on our project."
+                      data-fr="Jaime est une personne engagée dans son travail. Dans le domaine du design, il sait écouter vos besoins, vous proposer une série d’idées sous forme de croquis sur lesquelles travailler et, à partir de là, mener à bien un projet final dans le dialogue. Il est efficace et rigoureux. Je suis très heureux d’avoir pu compter sur lui pour notre projet."
+                      data-pt="Jaime é uma pessoa comprometida com o seu trabalho. No âmbito do design, sabe ouvir as suas necessidades, apresentar-lhe um conjunto de propostas em forma de esboços sobre as quais trabalhar e, a partir disso, chegar a um projeto final através do diálogo. É eficaz e diligente. Estou muito contente por ter contado com ele no nosso projeto."></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <a href="https://www.linkedin.com/in/%C3%A1lvaro-jos%C3%A9-selma-cerezo-735474343/" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Marc">
+              <img class="quote-avatar" alt="Foto de Alvaro" loading="lazy" decoding="async"
+                   src="assets/Secciones/Sobre mi/Referencias/Alvaro.jpg">
+            </a>
+            <div class="quote-content">
+              <div class="quote-author"><span data-es="Álvaro Selma (compañero en el desarrollo de vinos Nostre):" data-en="Álvaro Selma (partner on Nostre wines)" data-fr="Álvaro Selma (collaborateur sur les vins Nostre)" data-pt="Álvaro Selma (colega no desenvolvimento dos vinhos Nostre)"></span></div>
+              <div class="quote-text">
+                    <span data-es="Jaime y yo hemos trabajado juntos en diferentes proyectos a lo largo de los últimos cuatro años. Es la persona que siempre escojo como compañero de trabajo, porque muchos de los proyectos en los que hemos estado juntos han alcanzado resultados satisfactorios. Es responsable y hace muy fácil trabajar con él, y suele aportar puntos de vista que son diferentes y originales."
+                      data-en="Jaime and I have worked together on various projects over the last four years. He is the person I always choose as a work partner because many of the projects we have been involved in have achieved satisfactory results. He is responsible and makes it very easy to work with him, and he often brings different and original points of view."
+                      data-fr="Jaime et moi avons travaillé ensemble sur différents projets au cours des quatre dernières années. C’est la personne que je choisis toujours comme partenaire de travail, car de nombreux projets sur lesquels nous avons collaboré ont obtenu des résultats satisfaisants. Il est responsable et rend le travail très facile ; il apporte souvent des points de vue différents et originaux."
+                      data-pt="Eu e o Jaime trabalhámos juntos em diferentes projetos ao longo dos últimos quatro anos. É a pessoa que escolho sempre como parceiro de trabalho, porque muitos dos projetos em que estivemos juntos alcançaram resultados satisfatórios. É responsável e torna o trabalho muito fácil; costuma trazer pontos de vista diferentes e originais."></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <a href="https://www.linkedin.com/in/martin-perez-san-jose/?originalSubdomain=es" target="_blank" rel="noopener noreferrer" aria-label="Abrir LinkedIn de Martín Pérez">
+              <img class="quote-avatar" alt="Foto de Martín Pérez" loading="lazy" decoding="async"
+                   src="assets/Secciones/Sobre mi/Referencias/Martin.jpg">
+            </a>
+            <div class="quote-content">
+              <div class="quote-author"><span data-es="Martín Pérez (compañero en el desarrollo de Hira):" data-en="Martín Pérez (partner on Hira)" data-fr="Martín Pérez (collaborateur sur Hira)" data-pt="Martín Pérez (colega no desenvolvimento do Hira)"></span></div>
+              <div class="quote-text">
+                    <span data-es="Trabajar con Jaime ha sido una experiencia muy positiva. Es alguien que, incluso en los momentos de mayor estrés, transmite confianza y hace que quieras seguir adelante con el proyecto. Nunca descarta ideas sin más, siempre aporta algo y no tiene miedo a hacer críticas constructivas. Además, tiene un talento especial para improvisar soluciones eficaces en muy poco tiempo. Es un compañero con el que da gusto trabajar, porque suma en todos los sentidos."
+                      data-en="Working with Jaime has been a very positive experience. He is someone who, even in the most stressful moments, conveys confidence and makes you want to keep going with the project. He never dismisses ideas outright, always contributes something, and is not afraid to make constructive criticism when necessary. In addition, he has a special talent for improvising effective solutions in very little time. He is a colleague who is a pleasure to work with because he adds value in every way."
+                      data-fr="Travailler avec Jaime a été une expérience très positive. C’est quelqu’un qui, même dans les moments de plus grand stress, transmet de la confiance et vous donne envie de poursuivre le projet. Il ne rejette jamais les idées sans plus ; il apporte toujours quelque chose et n’a pas peur de faire des critiques constructives. En outre, il a un talent particulier pour improviser des solutions efficaces en très peu de temps. C’est un collègue avec qui il est agréable de travailler, car il apporte sur tous les plans."
+                      data-pt="Trabalhar com o Jaime foi uma experiência muito positiva. É alguém que, mesmo nos momentos de maior stress, transmite confiança e faz com que queiramos seguir em frente com o projeto. Nunca descarta ideias sem mais; traz sempre algo e não tem medo de fazer críticas construtivas. Além disso, tem um talento especial para improvisar soluções eficazes em muito pouco tempo. É um colega com quem dá gosto trabalhar, porque soma em todos os sentidos."></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <a class="quote-link quote-link--youtube" href="https://www.youtube.com/@Moifez" target="_blank" rel="noopener noreferrer" aria-label="Abrir canal de YouTube de Moisés Fernández (Moifez)">
+              <img class="quote-avatar" alt="Foto de Moisés Fernández" loading="lazy" decoding="async"
+                   src="assets/Secciones/Sobre mi/Referencias/Moifez.jpg">
+            </a>
+            <div class="quote-content">
+              <div class="quote-author"><span data-es="Moisés Fernández ('Moifez', cliente recurrente):" data-en="Moisés Fernández, 'Moifez'" data-fr="Moisés Fernández (« Moifez », client récurrent) :" data-pt="Moisés Fernández («Moifez», cliente recorrente):"></span></div>
+              <div class="quote-text">
+                    <span data-es="Llevo años contratando los servicios de Jaime y pretendo seguir haciéndolo. Es talentoso, dedicado y autoexigente. Siempre entiende lo que quiero enseguida y siempre se asegura de ser lo más útil posible. Por último, además de darle forma a mis ideas exactamente como me las imagino, añade cosas que las vuelven mejor de lo que eran en mi cabeza. Como ya he dicho, Jaime siempre será mi primera opción en lo que respecta a diseño."
+                      data-en="I have been hiring Jaime's services for years and I intend to continue doing so. He is talented, dedicated, and self-demanding. He always understands what I want very quickly, and he always makes sure to be as helpful as possible. Finally, in addition to shaping my ideas exactly as I imagine them, he adds things that make them even better than they were in my head. As I said, Jaime will always be my first choice when it comes to design."
+                      data-fr="Je fais appel aux services de Jaime depuis des années et j’ai l’intention de continuer. Il est talentueux, dévoué et exigeant avec lui‑même. Il comprend toujours très vite ce que je veux et s’assure d’être le plus utile possible. Enfin, en plus de donner forme à mes idées exactement comme je les imagine, il ajoute des éléments qui les rendent meilleures que dans ma tête. Comme je l’ai dit, Jaime sera toujours ma première option en matière de design."
+                      data-pt="Contrato os serviços do Jaime há anos e pretendo continuar. É talentoso, dedicado e exigente consigo mesmo. Entende sempre muito rápido o que eu quero e garante ser o mais útil possível. Por fim, além de dar forma às minhas ideias exatamente como as imagino, acrescenta elementos que as tornam ainda melhores do que eram na minha cabeça. Como já disse, o Jaime será sempre a minha primeira opção em design."></span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div>
+      <p>Email: jaimecereijobotana@gmail.com</p>
+      <p data-es="Teléfono: +34 644 43 26 86" data-en="Phone: +34 644 43 26 86" data-fr="Téléphone : +34 644 43 26 86" data-pt="Telefone: +34 644 43 26 86"></p>
+    </div>
+    <div>
+      <p>Jaime Cereijo Design</p>
+      <p data-es="Valencia, España" data-en="Valencia, Spain" data-fr="Valence, Espagne" data-pt="Valência, Espanha"></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
