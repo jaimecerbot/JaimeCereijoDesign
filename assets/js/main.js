@@ -2888,6 +2888,35 @@ const MobileRollo = {
   // Cursor/hover tracking
   lastMouseX: null,
   lastMouseY: null,
+  // Scroll lock during manual drag (mobile/touch)
+  scrollLocked: false,
+  lockScroll() {
+    if (this.scrollLocked) return;
+    this.scrollLocked = true;
+    try {
+      document.body.classList.add('rollo-scroll-lock');
+      document.documentElement.style.overscrollBehavior = 'contain';
+      document.body.style.overscrollBehavior = 'contain';
+      document.documentElement.style.touchAction = 'none';
+      document.body.style.touchAction = 'none';
+    } catch {}
+    // Prevent default scroll on global touchmove while dragging
+    this._onGlobalTouchMove = (ev) => { if (this.isDragging) { try { ev.preventDefault(); } catch {} } };
+    window.addEventListener('touchmove', this._onGlobalTouchMove, { passive: false });
+  },
+  unlockScroll() {
+    if (!this.scrollLocked) return;
+    this.scrollLocked = false;
+    try {
+      document.body.classList.remove('rollo-scroll-lock');
+      document.documentElement.style.overscrollBehavior = '';
+      document.body.style.overscrollBehavior = '';
+      document.documentElement.style.touchAction = '';
+      document.body.style.touchAction = '';
+    } catch {}
+    try { window.removeEventListener('touchmove', this._onGlobalTouchMove); } catch {}
+    this._onGlobalTouchMove = null;
+  },
   isInGrabBand(x, y) {
     if (!this.img) return false;
     const rect = this.img.getBoundingClientRect();
@@ -2958,6 +2987,8 @@ const MobileRollo = {
           try { e.preventDefault(); } catch {}
         }
         this.handleStart(e.clientX, e.clientY);
+        // En touch, bloquear scroll de la página hasta finalizar el drag
+        if (e.pointerType === 'touch') this.lockScroll();
         // No preventDefault aquí para permitir determinación de dirección
       };
       this.onPointerMove = (e) => {
@@ -2971,6 +3002,8 @@ const MobileRollo = {
         if (e.pointerId !== this.pointerId) return;
         this.wrap.releasePointerCapture?.(e.pointerId);
         this.handleEnd();
+        // Liberar bloqueo de scroll si estaba activo
+        this.unlockScroll();
       };
       // Actualizar cursor cuando el puntero se mueve sobre el área sin arrastrar
       this.wrap.addEventListener('pointermove', (e) => {
@@ -2993,6 +3026,8 @@ const MobileRollo = {
         if (!touch) return;
         if (!this.isInGrabBand(touch.clientX, touch.clientY)) return;
         this.handleStart(touch.clientX, touch.clientY);
+        // Bloquear scroll global hasta terminar el drag
+        this.lockScroll();
         // No preventDefault para permitir detección de dirección
       };
       this.onTouchMove = (e) => {
@@ -3005,6 +3040,9 @@ const MobileRollo = {
         }
       };
       this.onTouchEnd = () => this.handleEnd();
+      // Al finalizar/cancelar, liberar bloqueo
+      this.wrap.addEventListener('touchend', () => this.unlockScroll());
+      this.wrap.addEventListener('touchcancel', () => this.unlockScroll());
       this.wrap.addEventListener('touchstart', this.onTouchStart, {passive: true});
       this.wrap.addEventListener('touchmove', this.onTouchMove, {passive: false});
       this.wrap.addEventListener('touchend', this.onTouchEnd);
