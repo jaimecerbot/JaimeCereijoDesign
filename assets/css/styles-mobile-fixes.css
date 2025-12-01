@@ -5,6 +5,9 @@
    dentro del bloque @media (max-width: 768px)
 */
 
+/* Ocultar por defecto el índice móvil en escritorio; se muestra en ≤1024px */
+#indice-mobile { display: none; }
+
 @media (max-width: 768px) and (hover: none) {
   /* En móvil táctil verdadero (≤768px sin hover): mantener esquinas redondeadas siempre */
   .carousel-item:hover {
@@ -105,14 +108,113 @@
     width: 100%;
   }
   
-  /* Espacio negro en la parte superior de la sección Proyectos para evitar que el header tape el contenido */
+  /* Espacio superior: header + índice móvil */
   #proyectos::before {
     content: '';
     display: block;
-    height: var(--header-h);
+    height: calc(var(--header-h) + var(--indice-mobile-h, 52px));
     width: 100%;
     background-color: #000;
   }
+  /* Índice móvil fijo bajo el header */
+  #indice-mobile { 
+    display: block; 
+    position: fixed; 
+    top: var(--header-h);
+    left: 0; right: 0; width: 100%;
+    z-index: 2002; 
+    background: #ffffff; 
+    border-bottom: 1px solid #e5e5e5; 
+    --indice-mobile-h: 52px;
+    min-height: var(--indice-mobile-h);
+    transition: top .3s ease;
+  }
+  #indice-mobile ul { 
+    display: flex; 
+    align-items: center;
+    gap: 12px; 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    list-style: none; 
+    padding: 8px 14px; 
+    margin: 0; 
+    scroll-snap-type: x proximity; 
+  }
+  #indice-mobile li { flex: 0 0 auto; scroll-snap-align: start; }
+  #indice-mobile a { 
+    display: inline-block; 
+    padding: 9px 14px; 
+    border-radius: 18px; 
+    font-size: 14px; 
+    color: #111; 
+    text-decoration: none; 
+    background: transparent; 
+    border: 1px solid transparent; 
+    white-space: nowrap; 
+    transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+  }
+  #indice-mobile a.active { 
+    background: #001f3f; 
+    color: yellow; 
+    border-color: #001f3f; 
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,31,63,.35);
+    transform: translateY(-1px);
+  }
+  /* Offset de anclas: header + índice */
+  #galeria .image-wrap { scroll-margin-top: calc(var(--header-h) + var(--indice-mobile-h, 52px) + 10px); }
+
+  /* Cuando el header se oculta en proyectos.html, el índice sube al borde superior y el contenido ajusta */
+  body.proyectos-page header.hidden + #indice-mobile { top: 0; }
+  body.proyectos-page header.hidden ~ main #proyectos::before { height: var(--indice-mobile-h, 52px); }
+  body.proyectos-page header.hidden ~ main #galeria .image-wrap { scroll-margin-top: calc(var(--indice-mobile-h, 52px) + 10px); }
+  /* Índice móvil fijo bajo el header (≤768px) */
+  #indice-mobile { 
+    display: block; 
+    position: fixed; 
+    top: var(--header-h);
+    left: 0; right: 0; width: 100%;
+    z-index: 2002; 
+    background: #ffffff; 
+    border-bottom: 1px solid #e5e5e5; 
+    --indice-mobile-h: 52px;
+    min-height: var(--indice-mobile-h);
+    transition: top .3s ease;
+  }
+  #indice-mobile ul { 
+    display: flex; 
+    align-items: center;
+    gap: 10px; 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    list-style: none; 
+    padding: 8px 12px; 
+    margin: 0; 
+    scroll-snap-type: x proximity; 
+  }
+  #indice-mobile li { flex: 0 0 auto; scroll-snap-align: start; }
+  #indice-mobile a { 
+    display: inline-block; 
+    padding: 8px 12px; 
+    border-radius: 16px; 
+    font-size: 14px; 
+    color: #111; 
+    text-decoration: none; 
+    background: transparent; 
+    border: 1px solid transparent; 
+    white-space: nowrap; 
+    transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+  }
+  #indice-mobile a.active { 
+    background: #001f3f; 
+    color: yellow; 
+    border-color: #001f3f; 
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,31,63,.35);
+    transform: translateY(-1px);
+  }
+  /* Offset de anclas: header + índice (≤768px) */
+  #galeria .image-wrap { scroll-margin-top: calc(var(--header-h) + var(--indice-mobile-h, 52px) + 10px); }
 }
 
 /* Para @media (max-width: 1024px) - ventanas estrechas */
@@ -218,8 +320,38 @@
   #proyectos::before {
     content: '';
     display: block;
-    height: var(--header-h);
+    height: calc(var(--header-h) + var(--indice-mobile-h, 52px));
     width: 100%;
     background-color: #000;
   }
+  /* Índice móvil fijo bajo el header (≤1024px) */
+  #indice-mobile { 
+    display: block; 
+    position: fixed; 
+    top: var(--header-h);
+    left: 0; right: 0; width: 100%;
+    z-index: 999; 
+    background: #ffffff; 
+    border-bottom: 1px solid #e5e5e5; 
+    --indice-mobile-h: 52px;
+    min-height: var(--indice-mobile-h);
+    transition: top .3s ease;
+  }
+  /* Evitar que el logo del header intercepte clics sobre el índice */
+  header .logo, header .logo img { pointer-events: none; }
+  /* Respetar preferencias de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    #indice-mobile a { transition: none !important; }
+  }
+  /* Offset de anclas: header + índice (≤1024px) */
+  #galeria .image-wrap { scroll-margin-top: calc(var(--header-h) + var(--indice-mobile-h, 52px) + 10px); }
+  /* Cuando el header se oculta en proyectos.html (≤1024px) */
+  body.proyectos-page header.hidden + #indice-mobile { top: 0; }
+  body.proyectos-page header.hidden ~ main #proyectos::before { height: var(--indice-mobile-h, 52px); }
+  body.proyectos-page header.hidden ~ main #galeria .image-wrap { scroll-margin-top: calc(var(--indice-mobile-h, 52px) + 10px); }
+  /* Ocultar el índice en ventanas estrechas (ya no se usa en móvil) */
+  #indice { display: none !important; }
+  /* Asegurar que la galería ocupa todo el ancho cuando el índice está oculto */
+  .proyectos-container { flex-direction: column; }
+  #galeria-container { width: 100%; }
 }

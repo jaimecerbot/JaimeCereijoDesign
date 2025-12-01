@@ -102,6 +102,8 @@ const $ = {
   header: null, indice: null, main: null, footer: null, galeriaContainer: null, galeria: null,
   body: document.body, html: document.documentElement,
   lastScrollY: 0, 
+  // Estado específico para ocultar/mostrar header según scroll del contenedor (≤1024px)
+  lastHeaderContainerScrollTop: 0,
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
   // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
@@ -283,19 +285,41 @@ const Scroll = {
   handleMain() {
     throttle('scroll', () => {
       const delta = window.scrollY - $.lastScrollY;
-      if (Math.abs(delta) > 5) {
-        // En móvil/ventanas estrechas: ocultar header al scrollear hacia abajo
-        if (window.innerWidth <= 1024) {
-          const hide = delta > 0 && window.scrollY > 100;
-          $.header?.classList.toggle('hidden', hide);
+      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html (con umbral ligero)
+      if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
+        const inProyectosPage = document.body.classList.contains('proyectos-page');
+        if (inProyectosPage) {
+          const indiceMobileVisible = (() => { 
+            const im = document.getElementById('indice-mobile'); 
+            if (!im) return false; 
+            const cs = window.getComputedStyle(im); 
+            return cs && cs.display !== 'none'; 
+          })();
+          if (indiceMobileVisible) {
+            const threshold = 6;
+            if (delta > threshold) {
+              $.header?.classList.add('hidden');
+            } else if (delta < -threshold) {
+              $.header?.classList.remove('hidden');
+            }
+          }
         } else {
-          // En desktop: comportamiento existente
-          const hide = delta > 0 && window.scrollY > 100;
-          $.header?.classList.toggle('hidden', hide);
+          // Asegurar que no queda oculto fuera de proyectos
+          $.header?.classList.remove('hidden');
         }
-        this.updateLayout();
-        $.lastScrollY = window.scrollY;
+      } else if (Math.abs(delta) > 5) {
+        // En desktop: mantener umbral para evitar parpadeos
+        const hide = delta > 0 && window.scrollY > 100;
+        $.header?.classList.toggle('hidden', hide);
       }
+      this.updateLayout();
+      $.lastScrollY = window.scrollY;
+      // Actualizar índice activo en proyectos.html para cualquier scroll (pequeño o grande)
+      try {
+        if (document.body.classList.contains('proyectos-page')) {
+          throttle('nav-active', () => Nav.updateActive(), 16);
+        }
+      } catch {}
       // Solo actualizar footer en desktop (>1024px)
       if (window.innerWidth > 1024) {
         this.updateFooter();
@@ -410,12 +434,22 @@ const Nav = {
   // permanecer sincronizado si se añaden/eliminan secciones.
   grupos: [],
   links: null, activeGroup: null, elements: new Map(),
+  io: null,
+  navRaf: null,
+  lastCentered: null,
+
+  // Flag para controlar si el padding ya ha sido calculado y aplicado
+  paddingApplied: false,
+
   init() {
-    this.links = document.querySelectorAll("#indice a");
+    const desktopLinks = document.querySelectorAll('#indice a');
+    const mobileLinks = document.querySelectorAll('#indice-mobile a');
+    this.links = [...desktopLinks, ...mobileLinks];
 
     // Tomar sólo los wrappers de proyecto (.image-wrap con id pN) para evitar
     // confusiones con elementos internos que comparten id pN en imágenes u overlays.
-    const linkTargets = Array.from(this.links).map(a => a.getAttribute('href').substring(1));
+    const sourceForTargets = desktopLinks.length ? desktopLinks : mobileLinks;
+    const linkTargets = Array.from(sourceForTargets).map(a => a.getAttribute('href').substring(1));
     const galleryNodes = Array.from(document.querySelectorAll('#galeria .image-wrap[id]'))
                               .filter(el => /^p\d+$/.test(el.id));
     const galleryOrder = galleryNodes.map(el => el.id);
@@ -435,48 +469,154 @@ const Nav = {
       return { ids, link: `#${target}` };
     });
 
-    // Cachear los elementos reales disponibles en la galería
+    // Cachear específicamente los wrappers `.image-wrap[id="pN"]` para evitar
+    // colisiones con otros elementos internos que comparten id="pN" (imágenes, overlays)
     this.grupos.forEach(g => g.ids.forEach(id => {
-      const el = document.getElementById(id);
+      const el = document.querySelector(`#galeria .image-wrap[id="${id}"]`);
       el && this.elements.set(id, el);
     }));
 
     this.links.forEach(link => {
       link.onclick = e => {
         e.preventDefault();
-        const target = this.elements.get(link.getAttribute("href").substring(1));
-        target && $.galeriaContainer?.scrollTo({top: target.offsetTop, behavior: "smooth"});
+        const target = this.elements.get(link.getAttribute('href').substring(1));
+        if (!target) return;
+        // Usar scrollIntoView para que actúe sobre el contenedor scrollable correcto
+        // (window en móvil/estrecho; #galeria-container en desktop)
+        try {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        } catch {
+          // Fallback
+          if ($.isNarrow) {
+            const top = target.getBoundingClientRect().top + (window.scrollY || 0);
+            window.scrollTo({ top, behavior: 'smooth' });
+          } else if ($.galeriaContainer) {
+            $.galeriaContainer.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+          }
+        }
       };
     });
+
+    // Observer ligero para detectar cambios de visibilidad de secciones y
+    // refrescar el índice sin depender de los eventos de scroll.
+    try {
+      const root = ($.isNarrow || !$.galeriaContainer) ? null : $.galeriaContainer;
+      this.io = new IntersectionObserver(() => this.scheduleUpdate(), { root, threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] });
+      this.elements.forEach((el) => { try { el && this.io.observe(el); } catch {} });
+      // Recalcular al cambiar tamaño/orientación
+      window.addEventListener('resize', () => this.scheduleUpdate(), { passive: true });
+      // Refresco adicional en scroll de ventana (modo móvil) como respaldo
+      window.addEventListener('scroll', () => this.scheduleUpdate(), { passive: true });
+      // En desktop, también escuchar el scroll del contenedor de galería
+      if ($.galeriaContainer) {
+        $.galeriaContainer.addEventListener('scroll', () => this.scheduleUpdate(), { passive: true });
+      }
+    } catch {}
   },
-  updateActive(scrollPos) {
+  scheduleUpdate() {
+    if (this.navRaf) return;
+    this.navRaf = requestAnimationFrame(() => { try { this.updateActive(); } finally { this.navRaf = null; } });
+  },
+  centerActive: function(href) {
+      try {
+          if (!href) return;
+          const mobileNav = document.getElementById('indice-mobile');
+          if (!mobileNav) return;
+          const scroller = mobileNav.querySelector('ul');
+          const anchor = mobileNav.querySelector(`a[href='${href}']`);
+          if (!scroller || !anchor) return;
+
+          // Aplicar padding solo una vez para evitar recalculos innecesarios
+          if (!this.paddingApplied) {
+              const firstItem = scroller.firstElementChild;
+              const lastItem = scroller.lastElementChild;
+              if (firstItem && lastItem) {
+                  const scrollWidth = scroller.clientWidth;
+                  // Usamos los anchos de los 'a' dentro de los 'li' para ser mas precisos
+                  const firstAnchor = firstItem.querySelector('a');
+                  const lastAnchor = lastItem.querySelector('a');
+                  
+                  if(firstAnchor && lastAnchor) {
+                    const firstItemWidth = firstAnchor.getBoundingClientRect().width;
+                    const lastItemWidth = lastAnchor.getBoundingClientRect().width;
+                    
+                    const paddingLeft = (scrollWidth / 2) - (firstItemWidth / 2);
+                    const paddingRight = (scrollWidth / 2) - (lastItemWidth / 2);
+
+                    scroller.style.paddingLeft = `${paddingLeft}px`;
+                    scroller.style.paddingRight = `${paddingRight}px`;
+                    this.paddingApplied = true; // Marcar como aplicado
+                  }
+              }
+          }
+
+          const scRect = scroller.getBoundingClientRect();
+          const aRect = anchor.getBoundingClientRect();
+
+          // El cálculo del centro del ancla debe tener en cuenta el scroll actual
+          const anchorCenter = (aRect.left - scRect.left) + scroller.scrollLeft + (aRect.width / 2);
+          // El objetivo es que el centro del ancla coincida con el centro del scroller
+          const targetLeft = anchorCenter - (scroller.clientWidth / 2);
+
+          scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
+          this.lastCentered = href;
+      } catch (e) {
+          console.error("Error in centerActive:", e);
+      }
+  },
+
+  updateActive: function() {
     let active = null;
+    // Línea de referencia según modo de scroll
+    const useContainer = !$.isNarrow && !!$.galeriaContainer;
+    const winScroll = (window.scrollY || 0);
+    const winH = (window.innerHeight || document.documentElement.clientHeight);
+    const centerY = useContainer
+      ? ($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 2)
+      : (winScroll + winH / 2);
 
     for (const g of this.grupos) {
-      // Buscar primer y último elemento válido del grupo
       const firstEl = g.ids.map(id => this.elements.get(id)).find(Boolean);
       const lastEl = [...g.ids].reverse().map(id => this.elements.get(id)).find(Boolean);
       if (!firstEl || !lastEl) continue;
-      const start = firstEl.offsetTop;
-      const end = lastEl.offsetTop + lastEl.offsetHeight;
-      if (scrollPos >= start && scrollPos < end) {
+
+      let start, end;
+      if (useContainer) {
+        // Medidas relativas al contenedor con scroll interno (desktop)
+        start = firstEl.offsetTop;
+        end = lastEl.offsetTop + lastEl.offsetHeight;
+      } else {
+        // Medidas relativas al documento (móvil / ventana)
+        const firstRect = firstEl.getBoundingClientRect();
+        const lastRect = lastEl.getBoundingClientRect();
+        start = firstRect.top + winScroll;
+        end = lastRect.bottom + winScroll;
+      }
+
+      if (start <= centerY && end >= centerY) {
         active = g.link;
         break;
       }
     }
 
-    // Si no hay ninguno activo y estamos más abajo que el inicio del último
-    // grupo, marcar el último (útil al llegar al final de la galería).
+    // Fallback al último grupo si hemos pasado su inicio
     if (!active && this.grupos.length) {
       const lastGroup = this.grupos[this.grupos.length - 1];
       const lastEl = [...lastGroup.ids].reverse().map(id => this.elements.get(id)).find(Boolean);
-      if (lastEl && scrollPos >= lastEl.offsetTop) active = lastGroup.link;
+      if (lastEl) {
+        const startLast = useContainer ? lastEl.offsetTop : (lastEl.getBoundingClientRect().top + winScroll);
+        if (startLast <= centerY) active = lastGroup.link;
+      }
     }
 
     if (this.activeGroup !== active) {
-      this.links.forEach(l => l.classList.remove("active"));
-      active && document.querySelector(`#indice a[href='${active}']`)?.classList.add("active");
+      this.links.forEach(l => l.classList.remove('active'));
+      if (active) {
+        document.querySelectorAll(`#indice a[href='${active}'], #indice-mobile a[href='${active}']`)?.forEach(el => el.classList.add('active'));
+      }
       this.activeGroup = active;
+      // Centrar el chip activo en el índice móvil
+      if (active) this.centerActive(active);
     }
   }
 };
@@ -868,7 +1008,10 @@ const Overlays = {
       this.processRollos(rollos, info);
     });
 
-    Nav.updateActive($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
+    const scrollPos = $.isNarrow 
+      ? ((window.scrollY || 0) + (window.innerHeight || document.documentElement.clientHeight) / 4)
+      : ($.galeriaContainer.scrollTop + $.galeriaContainer.clientHeight / 4);
+    Nav.updateActive(scrollPos);
     !$.bottleEffectTriggered && Bottles.checkTrigger();
     this.updatePending = false;
   },
@@ -922,7 +1065,7 @@ const Effects = {
   handlers: new WeakMap(),
   
   setup() {
-    ['stands', 'bottles', 'rollos', 'cartels'].forEach((type, i) => 
+    ['stands', 'bottles', 'rollos', 'carteles'].forEach((type, i) => 
       debounce(`setup-${type}`, () => this[`setup${type.charAt(0).toUpperCase() + type.slice(1)}`](), 100 + i * 50));
   },
   
@@ -1347,7 +1490,7 @@ const Effects = {
       } catch (e) { /* silencioso */ }
     } catch (e) { /* silencioso */ }
 
-    container.setAttribute('data-cartels-configured', 'true');
+    container.setAttribute('data-cartels-configurados', 'true');
   },
   
   reset() {
@@ -1661,6 +1804,12 @@ const Thumbnails = {
         };
         requestAnimationFrame(step);
       }, {once: true});
+      
+      tmp.onerror = () => {
+        console.warn('Failed to load thumbnail:', newSrc);
+        if (tmp.isConnected) tmp.remove();
+        this.transitioning = false;
+      };
       
       tmp.src = newSrc;
     });
@@ -2123,25 +2272,29 @@ Carousel.attachInteractions = function() {
     }, true); // usar captura para adelantarnos al handler inline
   });
 
-  // Gestos de swipe (pointer) para móvil / táctil con feedback visual
+  // Gestos de swipe (pointer) sólo para táctil/lápiz; sin seguimiento de ratón
+  const isTouchLike = (e) => e.pointerType === 'touch' || e.pointerType === 'pen';
+
   this.container.addEventListener('pointerdown', (e) => {
+    if (!isTouchLike(e)) return;
+    this.pointerId = e.pointerId;
+    this.container.setPointerCapture?.(e.pointerId);
     this.pointerStartX = e.clientX;
     this.pointerCurrentX = e.clientX;
     this.isDragging = false;
   });
 
   this.container.addEventListener('pointermove', (e) => {
-    if (this.pointerStartX == null) return;
+    if (!isTouchLike(e)) return;
+    if (this.pointerStartX == null || e.pointerId !== this.pointerId) return;
     this.pointerCurrentX = e.clientX;
     const dx = this.pointerCurrentX - this.pointerStartX;
-    
-    // Marcar como dragging si se ha movido lo suficiente
+
     if (Math.abs(dx) > 5) {
       this.isDragging = true;
-      // Aplicar efecto de arrastre visual (rubber-band con resistencia)
-      const resistance = 0.3; // factor de resistencia para efecto más natural
+      // Efecto visual ligero mientras se arrastra (sólo táctil)
+      const resistance = 0.3;
       const offset = dx * resistance;
-      // Guardar transform actual y aplicar offset temporal
       const baseTransform = this.currentTransform || 'translateX(0)';
       const match = baseTransform.match(/translateX\(([^)]+)\)/);
       const currentX = match ? parseFloat(match[1]) : 0;
@@ -2150,35 +2303,33 @@ Carousel.attachInteractions = function() {
     }
   });
 
-  this.container.addEventListener('pointerup', (e) => {
+  const endDrag = (e) => {
+    if (e && !isTouchLike(e)) return;
     if (this.pointerStartX == null) return;
-    const dx = e.clientX - this.pointerStartX;
+    const dx = (this.pointerCurrentX ?? this.pointerStartX) - this.pointerStartX;
+    // Restaurar transición por defecto
+    this.setTransition(this.getDefaultTransition());
+    // Decidir navegación por umbral
+    if (Math.abs(dx) >= this.swipeThreshold) {
+      const dir = dx < 0 ? 'next' : 'prev';
+      this.userSlide(dir);
+    } else {
+      // Recentrar al actual si no superó umbral
+      this.centerCurrent(false);
+    }
+    // Reiniciar timer automático tras interacción
+    this.resetAutoTimer();
+    // Limpiar estado de drag
     this.pointerStartX = null;
     this.pointerCurrentX = null;
-    this.setTransition(this.getDefaultTransition());
-    if (this.isDragging && Math.abs(dx) >= this.swipeThreshold) {
-      if (dx > 0) {
-        this.userSlide('prev');
-      } else {
-        this.userSlide('next');
-      }
-      this.resetAutoTimer();
-    } else {
-      this.centerCurrent(false);
-    }
     this.isDragging = false;
-  });
+    this.pointerId = null;
+    try { if (e) this.container.releasePointerCapture?.(e.pointerId); } catch {}
+  };
 
-  // Cancelar drag si el pointer sale del área
-  this.container.addEventListener('pointercancel', () => {
-    if (this.pointerStartX != null) {
-      this.setTransition(this.getDefaultTransition());
-      this.centerCurrent(false);
-      this.pointerStartX = null;
-      this.pointerCurrentX = null;
-      this.isDragging = false;
-    }
-  });
+  this.container.addEventListener('pointerup', endDrag);
+  this.container.addEventListener('pointercancel', endDrag);
+  this.container.addEventListener('pointerleave', endDrag);
 };
 
 // Reiniciar el temporizador automático para que el siguiente avance
@@ -2837,6 +2988,61 @@ const MobileOverlays = {
   }
 };
 
+// ===== CARTAS MÓVILES (p16) - Ciclo automático =====
+const MobileCards = {
+  cards: [],
+  currentIndex: 0,
+  timer: null,
+  duration: 3000,
+  initialized: false,
+  init() {
+    if (this.initialized) return;
+    if (window.innerWidth > 1024) return; // Solo en móvil
+    
+    const wrap = document.querySelector('.image-wrap#p16');
+    if (!wrap) return;
+    
+    this.cards = Array.from(wrap.querySelectorAll('.mobile-card'));
+    if (this.cards.length === 0) return;
+    
+    this.initialized = true;
+    this.start();
+  },
+  start() {
+    if (this.timer || this.cards.length === 0) return;
+    
+    // Mostrar la primera carta
+    this.showCard(0);
+    
+    // Iniciar ciclo automático
+    this.timer = setInterval(() => this.next(), this.duration);
+  },
+  showCard(index) {
+    if (index < 0 || index >= this.cards.length) return;
+    
+    // Ocultar todas
+    this.cards.forEach(card => {
+      card.classList.remove('is-active');
+      card.classList.add('is-inactive');
+    });
+    
+    // Mostrar la actual
+    this.cards[index].classList.remove('is-inactive');
+    this.cards[index].classList.add('is-active');
+    this.currentIndex = index;
+  },
+  next() {
+    const nextIndex = (this.currentIndex + 1) % this.cards.length;
+    this.showCard(nextIndex);
+  },
+  stop() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+};
+
 // ===== ROLLO MÓVIL DESLIZABLE (p12) =====
 const MobileRollo = {
   wrap: null,
@@ -3220,8 +3426,7 @@ const MobileRollo = {
       if (v < 0) factor = Math.min(1, distToMin / zone);
       else if (v > 0) factor = Math.min(1, distToMax / zone);
       factor = Math.max(0.12, factor);
-      v *= factor;
-      // Avanzar posición
+      // Aplicar inercia
       let nx = this.currentX + v * dt;
       // Límite y parada al tocar borde en la dirección de avance
       if (nx <= this.minX && v < 0) { nx = this.minX; v = 0; }
@@ -3574,71 +3779,6 @@ const MobileThumbnails = {
   }
 };
 
-const MobileCards = {
-  wrap: null,
-  cards: [],
-  index: 0,
-  timer: null,
-  interval: 4600,
-  observer: null,
-  initialized: false,
-  init() {
-    if (this.initialized) return;
-    if (window.innerWidth > 1024) return;
-    this.wrap = document.querySelector('.image-wrap#p16');
-    if (!this.wrap) return;
-    this.cards = Array.from(this.wrap.querySelectorAll('.mobile-overlay.mobile-card'));
-    if (this.cards.length < 2) return;
-
-    const root = document.getElementById('galeria-container') || null;
-    try {
-      this.observer = new IntersectionObserver((entries) => {
-        const entry = entries && entries[0];
-        if (!entry) return;
-        if (entry.isIntersecting) {
-          this.start();
-        } else {
-          this.stop();
-        }
-      }, { root, threshold: 0.4 });
-      this.observer.observe(this.wrap);
-    } catch (e) {
-      console.warn('MobileCards observer failed:', e);
-      // Fallback: arrancar inmediatamente
-      this.start();
-    }
-
-    this.initialized = true;
-  },
-  start() {
-    if (!this.cards.length) return;
-    this.activate(this.index);
-    if (!this.timer) {
-      this.timer = setInterval(() => this.next(), this.interval);
-    }
-  },
-  stop() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  },
-  activate(idx) {
-    if (!this.cards.length) return;
-    this.cards.forEach((card, i) => {
-      card.classList.add('visible');
-      card.classList.toggle('is-active', i === idx);
-      card.classList.toggle('is-inactive', i !== idx);
-      card.style.zIndex = i === idx ? '6' : '5';
-    });
-  },
-  next() {
-    if (!this.cards.length) return;
-    this.index = (this.index + 1) % this.cards.length;
-    this.activate(this.index);
-  }
-};
-
 // ===== FOOTER INLINE EN MÓVIL =====
 const MobileFooter = {
   initialized: false,
@@ -3880,6 +4020,23 @@ const init = () => {
   // Event listeners optimizados
   [
     [window, 'scroll', () => Scroll.handleMain()],
+    // Fallback robusto: usar rueda/gesto de scroll para detectar dirección aunque el host del scroll no sea window
+    [window, 'wheel', (e) => {
+      try {
+        if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
+        const dy = e.deltaY || 0;
+        const threshold = 2; // sensible pero con mínima histéresis
+        if (dy > threshold) {
+          $.header?.classList.add('hidden');
+        } else if (dy < -threshold) {
+          $.header?.classList.remove('hidden');
+        }
+      } catch {}
+    }],
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
       const nowNarrow = $.isNarrow;
@@ -3888,6 +4045,8 @@ const init = () => {
       try { FooterWatch.attachToCurrentSection(); } catch {}
       // Verificar footer también en resize (fallback si no hay IO)
       if (!FooterWatch.usingObserver) Scroll.updateFooter();
+      // Recalcular índice activo tras cambios de layout/orientación
+      try { Nav.updateActive && Nav.updateActive(); } catch {}
       
       // Gestionar footer inline al cambiar tamaño
       if (window.innerWidth <= 1024 && !MobileFooter.initialized) {
@@ -3918,7 +4077,31 @@ const init = () => {
     [$.galeriaContainer, 'scroll', () => throttle('galeria', () => { 
       Overlays.update(); 
       // En contenedor interno, si no hay IO, seguir con cálculo manual
-      if (!FooterWatch.usingObserver) Scroll.updateFooter(); 
+      if (!FooterWatch.usingObserver) Scroll.updateFooter();
+      // Ocultar/mostrar header según dirección del scroll del contenedor en modo estrecho
+      try {
+        const indiceMobileVisible = (() => { 
+          const im = document.getElementById('indice-mobile'); 
+          if (!im) return false; 
+          const cs = window.getComputedStyle(im); 
+          return cs && cs.display !== 'none'; 
+        })();
+        if (document.body.classList.contains('proyectos-page') && indiceMobileVisible) {
+          const st = $.galeriaContainer?.scrollTop || 0;
+          const prev = $.lastHeaderContainerScrollTop || 0;
+          const d = st - prev;
+          // Umbral pequeño para evitar parpadeo por microajustes
+          const threshold = 6;
+          if (d > threshold) {
+            $.header?.classList.add('hidden');
+          } else if (d < -threshold) {
+            $.header?.classList.remove('hidden');
+          }
+          $.lastHeaderContainerScrollTop = st;
+        }
+      } catch {}
+      // Mantener resaltado del índice sincronizado cuando el scroll ocurre en el contenedor
+      try { Nav.updateActive && Nav.updateActive(); } catch {}
     })]
   ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
   
@@ -3991,15 +4174,22 @@ const init = () => {
   
   // Verificar footer en la carga inicial después de un breve delay
   setTimeout(() => { if (!FooterWatch.usingObserver) Scroll.updateFooter(); }, 300);
+  // Marcar índice activo tras la carga inicial
+  try { setTimeout(() => Nav.updateActive && Nav.updateActive(), 200); } catch {}
 
   // Soporte de deeplinks: si hay hash #pN, hacer scroll al elemento en la galería
   try {
     const hash = (location.hash || '').replace('#','');
     if (hash && /^p\d+$/.test(hash)) {
       const target = document.getElementById(hash);
-      if (target && $.galeriaContainer) {
-        $.galeriaContainer.scrollTo({ top: target.offsetTop, behavior: 'instant' });
-        Nav.updateActive(target.offsetTop);
+      if (target) {
+        if ($.isNarrow) {
+          target.scrollIntoView({ block: 'start', behavior: 'auto' });
+          Nav.updateActive((window.scrollY || 0) + (window.innerHeight || document.documentElement.clientHeight) / 4);
+        } else if ($.galeriaContainer) {
+          $.galeriaContainer.scrollTo({ top: target.offsetTop, behavior: 'auto' });
+          Nav.updateActive(target.offsetTop);
+        }
       }
     }
   } catch {}
