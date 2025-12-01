@@ -2850,6 +2850,30 @@ const MobileRollo = {
   dragDirection: null,
   directionLocked: false,
   initialized: false,
+  // Auto-scroll state
+  autoRAF: null,
+  autoDir: -1, // -1 hacia minX (derecha->izquierda), +1 hacia 0 (izquierda->derecha)
+  autoBaseSpeed: 18, // px/segundo, más rápido (≈x2+)
+  autoLastTs: 0,
+  autoEnabled: true,
+  isVisible: false,
+  idleResumeTimer: null,
+  idleResumeMs: 3000,
+  visibilityObserver: null,
+  // Auto ramp after (re)start
+  autoRamp: 1,
+  autoRampStartTs: 0,
+  autoRampDurMs: 180,
+  // Easing helpers
+  clamp01(t) { return t < 0 ? 0 : (t > 1 ? 1 : t); },
+  easeOutCubic(t) { t = this.clamp01(t); return 1 - Math.pow(1 - t, 3); },
+  smoothStep(t) { t = this.clamp01(t); return t * t * (3 - 2 * t); },
+  // Inercia
+  moveSamples: [], // {x, t}
+  inertialRAF: null,
+  inertialVel: 0, // px/s
+  inertialDecel: 2200, // px/s^2
+  inertialMinVel: 18, // px/s, umbral para detener
   onPointerDown: null,
   onPointerMove: null,
   onPointerUp: null,
@@ -2861,12 +2885,33 @@ const MobileRollo = {
   onMouseUp: null,
   onResize: null,
   resizeObserver: null,
+  // Cursor/hover tracking
+  lastMouseX: null,
+  lastMouseY: null,
+  isInGrabBand(x, y) {
+    if (!this.img) return false;
+    const rect = this.img.getBoundingClientRect();
+    if (!(x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom)) return false;
+    if (!rect.height) return false;
+    const relY = (y - rect.top) / rect.height;
+    return relY >= 0.55 && relY <= 0.95;
+  },
+  updateCursorFromPoint(x, y) {
+    if (!this.wrap || !this.img) return;
+    // Sólo cambiar cursor cuando no estamos arrastrando
+    if (this.isDragging) return;
+    // Banda vertical [55%, 95%] del alto de la imagen del rollo
+    const inBand = this.isInGrabBand(x, y);
+    this.wrap.style.cursor = inBand ? 'grab' : 'default';
+  },
   init() {
     if (this.initialized) return;
     this.wrap = document.querySelector('.image-wrap#p12');
     if (!this.wrap) return;
     this.img = this.wrap.querySelector('.mobile-rollo-scroll');
     if (!this.img) return;
+    // Evitar arrastre nativo del navegador (ghost image) en desktop
+    try { this.img.setAttribute('draggable', 'false'); } catch {}
 
     // Recalcular límites una vez que la imagen esté cargada y en cada resize/orientación.
     const updateBoundsNow = () => this.updateBounds(true);
@@ -2882,12 +2927,36 @@ const MobileRollo = {
       try { this.resizeObserver.observe(this.wrap); } catch {}
     }
 
+    // Configurar observador de visibilidad para arrancar/parar auto-scroll
+    try {
+      const root = document.getElementById('galeria-container') || null;
+      this.visibilityObserver = new IntersectionObserver((entries) => {
+        const entry = entries && entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          this.isVisible = true;
+          // Iniciar auto si procede
+          this.maybeStartAuto();
+        } else {
+          this.isVisible = false;
+          this.stopAuto();
+        }
+      }, { root, threshold: 0.35 });
+      this.visibilityObserver.observe(this.wrap);
+    } catch (e) { /* silencioso */ }
+
     if (window.PointerEvent) {
       this.onPointerDown = (e) => {
         if (e.pointerType === 'mouse' && e.buttons !== 1) return;
         if (!this.canDrag()) return;
+        // Sólo permitir agarre si comienza dentro de la banda
+        if (!this.isInGrabBand(e.clientX, e.clientY)) return;
         this.pointerId = e.pointerId;
         this.wrap.setPointerCapture?.(e.pointerId);
+        // En desktop, prevenir arrastre nativo del img sólo si vamos a arrastrar
+        if (e.pointerType === 'mouse') {
+          try { e.preventDefault(); } catch {}
+        }
         this.handleStart(e.clientX, e.clientY);
         // No preventDefault aquí para permitir determinación de dirección
       };
@@ -2903,6 +2972,14 @@ const MobileRollo = {
         this.wrap.releasePointerCapture?.(e.pointerId);
         this.handleEnd();
       };
+      // Actualizar cursor cuando el puntero se mueve sobre el área sin arrastrar
+      this.wrap.addEventListener('pointermove', (e) => {
+        this.lastMouseX = e.clientX; this.lastMouseY = e.clientY;
+        this.updateCursorFromPoint(e.clientX, e.clientY);
+      });
+      this.wrap.addEventListener('pointerleave', () => {
+        this.wrap.style.cursor = 'default';
+      });
       this.wrap.addEventListener('pointerdown', this.onPointerDown);
       this.wrap.addEventListener('pointermove', this.onPointerMove);
       this.wrap.addEventListener('pointerup', this.onPointerUp);
@@ -2914,6 +2991,7 @@ const MobileRollo = {
         if (!this.canDrag()) return;
         const touch = e.touches[0];
         if (!touch) return;
+        if (!this.isInGrabBand(touch.clientX, touch.clientY)) return;
         this.handleStart(touch.clientX, touch.clientY);
         // No preventDefault para permitir detección de dirección
       };
@@ -2935,6 +3013,9 @@ const MobileRollo = {
       // Mouse fallback (para pruebas en escritorio estrecho)
       this.onMouseDown = (e) => {
         if (e.button !== 0 || !this.canDrag()) return;
+        if (!this.isInGrabBand(e.clientX, e.clientY)) return;
+        // Prevenir drag nativo del navegador (ghost) en fallback mouse, sólo si vamos a arrastrar
+        try { e.preventDefault(); } catch {}
         this.handleStart(e.clientX, e.clientY);
         // No preventDefault para permitir detección de dirección
       };
@@ -2949,9 +3030,17 @@ const MobileRollo = {
       this.wrap.addEventListener('mousedown', this.onMouseDown);
       document.addEventListener('mousemove', this.onMouseMove);
       document.addEventListener('mouseup', this.onMouseUp);
+      // Seguimiento de cursor en fallback mouse para actualizar mano
+      this.wrap.addEventListener('mousemove', (e) => {
+        this.lastMouseX = e.clientX; this.lastMouseY = e.clientY;
+        this.updateCursorFromPoint(e.clientX, e.clientY);
+      });
+      this.wrap.addEventListener('mouseleave', () => { this.wrap.style.cursor = 'default'; });
     }
 
     this.initialized = true;
+    // Intentar arrancar auto-scroll si ya está visible al iniciar
+    this.maybeStartAuto();
   },
   canDrag() {
     return this.minX < 0;
@@ -2981,6 +3070,8 @@ const MobileRollo = {
       const clamped = Math.max(this.minX, Math.min(0, this.currentX));
       this.applyPosition(clamped);
     }
+    // Si no hay espacio para deslizar, detener auto
+    if (!this.canDrag()) this.stopAuto(); else this.maybeStartAuto();
   },
   handleStart(clientX, clientY) {
     if (!this.canDrag()) return;
@@ -2990,6 +3081,12 @@ const MobileRollo = {
     this.dragDirection = null;
     this.directionLocked = false;
     this.img.style.willChange = 'transform';
+    this.wrap.style.cursor = 'grabbing';
+    // Cualquier gesto manual interrumpe el auto-scroll
+    this.stopAutoTemporarily();
+    // Cancelar inercia en curso y resetear muestreo
+    this.stopInertia();
+    this.moveSamples = [{ x: this.currentX, t: performance.now() }];
   },
   handleMove(clientX, clientY) {
     if (!this.isDragging || !this.img) return;
@@ -3021,6 +3118,14 @@ const MobileRollo = {
       const deltaX = clientX - this.startX;
       const clamped = Math.max(this.minX, Math.min(0, deltaX));
       this.applyPosition(clamped);
+      // Interacción manual: reiniciar temporizador de reanudación
+      this.stopAutoTemporarily();
+      // Registrar muestra para velocidad
+      const now = performance.now();
+      this.moveSamples.push({ x: this.currentX, t: now });
+      // Mantener últimas muestras (~140ms)
+      const windowMs = 140;
+      this.moveSamples = this.moveSamples.filter(s => (now - s.t) <= windowMs);
       return true;
     }
     return false;
@@ -3031,10 +3136,185 @@ const MobileRollo = {
     this.wrap.classList.remove('mobile-rollo-dragging');
     this.img.style.willChange = 'auto';
     this.pointerId = null;
+    // Restaurar cursor según última posición del puntero
+    if (this.lastMouseX != null && this.lastMouseY != null) this.updateCursorFromPoint(this.lastMouseX, this.lastMouseY);
+    else this.wrap.style.cursor = 'default';
+    // Calcular velocidad de salida para inercia
+    const now = performance.now();
+    // usar primera muestra dentro de ventana y la última
+    const recent = this.moveSamples.filter(s => (now - s.t) <= 140);
+    let v = 0;
+    if (recent.length >= 2) {
+      const first = recent[0];
+      const last = recent[recent.length - 1];
+      const dt = Math.max(0.001, (last.t - first.t) / 1000);
+      v = (last.x - first.x) / dt; // px/s (signo coincide con desplazamiento)
+    }
+    this.moveSamples = [];
+    // Si la velocidad es suficiente, iniciar inercia; si no, planificar auto
+    if (Math.abs(v) >= this.inertialMinVel) {
+      this.startInertia(v);
+    } else {
+      this.scheduleAutoResume();
+    }
   },
   applyPosition(x) {
     this.currentX = x;
     this.img.style.setProperty('transform', `translateX(${x}px)`, 'important');
+  },
+  // ==== Inercia ====
+  startInertia(initialVel) {
+    this.stopInertia();
+    this.inertialVel = initialVel;
+    let last = performance.now();
+    const zone = this.edgeZonePx();
+    const step = (ts) => {
+      const dt = Math.max(0, (ts - last) / 1000);
+      last = ts;
+      // Fricción lineal: reducir velocidad hacia 0
+      const sign = Math.sign(this.inertialVel) || 1;
+      const dec = this.inertialDecel * dt;
+      let v = this.inertialVel - sign * dec;
+      // Enlentecer cerca del borde hacia el que vamos (edge easing)
+      const distToMin = Math.max(0, this.currentX - this.minX);
+      const distToMax = Math.max(0, 0 - this.currentX);
+      let factor = 1;
+      if (v < 0) factor = Math.min(1, distToMin / zone);
+      else if (v > 0) factor = Math.min(1, distToMax / zone);
+      factor = Math.max(0.12, factor);
+      v *= factor;
+      // Avanzar posición
+      let nx = this.currentX + v * dt;
+      // Límite y parada al tocar borde en la dirección de avance
+      if (nx <= this.minX && v < 0) { nx = this.minX; v = 0; }
+      if (nx >= 0 && v > 0) { nx = 0; v = 0; }
+      this.applyPosition(nx);
+      this.inertialVel = v;
+      // Condición de parada
+      if (Math.abs(v) < this.inertialMinVel) {
+        this.stopInertia();
+        this.scheduleAutoResume();
+        return;
+      }
+      this.inertialRAF = requestAnimationFrame(step);
+    };
+    this.inertialRAF = requestAnimationFrame(step);
+  },
+  stopInertia() {
+    if (this.inertialRAF) {
+      cancelAnimationFrame(this.inertialRAF);
+      this.inertialRAF = null;
+    }
+    this.inertialVel = 0;
+  },
+  // ==== Auto-scroll helpers ====
+  edgeZonePx() {
+    // Zona base: ~15% del span, acotada 40..120
+    const span = Math.abs(this.minX);
+    const base = Math.max(40, Math.min(120, span * 0.15));
+    // Reducir nuevamente a la mitad: 6.25% del baseline
+    const reduced = base * 0.0625;
+    // Cotas más pequeñas para rampas muy cortas
+    return Math.max(3, Math.min(8, reduced));
+  },
+  startAutoRamp() {
+    const zone = this.edgeZonePx();
+    // Duración aproximada proporcional a zona/velocidad base (rápida pero gradual)
+    const ms = Math.max(120, Math.min(350, (zone / Math.max(1, this.autoBaseSpeed)) * 1000));
+    this.autoRampDurMs = ms;
+    this.autoRampStartTs = performance.now();
+    this.autoRamp = 0;
+  },
+  // Preferimos salida rápida pero suave para ramp auto
+  rampEaseOut(t) { return this.easeOutCubic(t); },
+  maybeStartAuto() {
+    if (!this.autoEnabled) return;
+    if (!this.isVisible) return;
+    if (!this.canDrag()) return;
+    if (this.isDragging) return;
+    if (this.autoRAF) return;
+    // Si estamos pegados a un borde, arrancar hacia el centro opuesto
+    if (this.currentX <= this.minX + 0.5) this.autoDir = +1;
+    else if (this.currentX >= -0.5) this.autoDir = -1;
+    this.autoLastTs = performance.now();
+    this.startAutoRamp();
+    const tick = (ts) => {
+      if (!this.autoRAF) return; // parado
+      const dt = Math.max(0, (ts - this.autoLastTs) / 1000);
+      this.autoLastTs = ts;
+      // Cálculo de velocidad con desaceleración cerca del borde de llegada
+      // y aceleración simétrica desde el borde de salida.
+      const zone = this.edgeZonePx();
+      const distToMin = Math.max(0, this.currentX - this.minX);
+      const distToMax = Math.max(0, 0 - this.currentX);
+
+      // Factor de aproximación (desaceleración) hacia el borde destino (suavizado S-curve)
+      const approachLin = (this.autoDir < 0)
+        ? Math.min(1, distToMin / zone)
+        : Math.min(1, distToMax / zone);
+      const approachFactor = this.smoothStep(approachLin);
+
+      // Factor de salida (aceleración) desde el borde opuesto, con easeOut para subir rápido
+      const departDist = (this.autoDir < 0) ? (distToMax) : (distToMin);
+      const departLin = Math.min(1, departDist / zone);
+      const departFactor = this.easeOutCubic(departLin);
+
+      // Usar el mínimo para combinar ambas condiciones
+      let factor = Math.min(approachFactor, departFactor);
+      // Aplicar rampa de arranque tras reinicio de auto (aceleración desde 0)
+      if (this.autoRamp < 1) {
+        const t = (ts - this.autoRampStartTs) / Math.max(1, this.autoRampDurMs);
+        this.autoRamp = Math.min(1, Math.max(0, t));
+        const ramp = this.rampEaseOut(this.autoRamp);
+        factor *= ramp;
+      }
+      const step = this.autoDir * this.autoBaseSpeed * factor * dt;
+      let nx = this.currentX + step;
+      // Umbral de snap a borde para garantizar inversión natural
+      const snapPx = 0.5;
+      if (this.autoDir < 0 && distToMin <= snapPx) nx = this.minX; // acercándonos a minX
+      if (this.autoDir > 0 && distToMax <= snapPx) nx = 0;        // acercándonos a 0
+      // Gestión de límites con inversión suave
+      if (nx <= this.minX) {
+        nx = this.minX;
+        this.autoDir = +1;
+        // Micro-impulso para salir del borde manteniendo inicio en 0 de facto
+        const kick = Math.min(0.2, Math.abs(this.minX) * 0.0012);
+        nx = Math.min(0, nx + kick);
+      } else if (nx >= 0) {
+        nx = 0;
+        this.autoDir = -1;
+        const kick = Math.min(0.2, Math.abs(this.minX) * 0.0012);
+        nx = Math.max(this.minX, nx - kick);
+      }
+      this.applyPosition(nx);
+      this.autoRAF = requestAnimationFrame(tick);
+    };
+    this.autoRAF = requestAnimationFrame(tick);
+  },
+  stopAuto() {
+    if (this.autoRAF) {
+      cancelAnimationFrame(this.autoRAF);
+      this.autoRAF = null;
+    }
+  },
+  stopAutoTemporarily() {
+    this.stopAuto();
+    if (this.idleResumeTimer) {
+      clearTimeout(this.idleResumeTimer);
+      this.idleResumeTimer = null;
+    }
+  },
+  scheduleAutoResume() {
+    if (!this.autoEnabled) return;
+    if (this.idleResumeTimer) {
+      clearTimeout(this.idleResumeTimer);
+      this.idleResumeTimer = null;
+    }
+    this.idleResumeTimer = setTimeout(() => {
+      this.idleResumeTimer = null;
+      this.maybeStartAuto();
+    }, this.idleResumeMs);
   },
   destroy() {
     if (!this.initialized) return;
@@ -3058,6 +3338,12 @@ const MobileRollo = {
       try { this.resizeObserver.disconnect(); } catch {}
       this.resizeObserver = null;
     }
+    if (this.visibilityObserver) {
+      try { this.visibilityObserver.disconnect(); } catch {}
+      this.visibilityObserver = null;
+    }
+    this.stopAuto();
+    if (this.idleResumeTimer) { clearTimeout(this.idleResumeTimer); this.idleResumeTimer = null; }
     this.wrap?.classList.remove('mobile-rollo-dragging', 'mobile-rollo-enabled');
     this.img?.style && (this.img.style.willChange = 'auto');
     this.initialized = false;
