@@ -1833,6 +1833,7 @@ const Carousel = {
   isMenuActive: false,
   animationDuration: 800,
   autoSpeed: 5800,
+  userSlideDuration: 400,
   firstSeqContainerIndex: null,
   lastSeqContainerIndex: null,
   bufferAfterLastIndex: null,
@@ -2012,6 +2013,37 @@ const Carousel = {
       this.centerCurrent(false);
     }
   },
+  // Movimiento inmediato para interacción de usuario (swipe/clic lateral)
+  userSlide(direction) {
+    if (!this.sequenceIndices.length) return;
+    // Configurar transición más rápida para esta interacción
+    const prevTransition = this.transitionString;
+    const fast = `transform ${this.userSlideDuration}ms ease-out`;
+    this.transitionString = fast;
+    this.setTransition(fast);
+    if (direction === 'next') {
+      if (this.seqPos >= this.sequenceIndices.length - 1) {
+        this.seqPos = 0; // wrap directo sin usar buffer
+        this.centerCurrent(false);
+      } else {
+        this.seqPos += 1;
+        this.centerCurrent(false);
+      }
+    } else if (direction === 'prev') {
+      if (this.seqPos <= 0) {
+        this.seqPos = this.sequenceIndices.length - 1; // wrap directo
+        this.centerCurrent(false);
+      } else {
+        this.seqPos -= 1;
+        this.centerCurrent(false);
+      }
+    }
+    // Restaurar transición por defecto después de terminar
+    setTimeout(() => {
+      this.transitionString = prevTransition;
+      this.setTransition(prevTransition);
+    }, this.userSlideDuration + 20);
+  },
 
   start() {
     if (!this.container || !this.sequenceIndices.length) return;
@@ -2123,20 +2155,15 @@ Carousel.attachInteractions = function() {
     const dx = e.clientX - this.pointerStartX;
     this.pointerStartX = null;
     this.pointerCurrentX = null;
-    
-    // Restaurar transición suave
     this.setTransition(this.getDefaultTransition());
-    
     if (this.isDragging && Math.abs(dx) >= this.swipeThreshold) {
-      // Swipe válido: avanzar o retroceder
       if (dx > 0) {
-        this.prev();
+        this.userSlide('prev');
       } else {
-        this.next();
+        this.userSlide('next');
       }
       this.resetAutoTimer();
     } else {
-      // No alcanzó umbral: volver a centrar la imagen actual
       this.centerCurrent(false);
     }
     this.isDragging = false;
