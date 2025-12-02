@@ -106,7 +106,6 @@ const $ = {
   lastHeaderContainerScrollTop: 0,
   // Para tracking táctil en móviles
   touchStartY: undefined,
-  touchPrevY: undefined,
   // Dirección previa del scroll para detectar cambios bruscos
   lastScrollDirection: 0, // 1: abajo, -1: arriba, 0: sin movimiento
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
@@ -288,6 +287,22 @@ const TopNav = {
 const Scroll = {
   footerVisible: false, hideTimer: null,
   headerRaf: null,
+  applyHeaderDirection(dir, source = 'scroll') {
+    if (!dir) return;
+    // Si hay un bloqueo activo por gesto reciente y el intento contradice, ignora
+    const now = performance.now();
+    if (source === 'scroll' && now < $.headerDirLockUntil && dir !== $.headerDir) return;
+    if (dir > 0) {
+      $.header?.classList.add('hidden');
+    } else if (dir < 0) {
+      $.header?.classList.remove('hidden');
+    }
+    $.headerDir = dir;
+    // Tras gestos directos (wheel/touch), bloquear brevemente para evitar que el scroll inercial contradiga
+    if (source !== 'scroll') {
+      $.headerDirLockUntil = now + 180; // ms
+    }
+  },
   handleMain() {
     // Actualizar dirección del header inmediatamente sin throttle para respuesta rápida
     if (!this.headerRaf) {
@@ -304,18 +319,8 @@ const Scroll = {
               return cs && cs.display !== 'none'; 
             })();
             if (indiceMobileVisible) {
-              const currentDirection = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
-              const threshold = window.innerWidth <= 768 ? 0 : 6;
-              
-              // Reaccionar inmediatamente a cualquier cambio de dirección
-              if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-                if (currentDirection > 0) {
-                  $.header?.classList.add('hidden');
-                } else {
-                  $.header?.classList.remove('hidden');
-                }
-                $.lastScrollDirection = currentDirection;
-              }
+              const dir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
+              this.applyHeaderDirection(dir, 'scroll');
             }
           } else {
             $.header?.classList.remove('hidden');
@@ -456,6 +461,9 @@ const Nav = {
   io: null,
   navRaf: null,
   lastCentered: null,
+  // Dirección previa del header y bloqueo temporal para respetar gestos recientes
+  headerDir: 0, // 1: oculto (scroll abajo), -1: visible (scroll arriba)
+  headerDirLockUntil: 0,
 
   // Flag para controlar si el padding ya ha sido calculado y aplicado
   paddingApplied: false,
@@ -4027,21 +4035,9 @@ const init = () => {
         if (!im) return;
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
-        
-        // Capturar deltaY inmediatamente
         const dy = e.deltaY || 0;
-        const threshold = window.innerWidth <= 768 ? 0 : 1;
-        
-        // Procesar inmediatamente sin RAF para capturar cambios rápidos
-        if (Math.abs(dy) > threshold) {
-          if (dy > 0) {
-            $.header?.classList.add('hidden');
-            $.lastScrollDirection = 1;
-          } else {
-            $.header?.classList.remove('hidden');
-            $.lastScrollDirection = -1;
-          }
-        }
+        const dir = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+        if (dir !== 0) Scroll.applyHeaderDirection(dir, 'gesture');
       } catch {}
     }, {passive: true}],
     // Soporte táctil: trackear touchmove para móviles
@@ -4053,7 +4049,6 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         $.touchStartY = e.touches[0]?.clientY || 0;
-        $.touchPrevY = $.touchStartY;
       } catch {}
     }, {passive: true}],
     [window, 'touchmove', (e) => {
@@ -4063,26 +4058,12 @@ const init = () => {
         if (!im) return;
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
-        if ($.touchPrevY === undefined) return;
-        
-        // Capturar posición inmediatamente
+        if ($.touchStartY === undefined) return;
         const currentY = e.touches[0]?.clientY || 0;
-        const dy = $.touchPrevY - currentY; // Comparar con posición previa, no con inicio
-        
-        // Procesar cada movimiento para detectar cambios de dirección
-        if (Math.abs(dy) > 1) { // Umbral mínimo para evitar ruido
-          const currentDirection = dy > 0 ? 1 : -1;
-          // Reaccionar a cualquier cambio de dirección
-          if (currentDirection !== $.lastScrollDirection) {
-            if (currentDirection > 0) {
-              $.header?.classList.add('hidden');
-            } else {
-              $.header?.classList.remove('hidden');
-            }
-            $.lastScrollDirection = currentDirection;
-          }
-        }
-        $.touchPrevY = currentY;
+        const dy = $.touchStartY - currentY;
+        const dir = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+        if (dir !== 0) Scroll.applyHeaderDirection(dir, 'gesture');
+        $.touchStartY = currentY;
       } catch {}
     }, {passive: true}],
     [window, 'resize', () => debounce('resize', () => { 
@@ -4138,13 +4119,8 @@ const init = () => {
           const st = $.galeriaContainer?.scrollTop || 0;
           const prev = $.lastHeaderContainerScrollTop || 0;
           const d = st - prev;
-          // Umbral pequeño para evitar parpadeo por microajustes
-          const threshold = 6;
-          if (d > threshold) {
-            $.header?.classList.add('hidden');
-          } else if (d < -threshold) {
-            $.header?.classList.remove('hidden');
-          }
+          const dir = d > 0 ? 1 : (d < 0 ? -1 : 0);
+          if (dir !== 0) Scroll.applyHeaderDirection(dir, 'scroll');
           $.lastHeaderContainerScrollTop = st;
         }
       } catch {}
