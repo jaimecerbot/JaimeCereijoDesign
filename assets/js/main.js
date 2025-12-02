@@ -296,11 +296,9 @@ const Scroll = {
             return cs && cs.display !== 'none'; 
           })();
           if (indiceMobileVisible) {
-            // Umbral cero en móvil puro (≤768). Pequeño en estrecho (>768).
-            const threshold = window.innerWidth <= 768 ? 0 : 6;
-            if (delta > threshold) {
+            if (delta > 0) {
               $.header?.classList.add('hidden');
-            } else if (delta < -threshold) {
+            } else if (delta < 0) {
               $.header?.classList.remove('hidden');
             }
           }
@@ -527,37 +525,38 @@ const Nav = {
           const anchor = mobileNav.querySelector(`a[href='${href}']`);
           if (!scroller || !anchor) return;
 
-          // Recalcular padding dinámico en móvil siempre o si cambió el ancho (para orientación / resize)
-          const widthKey = scroller.clientWidth;
-          if (!this.lastScrollerWidth || Math.abs(this.lastScrollerWidth - widthKey) > 8 || window.innerWidth <= 768) {
-            const firstItem = scroller.firstElementChild;
-            const lastItem = scroller.lastElementChild;
-            if (firstItem && lastItem) {
-              const firstAnchor = firstItem.querySelector('a');
-              const lastAnchor = lastItem.querySelector('a');
-              if (firstAnchor && lastAnchor) {
-                const scW = scroller.clientWidth;
-                const firstW = firstAnchor.getBoundingClientRect().width;
-                const lastW = lastAnchor.getBoundingClientRect().width;
-                const padL = (scW / 2) - (firstW / 2);
-                const padR = (scW / 2) - (lastW / 2);
-                scroller.style.paddingLeft = `${padL}px`;
-                scroller.style.paddingRight = `${padR}px`;
-                this.lastScrollerWidth = widthKey;
+          // Aplicar padding solo una vez para evitar recalculos innecesarios
+          if (!this.paddingApplied) {
+              const firstItem = scroller.firstElementChild;
+              const lastItem = scroller.lastElementChild;
+              if (firstItem && lastItem) {
+                  const scrollWidth = scroller.clientWidth;
+                  // Usamos los anchos de los 'a' dentro de los 'li' para ser mas precisos
+                  const firstAnchor = firstItem.querySelector('a');
+                  const lastAnchor = lastItem.querySelector('a');
+                  
+                  if(firstAnchor && lastAnchor) {
+                    const firstItemWidth = firstAnchor.getBoundingClientRect().width;
+                    const lastItemWidth = lastAnchor.getBoundingClientRect().width;
+                    
+                    const paddingLeft = (scrollWidth / 2) - (firstItemWidth / 2);
+                    const paddingRight = (scrollWidth / 2) - (lastItemWidth / 2);
+
+                    scroller.style.paddingLeft = `${paddingLeft}px`;
+                    scroller.style.paddingRight = `${paddingRight}px`;
+                    this.paddingApplied = true; // Marcar como aplicado
+                  }
               }
-            }
           }
 
           const scRect = scroller.getBoundingClientRect();
           const aRect = anchor.getBoundingClientRect();
 
-          // El cálculo del centro del ancla debe tener en cuenta el scroll actual
+          // Centrar el chip activo exactamente en el medio, permitiendo que se vean medios chips a cada lado
           const anchorCenter = (aRect.left - scRect.left) + scroller.scrollLeft + (aRect.width / 2);
-          // El objetivo es que el centro del ancla coincida con el centro del scroller
           const targetLeft = anchorCenter - (scroller.clientWidth / 2);
-          // En móvil puro (≤768) usar desplazamiento inmediato para evitar acumulación de animaciones
-          const behavior = window.innerWidth <= 768 ? 'auto' : 'smooth';
-          scroller.scrollTo({ left: targetLeft, behavior });
+
+          scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
           this.lastCentered = href;
       } catch (e) {
           console.error("Error in centerActive:", e);
@@ -4028,32 +4027,44 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
-        const threshold = window.innerWidth <= 768 ? 0 : 2; // inmediato en móvil
-        if (dy > threshold) {
+        if (dy > 0) {
           $.header?.classList.add('hidden');
-        } else if (dy < -threshold) {
+        } else if (dy < 0) {
           $.header?.classList.remove('hidden');
         }
       } catch {}
     }],
-    // Detectar gestos táctiles directamente (por si algún overlay bloquea scroll de ventana brevemente)
-    [window, 'touchmove', () => {
+    // Detectar scroll táctil en móviles puros para auto-hide del header
+    [window, 'touchstart', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
         const im = document.getElementById('indice-mobile');
         if (!im) return;
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
-        const y = window.scrollY || 0;
-        const delta = y - ($.lastTouchScrollY || 0);
-        if (delta > 0) {
-          $.header?.classList.add('hidden');
-        } else if (delta < 0) {
-          $.header?.classList.remove('hidden');
-        }
-        $.lastTouchScrollY = y;
+        $.touchStartY = e.touches?.[0]?.clientY || 0;
       } catch {}
-    }],
+    }, { passive: true }],
+    [window, 'touchmove', (e) => {
+      try {
+        if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
+        const currentY = e.touches?.[0]?.clientY || 0;
+        const startY = $.touchStartY || 0;
+        const delta = startY - currentY;
+        if (Math.abs(delta) > 5) {
+          if (delta > 0) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+          $.touchStartY = currentY;
+        }
+      } catch {}
+    }, { passive: true }],
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
       const nowNarrow = $.isNarrow;
@@ -4107,11 +4118,9 @@ const init = () => {
           const st = $.galeriaContainer?.scrollTop || 0;
           const prev = $.lastHeaderContainerScrollTop || 0;
           const d = st - prev;
-          // Umbral pequeño para evitar parpadeo por microajustes
-          const threshold = 6;
-          if (d > threshold) {
+          if (d > 0) {
             $.header?.classList.add('hidden');
-          } else if (d < -threshold) {
+          } else if (d < 0) {
             $.header?.classList.remove('hidden');
           }
           $.lastHeaderContainerScrollTop = st;
