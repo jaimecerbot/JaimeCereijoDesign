@@ -4040,10 +4040,6 @@ const init = () => {
     [window, 'touchstart', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
         $.touchStartY = e.touches[0]?.clientY || 0;
       } catch {}
     }, {passive: true}],
@@ -4119,7 +4115,10 @@ const init = () => {
       // Mantener resaltado del índice sincronizado cuando el scroll ocurre en el contenedor
       try { Nav.updateActive && Nav.updateActive(); } catch {}
     })]
-  ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
+  ].forEach((entry) => {
+    const [target, event, handler, opts] = entry;
+    target?.addEventListener(event, handler, opts || {passive: true});
+  });
   
   // Observer para proyectos
   const proyectos = document.getElementById('proyectos');
