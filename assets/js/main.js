@@ -296,9 +296,10 @@ const Scroll = {
             return cs && cs.display !== 'none'; 
           })();
           if (indiceMobileVisible) {
-            if (delta > 0) {
+            const threshold = 6;
+            if (delta > threshold) {
               $.header?.classList.add('hidden');
-            } else if (delta < 0) {
+            } else if (delta < -threshold) {
               $.header?.classList.remove('hidden');
             }
           }
@@ -525,35 +526,16 @@ const Nav = {
           const anchor = mobileNav.querySelector(`a[href='${href}']`);
           if (!scroller || !anchor) return;
 
-          // Aplicar padding solo una vez para evitar recalculos innecesarios
-          if (!this.paddingApplied) {
-              const firstItem = scroller.firstElementChild;
-              const lastItem = scroller.lastElementChild;
-              if (firstItem && lastItem) {
-                  const scrollWidth = scroller.clientWidth;
-                  // Usamos los anchos de los 'a' dentro de los 'li' para ser mas precisos
-                  const firstAnchor = firstItem.querySelector('a');
-                  const lastAnchor = lastItem.querySelector('a');
-                  
-                  if(firstAnchor && lastAnchor) {
-                    const firstItemWidth = firstAnchor.getBoundingClientRect().width;
-                    const lastItemWidth = lastAnchor.getBoundingClientRect().width;
-                    
-                    const paddingLeft = (scrollWidth / 2) - (firstItemWidth / 2);
-                    const paddingRight = (scrollWidth / 2) - (lastItemWidth / 2);
-
-                    scroller.style.paddingLeft = `${paddingLeft}px`;
-                    scroller.style.paddingRight = `${paddingRight}px`;
-                    this.paddingApplied = true; // Marcar como aplicado
-                  }
-              }
-          }
+          // Remover padding previo: queremos centrar el chip sin forzar espacio para dos chips completos
+          scroller.style.paddingLeft = '0';
+          scroller.style.paddingRight = '0';
 
           const scRect = scroller.getBoundingClientRect();
           const aRect = anchor.getBoundingClientRect();
 
-          // Centrar el chip activo exactamente en el medio, permitiendo que se vean medios chips a cada lado
+          // Calcular el centro del chip activo en coordenadas de scroll
           const anchorCenter = (aRect.left - scRect.left) + scroller.scrollLeft + (aRect.width / 2);
+          // Centrar el chip: el centro del chip debe coincidir con el centro del viewport del scroller
           const targetLeft = anchorCenter - (scroller.clientWidth / 2);
 
           scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
@@ -4027,44 +4009,14 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
-        if (dy > 0) {
+        const threshold = 2; // sensible pero con mínima histéresis
+        if (dy > threshold) {
           $.header?.classList.add('hidden');
-        } else if (dy < 0) {
+        } else if (dy < -threshold) {
           $.header?.classList.remove('hidden');
         }
       } catch {}
     }],
-    // Detectar scroll táctil en móviles puros para auto-hide del header
-    [window, 'touchstart', (e) => {
-      try {
-        if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
-        $.touchStartY = e.touches?.[0]?.clientY || 0;
-      } catch {}
-    }, { passive: true }],
-    [window, 'touchmove', (e) => {
-      try {
-        if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
-        const currentY = e.touches?.[0]?.clientY || 0;
-        const startY = $.touchStartY || 0;
-        const delta = startY - currentY;
-        if (Math.abs(delta) > 5) {
-          if (delta > 0) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
-          $.touchStartY = currentY;
-        }
-      } catch {}
-    }, { passive: true }],
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
       const nowNarrow = $.isNarrow;
@@ -4118,9 +4070,11 @@ const init = () => {
           const st = $.galeriaContainer?.scrollTop || 0;
           const prev = $.lastHeaderContainerScrollTop || 0;
           const d = st - prev;
-          if (d > 0) {
+          // Umbral pequeño para evitar parpadeo por microajustes
+          const threshold = 6;
+          if (d > threshold) {
             $.header?.classList.add('hidden');
-          } else if (d < 0) {
+          } else if (d < -threshold) {
             $.header?.classList.remove('hidden');
           }
           $.lastHeaderContainerScrollTop = st;
