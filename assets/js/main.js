@@ -106,6 +106,8 @@ const $ = {
   lastHeaderContainerScrollTop: 0,
   // Para tracking táctil en móviles
   touchStartY: undefined,
+  // Dirección previa del scroll para detectar cambios bruscos
+  lastScrollDirection: 0, // 1: abajo, -1: arriba, 0: sin movimiento
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
   // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
@@ -298,12 +300,19 @@ const Scroll = {
             return cs && cs.display !== 'none'; 
           })();
           if (indiceMobileVisible) {
+            // Detectar dirección actual
+            const currentDirection = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
             // Móvil puro: sin umbral para reacción inmediata
             const threshold = window.innerWidth <= 768 ? 0 : 6;
-            if (delta > threshold) {
-              $.header?.classList.add('hidden');
-            } else if (delta < -threshold) {
-              $.header?.classList.remove('hidden');
+            
+            // Reaccionar si hay cambio de dirección o movimiento sostenido
+            if (currentDirection !== 0 && (currentDirection !== $.lastScrollDirection || Math.abs(delta) > threshold)) {
+              if (currentDirection > 0) {
+                $.header?.classList.add('hidden');
+              } else {
+                $.header?.classList.remove('hidden');
+              }
+              $.lastScrollDirection = currentDirection;
             }
           }
         } else {
@@ -4012,14 +4021,20 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
+        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
         const threshold = window.innerWidth <= 768 ? 0 : 2;
-        if (dy > threshold) {
-          $.header?.classList.add('hidden');
-        } else if (dy < -threshold) {
-          $.header?.classList.remove('hidden');
+        
+        // Reaccionar inmediatamente a cambios de dirección
+        if (currentDirection !== 0 && (Math.abs(dy) > threshold || currentDirection !== $.lastScrollDirection)) {
+          if (currentDirection > 0) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+          $.lastScrollDirection = currentDirection;
         }
       } catch {}
-    }],
+    }, {passive: true}],
     // Soporte táctil: trackear touchmove para móviles
     [window, 'touchstart', (e) => {
       try {
@@ -4041,11 +4056,16 @@ const init = () => {
         if ($.touchStartY === undefined) return;
         const currentY = e.touches[0]?.clientY || 0;
         const dy = $.touchStartY - currentY;
-        // Sin umbral en móvil táctil para respuesta inmediata
-        if (dy > 0) {
-          $.header?.classList.add('hidden');
-        } else if (dy < 0) {
-          $.header?.classList.remove('hidden');
+        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+        
+        // Reaccionar inmediatamente a cualquier cambio de dirección
+        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+          if (currentDirection > 0) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+          $.lastScrollDirection = currentDirection;
         }
         $.touchStartY = currentY;
       } catch {}
