@@ -289,19 +289,13 @@ const Scroll = {
   headerRaf: null,
   applyHeaderDirection(dir, source = 'scroll') {
     if (!dir) return;
-    // Si hay un bloqueo activo por gesto reciente y el intento contradice, ignora
-    const now = performance.now();
-    if (source === 'scroll' && now < $.headerDirLockUntil && dir !== $.headerDir) return;
     if (dir > 0) {
       $.header?.classList.add('hidden');
     } else if (dir < 0) {
       $.header?.classList.remove('hidden');
     }
     $.headerDir = dir;
-    // Tras gestos directos (wheel/touch), bloquear brevemente para evitar que el scroll inercial contradiga
-    if (source !== 'scroll') {
-      $.headerDirLockUntil = now + 180; // ms
-    }
+    // Sin bloqueo: siempre seguimos la última dirección detectada
   },
   handleMain() {
     // Actualizar dirección del header inmediatamente sin throttle para respuesta rápida
