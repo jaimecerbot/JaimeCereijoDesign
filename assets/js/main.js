@@ -296,7 +296,8 @@ const Scroll = {
             return cs && cs.display !== 'none'; 
           })();
           if (indiceMobileVisible) {
-            const threshold = 6;
+            // Umbral cero en móvil puro (≤768). Pequeño en estrecho (>768).
+            const threshold = window.innerWidth <= 768 ? 0 : 6;
             if (delta > threshold) {
               $.header?.classList.add('hidden');
             } else if (delta < -threshold) {
@@ -526,28 +527,25 @@ const Nav = {
           const anchor = mobileNav.querySelector(`a[href='${href}']`);
           if (!scroller || !anchor) return;
 
-          // Aplicar padding solo una vez para evitar recalculos innecesarios
-          if (!this.paddingApplied) {
-              const firstItem = scroller.firstElementChild;
-              const lastItem = scroller.lastElementChild;
-              if (firstItem && lastItem) {
-                  const scrollWidth = scroller.clientWidth;
-                  // Usamos los anchos de los 'a' dentro de los 'li' para ser mas precisos
-                  const firstAnchor = firstItem.querySelector('a');
-                  const lastAnchor = lastItem.querySelector('a');
-                  
-                  if(firstAnchor && lastAnchor) {
-                    const firstItemWidth = firstAnchor.getBoundingClientRect().width;
-                    const lastItemWidth = lastAnchor.getBoundingClientRect().width;
-                    
-                    const paddingLeft = (scrollWidth / 2) - (firstItemWidth / 2);
-                    const paddingRight = (scrollWidth / 2) - (lastItemWidth / 2);
-
-                    scroller.style.paddingLeft = `${paddingLeft}px`;
-                    scroller.style.paddingRight = `${paddingRight}px`;
-                    this.paddingApplied = true; // Marcar como aplicado
-                  }
+          // Recalcular padding dinámico en móvil siempre o si cambió el ancho (para orientación / resize)
+          const widthKey = scroller.clientWidth;
+          if (!this.lastScrollerWidth || Math.abs(this.lastScrollerWidth - widthKey) > 8 || window.innerWidth <= 768) {
+            const firstItem = scroller.firstElementChild;
+            const lastItem = scroller.lastElementChild;
+            if (firstItem && lastItem) {
+              const firstAnchor = firstItem.querySelector('a');
+              const lastAnchor = lastItem.querySelector('a');
+              if (firstAnchor && lastAnchor) {
+                const scW = scroller.clientWidth;
+                const firstW = firstAnchor.getBoundingClientRect().width;
+                const lastW = lastAnchor.getBoundingClientRect().width;
+                const padL = (scW / 2) - (firstW / 2);
+                const padR = (scW / 2) - (lastW / 2);
+                scroller.style.paddingLeft = `${padL}px`;
+                scroller.style.paddingRight = `${padR}px`;
+                this.lastScrollerWidth = widthKey;
               }
+            }
           }
 
           const scRect = scroller.getBoundingClientRect();
@@ -557,8 +555,9 @@ const Nav = {
           const anchorCenter = (aRect.left - scRect.left) + scroller.scrollLeft + (aRect.width / 2);
           // El objetivo es que el centro del ancla coincida con el centro del scroller
           const targetLeft = anchorCenter - (scroller.clientWidth / 2);
-
-          scroller.scrollTo({ left: targetLeft, behavior: 'smooth' });
+          // En móvil puro (≤768) usar desplazamiento inmediato para evitar acumulación de animaciones
+          const behavior = window.innerWidth <= 768 ? 'auto' : 'smooth';
+          scroller.scrollTo({ left: targetLeft, behavior });
           this.lastCentered = href;
       } catch (e) {
           console.error("Error in centerActive:", e);
@@ -4029,12 +4028,30 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
-        const threshold = 2; // sensible pero con mínima histéresis
+        const threshold = window.innerWidth <= 768 ? 0 : 2; // inmediato en móvil
         if (dy > threshold) {
           $.header?.classList.add('hidden');
         } else if (dy < -threshold) {
           $.header?.classList.remove('hidden');
         }
+      } catch {}
+    }],
+    // Detectar gestos táctiles directamente (por si algún overlay bloquea scroll de ventana brevemente)
+    [window, 'touchmove', () => {
+      try {
+        if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
+        const y = window.scrollY || 0;
+        const delta = y - ($.lastTouchScrollY || 0);
+        if (delta > 0) {
+          $.header?.classList.add('hidden');
+        } else if (delta < 0) {
+          $.header?.classList.remove('hidden');
+        }
+        $.lastTouchScrollY = y;
       } catch {}
     }],
     [window, 'resize', () => debounce('resize', () => { 
