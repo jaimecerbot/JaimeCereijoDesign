@@ -286,46 +286,54 @@ const TopNav = {
 
 const Scroll = {
   footerVisible: false, hideTimer: null,
+  headerRaf: null,
+  wheelRaf: null,
+  touchRaf: null,
   handleMain() {
-    throttle('scroll', () => {
-      const delta = window.scrollY - $.lastScrollY;
-      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
-      if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
-        const inProyectosPage = document.body.classList.contains('proyectos-page');
-        if (inProyectosPage) {
-          const indiceMobileVisible = (() => { 
-            const im = document.getElementById('indice-mobile'); 
-            if (!im) return false; 
-            const cs = window.getComputedStyle(im); 
-            return cs && cs.display !== 'none'; 
-          })();
-          if (indiceMobileVisible) {
-            // Detectar dirección actual
-            const currentDirection = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
-            // Móvil puro: sin umbral para reacción inmediata
-            const threshold = window.innerWidth <= 768 ? 0 : 6;
-            
-            // Reaccionar si hay cambio de dirección o movimiento sostenido
-            if (currentDirection !== 0 && (currentDirection !== $.lastScrollDirection || Math.abs(delta) > threshold)) {
-              if (currentDirection > 0) {
-                $.header?.classList.add('hidden');
-              } else {
-                $.header?.classList.remove('hidden');
+    // Actualizar dirección del header inmediatamente sin throttle para respuesta rápida
+    if (!this.headerRaf) {
+      this.headerRaf = requestAnimationFrame(() => {
+        const delta = window.scrollY - $.lastScrollY;
+        
+        if (window.innerWidth <= 1220) {
+          const inProyectosPage = document.body.classList.contains('proyectos-page');
+          if (inProyectosPage) {
+            const indiceMobileVisible = (() => { 
+              const im = document.getElementById('indice-mobile'); 
+              if (!im) return false; 
+              const cs = window.getComputedStyle(im); 
+              return cs && cs.display !== 'none'; 
+            })();
+            if (indiceMobileVisible) {
+              const currentDirection = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
+              const threshold = window.innerWidth <= 768 ? 0 : 6;
+              
+              // Reaccionar inmediatamente a cualquier cambio de dirección
+              if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+                if (currentDirection > 0) {
+                  $.header?.classList.add('hidden');
+                } else {
+                  $.header?.classList.remove('hidden');
+                }
+                $.lastScrollDirection = currentDirection;
               }
-              $.lastScrollDirection = currentDirection;
             }
+          } else {
+            $.header?.classList.remove('hidden');
           }
-        } else {
-          // Asegurar que no queda oculto fuera de proyectos
-          $.header?.classList.remove('hidden');
+        } else if (Math.abs(delta) > 5) {
+          const hide = delta > 0 && window.scrollY > 100;
+          $.header?.classList.toggle('hidden', hide);
         }
-      } else if (Math.abs(delta) > 5) {
-        // En desktop: mantener umbral para evitar parpadeos
-        const hide = delta > 0 && window.scrollY > 100;
-        $.header?.classList.toggle('hidden', hide);
-      }
+        
+        $.lastScrollY = window.scrollY;
+        this.headerRaf = null;
+      });
+    }
+    
+    // Throttle solo para actualizaciones de layout/footer que no son críticas
+    throttle('scroll', () => {
       this.updateLayout();
-      $.lastScrollY = window.scrollY;
       // Actualizar índice activo en proyectos.html para cualquier scroll (pequeño o grande)
       try {
         if (document.body.classList.contains('proyectos-page')) {
@@ -4014,26 +4022,31 @@ const init = () => {
     [window, 'scroll', () => Scroll.handleMain()],
     // Fallback robusto: usar rueda/gesto de scroll para detectar dirección aunque el host del scroll no sea window
     [window, 'wheel', (e) => {
-      try {
-        if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
-        const dy = e.deltaY || 0;
-        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
-        const threshold = window.innerWidth <= 768 ? 0 : 2;
-        
-        // Reaccionar inmediatamente a cambios de dirección
-        if (currentDirection !== 0 && (Math.abs(dy) > threshold || currentDirection !== $.lastScrollDirection)) {
-          if (currentDirection > 0) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
-          $.lastScrollDirection = currentDirection;
-        }
-      } catch {}
+      if (!Scroll.wheelRaf) {
+        Scroll.wheelRaf = requestAnimationFrame(() => {
+          try {
+            if (!document.body.classList.contains('proyectos-page')) return;
+            const im = document.getElementById('indice-mobile');
+            if (!im) return;
+            const cs = window.getComputedStyle(im);
+            if (!cs || cs.display === 'none') return;
+            const dy = e.deltaY || 0;
+            const threshold = window.innerWidth <= 768 ? 0 : 1;
+            
+            // Reaccionar a cada movimiento, sin importar dirección previa
+            if (Math.abs(dy) > threshold) {
+              if (dy > 0) {
+                $.header?.classList.add('hidden');
+                $.lastScrollDirection = 1;
+              } else {
+                $.header?.classList.remove('hidden');
+                $.lastScrollDirection = -1;
+              }
+            }
+          } catch {}
+          Scroll.wheelRaf = null;
+        });
+      }
     }, {passive: true}],
     // Soporte táctil: trackear touchmove para móviles
     [window, 'touchstart', (e) => {
@@ -4047,28 +4060,33 @@ const init = () => {
       } catch {}
     }, {passive: true}],
     [window, 'touchmove', (e) => {
-      try {
-        if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
-        if ($.touchStartY === undefined) return;
-        const currentY = e.touches[0]?.clientY || 0;
-        const dy = $.touchStartY - currentY;
-        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
-        
-        // Reaccionar inmediatamente a cualquier cambio de dirección
-        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-          if (currentDirection > 0) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
-          $.lastScrollDirection = currentDirection;
-        }
-        $.touchStartY = currentY;
-      } catch {}
+      if (!Scroll.touchRaf) {
+        Scroll.touchRaf = requestAnimationFrame(() => {
+          try {
+            if (!document.body.classList.contains('proyectos-page')) return;
+            const im = document.getElementById('indice-mobile');
+            if (!im) return;
+            const cs = window.getComputedStyle(im);
+            if (!cs || cs.display === 'none') return;
+            if ($.touchStartY === undefined) return;
+            const currentY = e.touches[0]?.clientY || 0;
+            const dy = $.touchStartY - currentY;
+            
+            // Reaccionar a cada movimiento táctil sin umbral
+            if (Math.abs(dy) > 0) {
+              if (dy > 0) {
+                $.header?.classList.add('hidden');
+                $.lastScrollDirection = 1;
+              } else {
+                $.header?.classList.remove('hidden');
+                $.lastScrollDirection = -1;
+              }
+            }
+            $.touchStartY = currentY;
+          } catch {}
+          Scroll.touchRaf = null;
+        });
+      }
     }, {passive: true}],
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
