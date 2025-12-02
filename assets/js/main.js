@@ -106,6 +106,7 @@ const $ = {
   lastHeaderContainerScrollTop: 0,
   // Para tracking táctil en móviles
   touchStartY: undefined,
+  touchPrevY: undefined,
   // Dirección previa del scroll para detectar cambios bruscos
   lastScrollDirection: 0, // 1: abajo, -1: arriba, 0: sin movimiento
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
@@ -4052,6 +4053,7 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         $.touchStartY = e.touches[0]?.clientY || 0;
+        $.touchPrevY = $.touchStartY;
       } catch {}
     }, {passive: true}],
     [window, 'touchmove', (e) => {
@@ -4061,23 +4063,26 @@ const init = () => {
         if (!im) return;
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
-        if ($.touchStartY === undefined) return;
+        if ($.touchPrevY === undefined) return;
         
         // Capturar posición inmediatamente
         const currentY = e.touches[0]?.clientY || 0;
-        const dy = $.touchStartY - currentY;
+        const dy = $.touchPrevY - currentY; // Comparar con posición previa, no con inicio
         
-        // Procesar inmediatamente sin RAF para capturar cambios rápidos
-        if (Math.abs(dy) > 0) {
-          if (dy > 0) {
-            $.header?.classList.add('hidden');
-            $.lastScrollDirection = 1;
-          } else {
-            $.header?.classList.remove('hidden');
-            $.lastScrollDirection = -1;
+        // Procesar cada movimiento para detectar cambios de dirección
+        if (Math.abs(dy) > 1) { // Umbral mínimo para evitar ruido
+          const currentDirection = dy > 0 ? 1 : -1;
+          // Reaccionar a cualquier cambio de dirección
+          if (currentDirection !== $.lastScrollDirection) {
+            if (currentDirection > 0) {
+              $.header?.classList.add('hidden');
+            } else {
+              $.header?.classList.remove('hidden');
+            }
+            $.lastScrollDirection = currentDirection;
           }
         }
-        $.touchStartY = currentY;
+        $.touchPrevY = currentY;
       } catch {}
     }, {passive: true}],
     [window, 'resize', () => debounce('resize', () => { 
