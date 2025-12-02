@@ -104,6 +104,8 @@ const $ = {
   lastScrollY: 0, 
   // Estado específico para ocultar/mostrar header según scroll del contenedor (≤1024px)
   lastHeaderContainerScrollTop: 0,
+  // Para tracking táctil en móviles
+  touchStartY: undefined,
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
   // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
@@ -285,7 +287,7 @@ const Scroll = {
   handleMain() {
     throttle('scroll', () => {
       const delta = window.scrollY - $.lastScrollY;
-      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html (con umbral ligero)
+      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
       if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
         const inProyectosPage = document.body.classList.contains('proyectos-page');
         if (inProyectosPage) {
@@ -296,7 +298,8 @@ const Scroll = {
             return cs && cs.display !== 'none'; 
           })();
           if (indiceMobileVisible) {
-            const threshold = 6;
+            // Móvil puro: sin umbral para reacción inmediata
+            const threshold = window.innerWidth <= 768 ? 0 : 6;
             if (delta > threshold) {
               $.header?.classList.add('hidden');
             } else if (delta < -threshold) {
@@ -4009,7 +4012,7 @@ const init = () => {
         const cs = window.getComputedStyle(im);
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
-        const threshold = 2; // sensible pero con mínima histéresis
+        const threshold = window.innerWidth <= 768 ? 0 : 2;
         if (dy > threshold) {
           $.header?.classList.add('hidden');
         } else if (dy < -threshold) {
@@ -4017,6 +4020,36 @@ const init = () => {
         }
       } catch {}
     }],
+    // Soporte táctil: trackear touchmove para móviles
+    [window, 'touchstart', (e) => {
+      try {
+        if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
+        $.touchStartY = e.touches[0]?.clientY || 0;
+      } catch {}
+    }, {passive: true}],
+    [window, 'touchmove', (e) => {
+      try {
+        if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
+        if ($.touchStartY === undefined) return;
+        const currentY = e.touches[0]?.clientY || 0;
+        const dy = $.touchStartY - currentY;
+        // Sin umbral en móvil táctil para respuesta inmediata
+        if (dy > 0) {
+          $.header?.classList.add('hidden');
+        } else if (dy < 0) {
+          $.header?.classList.remove('hidden');
+        }
+        $.touchStartY = currentY;
+      } catch {}
+    }, {passive: true}],
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
       const nowNarrow = $.isNarrow;
