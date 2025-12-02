@@ -312,15 +312,21 @@ const Scroll = {
         if (window.innerWidth <= 1220) {
           const inProyectosPage = document.body.classList.contains('proyectos-page');
           if (inProyectosPage) {
-            const indiceMobileVisible = (() => { 
-              const im = document.getElementById('indice-mobile'); 
-              if (!im) return false; 
-              const cs = window.getComputedStyle(im); 
-              return cs && cs.display !== 'none'; 
-            })();
-            if (indiceMobileVisible) {
+            // En móvil puro (≤768px) no dependemos de visibilidad del índice
+            if ($.isMobile) {
               const dir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
               this.applyHeaderDirection(dir, 'scroll');
+            } else {
+              const indiceMobileVisible = (() => { 
+                const im = document.getElementById('indice-mobile'); 
+                if (!im) return false; 
+                const cs = window.getComputedStyle(im); 
+                return cs && cs.display !== 'none'; 
+              })();
+              if (indiceMobileVisible) {
+                const dir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
+                this.applyHeaderDirection(dir, 'scroll');
+              }
             }
           } else {
             $.header?.classList.remove('hidden');
@@ -4031,10 +4037,6 @@ const init = () => {
     [window, 'wheel', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
         const dir = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
         if (dir !== 0) Scroll.applyHeaderDirection(dir, 'gesture');
@@ -4054,10 +4056,6 @@ const init = () => {
     [window, 'touchmove', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
-        const im = document.getElementById('indice-mobile');
-        if (!im) return;
-        const cs = window.getComputedStyle(im);
-        if (!cs || cs.display === 'none') return;
         if ($.touchStartY === undefined) return;
         const currentY = e.touches[0]?.clientY || 0;
         const dy = $.touchStartY - currentY;
