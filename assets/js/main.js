@@ -298,18 +298,17 @@ const Scroll = {
           return cs && cs.display !== 'none'; 
         })();
         if (indiceMobileVisible) {
-          // Reacción inmediata: sin umbral mínimo y sin dependencia del estado previo
-          // Simplemente verificar la dirección del scroll actual
-          if (delta > 0) {
-            // Scroll hacia abajo: ocultar header inmediatamente
+          // Móvil puro: sin umbral para reacción inmediata
+          const threshold = window.innerWidth <= 768 ? 0 : 6;
+          
+          // Lógica simplificada: ocultar al bajar, mostrar al subir
+          if (delta > threshold) {
             $.header?.classList.add('hidden');
             $.lastScrollDirection = 1;
-          } else if (delta < 0) {
-            // Scroll hacia arriba: mostrar header inmediatamente
+          } else if (delta < -threshold) {
             $.header?.classList.remove('hidden');
             $.lastScrollDirection = -1;
           }
-          // Si delta === 0, no hay movimiento, no hacer nada
         }
       } else {
         // Asegurar que no queda oculto fuera de proyectos
@@ -4017,21 +4016,13 @@ const init = () => {
         if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
         const threshold = window.innerWidth <= 768 ? 0 : 2;
-        const currentDirection = dy > threshold ? 1 : (dy < -threshold ? -1 : 0);
-        // Reaccionar inmediatamente a cambios de dirección
-        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-          if (currentDirection === 1) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
-          $.lastScrollDirection = currentDirection;
-        } else if (currentDirection !== 0) {
-          if (currentDirection === 1) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
+        
+        if (dy > threshold) {
+          $.header?.classList.add('hidden');
+          $.lastScrollDirection = 1;
+        } else if (dy < -threshold) {
+          $.header?.classList.remove('hidden');
+          $.lastScrollDirection = -1;
         }
       } catch {}
     }],
@@ -4056,21 +4047,13 @@ const init = () => {
         if ($.touchStartY === undefined) return;
         const currentY = e.touches[0]?.clientY || 0;
         const dy = $.touchStartY - currentY;
-        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
-        // Reaccionar inmediatamente a cambios de dirección
-        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-          if (currentDirection === 1) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
-          $.lastScrollDirection = currentDirection;
-        } else if (currentDirection !== 0) {
-          if (currentDirection === 1) {
-            $.header?.classList.add('hidden');
-          } else {
-            $.header?.classList.remove('hidden');
-          }
+        
+        if (dy > 0) {
+          $.header?.classList.add('hidden');
+          $.lastScrollDirection = 1;
+        } else if (dy < 0) {
+          $.header?.classList.remove('hidden');
+          $.lastScrollDirection = -1;
         }
         $.touchStartY = currentY;
       } catch {}
