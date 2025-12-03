@@ -298,25 +298,18 @@ const Scroll = {
           return cs && cs.display !== 'none'; 
         })();
         if (indiceMobileVisible) {
-          // Móvil puro: sin umbral para reacción inmediata
-          const threshold = window.innerWidth <= 768 ? 0 : 6;
-          const currentDirection = delta > threshold ? 1 : (delta < -threshold ? -1 : 0);
-          // Detectar cambio de dirección
-          if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-            if (currentDirection === 1) {
-              $.header?.classList.add('hidden');
-            } else {
-              $.header?.classList.remove('hidden');
-            }
-            $.lastScrollDirection = currentDirection;
-          } else if (currentDirection !== 0) {
-            // Mantener estado si sigue la misma dirección
-            if (currentDirection === 1) {
-              $.header?.classList.add('hidden');
-            } else {
-              $.header?.classList.remove('hidden');
-            }
+          // Reacción inmediata: sin umbral mínimo y sin dependencia del estado previo
+          // Simplemente verificar la dirección del scroll actual
+          if (delta > 0) {
+            // Scroll hacia abajo: ocultar header inmediatamente
+            $.header?.classList.add('hidden');
+            $.lastScrollDirection = 1;
+          } else if (delta < 0) {
+            // Scroll hacia arriba: mostrar header inmediatamente
+            $.header?.classList.remove('hidden');
+            $.lastScrollDirection = -1;
           }
+          // Si delta === 0, no hay movimiento, no hacer nada
         }
       } else {
         // Asegurar que no queda oculto fuera de proyectos
