@@ -286,61 +286,59 @@ const TopNav = {
 const Scroll = {
   footerVisible: false, hideTimer: null,
   handleMain() {
-    throttle('scroll', () => {
-      const delta = window.scrollY - $.lastScrollY;
-      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
-      if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
-        const inProyectosPage = document.body.classList.contains('proyectos-page');
-        if (inProyectosPage) {
-          const indiceMobileVisible = (() => { 
-            const im = document.getElementById('indice-mobile'); 
-            if (!im) return false; 
-            const cs = window.getComputedStyle(im); 
-            return cs && cs.display !== 'none'; 
-          })();
-          if (indiceMobileVisible) {
-            // Móvil puro: sin umbral para reacción inmediata
-            const threshold = window.innerWidth <= 768 ? 0 : 6;
-            const currentDirection = delta > threshold ? 1 : (delta < -threshold ? -1 : 0);
-            // Detectar cambio de dirección
-            if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
-              if (currentDirection === 1) {
-                $.header?.classList.add('hidden');
-              } else {
-                $.header?.classList.remove('hidden');
-              }
-              $.lastScrollDirection = currentDirection;
-            } else if (currentDirection !== 0) {
-              // Mantener estado si sigue la misma dirección
-              if (currentDirection === 1) {
-                $.header?.classList.add('hidden');
-              } else {
-                $.header?.classList.remove('hidden');
-              }
+    const delta = window.scrollY - $.lastScrollY;
+    // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
+    if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
+      const inProyectosPage = document.body.classList.contains('proyectos-page');
+      if (inProyectosPage) {
+        const indiceMobileVisible = (() => { 
+          const im = document.getElementById('indice-mobile'); 
+          if (!im) return false; 
+          const cs = window.getComputedStyle(im); 
+          return cs && cs.display !== 'none'; 
+        })();
+        if (indiceMobileVisible) {
+          // Móvil puro: sin umbral para reacción inmediata
+          const threshold = window.innerWidth <= 768 ? 0 : 6;
+          const currentDirection = delta > threshold ? 1 : (delta < -threshold ? -1 : 0);
+          // Detectar cambio de dirección
+          if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+            if (currentDirection === 1) {
+              $.header?.classList.add('hidden');
+            } else {
+              $.header?.classList.remove('hidden');
+            }
+            $.lastScrollDirection = currentDirection;
+          } else if (currentDirection !== 0) {
+            // Mantener estado si sigue la misma dirección
+            if (currentDirection === 1) {
+              $.header?.classList.add('hidden');
+            } else {
+              $.header?.classList.remove('hidden');
             }
           }
-        } else {
-          // Asegurar que no queda oculto fuera de proyectos
-          $.header?.classList.remove('hidden');
         }
-      } else if (Math.abs(delta) > 5) {
-        // En desktop: mantener umbral para evitar parpadeos
-        const hide = delta > 0 && window.scrollY > 100;
-        $.header?.classList.toggle('hidden', hide);
+      } else {
+        // Asegurar que no queda oculto fuera de proyectos
+        $.header?.classList.remove('hidden');
       }
-      this.updateLayout();
-      $.lastScrollY = window.scrollY;
-      // Actualizar índice activo en proyectos.html para cualquier scroll (pequeño o grande)
-      try {
-        if (document.body.classList.contains('proyectos-page')) {
-          throttle('nav-active', () => Nav.updateActive(), 16);
-        }
-      } catch {}
-      // Solo actualizar footer en desktop (>1024px)
-      if (window.innerWidth > 1024) {
-        this.updateFooter();
+    } else if (Math.abs(delta) > 5) {
+      // En desktop: mantener umbral para evitar parpadeos
+      const hide = delta > 0 && window.scrollY > 100;
+      $.header?.classList.toggle('hidden', hide);
+    }
+    this.updateLayout();
+    $.lastScrollY = window.scrollY;
+    // Actualizar índice activo en proyectos.html para cualquier scroll (pequeño o grande)
+    try {
+      if (document.body.classList.contains('proyectos-page')) {
+        throttle('nav-active', () => Nav.updateActive(), 16);
       }
-    });
+    } catch {}
+    // Solo actualizar footer en desktop (>1024px)
+    if (window.innerWidth > 1024) {
+      this.updateFooter();
+    }
   },
   updateLayout() {
     const visible = !$.header?.classList.contains('hidden');
