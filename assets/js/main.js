@@ -302,7 +302,11 @@ const Scroll = {
           const threshold = window.innerWidth <= 768 ? 0 : 6;
           
           // Lógica simplificada: ocultar al bajar, mostrar al subir
-          if (delta > threshold) {
+          // Asegurar que siempre se muestra al llegar arriba del todo
+          if (window.scrollY <= 0) {
+            $.header?.classList.remove('hidden');
+            $.lastScrollDirection = -1;
+          } else if (delta > threshold) {
             $.header?.classList.add('hidden');
             $.lastScrollDirection = 1;
           } else if (delta < -threshold) {
@@ -4007,7 +4011,7 @@ const init = () => {
   [
     [window, 'scroll', () => Scroll.handleMain()],
     // Fallback robusto: usar rueda/gesto de scroll para detectar dirección aunque el host del scroll no sea window
-    [window, 'wheel', (e) => {
+    /* [window, 'wheel', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
         const im = document.getElementById('indice-mobile');
@@ -4025,9 +4029,9 @@ const init = () => {
           $.lastScrollDirection = -1;
         }
       } catch {}
-    }],
+    }], */
     // Soporte táctil: trackear touchmove para móviles
-    [window, 'touchstart', (e) => {
+    /* [window, 'touchstart', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
         const im = document.getElementById('indice-mobile');
@@ -4057,7 +4061,7 @@ const init = () => {
         }
         $.touchStartY = currentY;
       } catch {}
-    }, {passive: true}],
+    }, {passive: true}], */
     [window, 'resize', () => debounce('resize', () => { 
       const wasNarrow = $.lastIsNarrow ?? $.isNarrow;
       const nowNarrow = $.isNarrow;
