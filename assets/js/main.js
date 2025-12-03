@@ -106,8 +106,7 @@ const $ = {
   lastHeaderContainerScrollTop: 0,
   // Para tracking táctil en móviles
   touchStartY: undefined,
-  // Dirección previa del scroll para detectar cambios bruscos
-  lastScrollDirection: 0, // 1: abajo, -1: arriba, 0: sin movimiento
+  lastScrollDirection: 0, // 1 = abajo, -1 = arriba, 0 = neutro
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
   // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
@@ -286,58 +285,51 @@ const TopNav = {
 
 const Scroll = {
   footerVisible: false, hideTimer: null,
-  headerRaf: null,
-  applyHeaderDirection(dir, source = 'scroll') {
-    if (!dir) return;
-    if (dir > 0) {
-      $.header?.classList.add('hidden');
-    } else if (dir < 0) {
-      $.header?.classList.remove('hidden');
-    }
-    $.headerDir = dir;
-    // Sin bloqueo: siempre seguimos la última dirección detectada
-  },
   handleMain() {
-    // Actualizar dirección del header inmediatamente sin throttle para respuesta rápida
-    if (!this.headerRaf) {
-      this.headerRaf = requestAnimationFrame(() => {
-        const delta = window.scrollY - $.lastScrollY;
-        
-        if (window.innerWidth <= 1220) {
-          const inProyectosPage = document.body.classList.contains('proyectos-page');
-          if (inProyectosPage) {
-            // En móvil puro (≤768px) no dependemos de visibilidad del índice
-            if ($.isMobile) {
-              const dir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
-              this.applyHeaderDirection(dir, 'scroll');
-            } else {
-              const indiceMobileVisible = (() => { 
-                const im = document.getElementById('indice-mobile'); 
-                if (!im) return false; 
-                const cs = window.getComputedStyle(im); 
-                return cs && cs.display !== 'none'; 
-              })();
-              if (indiceMobileVisible) {
-                const dir = delta > 0 ? 1 : (delta < 0 ? -1 : 0);
-                this.applyHeaderDirection(dir, 'scroll');
+    throttle('scroll', () => {
+      const delta = window.scrollY - $.lastScrollY;
+      // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
+      if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
+        const inProyectosPage = document.body.classList.contains('proyectos-page');
+        if (inProyectosPage) {
+          const indiceMobileVisible = (() => { 
+            const im = document.getElementById('indice-mobile'); 
+            if (!im) return false; 
+            const cs = window.getComputedStyle(im); 
+            return cs && cs.display !== 'none'; 
+          })();
+          if (indiceMobileVisible) {
+            // Móvil puro: sin umbral para reacción inmediata
+            const threshold = window.innerWidth <= 768 ? 0 : 6;
+            const currentDirection = delta > threshold ? 1 : (delta < -threshold ? -1 : 0);
+            // Detectar cambio de dirección
+            if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+              if (currentDirection === 1) {
+                $.header?.classList.add('hidden');
+              } else {
+                $.header?.classList.remove('hidden');
+              }
+              $.lastScrollDirection = currentDirection;
+            } else if (currentDirection !== 0) {
+              // Mantener estado si sigue la misma dirección
+              if (currentDirection === 1) {
+                $.header?.classList.add('hidden');
+              } else {
+                $.header?.classList.remove('hidden');
               }
             }
-          } else {
-            $.header?.classList.remove('hidden');
           }
-        } else if (Math.abs(delta) > 5) {
-          const hide = delta > 0 && window.scrollY > 100;
-          $.header?.classList.toggle('hidden', hide);
+        } else {
+          // Asegurar que no queda oculto fuera de proyectos
+          $.header?.classList.remove('hidden');
         }
-        
-        $.lastScrollY = window.scrollY;
-        this.headerRaf = null;
-      });
-    }
-    
-    // Throttle solo para actualizaciones de layout/footer que no son críticas
-    throttle('scroll', () => {
+      } else if (Math.abs(delta) > 5) {
+        // En desktop: mantener umbral para evitar parpadeos
+        const hide = delta > 0 && window.scrollY > 100;
+        $.header?.classList.toggle('hidden', hide);
+      }
       this.updateLayout();
+      $.lastScrollY = window.scrollY;
       // Actualizar índice activo en proyectos.html para cualquier scroll (pequeño o grande)
       try {
         if (document.body.classList.contains('proyectos-page')) {
@@ -461,9 +453,6 @@ const Nav = {
   io: null,
   navRaf: null,
   lastCentered: null,
-  // Dirección previa del header y bloqueo temporal para respetar gestos recientes
-  headerDir: 0, // 1: oculto (scroll abajo), -1: visible (scroll arriba)
-  headerDirLockUntil: 0,
 
   // Flag para controlar si el padding ya ha sido calculado y aplicado
   paddingApplied: false,
@@ -4031,26 +4020,67 @@ const init = () => {
     [window, 'wheel', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
         const dy = e.deltaY || 0;
-        const dir = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
-        if (dir !== 0) Scroll.applyHeaderDirection(dir, 'gesture');
+        const threshold = window.innerWidth <= 768 ? 0 : 2;
+        const currentDirection = dy > threshold ? 1 : (dy < -threshold ? -1 : 0);
+        // Reaccionar inmediatamente a cambios de dirección
+        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+          if (currentDirection === 1) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+          $.lastScrollDirection = currentDirection;
+        } else if (currentDirection !== 0) {
+          if (currentDirection === 1) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+        }
       } catch {}
-    }, {passive: true}],
+    }],
     // Soporte táctil: trackear touchmove para móviles
     [window, 'touchstart', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
         $.touchStartY = e.touches[0]?.clientY || 0;
       } catch {}
     }, {passive: true}],
     [window, 'touchmove', (e) => {
       try {
         if (!document.body.classList.contains('proyectos-page')) return;
+        const im = document.getElementById('indice-mobile');
+        if (!im) return;
+        const cs = window.getComputedStyle(im);
+        if (!cs || cs.display === 'none') return;
         if ($.touchStartY === undefined) return;
         const currentY = e.touches[0]?.clientY || 0;
         const dy = $.touchStartY - currentY;
-        const dir = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
-        if (dir !== 0) Scroll.applyHeaderDirection(dir, 'gesture');
+        const currentDirection = dy > 0 ? 1 : (dy < 0 ? -1 : 0);
+        // Reaccionar inmediatamente a cambios de dirección
+        if (currentDirection !== 0 && currentDirection !== $.lastScrollDirection) {
+          if (currentDirection === 1) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+          $.lastScrollDirection = currentDirection;
+        } else if (currentDirection !== 0) {
+          if (currentDirection === 1) {
+            $.header?.classList.add('hidden');
+          } else {
+            $.header?.classList.remove('hidden');
+          }
+        }
         $.touchStartY = currentY;
       } catch {}
     }, {passive: true}],
@@ -4107,18 +4137,20 @@ const init = () => {
           const st = $.galeriaContainer?.scrollTop || 0;
           const prev = $.lastHeaderContainerScrollTop || 0;
           const d = st - prev;
-          const dir = d > 0 ? 1 : (d < 0 ? -1 : 0);
-          if (dir !== 0) Scroll.applyHeaderDirection(dir, 'scroll');
+          // Umbral pequeño para evitar parpadeo por microajustes
+          const threshold = 6;
+          if (d > threshold) {
+            $.header?.classList.add('hidden');
+          } else if (d < -threshold) {
+            $.header?.classList.remove('hidden');
+          }
           $.lastHeaderContainerScrollTop = st;
         }
       } catch {}
       // Mantener resaltado del índice sincronizado cuando el scroll ocurre en el contenedor
       try { Nav.updateActive && Nav.updateActive(); } catch {}
     })]
-  ].forEach((entry) => {
-    const [target, event, handler, opts] = entry;
-    target?.addEventListener(event, handler, opts || {passive: true});
-  });
+  ].forEach(([target, event, handler]) => target?.addEventListener(event, handler, {passive: true}));
   
   // Observer para proyectos
   const proyectos = document.getElementById('proyectos');
