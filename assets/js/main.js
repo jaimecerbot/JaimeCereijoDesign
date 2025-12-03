@@ -106,7 +106,6 @@ const $ = {
   lastHeaderContainerScrollTop: 0,
   // Para tracking táctil en móviles
   touchStartY: undefined,
-  lastScrollDirection: 0, // 1 = abajo, -1 = arriba, 0 = neutro
   get headerHeight() { return window.innerWidth <= 768 ? 60 : 70; },
   // isMobile: uso general (≤768px) para comportamientos de UI como alturas del header
   get isMobile() { return window.innerWidth <= 768; },
@@ -287,15 +286,26 @@ const Scroll = {
   footerVisible: false, hideTimer: null,
   handleMain() {
     const delta = window.scrollY - $.lastScrollY;
-    // En móvil/ventanas estrechas: ocultar header de forma inmediata en proyectos.html
+    // En móvil/ventanas estrechas: ocultar header solo en proyectos.html
     if (window.innerWidth <= 1220) { // margen extra para cubrir límites de breakpoint/zoom
       const inProyectosPage = document.body.classList.contains('proyectos-page');
       if (inProyectosPage) {
-        // Responder inmediatamente al sentido del scroll, sin condiciones iniciales
-        if (delta > 0) {
-          $.header?.classList.add('hidden');
-        } else if (delta < 0) {
-          $.header?.classList.remove('hidden');
+        const indiceMobileVisible = (() => { 
+          const im = document.getElementById('indice-mobile'); 
+          if (!im) return false; 
+          const cs = window.getComputedStyle(im); 
+          return cs && cs.display !== 'none'; 
+        })();
+        if (indiceMobileVisible) {
+          // Nueva lógica: respuesta inmediata basada solo en la dirección actual del scroll
+          // Scroll hacia abajo (delta positivo) -> ocultar header
+          // Scroll hacia arriba (delta negativo) -> mostrar header
+          if (delta > 0) {
+            $.header?.classList.add('hidden');
+          } else if (delta < 0) {
+            $.header?.classList.remove('hidden');
+          }
+          // No hay condiciones iniciales ni umbrales, responde a cualquier movimiento
         }
       } else {
         // Asegurar que no queda oculto fuera de proyectos
