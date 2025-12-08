@@ -181,6 +181,9 @@
     min-height: var(--indice-mobile-h);
     transition: top .3s ease;
   }
+  /* Ocultar solo overlays de escritorio; mantener los móviles (src contiene /movil/) */
+  body.proyectos-page #galeria .image-wrap > img.overlay:not([src*="/movil/"]),
+  body.proyectos-page #galeria .image-wrap > .text-overlay { display: none !important; }
   #indice-mobile ul { 
     display: flex; 
     align-items: center;

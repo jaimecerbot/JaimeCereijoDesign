@@ -1046,9 +1046,88 @@ const Overlays = {
 // ===== EFECTOS CONSOLIDADOS =====
 const Effects = {
   handlers: new WeakMap(),
+  // Configuración de polígonos para hover preciso por imagen/overlay
+  polygonConfig: {
+    // Clave por nombre de archivo dentro del src; valores en porcentajes [0-100]
+    'Hira/stand.webp': {
+      layout: 'wide',
+      centroid: [46.54, 54.48],
+      coordsRef: 'base', // coordenadas referenciadas a la imagen base
+      polygons: [
+        [ [8.66, 12.85], [14.44, 2.57], [69.68, 30.85], [92.06, 25.71], [92.06, 66.84], [50.18, 107.33], [8.66, 75.84] ]
+      ]
+    },
+    'Nostre/Manos.webp': {
+      layout: 'wide',
+      centroid: [49.84, 49.70],
+      coordsRef: 'base', // coordenadas referenciadas a la imagen base
+      polygons: [
+        [
+          [25.27, 59.13], [29.24, 75.84], [41.52, 80.98], [44.04, 69.41], [56.32, 57.20],
+          [63.18, 74.44], [74.37, 76.48], [75.81, 59.13], [59.57, 29.56], [50.90, 6.43],
+          [46.93, 6.42], [40.07, 35.35], [29.96, 44.99]
+        ]
+      ]
+    },
+    'Reflejos/folletos.webp': {
+      layout: 'wide',
+      centroid: [29.38, 51.89],
+      polygons: [
+        [
+          [12.63, 14.78], [47.65, 21.21], [45.85, 54.63], [55.23, 55.27], [51.99, 87.40], [3.61, 74.55]
+        ]
+      ]
+    },
+    'Cartas/cartas1.webp': {
+      layout: 'wide',
+      centroid: [31.11, 50.49],
+      polygons: [
+        [
+          [13, 31.49], [30.67, 14.14], [40.79, 26.99], [52.35, 37.28], [44.04, 68.12], [34.66, 89.33], [16.61, 71.98]
+        ]
+      ]
+    },
+    'Cartas/cartas2.webp': {
+      layout: 'wide',
+      centroid: [51.02, 47.81],
+      polygons: [
+        [
+          [23.10, 69.41], [59.21, 83.55], [76.89, 62.98], [66.79, 32.13], [55.60, 15.42], [43.68, 17.99], [31.41, 31.49]
+        ]
+      ]
+    }
+  },
+  // Utilidad: punto en polígono (ray casting). p = [x,y] en %; poly = array de puntos en %
+  pointInPolygon(p, poly) {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const xi = poly[i][0], yi = poly[i][1];
+      const xj = poly[j][0], yj = poly[j][1];
+      const intersect = ((yi > p[1]) !== (yj > p[1])) &&
+        (p[0] < (xj - xi) * (p[1] - yi) / ((yj - yi) || 1e-9) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  },
+  // Ver si existe configuración para un overlay por su src
+  getPolyConfigFor(el) {
+    const src = (el.getAttribute('src') || '').replace(/\\/g, '/');
+    const keys = Object.keys(this.polygonConfig);
+    for (const key of keys) {
+      if (src.includes(key)) return this.polygonConfig[key];
+    }
+    return null;
+  },
   
   setup() {
-    ['stands', 'bottles', 'rollos', 'carteles'].forEach((type, i) => 
+    // Ejecutar inmediatamente setupCartels sin debounce para asegurar que se configure
+    try {
+      this.setupCartels();
+    } catch (e) {
+      console.error('Error en setupCartels:', e);
+    }
+    // Ejecutar el resto con debounce
+    ['stands', 'bottles', 'rollos'].forEach((type, i) => 
       debounce(`setup-${type}`, () => this[`setup${type.charAt(0).toUpperCase() + type.slice(1)}`](), 100 + i * 50));
   },
   
@@ -1069,10 +1148,22 @@ const Effects = {
       const invalidateRect = () => { rectState.rect = null; };
       
       let hovering = false, isHovering = false;
+      // Detección: si hay polígono configurado, usarlo; si no, caja por defecto
+      const polyConf = this.getPolyConfigFor(stand);
       const isOpaque = (x, y) => {
         const rect = getRect();
-        const [relX, relY] = [(x - rect.left) / rect.width, (y - rect.top) / rect.height];
-        return relX >= 0.25 && relX <= 0.75 && relY >= 0.15 && relY <= 0.85;
+        const wrap = stand.closest('.image-wrap');
+        const baseImg = wrap?.querySelector('img.base');
+        const baseRect = (polyConf?.coordsRef === 'base' && baseImg) ? baseImg.getBoundingClientRect() : rect;
+        const relX = ((x - baseRect.left) / baseRect.width) * 100;
+        const relY = ((y - baseRect.top) / baseRect.height) * 100;
+        if (polyConf && Array.isArray(polyConf.polygons)) {
+          // Dentro de cualquiera de los polígonos declarados
+          return polyConf.polygons.some(poly => this.pointInPolygon([relX, relY], poly));
+        }
+        // Fallback: caja central
+        const rx = relX / 100, ry = relY / 100;
+        return rx >= 0.25 && rx <= 0.75 && ry >= 0.15 && ry <= 0.85;
       };
       
       const onMouseMove = e => {
@@ -1081,7 +1172,7 @@ const Effects = {
           isHovering = opaque;
           if (opaque) {
             hovering = true;
-            Object.assign(stand.style, {willChange: 'transform', transform: 'scale(1.02)', cursor: 'pointer'});
+            Object.assign(stand.style, {willChange: 'transform', transform: 'scale(1.02)', cursor: 'default'});
           } else {
             hovering = false;
             Object.assign(stand.style, {cursor: 'default', transform: 'scale(1)', willChange: 'auto'});
@@ -1091,7 +1182,14 @@ const Effects = {
         
         if (hovering && opaque) {
           const rect = getRect();
-          const [centerX, centerY] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
+          // Centroide: si las coords son respecto a base, convertir usando el rect de base
+          const wrap = stand.closest('.image-wrap');
+          const baseImg = wrap?.querySelector('img.base');
+          const refRect = (polyConf?.coordsRef === 'base' && baseImg) ? baseImg.getBoundingClientRect() : rect;
+          const cxPerc = polyConf?.centroid?.[0];
+          const cyPerc = polyConf?.centroid?.[1];
+          const centerX = (typeof cxPerc === 'number') ? refRect.left + (cxPerc / 100) * refRect.width : rect.left + rect.width / 2;
+          const centerY = (typeof cyPerc === 'number') ? refRect.top + (cyPerc / 100) * refRect.height : rect.top + rect.height / 2;
           const [deltaX, deltaY] = [(e.clientX - centerX) * 0.06, (e.clientY - centerY) * 0.06];
           const [x, y] = [Math.max(-8, Math.min(8, deltaX)), Math.max(-8, Math.min(8, deltaY))];
           stand.style.transform = `scale(1.02) translate(${x}px, ${y}px)`;
@@ -1171,7 +1269,7 @@ const Effects = {
         }
       };
       
-      rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'pointer', pointerEvents: 'auto', zIndex: '100'}));
+      rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'default', pointerEvents: 'auto', zIndex: '100'}));
       ['mousemove', 'mouseleave', 'click'].forEach((e, i) => 
         rollo.addEventListener(e, [onMouseMove, onMouseLeave, e => { e.preventDefault(); e.stopPropagation(); }][i]));
       
@@ -1273,13 +1371,43 @@ const Effects = {
 
   setupCartels() {
     const container = document.querySelector('.image-wrap#p9');
-    if (!container || container.hasAttribute('data-cartels-configured')) return;
+    if (!container) {
+      console.warn('setupCartels: No se encontró el contenedor .image-wrap#p9');
+      return;
+    }
+    if (container.hasAttribute('data-cartels-configured')) {
+      console.log('setupCartels: Ya configurado, saltando');
+      return;
+    }
 
     const areas = Array.from(container.querySelectorAll('.cartel-area[data-cartel]'));
+    console.log('setupCartels: Encontradas', areas.length, 'áreas');
     if (!areas.length) {
       container.setAttribute('data-cartels-configured', 'true');
       return;
     }
+
+    // Asignar rotaciones aleatorias a cada overlay y su sombra correspondiente
+    const assignRandomRotations = () => {
+      const overlays = container.querySelectorAll('.overlay[data-cartel]');
+      overlays.forEach((overlay) => {
+        const id = overlay.getAttribute('data-cartel');
+        // Asignar ángulo de rotación aleatorio: ±15deg
+        const sign = Math.random() > 0.5 ? 1 : -1;
+        const rotation = `${15 * sign}deg`;
+        overlay.style.setProperty('--overlay-rot', rotation);
+        
+        // Copiar la misma rotación a la sombra correspondiente (comportamiento idéntico)
+        const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
+        if (sombra) {
+          sombra.style.setProperty('--overlay-rot', rotation);
+        }
+      });
+    };
+
+    // Asignar rotaciones antes de configurar el resto
+    assignRandomRotations();
+    console.log('setupCartels: Rotaciones asignadas');
 
     // Helper: compute and persist transform-origin for each area-overlay pair.
     const computeAllOrigins = () => {
@@ -1319,8 +1447,43 @@ const Effects = {
 
     // Initial computation
     computeAllOrigins();
+    console.log('setupCartels: Orígenes de transformación calculados');
     // Recompute on resize (debounced) so origins stay correct if layout changes
     window.addEventListener('resize', () => debounce('cartel-origins', computeAllOrigins, 120));
+
+    // Handlers compartidos para activar/desactivar efectos
+    const makeEnter = (id) => () => {
+      const overlay = container.querySelector(`.overlay[data-cartel="${id}"]`);
+      if (overlay) {
+        // escala por defecto del cartel (aumenta 10%)
+        const posterScale = 1.1;
+        overlay.style.setProperty('--overlay-scale', String(posterScale));
+        overlay.classList.add('active');
+      }
+      // La sombra debe comportarse exactamente igual que el cartel
+      const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
+      if (sombra) {
+        const posterScale = parseFloat(overlay?.style.getPropertyValue('--overlay-scale')) || 1.1;
+        const rotStr = overlay?.style.getPropertyValue('--overlay-rot') || '0deg';
+        sombra.style.setProperty('--overlay-scale', String(posterScale));
+        sombra.style.setProperty('--overlay-rot', rotStr);
+        sombra.classList.add('active');
+      }
+    };
+    const makeLeave = (id) => () => {
+      const overlay = container.querySelector(`.overlay[data-cartel="${id}"]`);
+      if (overlay) {
+        overlay.classList.remove('active');
+        // liberar variables para volver al estado base
+        overlay.style.removeProperty('--overlay-scale');
+      }
+      // La sombra copia exactamente el estado del cartel
+      const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
+      if (sombra) {
+        sombra.classList.remove('active');
+        sombra.style.removeProperty('--overlay-scale');
+      }
+    };
 
     areas.forEach(area => {
       const id = area.getAttribute('data-cartel');
@@ -1328,15 +1491,8 @@ const Effects = {
       const sombra = container.querySelector(`.sombra[data-cartel="${id}"]`);
       // If neither element present, skip
       if (!overlay && !sombra) return;
-
-      const onEnter = () => {
-        overlay && overlay.classList.add('active');
-        sombra && sombra.classList.add('active');
-      };
-      const onLeave = () => {
-        overlay && overlay.classList.remove('active');
-        sombra && sombra.classList.remove('active');
-      };
+      const onEnter = makeEnter(id);
+      const onLeave = makeLeave(id);
 
       // Attach listeners (areas control interactivity)
       area.addEventListener('mouseenter', onEnter);
@@ -1349,7 +1505,7 @@ const Effects = {
       // Click: abrir popup con la imagen grande correspondiente (mismo patrón que las botellas)
       area.addEventListener('click', (evt) => {
         evt.preventDefault();
-  const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.webp`;
+  const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
         try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
         // Tras abrir el popup, desactivar la overlay/sombra y quitar el foco del área
         try { onLeave(); } catch (ignore) {}
@@ -1359,121 +1515,88 @@ const Effects = {
       area.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.webp`;
+          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
           try { window.open(popupPath, '_blank', 'noopener'); } catch (err) { window.location.href = popupPath; }
           try { onLeave(); } catch (ignore) {}
           try { area.blur(); } catch (ignore) {}
         }
       });
+
+      // Permitir hover/click directamente sobre el propio cartel (overlay)
+      if (overlay) {
+        overlay.addEventListener('mouseenter', onEnter);
+        overlay.addEventListener('mouseleave', onLeave);
+        overlay.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
+          try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
+          try { onLeave(); } catch (ignore) {}
+        });
+      }
+
+      // Copiar exactamente el mismo comportamiento en la sombra
+      if (sombra) {
+        sombra.addEventListener('mouseenter', onEnter);
+        sombra.addEventListener('mouseleave', onLeave);
+        sombra.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          const popupPath = `assets/Secciones/Proyectos/Zombis/Carteles_PopUp/cartel${id}.png`;
+          try { window.open(popupPath, '_blank', 'noopener'); } catch (e) { window.location.href = popupPath; }
+          try { onLeave(); } catch (ignore) {}
+        });
+      }
     });
 
-    // Inicializar efecto de aparición al entrar en la sección 'Zona Zombi' (p9)
-    // Aplicar clase inicial que oculta por opacidad tanto a los carteles como a las sombras,
-    // y observar el contenedor de galería para hacer la aparición una vez la sección sea visible.
+    // Animación inicial: sin parpadeos. Mantener visibles y sólo simular "hover" en cascada.
     try {
-      const p9Overlays = Array.from(container.querySelectorAll('.overlay'));
-      const p9Sombras = Array.from(container.querySelectorAll('.sombra'));
-      const all = p9Overlays.concat(p9Sombras).filter(Boolean);
-
-      // Queremos que SOLO los carteles impares participen en la animación de entrada
-      // y en el orden específico pedido por el usuario: 3, 7, 1, 5.
+      // Orden deseado para carteles impares
       const desiredOrder = ['3', '7', '1', '5'];
-
-      // Añadir clase inicial solo a los elementos que correspondan a carteles impares
-      all.forEach(el => {
-        const id = el.getAttribute && el.getAttribute('data-cartel');
-        if (id && parseInt(id) % 2 === 1) {
-          el.classList.add('p9-entrance-hidden');
-        }
-      });
-
-      // Función que activa la aparición: reemplaza la clase hidden por la clase shown
-      // y además simula brevemente el efecto 'hover' (clase .active) en cascada,
-      // en el orden fijo para los carteles impares.
       const triggerEntrance = () => {
         try {
-          // Agrupar elementos por su data-cartel para activar overlay+sombra juntos
-          const groups = new Map();
-          container.querySelectorAll('.overlay[data-cartel], .sombra[data-cartel]').forEach(el => {
-            const id = el.getAttribute('data-cartel');
-            if (!id) return;
-            // Sólo incluir carteles impares
-            if (parseInt(id) % 2 === 0) return;
-            if (!groups.has(id)) groups.set(id, []);
-            groups.get(id).push(el);
-          });
-
-          // Construir la lista de ids en el orden solicitado, ignorando los que no existan
-          const ids = desiredOrder.filter(id => groups.has(id));
-
-          const cssTransition = 220; // tiempo de la transición CSS (ms)
-          // Aumentar 'overlap' reduce el solapamiento (más tiempo entre inicios).
-          // Valor aumentado a 220ms para un solapamiento notablemente menor.
-          const overlap = 220; // ms entre inicios
-          const activeDuration = Math.max(260, cssTransition + 40);
-
+          const ids = desiredOrder.filter(id => container.querySelector(`.overlay[data-cartel="${id}"]`));
+          const overlap = 240; // ms entre inicios
+          const activeDuration = 520; // cuánto dura el impulso inicial
           ids.forEach((id, idx) => {
-            const delay = idx * overlap; // sin variación aleatoria para respetar el orden exacto
+            const delay = idx * overlap;
             setTimeout(() => {
-              const els = groups.get(id) || [];
-              els.forEach(el => {
-                el.classList.remove('p9-entrance-hidden');
-                // Forzar reflow mínimo antes de añadir la clase de shown para asegurar la transición
-                void el.offsetWidth;
-                el.classList.add('p9-entrance-shown');
-              });
-
-              // Simular el hover: activar la clase .active en overlay+sombra durante un instante
-              els.forEach(el => el.classList.add('active'));
-              setTimeout(() => els.forEach(el => el.classList.remove('active')), activeDuration);
+              const enter = makeEnter(id);
+              const leave = makeLeave(id);
+              enter();
+              setTimeout(() => leave(), activeDuration);
             }, Math.max(0, Math.round(delay)));
           });
-        } catch (err) { /* silencioso */ }
+        } catch {}
       };
 
-      // Si $.galeriaContainer está disponible, usamos IntersectionObserver con root=shell
       const root = $.galeriaContainer || null;
       const io = new IntersectionObserver(entries => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            // Ejecutar la aparición y el efecto hover en cascada cada vez
-            // que la sección entre en el viewport suficiente.
             triggerEntrance();
-            // No desconectamos el observer: permitimos que se vuelva a
-            // ejecutar cuando el usuario salga y regrese a la sección.
             break;
           }
         }
       }, { root, threshold: 0.45 });
-
-      // Observar la propia sección (container)
       io.observe(container);
 
-      // Si la sección ya está dentro del viewport suficiente en el momento de la carga,
-      // disparar inmediatamente sin esperar al IO.
+      // Si ya es visible al cargar, disparar inmediatamente
       try {
         if (root) {
           const rootRect = root.getBoundingClientRect();
           const secRect = container.getBoundingClientRect();
           const visibleHeight = Math.max(0, Math.min(secRect.bottom, rootRect.bottom) - Math.max(secRect.top, rootRect.top));
-          if (visibleHeight / secRect.height >= 0.45) {
-            triggerEntrance();
-            // keep observing so the effect can run again on re-entry
-          }
+          if (visibleHeight / secRect.height >= 0.45) triggerEntrance();
         } else {
-          // Si no hay root, fallback a viewport check
           const secRect = container.getBoundingClientRect();
           const winH = window.innerHeight || document.documentElement.clientHeight;
           const visibleHeight = Math.max(0, Math.min(secRect.bottom, winH) - Math.max(secRect.top, 0));
-          if (visibleHeight / secRect.height >= 0.45) {
-            triggerEntrance();
-            // keep observing so the effect can run again on re-entry
-          }
+          if (visibleHeight / secRect.height >= 0.45) triggerEntrance();
         }
-      } catch (e) { /* silencioso */ }
-    } catch (e) { /* silencioso */ }
+      } catch {}
+    } catch {}
 
-    container.setAttribute('data-cartels-configurados', 'true');
+    container.setAttribute('data-cartels-configured', 'true');
+    console.log('setupCartels: Configuración completada para', areas.length, 'carteles');
   },
   
   reset() {
@@ -1660,8 +1783,8 @@ const FooterWatch = {
 const setupNormalOverlays = () => {
   document.querySelectorAll('.overlay:not([data-stand]):not(.overlay-botella), .overlay2:not(.overlay-rollo)')
           .forEach(img => {
-    // Omitir hover en los thumbnails (p9, p11 y p15)
-    if (img.closest('#p9') || img.closest('#p11') || img.closest('#p15')) return;
+    // Omitir hover en los thumbnails (p9, p10, p11 y p15)
+    if (img.closest('#p9') || img.closest('#p10') || img.closest('#p11') || img.closest('#p15')) return;
     const handleMouseMove = e => {
       // keep basic small parallax for overlays, but do not conflict with thumbnail translate animation
       const rect = img.getBoundingClientRect();
@@ -3953,31 +4076,6 @@ const init = () => {
   // Inicializar sincronización de scroll en proyectos
   ProyectosSync.init();
   
-  // Asignar direcciones de rotación aleatorias (±15deg) a los overlays de p9
-  try {
-    const p9Overlays = document.querySelectorAll('#p9 .overlay');
-    p9Overlays.forEach((el) => {
-      // asignar ángulo de rotación aleatorio: 15deg o -15deg
-      const sign = Math.random() > 0.5 ? 1 : -1;
-      el.style.setProperty('--overlay-rot', `${15 * sign}deg`);
-      // dejar --overlay-origin editable en línea o en CSS; por defecto ya está en CSS
-    });
-    // Asegurar que las sombras (si existen) reciben la misma variable de rotación
-    const p9Sombras = document.querySelectorAll('#p9 .sombra');
-    if (p9Sombras && p9Sombras.length) {
-      // Re-use the same random sign strategy but match per-index to overlays when possible
-      p9Sombras.forEach((s, i) => {
-        // Try to find a corresponding overlay to copy the rotation value
-        const overlay = document.querySelector(`#p9 .overlay[data-cartel="${s.getAttribute('data-cartel')}"]`);
-        if (overlay && overlay.style && overlay.style.getPropertyValue('--overlay-rot')) {
-          s.style.setProperty('--overlay-rot', overlay.style.getPropertyValue('--overlay-rot'));
-        } else {
-          const sign = Math.random() > 0.5 ? 1 : -1;
-          s.style.setProperty('--overlay-rot', `${15 * sign}deg`);
-        }
-      });
-    }
-  } catch (e) { /* silent */ }
   // Botón Ver proyectos: ir a la sección proyectos
   try {
     const verBtn = document.getElementById('btn-ver-proyectos');
