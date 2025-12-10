@@ -764,6 +764,7 @@ const Lang = {
     
     this.change = lang => {
       localStorage.setItem('idioma', lang);
+      try { document.documentElement.setAttribute('lang', lang); } catch {}
 
       // Actualizar URL y enlaces para persistencia entre páginas
       const url = new URL(window.location);
@@ -801,6 +802,8 @@ const Lang = {
       } catch {}
       // Re-formatear autores de referencias: salto de línea antes del rol
       try { formatQuoteAuthors(); } catch {}
+      // Recalcular altura fija de descripciones de servicios tras cambio de idioma
+      try { ServicesDesc.setFixedHeight && ServicesDesc.setFixedHeight(); } catch {}
     };
     
     const urlParams = new URLSearchParams(window.location.search);
@@ -2807,6 +2810,44 @@ const ServicesDesc = {
 
     // Si el puntero sale del contenedor completo, iniciar retardo para genérico
     document.querySelector('.services-circles')?.addEventListener('mouseleave', () => this.resetIfNoneHovered());
+    
+    // Calcular y establecer altura fija basada en el texto más largo
+    this.setFixedHeight();
+    // Recalcular altura cuando cambia el idioma o el tamaño de ventana
+    window.addEventListener('resize', () => debounce('services-desc-height', this.setFixedHeight.bind(this), 200));
+  },
+  setFixedHeight() {
+    if (!this.el || !this.textEl) return;
+    
+    const currentLang = localStorage.getItem('idioma') || 'es';
+    let maxHeight = 0;
+    
+    // Temporalmente hacer el contenedor auto-height para medir
+    const originalHeight = this.el.style.height;
+    this.el.style.height = 'auto';
+    
+    // Crear un array con todos los textos posibles (genérico + todos los servicios)
+    const allTexts = [this.generic[currentLang]];
+    Object.keys(this.descriptions[currentLang] || {}).forEach(key => {
+      allTexts.push(this.descriptions[currentLang][key]);
+    });
+    
+    // Medir cada texto
+    allTexts.forEach(text => {
+      this.textEl.textContent = text;
+      const height = this.textEl.offsetHeight;
+      if (height > maxHeight) maxHeight = height;
+    });
+    
+    // Restaurar el texto actual
+    this.applyLanguage();
+    
+    // Establecer la altura fija al contenedor
+    if (maxHeight > 0) {
+      this.el.style.height = maxHeight + 'px';
+    } else {
+      this.el.style.height = originalHeight;
+    }
   },
   trackMouseMovement(e) {
     const now = Date.now();

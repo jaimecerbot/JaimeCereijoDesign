@@ -325,7 +325,11 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   box-shadow: none; /* sin sombra */
   overflow: visible; /* permitir que el texto se extienda y se difumine */
   position: relative;
-  min-height: 3em; /* evitar saltos de altura durante transición */
+  /* Altura fija calculada dinámicamente por JS para mantener mismo número de líneas */
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .services-description #services-description-text { 
   display: inline-block; 
@@ -499,10 +503,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   box-sizing: border-box;
 }
 /* Ajustes puntuales de etiquetas dentro de los círculos (todas las pantallas) */
-/* "Comunicación de Proyectos" ligeramente más pequeña para encajar mejor */
-.service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
-/* "Desarrollo Web": desplazar medio renglón hacia abajo para equilibrar visualmente */
-.service-2 span { display: inline-block; transform: translateY(0.2em); }
+/* "Comunicación de Proyectos" tamaño por defecto igual al resto */
+.service-5 span { font-size: clamp(20px, 2.3vw, 40px); }
+/* Reducir sólo en Español y Portugués para que quepa en el círculo */
+html[lang='es'] .service-5 span,
+html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
+/* "Desarrollo Web": mantener alineación vertical igual que el resto */
+.service-2 span { display: inline-block; transform: translateY(0); }
 .service-circle:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
 /* Refuerzo de legibilidad del texto en hover (mucho más marcado) */
 .service-circle:hover span { 
@@ -1428,8 +1435,11 @@ footer.visible { transform: translateY(0); }
 /* Mobile: textos de círculos más grandes */
 /* Mobile ajuste: un pelín más pequeño */
 .service-circle span { font-size: clamp(16px, 4.6vw, 30px); }
-  /* Ajustes específicos en móvil */
-  .service-5 span { font-size: clamp(14px, 3.6vw, 26px); }
+  /* Ajustes específicos en móvil: por defecto igual al resto */
+  .service-5 span { font-size: clamp(16px, 4.6vw, 30px); }
+  /* Reducir sólo en Español y Portugués en móvil */
+  html[lang='es'] .service-5 span,
+  html[lang='pt'] .service-5 span { font-size: clamp(14px, 3.6vw, 26px); }
   /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
   .service-2 .mini-carousel::after { 
     font-size: clamp(7px, 2.0vw, 11px); 
@@ -2161,6 +2171,8 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 /* Títulos Hira extra gruesos */
 .carousel-title.title-hira { font-weight: 900; }
 .text-overlay.title-hira { font-weight: 900; }
+/* Reducción específica del título Hira en francés para ventanas anchas */
+html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.8); }
 /* Sombreado de esquina inferior izquierda en cada imagen del carrusel */
 .carousel-item { position: relative; overflow: hidden; }
 .carousel-item::after {
@@ -2427,6 +2439,16 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
       1px -1px 2px rgba(0,0,0,0.82),
       -1px -1px 2px rgba(0,0,0,0.82),
       0 4px 14px rgba(0,0,0,0.55) !important;
+  }
+
+  /* Reducir tamaño del título en inglés para que quepa en pantalla */
+  html[lang='en'] #galeria .image-wrap#p7 > .mobile-text-overlay:first-of-type {
+    font-size: 7.5cqw !important;
+  }
+
+  /* Subir título de Hira en francés para mejor ajuste */
+  html[lang='fr'] #galeria .image-wrap#p1 > .mobile-text-overlay:first-of-type {
+    top: 14% !important;
   }
 
   /* 4) Anular ajustes finos de desktop que causaban solapes entre p8 y p9 */
