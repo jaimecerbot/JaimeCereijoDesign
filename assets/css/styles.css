@@ -1,9 +1,9 @@
-Ôªø/* Eliminadas @import duplicadas de Google Fonts.
+/* Eliminadas @import duplicadas de Google Fonts.
   Las fuentes se cargan desde <head> con <link> + display=swap para mayor rendimiento y compatibilidad. */
-/* BLOQUE DE CONTROL DE COLOR Y TIPOGRAF√çA (a√±adido)
+/* BLOQUE DE CONTROL DE COLOR Y TIPOGRAFÕA (aÒadido)
    - Fijamos esquema claro independientemente del modo oscuro del SO
-   - Centralizamos colores clave en variables para evitar ajustes autom√°ticos
-   - Aplicamos forced-color-adjust s√≥lo a elementos de identidad para no romper accesibilidad general */
+   - Centralizamos colores clave en variables para evitar ajustes autom·ticos
+   - Aplicamos forced-color-adjust sÛlo a elementos de identidad para no romper accesibilidad general */
 :root {
   color-scheme: light;
   --color-bg-page: #f8f8f8;
@@ -19,14 +19,14 @@
   body, main { background: var(--color-bg-page) !important; color: var(--color-text-primary) !important; }
   /* Limitar fondo azul solo al header principal y su nav, no a otros <nav> como #indice */
   #main-header, footer, #main-nav { background: var(--color-brand-navy) !important; color: var(--color-brand-accent) !important; }
-  /* Reafirmar fondo claro del √≠ndice de proyectos */
+  /* Reafirmar fondo claro del Ìndice de proyectos */
   #indice { background: var(--color-bg-panel) !important; }
 }
-/* High Contrast / Forced Colors: preservar branding √∫nicamente */
+/* High Contrast / Forced Colors: preservar branding ˙nicamente */
 @media (forced-colors: active) {
   header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
 }
-/* Identidad fija tambi√©n fuera de media queries (para motores que reescriben sin @media) */
+/* Identidad fija tambiÈn fuera de media queries (para motores que reescriben sin @media) */
 header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
 
 /* FUENTES LOCALES */
@@ -48,7 +48,7 @@ header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-col
   font-style: normal;
   font-display: swap;
 }
-/* === Fuentes locales a√±adidas === */
+/* === Fuentes locales aÒadidas === */
 @font-face {
   font-family: 'Montserrat';
   src: url('../../Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
@@ -107,15 +107,52 @@ header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-col
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Anton';
+  src: url('../../Anton/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../../Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../../Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Serif';
+  src: url('../../Noto_Serif/NotoSerif-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Serif';
+  src: url('../../Noto_Serif/NotoSerif-Italic-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: italic;
+  font-display: swap;
+}
 
 /* RESET Y BASE */
 *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
-/* En la secci√≥n Proyectos (desktop y p√°gina aut√≥noma), desactivar scroll global para evitar doble barra */
+/* En la secciÛn Proyectos (desktop y p·gina autÛnoma), desactivar scroll global para evitar doble barra */
 body.proyectos-active, html.proyectos-active,
 body.proyectos-page, html.proyectos-page { overflow: hidden; }
 
-/* MODO M√ìVIL PARA proyectos.html: usar scroll global y footer normal */
+/* MODO M”VIL PARA proyectos.html: usar scroll global y footer normal */
 @media (max-width: 768px) {
   body.proyectos-page, html.proyectos-page { overflow-y: auto; overflow-x: hidden; }
   body.proyectos-page #proyectos, body.proyectos-page .proyectos-container { min-height: auto !important; height: auto !important; display: block !important; }
@@ -129,15 +166,15 @@ body.proyectos-page, html.proyectos-page { overflow: hidden; }
 }
 html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
 body { font-family: Coolvetica, sans-serif; background: var(--color-bg-page); color: var(--color-text-primary); display: flex; flex-direction: column; min-height: 100vh; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-/* No a√±adimos margen superior global en main: el contenido arranca justo bajo el header fijo */
+/* No aÒadimos margen superior global en main: el contenido arranca justo bajo el header fijo */
 main { flex: 1; margin-top: 0; overflow-x: hidden; }
-/* Contenedor principal sin scroll cuando Proyectos est√° activo: el scroll vive en #galeria-container */
+/* Contenedor principal sin scroll cuando Proyectos est· activo: el scroll vive en #galeria-container */
 body.proyectos-active main { overflow: hidden; }
 /* Cuando el footer aparece, empujamos el contenido (salvo header) hacia arriba */
 main { transition: transform .3s ease; will-change: transform; }
 body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))); }
 
-/* Variables de altura del header (desktop/m√≥vil) para c√°lculos de alto de secciones */
+/* Variables de altura del header (desktop/mÛvil) para c·lculos de alto de secciones */
 :root { --header-h: 70px; }
 @media (max-width: 768px) { :root { --header-h: 60px; } }
 
@@ -147,14 +184,14 @@ header.hidden { transform: translateY(-100%); }
 .logo { height: 180px; width: 180px; }
 .logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 nav { display: flex; align-items: center; }
-nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; font-family: Coolvetica, Helvetica, Arial, sans-serif; text-align:center; }
+nav a { margin: 0 10px; color: yellow; text-decoration: none; cursor: pointer; position: relative; white-space: nowrap; will-change: transform; transition: transform .3s ease; font-family: Coolvetica, Inter, Arial, sans-serif; text-align:center; }
 nav a:hover { transform: scale(1.1); z-index: 10; }
 nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform: scale(1.06); }
 
 /* IDIOMA Y SECCIONES */
 #idioma-btn { background: none; border: 1px solid yellow; color: yellow; padding: 5px 10px; cursor: pointer; position: relative; }
-#idioma-btn, #idioma-list div { font-family: Coolvetica, Helvetica, Arial, sans-serif; text-align:center; }
-#idioma-list { font-family: Helvetica; display: none; position: absolute; top: 30px; right: 0; background: #001f3f; color: yellow; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; z-index: 101; }
+#idioma-btn, #idioma-list div { font-family: Coolvetica, Inter, Arial, sans-serif; text-align:center; }
+#idioma-list { font-family: Inter; display: none; position: absolute; top: 30px; right: 0; background: #001f3f; color: yellow; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; z-index: 101; }
 #idioma-list div { padding: 5px 10px; cursor: pointer; }
 #idioma-list div:hover { background: #eee; color: #001f3f; }
 #idioma-btn:focus-visible { outline: 2px solid yellow; outline-offset: 3px; }
@@ -225,7 +262,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   pointer-events: none; /* no bloquear clic sobre la imagen */
 }
 .carousel-title {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 700;
   color: #ffffff;
   font-size: clamp(14px, 2.2vw, 22px);
@@ -234,7 +271,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   text-shadow: 0 3px 14px rgba(0,0,0,.95), 0 10px 32px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.9);
 }
 .carousel-subtitle {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 400;
   color: #ffffff;
   opacity: .98;
@@ -249,7 +286,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   -webkit-text-stroke: 0.6px rgba(0,0,0,.9);
   paint-order: stroke fill;
   text-shadow:
-    /* contorno n√≠tido en 8 direcciones */
+    /* contorno nÌtido en 8 direcciones */
     1px 0 0 rgba(0,0,0,1),
     -1px 0 0 rgba(0,0,0,1),
     0 1px 0 rgba(0,0,0,1),
@@ -258,13 +295,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
     -1px 1px 0 rgba(0,0,0,1),
     1px -1px 0 rgba(0,0,0,1),
     -1px -1px 0 rgba(0,0,0,1),
-    /* halos conc√©ntricos para separar del fondo */
+    /* halos concÈntricos para separar del fondo */
     0 0 14px rgba(0,0,0,1),
     0 0 26px rgba(0,0,0,1),
     0 10px 36px rgba(0,0,0,.98),
     0 14px 48px rgba(0,0,0,.98);
 }
-/* t√≠tulo de Reflejos: un pel√≠n m√°s trazo para m√°xima claridad */
+/* tÌtulo de Reflejos: un pelÌn m·s trazo para m·xima claridad */
 .carousel-item.contrast-strong .carousel-title { -webkit-text-stroke-width: 0.8px; }
 .carousel img:hover {
   transform: scale(1.02);
@@ -273,8 +310,8 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .carousel-item:hover { border-radius: 0; }
 /* Variables para slideshows de Servicios */
 :root {
-  --circle-frame: 3s; /* duraci√≥n exacta por imagen */
-  --circle-easing: cubic-bezier(0.22, 1, 0.36, 1); /* easing org√°nico */
+  --circle-frame: 3s; /* duraciÛn exacta por imagen */
+  --circle-easing: cubic-bezier(0.22, 1, 0.36, 1); /* easing org·nico */
   --circle-hover-fade: 600ms; /* difuminado al entrar/salir del hover */
 }
 
@@ -290,7 +327,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   padding: 0 24px; /* margen lateral para respirar */
 }
 .services-title {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 700;
   color: #001f3f;
   letter-spacing: 1px;
@@ -306,17 +343,17 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   width: 100%;
 }
 
-/* Descripci√≥n bajo los c√≠rculos */
+/* DescripciÛn bajo los cÌrculos */
 .services-description {
   width: 100%;
-  max-width: 760px; /* m√°s estrecho */
+  max-width: 760px; /* m·s estrecho */
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
   color: #333;
   font-family: 'Roboto', sans-serif;
-  font-size: clamp(16px, 2vw, 22px); /* texto m√°s grande */
+  font-size: clamp(16px, 2vw, 22px); /* texto m·s grande */
   line-height: 1.5;
   background: none; /* sin fondo */
   border: none;     /* sin recuadro */
@@ -325,7 +362,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   box-shadow: none; /* sin sombra */
   overflow: visible; /* permitir que el texto se extienda y se difumine */
   position: relative;
-  /* Altura fija calculada din√°micamente por JS para mantener mismo n√∫mero de l√≠neas */
+  /* Altura fija calculada din·micamente por JS para mantener mismo n˙mero de lÌneas */
   height: auto;
   display: flex;
   align-items: flex-start;
@@ -342,11 +379,11 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .cta-portfolio {
   width: 100%;
   max-width: 900px;
-  margin: 18px auto 16px auto; /* un poco m√°s de aire alrededor */
+  margin: 18px auto 16px auto; /* un poco m·s de aire alrededor */
   padding: 18px 24px; /* define la altura visual de la banda */
   text-align: center;
   position: relative; /* necesario para pseudo-elemento de banda */
-  isolation: isolate; /* garantiza que el ::before quede detr√°s del contenido */
+  isolation: isolate; /* garantiza que el ::before quede detr·s del contenido */
 }
 .cta-portfolio::before {
   content: "";
@@ -357,14 +394,14 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   width: 100vw; /* banda de lado a lado de la pantalla */
   height: 100%;
   background: #ffffff; /* banda blanca */
-  /* Sombra m√°s notoria, con dos capas para profundidad */
+  /* Sombra m·s notoria, con dos capas para profundidad */
   box-shadow: 
     0 10px 28px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.12);
-  z-index: -1; /* detr√°s del contenido de la CTA */
+  z-index: -1; /* detr·s del contenido de la CTA */
 }
 .cta-title {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 700;
   color: #001f3f; /* mismo azul que el header */
   letter-spacing: 0.5px;
@@ -383,12 +420,12 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   align-items: center;
   justify-content: center;
   padding: 12px 18px;
-  background: #001f3f; /* azul napole√≥nico: header */
+  background: #001f3f; /* azul napoleÛnico: header */
   color: yellow;
   text-decoration: none;
   border-radius: 999px;
   border: 1px solid #001736;
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 800;
   letter-spacing: 0.4px;
   font-size: clamp(14px, 2.1vw, 18px);
@@ -407,19 +444,19 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   transform: translateY(0) scale(0.995);
   box-shadow: 0 2px 8px rgba(0,31,63,.35);
 }
-/* Animaci√≥n de entrada desde la derecha */
+/* AnimaciÛn de entrada desde la derecha */
 .services-description #services-description-text.slide-in-right {
   animation: slideInRight 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-/* Animaci√≥n de entrada desde la izquierda */
+/* AnimaciÛn de entrada desde la izquierda */
 .services-description #services-description-text.slide-in-left {
   animation: slideInLeft 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-/* Animaci√≥n de salida hacia la izquierda */
+/* AnimaciÛn de salida hacia la izquierda */
 .services-description #services-description-text.slide-out-left {
   animation: slideOutLeft 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
-/* Animaci√≥n de salida hacia la derecha */
+/* AnimaciÛn de salida hacia la derecha */
 .services-description #services-description-text.slide-out-right {
   animation: slideOutRight 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
@@ -490,31 +527,31 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   transition: transform .18s ease, box-shadow .18s ease;
   user-select: none;
   position: relative;
-  overflow: hidden; /* Para usar el c√≠rculo como m√°scara del slideshow */
+  overflow: hidden; /* Para usar el cÌrculo como m·scara del slideshow */
 }
-/* Texto de los c√≠rculos del men√∫: aumentado sin salir del contenedor */
+/* Texto de los cÌrculos del men˙: aumentado sin salir del contenedor */
 .service-circle span { 
-  font-family: Coolvetica, Helvetica, Arial, sans-serif; 
+  font-family: Coolvetica, Inter, Arial, sans-serif; 
   font-weight: 700; 
   line-height: 1.07; 
-  font-size: clamp(20px, 2.3vw, 40px); /* ajuste m√°s contenido */
+  font-size: clamp(20px, 2.3vw, 40px); /* ajuste m·s contenido */
   text-wrap: balance; 
   padding: 4px 6px; /* ligero ajuste de padding */
   box-sizing: border-box;
 }
-/* Ajustes puntuales de etiquetas dentro de los c√≠rculos (todas las pantallas) */
-/* "Comunicaci√≥n de Proyectos" tama√±o por defecto igual al resto */
+/* Ajustes puntuales de etiquetas dentro de los cÌrculos (todas las pantallas) */
+/* "ComunicaciÛn de Proyectos" tamaÒo por defecto igual al resto */
 .service-5 span { font-size: clamp(20px, 2.3vw, 40px); }
-/* Reducir s√≥lo en Espa√±ol y Portugu√©s para que quepa en el c√≠rculo */
+/* Reducir sÛlo en EspaÒol y PortuguÈs para que quepa en el cÌrculo */
 html[lang='es'] .service-5 span,
 html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
-/* "Desarrollo Web": mantener alineaci√≥n vertical igual que el resto */
+/* "Desarrollo Web": mantener alineaciÛn vertical igual que el resto */
 .service-2 span { display: inline-block; transform: translateY(0); }
 .service-circle:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
-/* Refuerzo de legibilidad del texto en hover (mucho m√°s marcado) */
+/* Refuerzo de legibilidad del texto en hover (mucho m·s marcado) */
 .service-circle:hover span { 
   text-shadow:
-    /* contorno en 8 direcciones para separaci√≥n n√≠tida */
+    /* contorno en 8 direcciones para separaciÛn nÌtida */
     1px 0 0 rgba(0,0,0,0.95),
     -1px 0 0 rgba(0,0,0,0.95),
     0 1px 0 rgba(0,0,0,0.95),
@@ -529,7 +566,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
     0 6px 28px rgba(0,0,0,0.9),
     0 10px 40px rgba(0,0,0,0.92);
 }
-/* Sombra interior perimetral que oscurece ligeramente las im√°genes en hover */
+/* Sombra interior perimetral que oscurece ligeramente las im·genes en hover */
 .service-circle::after {
   content: "";
   position: absolute;
@@ -562,7 +599,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 .service-6 { background: #001f3f; color: rgb(255, 255, 255); }
 .service-6 span { text-shadow: 0 1px 6px rgba(0,0,0,.35); }
 
-/* Hover: texto blanco para Desarrollo Web y Edici√≥n de V√≠deo */
+/* Hover: texto blanco para Desarrollo Web y EdiciÛn de VÌdeo */
 .service-2:hover span,
 .service-3:hover span { color: #ffffff; }
 
@@ -578,7 +615,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 }
 .clients-block #clients-title {
   text-align: center;
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   color: #001f3f;
   font-weight: 700;
   letter-spacing: 1px;
@@ -618,7 +655,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 }
 .clients-logos img {
   max-width: 100%;
-  /* 33% m√°s peque√±os aprox */
+  /* 33% m·s pequeÒos aprox */
   max-height: clamp(24px, 4.3vw, 40px);
   width: auto;
   height: auto;
@@ -627,7 +664,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   opacity: 0.96;
 }
 .clients-copy h3 {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   color: #001f3f;
   font-weight: 700;
   letter-spacing: 1px;
@@ -649,15 +686,15 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 .service-circle span { position: relative; z-index: 3; }
 .service-circle .circle-slideshow { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 1; opacity: 0; transition: opacity var(--circle-hover-fade) var(--circle-easing); }
 .service-circle .circle-slideshow .frame { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; will-change: opacity; animation: ilustracionFade calc(var(--circle-frame) * 3) infinite; animation-timing-function: var(--circle-easing); animation-play-state: paused; }
-/* Ilustraci√≥n (service-6) */
+/* IlustraciÛn (service-6) */
 .service-6 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
 .service-6 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
 .service-6 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
-/* Dise√±o Gr√°fico (service-1) */
+/* DiseÒo Gr·fico (service-1) */
 .service-1 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
 .service-1 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
 .service-1 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
-/* Desarrollo Web (service-2) ‚Üí mini carrusel sincronizado */
+/* Desarrollo Web (service-2) ? mini carrusel sincronizado */
 .service-2 .mini-carousel {
   position: absolute;
   inset: 0;
@@ -679,7 +716,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   width: var(--mini-width, auto);
   height: var(--mini-height, auto);
 }
-/* Simulaci√≥n del header (franja azul) por encima del mini carrusel, sin afectar su tama√±o/posici√≥n */
+/* SimulaciÛn del header (franja azul) por encima del mini carrusel, sin afectar su tamaÒo/posiciÛn */
 .service-2 .mini-carousel::before {
   content: "";
   position: absolute;
@@ -690,15 +727,15 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   background: #001f3f; /* azul header */
   z-index: 0; /* por debajo del carrusel clonado */
 }
-/* R√≥tulo bajo el carrusel: ¬øQu√© puedo hacer por ti? */
+/* RÛtulo bajo el carrusel: øQuÈ puedo hacer por ti? */
 .service-2 .mini-carousel::after {
-  content: "¬øQu√© puedo hacer por ti?";
+  content: "øQuÈ puedo hacer por ti?";
   position: absolute;
   left: 50%;
   bottom: 6%;
   transform: translateX(-50%);
   color: #001f3f; /* igual que el header */
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.4px;
   font-size: clamp(10px, 2.2vw, 16px);
@@ -706,13 +743,13 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   z-index: 3; /* por encima del carrusel y de la sombra perimetral (z=2) */
   pointer-events: none;
 }
-/* El carrusel clonado se transformar√° (translateX) en tiempo real */
+/* El carrusel clonado se transformar· (translateX) en tiempo real */
 .service-2 .mini-carousel [data-mini="true"] {
   will-change: transform;
-  /* No fijamos una transici√≥n aqu√≠: el mini heredar√°/sincronizar√° la del principal v√≠a JS */
+  /* No fijamos una transiciÛn aquÌ: el mini heredar·/sincronizar· la del principal vÌa JS */
   transition: none;
 }
-/* Alinear textos del mini carrusel a la izquierda para mayor legibilidad en el c√≠rculo */
+/* Alinear textos del mini carrusel a la izquierda para mayor legibilidad en el cÌrculo */
 .service-2 .mini-carousel .carousel-caption {
   left: 7%;
   right: auto;
@@ -720,24 +757,24 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   text-align: left;
   align-items: flex-start;
 }
-/* Ocultar los textos del mini carrusel: mantener solo los t√≠tulos */
+/* Ocultar los textos del mini carrusel: mantener solo los tÌtulos */
 .service-2 .mini-carousel .carousel-caption .carousel-subtitle { display: none !important; }
-/* Desplazar ligeramente los t√≠tulos hacia arriba e izquierda */
+/* Desplazar ligeramente los tÌtulos hacia arriba e izquierda */
 .service-2 .mini-carousel .carousel-caption .carousel-title { 
   transform: translate(-1%, -3%);
 }
-/* Mantener visible el t√≠tulo "Desarrollo Web" incluso en hover */
-/* (El t√≠tulo ya tiene text-shadow reforzado en hover para legibilidad) */
-/* Comunicaci√≥n de Proyectos (service-5) */
+/* Mantener visible el tÌtulo "Desarrollo Web" incluso en hover */
+/* (El tÌtulo ya tiene text-shadow reforzado en hover para legibilidad) */
+/* ComunicaciÛn de Proyectos (service-5) */
 .service-5 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
 .service-5 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
 .service-5 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
-/* Gr√°ficos M√≥viles (service-4) ‚Äî un solo GIF: revelar suave en hover */
+/* Gr·ficos MÛviles (service-4) ó un solo GIF: revelar suave en hover */
 .service-4 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
 .service-3 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
 /* Mostrar/ocultar el slideshow completo con un difuminado suave */
 .service-circle:hover .circle-slideshow { opacity: 1; }
-/* Control de animaci√≥n: corre solo en hover */
+/* Control de animaciÛn: corre solo en hover */
 .service-6:hover .circle-slideshow .frame,
 .service-1:hover .circle-slideshow .frame,
 .service-5:hover .circle-slideshow .frame { animation-play-state: running; }
@@ -749,16 +786,16 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   44.44% { opacity: 0; }    /* 4.0s de 9s */
   100% { opacity: 0; }
 }
-/* Estilos para im√°genes clonadas */
+/* Estilos para im·genes clonadas */
 .carousel img[data-clone="true"] {
   opacity: 1;
 }
-/* Estilos para im√°genes buffer (extra para transici√≥n suave) */
+/* Estilos para im·genes buffer (extra para transiciÛn suave) */
 .carousel img.carousel-buffer {
   opacity: 1;
-  /* Mismos estilos que las im√°genes normales */
+  /* Mismos estilos que las im·genes normales */
 }
-/* Mensaje de error si no hay im√°genes */
+/* Mensaje de error si no hay im·genes */
 .carousel-error {
   color: #666;
   text-align: center;
@@ -771,7 +808,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
 .proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; overflow: hidden; }
 
-/* √çNDICE */
+/* ÕNDICE */
 #indice { width: 280px; background: #f9f9f9; border-right: 1px solid #ddd; padding: 1.5em 0; flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px); align-self: flex-start; overflow-y: auto; z-index: 900; scrollbar-width: none; -ms-overflow-style: none; will-change: top; transition: top .3s ease; }
 .indice-content { padding: 0 1.5em; flex: 1; display: flex; flex-direction: column; }
 #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
@@ -783,7 +820,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }
 }
 
-/* GALER√çA Y FOOTER */
+/* GALERÕA Y FOOTER */
 #galeria-container { 
   flex: 1; 
   overflow-x: hidden; 
@@ -795,7 +832,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 #galeria { width: 100%; padding: 0; margin: 0; overflow: visible; }
 #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
 .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
-/* Footer: fijo por defecto en desktop para evitar huecos en el layout cuando est√° oculto */
+/* Footer: fijo por defecto en desktop para evitar huecos en el layout cuando est· oculto */
 footer { display: flex; justify-content: space-between; background: #001f3f; color: #ffffff; padding: 20px; font-size: .9em; z-index: 1100; position: fixed; left: 0; right: 0; bottom: 0; width: 100%; transform: translateY(100%); transition: transform .3s; }
 /* Footer: forzar texto blanco y alinear bloque derecho */
 footer p, footer span, footer a { color:#ffffff !important; }
@@ -825,7 +862,7 @@ footer.visible { transform: translateY(0); }
 .overlay.hovered { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
 .overlay2.hovered { transform: translateX(-50%) scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
 
-/* EFECTOS ESPEC√çFICOS */
+/* EFECTOS ESPECÕFICOS */
 .overlay-stand { opacity: 0; transform: scale(1.2); pointer-events: auto; cursor: default; z-index: 10; position: absolute; will-change: opacity, transform; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
 /* Cursor behavior: default on general overlays, pointer only on bottles and posters */
@@ -836,7 +873,7 @@ footer.visible { transform: translateY(0); }
 .overlay-stand.resetting { opacity: 0 !important; transform: scale(1.2) !important; transition: none !important; }
 .overlay-stand.immediate-visible:hover { transition: transform 0.05s ease-out; }
 
-/* CUADROS DE TEXTO PARA GALER√çA */
+/* CUADROS DE TEXTO PARA GALERÕA */
 .image-wrap {
   position: relative;
   width: 100%;
@@ -848,7 +885,7 @@ footer.visible { transform: translateY(0); }
 
 .text-overlay {
   position: absolute;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   color: #333;
   background: none;
   border: none;
@@ -858,16 +895,16 @@ footer.visible { transform: translateY(0); }
   user-select: text;
   cursor: text;
   z-index: 50;
-  font-size: var(--text-size, 5cqw); /* Tama√±o relativo al ancho del contenedor (imagen) */
+  font-size: var(--text-size, 5cqw); /* TamaÒo relativo al ancho del contenedor (imagen) */
   line-height: 1.4;
   white-space: pre-line;
   /* 
-  SISTEMA DE TAMA√ëOS RELATIVOS A LA IMAGEN:
-  - El tama√±o por defecto es 5cqw (5% del ancho de la imagen)
-  - Para textos m√°s grandes usa: --text-size: 8cqw (8% del ancho)
-  - Para textos m√°s peque√±os usa: --text-size: 3cqw (3% del ancho)
-  - Para t√≠tulos principales usa: --text-size: 10cqw (10% del ancho)
-  - El tama√±o siempre ser√° proporcional al ancho de la imagen, manteniendo la relaci√≥n visual
+  SISTEMA DE TAMA—OS RELATIVOS A LA IMAGEN:
+  - El tamaÒo por defecto es 5cqw (5% del ancho de la imagen)
+  - Para textos m·s grandes usa: --text-size: 8cqw (8% del ancho)
+  - Para textos m·s pequeÒos usa: --text-size: 3cqw (3% del ancho)
+  - Para tÌtulos principales usa: --text-size: 10cqw (10% del ancho)
+  - El tamaÒo siempre ser· proporcional al ancho de la imagen, manteniendo la relaciÛn visual
   */
   /* Posicionamiento usando variables CSS para flexibilidad */
   top: var(--text-top, 10%);
@@ -881,8 +918,8 @@ footer.visible { transform: translateY(0); }
   transform: var(--text-transform, none);
 }
 
-/* Sombra aplicada espec√≠ficamente a los textos dentro del image-wrap "p2" (Hira/render)
-   - Mejora la legibilidad sobre im√°genes claras/variadas
+/* Sombra aplicada especÌficamente a los textos dentro del image-wrap "p2" (Hira/render)
+   - Mejora la legibilidad sobre im·genes claras/variadas
    - Se aplica solo a #p2 para no afectar al resto de textos
    - Para ajustar: modificar el color/blur/offset en text-shadow
 */
@@ -892,17 +929,17 @@ footer.visible { transform: translateY(0); }
 }
 
 .image-wrap#p2 .text-overlay.shadowed {
-  /* Sombra m√°s intensa espec√≠ficamente para el texto largo de Hira */
+  /* Sombra m·s intensa especÌficamente para el texto largo de Hira */
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95),
                0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* Sombra aplicada espec√≠ficamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
+/* Sombra aplicada especÌficamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
    - Mejora la legibilidad sobre el video de fondo
    - Se aplica solo a #p7 para textos verdes sobre video
 */
 .image-wrap#p7 .text-overlay {
-  /* Solo reborde negro para el t√≠tulo, sin sombra difusa */
+  /* Solo reborde negro para el tÌtulo, sin sombra difusa */
   text-shadow: 
     1px 1px 0 rgba(0, 0, 0, 1),
     -1px 1px 0 rgba(0, 0, 0, 1),
@@ -910,9 +947,9 @@ footer.visible { transform: translateY(0); }
     -1px -1px 0 rgba(0, 0, 0, 1);
 }
 
-/* Sombra con contorno espec√≠ficamente para el texto descriptivo (Roboto) */
+/* Sombra con contorno especÌficamente para el texto descriptivo (Roboto) */
 .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
-  /* Sombra muy intensa con contorno completo para m√°ximo contraste */
+  /* Sombra muy intensa con contorno completo para m·ximo contraste */
   text-shadow: 
     /* Contorno negro en todas las direcciones */
     1px 1px 3px rgba(0, 0, 0, 1),
@@ -929,7 +966,7 @@ footer.visible { transform: translateY(0); }
      entre esa imagen y la siguiente. Se usa clip-path para eliminar la franja
      inferior y overflow en el contenedor para evitar huecos. */
   .image-wrap#p8 { overflow: hidden; line-height: 0; }
-  /* Si el GIF est√° insertado como <img id="p8" class="base"> (sin wrapper),
+  /* Si el GIF est· insertado como <img id="p8" class="base"> (sin wrapper),
      aplicar recorte directamente al elemento imagen */
   #p8.base, .image-wrap#p8 .base {
     display: block; /* evitar espacio baseline */
@@ -966,7 +1003,7 @@ footer.visible { transform: translateY(0); }
 .overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
 .overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
 
-/* Sincronizaci√≥n del texto con rollo2 en p13 - movimiento fluido conjunto */
+/* SincronizaciÛn del texto con rollo2 en p13 - movimiento fluido conjunto */
 .image-wrap#p13 .text-overlay {
   will-change: transform;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -992,18 +1029,18 @@ footer.visible { transform: translateY(0); }
   transition: transform 0.05s ease-out;
 }
 
-/* Quitar efecto hover del t√≠tulo en 'Concepto para baraja' (p16) */
+/* Quitar efecto hover del tÌtulo en 'Concepto para baraja' (p16) */
 .image-wrap#p16 .overlay {
   pointer-events: none;
 }
 
-/* Hover transform para carteles en p9: escala + rotaci√≥n controlada por variables
-   - --overlay-origin: permite al editor cambiar el punto de transformaci√≥n f√°cilmente
-   - --overlay-rot: √°ngulo aplicado al hover (se asigna por JS como ¬±15deg)
-   - Se usa una transici√≥n corta y will-change para suavizar el efecto */
+/* Hover transform para carteles en p9: escala + rotaciÛn controlada por variables
+   - --overlay-origin: permite al editor cambiar el punto de transformaciÛn f·cilmente
+   - --overlay-rot: ·ngulo aplicado al hover (se asigna por JS como ±15deg)
+   - Se usa una transiciÛn corta y will-change para suavizar el efecto */
 .image-wrap#p9 .overlay {
-  --overlay-origin: 50% 50%; /* editable: cambia el origen de la rotaci√≥n/scale */
-  --overlay-rot: 0deg;      /* JS asignar√° ¬±15deg por defecto */
+  --overlay-origin: 50% 50%; /* editable: cambia el origen de la rotaciÛn/scale */
+  --overlay-rot: 0deg;      /* JS asignar· ±15deg por defecto */
   pointer-events: auto; /* permitir hover/click directo sobre el cartel */
   cursor: default;
   will-change: transform, opacity;
@@ -1013,15 +1050,15 @@ footer.visible { transform: translateY(0); }
   transform: rotate(0deg) scale(1);
 }
 
-/* Activaci√≥n mediante clase .active (usada por JS al pasar sobre el √°rea asociada) */
+/* ActivaciÛn mediante clase .active (usada por JS al pasar sobre el ·rea asociada) */
 .image-wrap#p9 .overlay.active {
-  /* transform-origin ser√° establecido por JS en px (centro geom√©trico del √°rea) */
+  /* transform-origin ser· establecido por JS en px (centro geomÈtrico del ·rea) */
   transform: rotate(var(--overlay-rot)) scale(var(--overlay-scale, 1.1));
 }
 
-/* √Åreas rectangulares asociadas a cada cartel. Ed√≠talas en el HTML a√±adiendo
+/* ¡reas rectangulares asociadas a cada cartel. EdÌtalas en el HTML aÒadiendo
    elementos <div class="cartel-area" data-cartel="N" style="top:...;left:...;width:...;height:...;"></div>
-   Mant√©n background: transparent; para que sean invisibles en producci√≥n. */
+   MantÈn background: transparent; para que sean invisibles en producciÛn. */
 .image-wrap#p9 .cartel-area {
   position: absolute;
   pointer-events: auto;
@@ -1029,28 +1066,28 @@ footer.visible { transform: translateY(0); }
   cursor: pointer;
 }
 
-/* Justificar texto dentro de la secci√≥n 'Zona Zombi' (p9).
+/* Justificar texto dentro de la secciÛn 'Zona Zombi' (p9).
    Aplica a cualquier .text-overlay que quieras que aparezca justificado
    dentro del image-wrap p9. Forzamos wrapping y guionado para mejor
-   apariencia tipogr√°fica en p√°rrafos largos. */
+   apariencia tipogr·fica en p·rrafos largos. */
 .image-wrap#p9 .text-overlay {
   text-align: justify;
   text-justify: inter-word;
   -webkit-hyphens: none;
   -ms-hyphens: none;
-  hyphens: none; /* desactivar guionado autom√°tico */
-  white-space: normal; /* permitir quiebres de l√≠nea normales */
+  hyphens: none; /* desactivar guionado autom·tico */
+  white-space: normal; /* permitir quiebres de lÌnea normales */
 }
 
-/* Pseudo-clase √∫til para desarrollo: mostrar contornos mientras ajustas √°reas.
-  Por defecto las √°reas est√°n invisibles; para activar los contornos a√±ade la
+/* Pseudo-clase ˙til para desarrollo: mostrar contornos mientras ajustas ·reas.
+  Por defecto las ·reas est·n invisibles; para activar los contornos aÒade la
   clase `dev-outline-visible` al elemento <body>, por ejemplo <body class="dev-outline-visible">. */
 .image-wrap#p9 .cartel-area.dev-outline { outline: none; }
 .dev-outline-visible .image-wrap#p9 .cartel-area.dev-outline { outline: 1px dashed rgba(255,0,0,0.45); }
 
-/* THUMBNAILS: aparici√≥n con opacidad + desplazamiento hacia arriba y cascada */
-/* Aplica a overlays de p10/p11 (thumbnails 1.1..1.4) y p15/p16 (t√≠tulos) */
-/* NOTA: p9 (Zona Zombi) usa su propio sistema de animaci√≥n con clases p9-entrance-* */
+/* THUMBNAILS: apariciÛn con opacidad + desplazamiento hacia arriba y cascada */
+/* Aplica a overlays de p10/p11 (thumbnails 1.1..1.4) y p15/p16 (tÌtulos) */
+/* NOTA: p9 (Zona Zombi) usa su propio sistema de animaciÛn con clases p9-entrance-* */
 #p10 .overlay, #p11 .overlay, #p15 .overlay, #p16 .overlay {
   opacity: 0;
   transform: translateY(64px);
@@ -1062,10 +1099,10 @@ footer.visible { transform: translateY(0); }
   transform: translateY(0);
 }
 
-/* Entrada r√°pida para la secci√≥n Zona Zombi (p9)
-   - Aplicar a las overlays y a las sombras para que aparezcan de forma simult√°nea
-   - Uso: JS a√±ade la clase .p9-entrance-hidden inicialmente solo a carteles impares
-     y luego reemplaza por .p9-entrance-shown al entrar en la secci√≥n. */
+/* Entrada r·pida para la secciÛn Zona Zombi (p9)
+   - Aplicar a las overlays y a las sombras para que aparezcan de forma simult·nea
+   - Uso: JS aÒade la clase .p9-entrance-hidden inicialmente solo a carteles impares
+     y luego reemplaza por .p9-entrance-shown al entrar en la secciÛn. */
 .image-wrap#p9 .overlay.p9-entrance-hidden,
 .image-wrap#p9 .sombra.p9-entrance-hidden {
   opacity: 0;
@@ -1076,7 +1113,7 @@ footer.visible { transform: translateY(0); }
   transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Sombras de los carteles: detr√°s de las overlays pero por delante del fondo */
+/* Sombras de los carteles: detr·s de las overlays pero por delante del fondo */
 .image-wrap#p9 .sombra {
   position: absolute;
   left: 0;
@@ -1084,12 +1121,12 @@ footer.visible { transform: translateY(0); }
   width: 100%;
   height: auto;
   z-index: 2; /* base=1, sombras=2, overlays=3 */
-  pointer-events: none; /* la interacci√≥n se gestiona en las √°reas o en el propio cartel */
+  pointer-events: none; /* la interacciÛn se gestiona en las ·reas o en el propio cartel */
   opacity: 1;
   will-change: transform, filter, opacity;
-  /* estado base: sin rotaci√≥n ni escala, visible por defecto */
+  /* estado base: sin rotaciÛn ni escala, visible por defecto */
   transform: rotate(0deg) scale(1);
-  /* transici√≥n sincronizada con las overlays */
+  /* transiciÛn sincronizada con las overlays */
   transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1), filter 320ms ease, opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
   filter: blur(0px) saturate(1);
   /* Desplazamiento de sombra al activarse */
@@ -1099,7 +1136,7 @@ footer.visible { transform: translateY(0); }
   --sombra-blur: 6px;
 }
 
-/* Activar sombra: misma rotaci√≥n y escala que el cartel + ligero desplazamiento y blur */
+/* Activar sombra: misma rotaciÛn y escala que el cartel + ligero desplazamiento y blur */
 .image-wrap#p9 .sombra.active {
   /* Copiar exactamente el comportamiento del cartel (mismas variables) */
   transform: rotate(var(--overlay-rot, 0deg)) scale(var(--overlay-scale, 1.1));
@@ -1111,15 +1148,15 @@ footer.visible { transform: translateY(0); }
 .image-wrap#p9 .overlay { z-index: 3; }
 
 /* =============================
-  ZONA ZOMBI: REGLAS DE VISIBILIDAD Y ANIMACI√ìN
+  ZONA ZOMBI: REGLAS DE VISIBILIDAD Y ANIMACI”N
   =============================
-  Los carteles y sombras usan clases JS para controlar su aparici√≥n inicial.
+  Los carteles y sombras usan clases JS para controlar su apariciÛn inicial.
   Las reglas base permiten que las animaciones de hover funcionen correctamente.
 */
 
 
-/* THUMBNAILS: Prevenci√≥n de espacios en blanco durante transiciones */
-/* Para el sistema de transici√≥n suave, mantenemos las im√°genes base siempre visibles */
+/* THUMBNAILS: PrevenciÛn de espacios en blanco durante transiciones */
+/* Para el sistema de transiciÛn suave, mantenemos las im·genes base siempre visibles */
 #p11 .overlay, #p10 .overlay {
   position: absolute;
   top: var(--overlay-top, 0%);
@@ -1128,20 +1165,20 @@ footer.visible { transform: translateY(0); }
   height: auto;
 }
 
-/* Para el sistema de transici√≥n suave, mantenemos las im√°genes base siempre visibles */
+/* Para el sistema de transiciÛn suave, mantenemos las im·genes base siempre visibles */
 #p11 .overlay.transitioning, #p10 .overlay.transitioning {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* RECTANGULOS BLANCOS para ocultar im√°genes viejas durante transici√≥n */
+/* RECTANGULOS BLANCOS para ocultar im·genes viejas durante transiciÛn */
 .thumb-mask {
   position: absolute;
-  background: #ffffff; /* Mismo color que el fondo de la p√°gina */
+  background: #ffffff; /* Mismo color que el fondo de la p·gina */
   z-index: 50; /* Entre imagen vieja (z-index bajo) y nueva (z-index 100) */
   pointer-events: none;
   opacity: 0;
-  /* M√°scara diagonal sincronizada con las im√°genes nuevas */
+  /* M·scara diagonal sincronizada con las im·genes nuevas */
   -webkit-mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
   mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
   -webkit-mask-repeat: no-repeat;
@@ -1154,7 +1191,7 @@ footer.visible { transform: translateY(0); }
   opacity: 1;
 }
 
-/* Configuraci√≥n de dimensiones por defecto para cada rect√°ngulo (ajustables) */
+/* ConfiguraciÛn de dimensiones por defecto para cada rect·ngulo (ajustables) */
 .thumb-mask[data-thumb="1"] {
   top: var(--mask1-top, 12%);
   left: var(--mask1-left, 30%);
@@ -1250,29 +1287,29 @@ footer.visible { transform: translateY(0); }
 
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) {
-  /* Empujar el contenido mucho m√°s a la izquierda (menos padding lateral) */
+  /* Empujar el contenido mucho m·s a la izquierda (menos padding lateral) */
   #sobremi { padding-left: 8px; padding-right: 8px; }
   /* Eliminar el hueco bajo el header en ventanas estrechas
-     Nota: #desktop-version section es m√°s espec√≠fico que "section",
-     por eso forzamos aqu√≠ el padding-top a 0. */
+     Nota: #desktop-version section es m·s especÌfico que "section",
+     por eso forzamos aquÌ el padding-top a 0. */
   #desktop-version section { padding-top: 0 !important; }
-  /* En ventanas estrechas (‚â§1024px): footer como elemento inline est√°tico al final de cada secci√≥n */
+  /* En ventanas estrechas (=1024px): footer como elemento inline est·tico al final de cada secciÛn */
   footer { 
     position: static !important; 
     transform: none !important; 
     transition: none !important;
-    display: none; /* Se mostrar√° inline v√≠a JS en cada secci√≥n */
+    display: none; /* Se mostrar· inline vÌa JS en cada secciÛn */
   }
   footer.inline-footer { display: flex !important; position: static !important; }
   #indice { width: 250px; }
   /* Dar un poco de aire entre header y carrusel en ventanas estrechas */
   #menu .carousel { margin-top: 12px !important; }
   /* Carrusel en pantallas estrechas de escritorio: imagen al 80% del viewport
-     para que se insin√∫en las adyacentes por los lados */
+     para que se insin˙en las adyacentes por los lados */
   .carousel { justify-content: center; padding-left: 4vw; padding-right: 4vw; }
   .carousel img {
     width: 80vw !important;
-    height: calc(80vw * 0.58) !important; /* mantener proporci√≥n apaisada en escritorio estrecho */
+    height: calc(80vw * 0.58) !important; /* mantener proporciÛn apaisada en escritorio estrecho */
     max-width: 80vw !important;
     object-fit: cover !important;
   }
@@ -1280,31 +1317,31 @@ footer.visible { transform: translateY(0); }
   section > *:first-child { margin-top: 0 !important; }
   /* En Menu, asegurar carrusel sin margen superior */
   #menu .carousel { margin-top: 0 !important; }
-  /* Mini carrusel: r√≥tulo ligeramente m√°s peque√±o y un poco m√°s abajo en ‚â§1024px */
+  /* Mini carrusel: rÛtulo ligeramente m·s pequeÒo y un poco m·s abajo en =1024px */
   .service-2 .mini-carousel::after {
     font-size: clamp(9px, 1.8vw, 13px);
     bottom: 10.8%;
     line-height: 1.05;
     letter-spacing: 0.2px;
   }
-  /* Clients: texto m√°s ancho, t√≠tulo m√°s grande y m√°s espacio entre texto y logos en ventanas estrechas */
+  /* Clients: texto m·s ancho, tÌtulo m·s grande y m·s espacio entre texto y logos en ventanas estrechas */
   .clients { 
-    grid-template-columns: 1fr 2fr; /* ensanchar m√°s el bloque de texto */
-    gap: 40px 56px; /* m√°s espacio horizontal y vertical */
-    padding: 0 3vw; /* margen lateral m√°s reducido para ganar ancho √∫til */
+    grid-template-columns: 1fr 2fr; /* ensanchar m·s el bloque de texto */
+    gap: 40px 56px; /* m·s espacio horizontal y vertical */
+    padding: 0 3vw; /* margen lateral m·s reducido para ganar ancho ˙til */
     width: 100%; /* asegurar que no hereda el 100.608% del layout desktop */
   }
   .clients-copy { min-width: 82%; margin-left: 0; }
   .clients-copy h3 { font-size: clamp(34px, 5.6vw, 64px); }
-  /* P√°rrafo ocupa todo el ancho disponible dentro del padding lateral */
+  /* P·rrafo ocupa todo el ancho disponible dentro del padding lateral */
   .clients-copy p { width: 100%; max-width: none; margin: 0; }
   .clients-logos { gap: 24px 32px; }
-  /* Logo en pantallas estrechas (ajustado -25% respecto al tama√±o ampliado) */
+  /* Logo en pantallas estrechas (ajustado -25% respecto al tamaÒo ampliado) */
   .logo { height: 195px !important; width: 195px !important; }
   /* Centrar logo en header en ventanas estrechas */
   header { justify-content: center !important; position: relative; }
   .logo { margin: 0 auto; }
-  /* Referencias (‚â§1024px): avatar a la izquierda solo del nombre; la cita queda debajo a ancho completo */
+  /* Referencias (=1024px): avatar a la izquierda solo del nombre; la cita queda debajo a ancho completo */
   .quote-card {
     grid-template-columns: 84px 1fr; /* avatar + nombre */
     grid-template-rows: auto auto;   /* fila 1: avatar+autor, fila 2: cita */
@@ -1315,30 +1352,30 @@ footer.visible { transform: translateY(0); }
   .quote-content { display: contents; }
   .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: start; padding: 0 8px 0; margin: 0; }
   .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* Avatares un poco m√°s grandes en ventanas estrechas */
+  /* Avatares un poco m·s grandes en ventanas estrechas */
   .quote-avatar { width: 84px; height: 84px; }
   .quote-card > a .quote-avatar { display: block; }
 }
 @media (max-width: 768px) {
-  /* En m√≥vil, asegurar que no hay espacio blanco bajo el header */
+  /* En mÛvil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* En m√≥vil: footer como elemento inline est√°tico al final de cada secci√≥n */
+  /* En mÛvil: footer como elemento inline est·tico al final de cada secciÛn */
   footer { 
     position: static !important; 
     transform: none !important; 
     transition: none !important;
-    display: none; /* Se mostrar√° inline v√≠a JS en cada secci√≥n */
+    display: none; /* Se mostrar· inline vÌa JS en cada secciÛn */
   }
   footer.inline-footer { display: flex !important; position: static !important; }
-  /* Header fijo con comportamiento de ocultaci√≥n al scroll */
+  /* Header fijo con comportamiento de ocultaciÛn al scroll */
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: fixed !important; top: 0; transition: transform 0.3s ease; }
   header.hidden { transform: translateY(-100%); }
-  /* Logo en m√≥vil (ajustado -25% respecto al tama√±o ampliado) */
+  /* Logo en mÛvil (ajustado -25% respecto al tamaÒo ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
   .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
   #idioma-btn { display: none !important; }
   #idioma-list { display: none !important; }
-  /* Mostrar √∫nicamente el bot√≥n de Idioma dentro del men√∫; mantener oculta la lista */
+  /* Mostrar ˙nicamente el botÛn de Idioma dentro del men˙; mantener oculta la lista */
   #idioma-mobile-btn { display: block !important; }
   #idioma-mobile-list { display: none; }
   nav { 
@@ -1370,7 +1407,7 @@ footer.visible { transform: translateY(0); }
     background: rgba(255, 255, 0, 0.1);
     transform: none;
   }
-  /* Contenido del men√∫ principal apilado verticalmente */
+  /* Contenido del men˙ principal apilado verticalmente */
   #main-menu-items {
     display: flex;
     flex-direction: column;
@@ -1382,19 +1419,19 @@ footer.visible { transform: translateY(0); }
   #back-to-menu {
     font-weight: bold;
   }
-  /* En m√≥vil, sin margen superior en main para que no exista hueco bajo el header */
+  /* En mÛvil, sin margen superior en main para que no exista hueco bajo el header */
   main { margin-top: 0; }
   section { padding: 20px; padding-top: 0; }
   /* Evitar hueco bajo el header en secciones: quitar margen superior del primer hijo */
   section > *:first-child { margin-top: 0 !important; }
   /* En Menu, asegurar carrusel sin margen superior */
   #menu .carousel { margin-top: 0 !important; }
-  /* En Sobre m√≠ (#redes), alinear contenido al inicio para evitar espacio superior al centrar verticalmente */
+  /* En Sobre mÌ (#redes), alinear contenido al inicio para evitar espacio superior al centrar verticalmente */
   #redes { place-content: start; align-content: start; }
   /* Menu: ocupar casi todo el ancho con leve margen lateral */
   #menu { padding-left: 4vw !important; padding-right: 4vw !important; }
   .proyectos-container { flex-direction: column; height: auto; }
-  /* Header fijo en m√≥vil con comportamiento de ocultaci√≥n al scroll */
+  /* Header fijo en mÛvil con comportamiento de ocultaciÛn al scroll */
   header { position: fixed !important; top: 0; transition: transform 0.3s ease; }
   header.hidden { transform: translateY(-100%); }
   #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 60px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
@@ -1417,12 +1454,12 @@ footer.visible { transform: translateY(0); }
     box-sizing: border-box !important;
   }
   #menu { padding-top: 0 !important; }
-  /* En m√≥vil: m√°s espacio visual bajo el header antes del carrusel */
+  /* En mÛvil: m·s espacio visual bajo el header antes del carrusel */
   #menu .carousel { margin-top: 16px !important; padding-top: 8px !important; }
   .carousel-caption { bottom: 10% !important; max-width: 76% !important; }
   .carousel img { 
     width: 80vw !important;  /* ocupar ~80% del ancho para que se vean los bordes de las adyacentes */
-    height: 80vw !important; /* mantener formato cuadrado en m√≥vil */
+    height: 80vw !important; /* mantener formato cuadrado en mÛvil */
     min-width: 250px !important;
     min-height: 250px !important;
     max-width: 80vw !important;
@@ -1432,15 +1469,15 @@ footer.visible { transform: translateY(0); }
  .services { gap: 16px; padding: 0 4vw; }
  .services-circles { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .service-circle { width: 100%; }
-/* Mobile: textos de c√≠rculos m√°s grandes */
-/* Mobile ajuste: un pel√≠n m√°s peque√±o */
+/* Mobile: textos de cÌrculos m·s grandes */
+/* Mobile ajuste: un pelÌn m·s pequeÒo */
 .service-circle span { font-size: clamp(16px, 4.6vw, 30px); }
-  /* Ajustes espec√≠ficos en m√≥vil: por defecto igual al resto */
+  /* Ajustes especÌficos en mÛvil: por defecto igual al resto */
   .service-5 span { font-size: clamp(16px, 4.6vw, 30px); }
-  /* Reducir s√≥lo en Espa√±ol y Portugu√©s en m√≥vil */
+  /* Reducir sÛlo en EspaÒol y PortuguÈs en mÛvil */
   html[lang='es'] .service-5 span,
   html[lang='pt'] .service-5 span { font-size: clamp(14px, 3.6vw, 26px); }
-  /* Mini carrusel: r√≥tulo m√°s peque√±o y un poco m√°s abajo en m√≥vil */
+  /* Mini carrusel: rÛtulo m·s pequeÒo y un poco m·s abajo en mÛvil */
   .service-2 .mini-carousel::after { 
     font-size: clamp(7px, 2.0vw, 11px); 
     bottom: 6.0%; 
@@ -1450,22 +1487,22 @@ footer.visible { transform: translateY(0); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
-  /* Igualar formato m√≥vil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
+  /* Igualar formato mÛvil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
   .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 36px; padding: 0 2vw; margin-top: 16px; width: 100%; }
-  /* Evitar doble padding lateral con el contenedor externo en m√≥vil */
+  /* Evitar doble padding lateral con el contenedor externo en mÛvil */
   .clients-block { padding: 0; }
   .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
   .btn-napoleon { padding: 10px 16px; font-size: clamp(13px, 3.2vw, 17px); }
-  /* Logos m√°s peque√±os, 3 columnas x 4 filas */
+  /* Logos m·s pequeÒos, 3 columnas x 4 filas */
   .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 16px 16px; margin-top: 16px; }
   .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
   .clients-copy { width: 100%; max-width: none; margin-left: 0; }
   .clients-copy h3 { text-align: center; font-size: clamp(32px, 8vw, 64px); }
-  /* Alinear tipograf√≠a de p√°rrafo al formato de servicios en m√≥vil */
+  /* Alinear tipografÌa de p·rrafo al formato de servicios en mÛvil */
   .clients-copy p { text-align: justify; width: 100%; max-width: none; margin: 0; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; hyphens: auto; }
-  /* Footer inline en m√≥vil: ancho completo de pantalla, sin espacio debajo */
+  /* Footer inline en mÛvil: ancho completo de pantalla, sin espacio debajo */
   footer.inline-footer { 
     flex-direction: column; 
     text-align: center; 
@@ -1475,7 +1512,7 @@ footer.visible { transform: translateY(0); }
     align-items: center;
     padding: 16px 0;
     margin: 0;
-    margin-bottom: -1px; /* Eliminar l√≠nea residual blanca */
+    margin-bottom: -1px; /* Eliminar lÌnea residual blanca */
     width: 100vw; /* Ancho completo de la pantalla */
     margin-left: calc(-50vw + 50%); /* Centrar y extender al full width */
     box-sizing: border-box;
@@ -1483,9 +1520,9 @@ footer.visible { transform: translateY(0); }
   }
   footer.inline-footer > div, 
   footer.inline-footer > div:last-child { text-align: center; }
-  /* M√°s margen entre contenido y footer en Men√∫ y Sobre m√≠ */
+  /* M·s margen entre contenido y footer en Men˙ y Sobre mÌ */
   #menu footer.inline-footer {
-    margin-top: 60px; /* M√°s espacio en Men√∫ */
+    margin-top: 60px; /* M·s espacio en Men˙ */
   }
   #sobremi footer.inline-footer {
     margin-top: 40px;
@@ -1507,12 +1544,12 @@ footer.visible { transform: translateY(0); }
   }
   #intro-video { max-width: 90vw; max-height: 90vh; }
 }
-/* Eliminado el bloque de @media (max-width: 480px) para que m√≥viles usen
+/* Eliminado el bloque de @media (max-width: 480px) para que mÛviles usen
    exactamente el mismo layout que pantallas estrechas de escritorio (<=768px). */
 
-/* CONTACTO: foto a la izquierda, datos a la derecha; t√≠tulo grande y centrado */
+/* CONTACTO: foto a la izquierda, datos a la derecha; tÌtulo grande y centrado */
 #contacto { max-width: 1100px; margin: 36px auto 60px auto; padding: 0 24px; }
-#contacto .contact-title { text-align: center; font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: 1px; font-size: clamp(36px, 6.5vw, 72px); margin: 0 0 18px 0; }
+#contacto .contact-title { text-align: center; font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: 1px; font-size: clamp(36px, 6.5vw, 72px); margin: 0 0 18px 0; }
 #contacto .contact-inner { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; padding: 18px 0; max-width: 760px; margin: 0 auto; position: relative; left: 16%; top: 24%; }
 #contacto .contact-photo img { width: 100%; height: auto; max-width: 200px; border-radius: 0; object-fit: cover; display: block; }
 #contacto .contact-details { font-family: 'Roboto', sans-serif; color: #1f2a44; font-size: clamp(16px, 2.2vw, 20px); line-height: 1.6; }
@@ -1523,7 +1560,7 @@ footer.visible { transform: translateY(0); }
 @media (min-width: 1025px) {
   body.footer-visible #contacto { transform: translateY(var(--footer-h, 0px)); }
 }
-/* M√≥vil/ventanas estrechas: Contacto con footer fijo y contenido centrado entre header y footer */
+/* MÛvil/ventanas estrechas: Contacto con footer fijo y contenido centrado entre header y footer */
 @media (max-width: 1024px) {
   #contacto { 
     margin: 0;
@@ -1572,7 +1609,7 @@ footer.visible { transform: translateY(0); }
 
 html.intro-active, body.intro-active { overflow: hidden; }
 
-/* En m√≥vil, posibilidad de bloquear el scroll general cuando se muestren
+/* En mÛvil, posibilidad de bloquear el scroll general cuando se muestren
    secciones de pantalla completa como Redes/Contacto */
 @media (max-width: 768px) {
   body.lock-scroll {
@@ -1583,19 +1620,19 @@ html.intro-active, body.intro-active { overflow: hidden; }
 }
 
 /* =============================
-   SOBRE M√ç
+   SOBRE MÕ
    ============================= */
 #redes {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 24px 24px; /* sin padding-top extra; se centra con grid */
-  /* Altura visible bajo el header (usar svh para m√≥viles) */
+  /* Altura visible bajo el header (usar svh para mÛviles) */
   min-height: calc(100svh - var(--header-h));
   display: grid;
   place-content: center;  /* centra verticalmente entre header y, si aparece, el espacio del footer */
   place-items: center;
   row-gap: clamp(90px, 14vw, 200px);
-  transform: translateY(8vh); /* empuja visualmente el bloque algo m√°s hacia abajo */
+  transform: translateY(8vh); /* empuja visualmente el bloque algo m·s hacia abajo */
 }
 #redes { box-sizing: border-box; }
 /* Desktop: cuando el footer sea visible, limitar altura de Redes */
@@ -1606,7 +1643,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     overflow: hidden;
   }
 }
-/* M√≥vil/ventanas estrechas: Redes con footer fijo y contenido centrado entre header y footer */
+/* MÛvil/ventanas estrechas: Redes con footer fijo y contenido centrado entre header y footer */
 @media (max-width: 1024px) {
   #redes {
     min-height: 100svh; /* Altura completa de la ventana */
@@ -1621,7 +1658,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     padding-bottom: 70px; /* Espacio para el footer fijo */
     margin: 0;
     box-sizing: border-box;
-    transform: none; /* Eliminar el desplazamiento vertical en m√≥vil */
+    transform: none; /* Eliminar el desplazamiento vertical en mÛvil */
   }
   #redes > h1,
   #redes > p,
@@ -1630,7 +1667,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
 }
 #redes > h1 { 
-  font-family: Coolvetica, Helvetica, Arial, sans-serif; 
+  font-family: Coolvetica, Inter, Arial, sans-serif; 
   color: #001f3f; 
   font-weight: 700; 
   letter-spacing: 1px; 
@@ -1648,19 +1685,19 @@ html.intro-active, body.intro-active { overflow: hidden; }
   margin-top: 1.2em;
 }
 #redes > .social-links {
-  /* M√°s espacio entre el t√≠tulo y las barras, sin afectar el gap interno entre barras */
+  /* M·s espacio entre el tÌtulo y las barras, sin afectar el gap interno entre barras */
   margin-top: clamp(24px, 6vw, 64px);
 }
 @media (max-width: 700px) {
-  /* En m√≥vil (barras tipo pill), un poco m√°s de aire a√∫n */
+  /* En mÛvil (barras tipo pill), un poco m·s de aire a˙n */
   #redes > .social-links { margin-top: clamp(28px, 8vw, 72px); }
 }
 
 
-/* Redes sociales: c√≠rculos e interacciones */
+/* Redes sociales: cÌrculos e interacciones */
 .social-links {
-  /* Variables base: calculamos el tama√±o que encajar√≠a al completo, luego reducimos un 25% */
-  --gap: clamp(22px, 4vw, 48px); /* m√°s separaci√≥n entre c√≠rculos */
+  /* Variables base: calculamos el tamaÒo que encajarÌa al completo, luego reducimos un 25% */
+  --gap: clamp(22px, 4vw, 48px); /* m·s separaciÛn entre cÌrculos */
   --base-circle: min(220px, calc((100vw - (4 * var(--gap))) / 7));
   --circle-size: calc(var(--base-circle) * 0.75);
   display: grid;
@@ -1694,7 +1731,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
 .social-link.behance:hover { background: #ffffff; }
 .social-link.behance:hover .icon { filter: brightness(0); }
 
-/* Tama√±os responsivos */
+/* TamaÒos responsivos */
 @media (max-width: 768px) {
   .social-links { --gap: clamp(12px, 3vw, 22px); }
 }
@@ -1702,12 +1739,12 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .social-links { --gap: clamp(10px, 3.5vw, 18px); }
 }
 
-/* Ventanas estrechas (c√≠rculos): icono de Behance ligeramente mayor (un poco m√°s peque√±o que antes) */
+/* Ventanas estrechas (cÌrculos): icono de Behance ligeramente mayor (un poco m·s pequeÒo que antes) */
 @media (max-width: 1024px) {
   #redes .social-link.behance .icon { width: 54%; height: 54%; }
 }
 
-/* Redes: en m√≥viles/ventanas estrechas, convertir c√≠rculos en barras horizontales */
+/* Redes: en mÛviles/ventanas estrechas, convertir cÌrculos en barras horizontales */
 @media (max-width: 700px) {
   #redes .social-links {
     grid-template-columns: 1fr;
@@ -1719,8 +1756,8 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
   #redes .social-link {
     width: 100%;
-    height: 48px; /* -25% en m√≥vil */
-    border-radius: 9999px; /* m√°ximo redondeo (pill) */
+    height: 48px; /* -25% en mÛvil */
+    border-radius: 9999px; /* m·ximo redondeo (pill) */
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
@@ -1733,36 +1770,36 @@ html.intro-active, body.intro-active { overflow: hidden; }
     margin-right: 12px;
     filter: none;
   }
-  /* En m√≥vil/barras: Behance un poco m√°s peque√±o que el ajuste previo */
+  /* En mÛvil/barras: Behance un poco m·s pequeÒo que el ajuste previo */
   #redes .social-link.behance .icon {
     width: clamp(24px, 5.25vw, 30px);
     height: clamp(24px, 5.25vw, 30px);
   }
-  /* Asegurar cambio a negro en hover en m√≥vil (gana a #redes .social-link .icon { filter:none }) */
+  /* Asegurar cambio a negro en hover en mÛvil (gana a #redes .social-link .icon { filter:none }) */
   #redes .social-link.behance:hover .icon { filter: brightness(0); }
   /* Etiqueta con nombre de la red a la derecha */
   #redes .social-link::after {
     content: attr(aria-label);
     margin-left: auto;
     color: #ffffff;
-    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', Inter, Arial, sans-serif;
     font-weight: 700;
     letter-spacing: .3px;
     font-size: clamp(12px, 3.4vw, 15px); /* -25% */
   }
   /* Mejorar contraste cuando Behance invierte a fondo blanco en hover */
   #redes .social-link.behance:hover::after { color: #111111; }
-  /* Ocultar texto descriptivo inferior en m√≥vil/estrecho */
+  /* Ocultar texto descriptivo inferior en mÛvil/estrecho */
   #redes > p { display: none !important; }
 }
 
-/* Ajuste adicional de t√≠tulo en Redes para m√≥vil (-25%) */
+/* Ajuste adicional de tÌtulo en Redes para mÛvil (-25%) */
 @media (max-width: 768px) {
   #redes > h1 { font-size: clamp(24px, 4.5vw, 48px) !important; }
 }
 
 #sobremi { max-width: 1100px; margin: 0 auto; padding: 10px 24px 80px 24px; }
-#sobremi > h1 { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: 1px; font-size: clamp(32px, 6vw, 64px); margin: 0 0 18px 0; text-align: left; }
+#sobremi > h1 { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: 1px; font-size: clamp(32px, 6vw, 64px); margin: 0 0 18px 0; text-align: left; }
 
 .about-hero {
   display: grid;
@@ -1770,7 +1807,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   gap: 28px;
   align-items: center;
   margin-bottom: 100px;
-  /* Revertimos margen superior para no bajar tambi√©n la imagen y resto del bloque */
+  /* Revertimos margen superior para no bajar tambiÈn la imagen y resto del bloque */
   margin-top: 0;
 }
 .about-photo img {
@@ -1789,34 +1826,34 @@ html.intro-active, body.intro-active { overflow: hidden; }
   mask-composite: intersect;
   -webkit-mask-composite: destination-in;
 }
-/* Mostrar/ocultar im√°genes espec√≠ficas de Sobre m√≠ */
+/* Mostrar/ocultar im·genes especÌficas de Sobre mÌ */
 .about-photo .about-photo__img--mobile { display: none; }
 @media (max-width: 1024px), (orientation: portrait) {
   .about-photo .about-photo__img--desktop { display: none; }
   .about-photo .about-photo__img--mobile { display: block; }
 }
 .about-intro { display: flex; flex-direction: column; gap: 12px; }
-.about-subtitle { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.5vw, 36px); margin: 0; }
+.about-subtitle { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.5vw, 36px); margin: 0; }
 .about-intro p { font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; margin: 0; }
-/* Centrado del t√≠tulo y texto de "¬øQui√©n soy yo?" */
+/* Centrado del tÌtulo y texto de "øQuiÈn soy yo?" */
 #sobremi .about-intro { align-items: center; }
 #sobremi .about-intro .about-subtitle { text-align: center; }
 #sobremi .about-intro p { text-align: center; }
 @media (min-width: 1025px) {
-  /* Revertir a alineaci√≥n izquierda solo en pantallas anchas */
+  /* Revertir a alineaciÛn izquierda solo en pantallas anchas */
   #sobremi .about-intro { align-items: flex-start; }
   #sobremi .about-intro .about-subtitle { text-align: left; }
   #sobremi .about-intro p { text-align: left; }
 }
 
-/* Espaciado espec√≠fico solo entre el t√≠tulo y el p√°rrafo biogr√°fico en pantallas anchas */
+/* Espaciado especÌfico solo entre el tÌtulo y el p·rrafo biogr·fico en pantallas anchas */
 @media (min-width: 1025px) {
   .about-intro p { margin-top: 32px; }
   /* Elevar la imagen respecto al bloque de texto */
   .about-photo { margin-top: -20px; }
 }
 
-/* En pantallas m√°s estrechas a√±adimos un espacio menor para mantener proporci√≥n */
+/* En pantallas m·s estrechas aÒadimos un espacio menor para mantener proporciÛn */
 @media (max-width: 1024px) {
   .about-intro p { margin-top: 24px; }
 }
@@ -1843,8 +1880,8 @@ html.intro-active, body.intro-active { overflow: hidden; }
   display: block;
 }
 .about-columns > .about-edu { grid-column: 3; }
-.about-programs h3 { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: center; }
-.about-edu h3, .about-langs { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: left; }
+.about-programs h3 { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: center; }
+.about-edu h3, .about-langs { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(20px, 2.8vw, 28px); margin: 0 0 12px 0; text-align: left; }
 .programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 14px 18px; align-items: center; justify-items: center; background: transparent !important; border: none !important; border-radius: 0 !important; padding: 16px; box-shadow: none !important; }
 .programs-grid img { width: 56px; height: 56px; object-fit: contain; filter: saturate(.95) contrast(1.02); opacity: .98; transition: transform .18s ease, filter .18s ease, opacity .18s ease; }
 .programs-grid img:hover { transform: none; filter: none; opacity: 1; }
@@ -1854,29 +1891,29 @@ html.intro-active, body.intro-active { overflow: hidden; }
 .about-list li { background: transparent !important; border: none !important; border-radius: 0 !important; padding: 10px 12px; font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(15px, 2vw, 18px); line-height: 1.45; box-shadow: none !important; }
 
 .about-references {
-  /* Aumentado el espacio entre 'Sobre m√≠' y 'Referencias' */
+  /* Aumentado el espacio entre 'Sobre mÌ' y 'Referencias' */
   margin-top: 48px;
   max-width: 100%;
 }
-.references-title { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; /* tama√±o aumentado solo para este t√≠tulo */ font-size: clamp(28px, 4.2vw, 44px); margin: 0 0 18px 0; text-align: center; }
+.references-title { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; /* tamaÒo aumentado solo para este tÌtulo */ font-size: clamp(28px, 4.2vw, 44px); margin: 0 0 18px 0; text-align: center; }
 .references-grid {
   display: grid;
   /* Columnas fijas de 720px y centradas en el contenedor.
      Esto garantiza que cada tarjeta tenga 720px de ancho y que,
      en pantallas suficientemente anchas, se muestren dos tarjetas
-     una al lado de la otra centradas en la p√°gina. */
+     una al lado de la otra centradas en la p·gina. */
   grid-template-columns: repeat(2, 630px);
   gap: 28px 40px; /* fila-gap 28px, column-gap 40px */
   width: 100%;
   max-width: none;
-  justify-content: center; /* centra las columnas r√≠gidas */
+  justify-content: center; /* centra las columnas rÌgidas */
   justify-items: stretch;
   align-items: start;
   margin: 0 auto; /* asegurar centrado en su contenedor */
 }
 .quote-card {
   display: grid;
-  /* Ajustado para avatar m√°s grande (90px = 72px * 1.25) */
+  /* Ajustado para avatar m·s grande (90px = 72px * 1.25) */
   grid-template-columns: 90px 1fr;
   gap: 16px;
   align-items: start;
@@ -1913,9 +1950,9 @@ html.intro-active, body.intro-active { overflow: hidden; }
   top: 50%;
   transform: translate(-50%, -40%);
   color: #ffffff;
-  font-family: Coolvetica, Helvetica, Arial, sans-serif;
+  font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 800;
-  /* aumentar el tama√±o del badge para mejor legibilidad, responsivo */
+  /* aumentar el tamaÒo del badge para mejor legibilidad, responsivo */
   font-size: clamp(14px, 2.6vw, 18px);
   letter-spacing: 0.6px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
@@ -1925,7 +1962,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   text-transform: capitalize;
 }
 
-/* Badge espec√≠fico para el enlace de Moifez (YouTube) */
+/* Badge especÌfico para el enlace de Moifez (YouTube) */
 .quote-card > a.quote-link--youtube::after {
   content: "YouTube";
 }
@@ -1942,16 +1979,16 @@ html.intro-active, body.intro-active { overflow: hidden; }
 /* Asegurar que las comillas se posicionen relativas al cuerpo del texto */
 .quote-text { position: relative; }
 /* Comillas gigantes alrededor del texto */
-.quote-text::before, .quote-text::after { content: '‚Äú'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
+.quote-text::before, .quote-text::after { content: 'ì'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
 .quote-text::before { left: -18px; top: -22px; font-size: 120px; transform: translateY(-10%); }
-.quote-text::after { content: '‚Äù'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
-.quote-author { font-family: Coolvetica, Helvetica, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(15px, 2vw, 18px); padding: 0 8px 2px; }
+.quote-text::after { content: 'î'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
+.quote-author { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(15px, 2vw, 18px); padding: 0 8px 2px; }
 @media (min-width: 769px) {
-  /* Alinear autores m√°s a la izquierda en desktop (quitamos padding y compensamos) */
+  /* Alinear autores m·s a la izquierda en desktop (quitamos padding y compensamos) */
   .quote-author { padding-left: 0; margin-left: -4px; }
 }
 
-/* Responsive ajustes para SOBRE M√ç */
+/* Responsive ajustes para SOBRE MÕ */
 @media (max-width: 1024px) {
   .about-hero { grid-template-columns: 1fr; }
   .about-photo img {
@@ -1962,7 +1999,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
   /* En ventanas estrechas, mostrar la foto por encima del texto */
   .about-photo { order: -1; }
-  /* Sobre m√≠ columnas: pasar a 1 columna, ocultar separador y reordenar
+  /* Sobre mÌ columnas: pasar a 1 columna, ocultar separador y reordenar
      para que Idiomas/Estudios queden arriba y Programas debajo */
   .about-columns { 
     grid-template-columns: 1fr; 
@@ -1981,7 +2018,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     grid-row: 1; 
     justify-self: stretch; /* ocupar todo el ancho disponible del grid */
     width: 100%;
-    max-width: none; /* sin l√≠mite para que alinee con el padding del contenedor */
+    max-width: none; /* sin lÌmite para que alinee con el padding del contenedor */
     margin-left: 0 !important;
     margin-right: 0 !important;
     padding-left: 0;
@@ -2028,10 +2065,10 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
 }
 @media (max-width: 768px) {
-  /* A√∫n menos padding en m√≥vil para que ‚ÄúEstudios/Idiomas‚Äù queden mucho m√°s a la izquierda */
+  /* A˙n menos padding en mÛvil para que ìEstudios/Idiomasî queden mucho m·s a la izquierda */
   #sobremi { padding: 10px 16px 70px 16px; }
   .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; align-items: start; }
-  /* Educaci√≥n e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
+  /* EducaciÛn e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
   .about-columns > .about-edu {
     justify-self: stretch; /* ocupar todo el ancho */
     width: 100%;
@@ -2056,7 +2093,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     justify-self: center;
     width: 100%;
   }
-  /* En m√≥vil, 5 columnas compactas y perfectamente centradas */
+  /* En mÛvil, 5 columnas compactas y perfectamente centradas */
   .about-programs .programs-grid {
     grid-template-columns: repeat(5, minmax(48px, max-content));
     width: fit-content;
@@ -2067,7 +2104,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .about-programs .programs-grid img { width: 48px; height: 48px; }
   .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
-  /* En m√≥vil: avatar a la izquierda del nombre; texto debajo a ancho completo */
+  /* En mÛvil: avatar a la izquierda del nombre; texto debajo a ancho completo */
   .quote-card {
     grid-template-columns: 96px 1fr;
     grid-template-rows: auto auto;
@@ -2077,24 +2114,24 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .quote-content { display: contents; }
   .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: center; }
   .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* En m√≥vil: avatares m√°s grandes para mejor legibilidad */
+  /* En mÛvil: avatares m·s grandes para mejor legibilidad */
   .quote-avatar { width: 96px; height: 96px; }
   .quote-text { font-size: clamp(12px, 1.4vw, 15px); }
   .quote-text::before, .quote-text::after { font-size: 96px; }
 }
 
 /* ======================================================
-   Tipograf√≠as: compatibilidad total (Safari iOS/Android)
+   TipografÌas: compatibilidad total (Safari iOS/Android)
    ======================================================
    - Definimos la fuente base en Roboto
    - Forzamos equivalentes para familias declaradas inline
      que no existen como webfonts (p.ej. 'Kemco Pixel',
      'Google Sans Code', 'Roboto black', 'Aver', 'SF Florencesans')
-   - Reforzamos t√≠tulos clave a Montserrat para consistencia
+   - Reforzamos tÌtulos clave a Montserrat para consistencia
 */
 
 /* Base del sitio */
-body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Arial, sans-serif; }
 
 /* Accesibilidad: enlace para saltar al contenido */
 .skip-link {
@@ -2111,14 +2148,14 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 }
 .skip-link:focus { top: 8px; outline: 2px solid #ffd700; }
 
-/* Mapeo de familias inline no disponibles ‚Üí webfonts disponibles */
+/* Mapeo de familias inline no disponibles ? webfonts disponibles */
 .text-overlay[style*="Google Sans Code"],
 .text-overlay[style*="'Google Sans Code'"] {
   font-family: 'Google Sans Code', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace !important;
 }
 .text-overlay[style*="'Roboto black'"],
 .text-overlay[style*="Roboto black"] {
-  font-family: 'Roboto', Helvetica, Arial, sans-serif !important;
+  font-family: 'Roboto', Inter, Arial, sans-serif !important;
   font-weight: 900 !important;
 }
 .text-overlay[style*="'Aver'"],
@@ -2127,14 +2164,14 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 }
 .text-overlay[style*="'SF Florencesans'"],
 .text-overlay[style*="SF Florencesans"] {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
+  font-family: 'Montserrat', Inter, Arial, sans-serif !important;
 }
 .text-overlay[style*="'Kemco Pixel'"],
 .text-overlay[style*="Kemco Pixel"] {
   font-family: 'Kemco Pixel', 'Press Start 2P', cursive !important;
 }
 
-/* Refuerzo de t√≠tulos y elementos destacados a Montserrat */
+/* Refuerzo de tÌtulos y elementos destacados a Montserrat */
 .carousel-title,
 .carousel-subtitle,
 .services-title,
@@ -2150,7 +2187,7 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 .references-title,
 .quote-author,
 #redes > h1 {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif !important;
+  font-family: 'Montserrat', Inter, Arial, sans-serif !important;
 }
 /* Reemplazo de Montserrat por Coolvetica en secciones solicitadas */
 #menu .carousel-title,
@@ -2166,12 +2203,12 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Hel
 #sobremi .about-langs,
 #sobremi .references-title,
 #sobremi .quote-author {
-  font-family: Coolvetica, Helvetica, Arial, sans-serif !important;
+  font-family: Coolvetica, Inter, Arial, sans-serif !important;
 }
-/* T√≠tulos Hira extra gruesos */
+/* TÌtulos Hira extra gruesos */
 .carousel-title.title-hira { font-weight: 900; }
 .text-overlay.title-hira { font-weight: 900; }
-/* Reducci√≥n espec√≠fica del t√≠tulo Hira en franc√©s para ventanas anchas */
+/* ReducciÛn especÌfica del tÌtulo Hira en francÈs para ventanas anchas */
 html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.8); }
 /* Sombreado de esquina inferior izquierda en cada imagen del carrusel */
 .carousel-item { position: relative; overflow: hidden; }
@@ -2185,11 +2222,11 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   z-index:0;
   background: rgba(0,0,0,0.50);
   filter: blur(26px); /* desenfoque gaussiano para bordes suaves */
-  /* Para que el interior conserve densidad tras el blur, a√±adir una capa n√≠tida menor */
+  /* Para que el interior conserve densidad tras el blur, aÒadir una capa nÌtida menor */
 }
-/* Capa interior n√≠tida opcional (refuerzo de lectura) */
+/* Capa interior nÌtida opcional (refuerzo de lectura) */
 .carousel-caption { position:absolute; z-index:1; }
-/* Reflejos del Multiverso: sombra moderada unificada (t√≠tulos + cuerpo + carrusel) */
+/* Reflejos del Multiverso: sombra moderada unificada (tÌtulos + cuerpo + carrusel) */
 .image-wrap#p7 .text-overlay,
 .image-wrap#p7 .text-overlay.reflejos-shadow,
 .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
@@ -2218,14 +2255,14 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
 @font-face { font-family:'Aver'; src:url('../../Aver Bold Italic.ttf') format('truetype'); font-weight:700; font-style:italic; font-display:swap; }
 
 /* =============================
-   GALER√çA: versi√≥n m√≥vil/estrecha
+   GALERÕA: versiÛn mÛvil/estrecha
    =============================
-   En m√≥viles y ventanas estrechas, sustituimos todas las im√°genes/textos
-   de cada secci√≥n de la galer√≠a por un √∫nico fondo espec√≠fico, ubicado
+   En mÛviles y ventanas estrechas, sustituimos todas las im·genes/textos
+   de cada secciÛn de la galerÌa por un ˙nico fondo especÌfico, ubicado
    en assets/Secciones/Proyectos/<Proyecto>/movil/.
-   El orden de las secciones se mantiene. Solo visibles en ‚â§1024px.
+   El orden de las secciones se mantiene. Solo visibles en =1024px.
 */
-/* Asegurar que las im√°genes de fondo m√≥viles NO aparezcan en escritorio */
+/* Asegurar que las im·genes de fondo mÛviles NO aparezcan en escritorio */
 @media (min-width: 1025px) {
   #galeria .image-wrap > img.mobile-bg,
   #galeria .image-wrap > img.mobile-overlay,
@@ -2233,8 +2270,8 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
 }
 
 @media (max-width: 1024px) {
-  /* Versi√≥n m√≥vil de la galer√≠a basada en <img class="mobile-bg"> */
-  /* 1) Invisibilizar por defecto todos los wrappers de la galer√≠a */
+  /* VersiÛn mÛvil de la galerÌa basada en <img class="mobile-bg"> */
+  /* 1) Invisibilizar por defecto todos los wrappers de la galerÌa */
   #galeria .image-wrap { display: none; margin: 0 !important; position: relative; min-height: auto; }
 
   /* 2) Mostrar solo los necesarios (uno por fondo; dos si el proyecto tiene dos fondos) */
@@ -2249,10 +2286,10 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   #galeria .image-wrap#p16,
   #galeria .image-wrap#p19 { display: block; }
 
-  /* 3) Dentro de los visibles, ocultar todo salvo la imagen m√≥vil y los overlays m√≥viles */
+  /* 3) Dentro de los visibles, ocultar todo salvo la imagen mÛvil y los overlays mÛviles */
   #galeria .image-wrap > :not(.mobile-bg):not(.mobile-overlay):not(.mobile-text-overlay) { display: none !important; }
   
-  /* Fondo m√≥vil */
+  /* Fondo mÛvil */
   #galeria .image-wrap > img.mobile-bg {
     display: block !important;
     width: 100% !important;
@@ -2266,12 +2303,12 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     padding: 0 !important;
   }
 
-  /* Eliminar espacio entre √∫ltima imagen de la galer√≠a y el footer en m√≥vil */
+  /* Eliminar espacio entre ˙ltima imagen de la galerÌa y el footer en mÛvil */
   #galeria .image-wrap#p19 {
     margin-bottom: -1px !important;
   }
 
-  /* Imagen overlay para m√≥vil - posicionada sobre el fondo */
+  /* Imagen overlay para mÛvil - posicionada sobre el fondo */
   #galeria .image-wrap > img.mobile-overlay {
     display: block !important;
     position: absolute !important;
@@ -2282,21 +2319,21 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     object-fit: contain !important;
     pointer-events: none;
     z-index: 2;
-    /* Visible por defecto para evitar problemas con IntersectionObserver en m√≥viles */
+    /* Visible por defecto para evitar problemas con IntersectionObserver en mÛviles */
     opacity: 1;
-    /* Animaci√≥n de entrada opcional desde abajo con zoom */
+    /* AnimaciÛn de entrada opcional desde abajo con zoom */
     transform: translateY(0) scale(1);
     transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
                 transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Clase inicial para animaci√≥n (si JavaScript est√° disponible) */
+  /* Clase inicial para animaciÛn (si JavaScript est· disponible) */
   #galeria .image-wrap > img.mobile-overlay:not(.visible) {
     opacity: 0;
     transform: translateY(30px) scale(0.95);
   }
 
-  /* Clase para activar la animaci√≥n (aplicada por JavaScript al hacer scroll) */
+  /* Clase para activar la animaciÛn (aplicada por JavaScript al hacer scroll) */
   #galeria .image-wrap > img.mobile-overlay.visible {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -2315,10 +2352,10 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     opacity: 0;
   }
 
-  /* Thumbnails m√≥viles (p10) - Anulaci√≥n de animaci√≥n gen√©rica */
+  /* Thumbnails mÛviles (p10) - AnulaciÛn de animaciÛn genÈrica */
   #galeria .image-wrap#p10 img.thumb-mobile,
   #galeria .image-wrap#p10 img.thumb-temp {
-    /* Anular la animaci√≥n de entrada por defecto para evitar saltos */
+    /* Anular la animaciÛn de entrada por defecto para evitar saltos */
     transform: none !important;
     transition: none !important;
   }
@@ -2356,7 +2393,7 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     margin-bottom: 0;
   }
 
-  /* Rollo m√≥vil deslizable (p12) */
+  /* Rollo mÛvil deslizable (p12) */
   #galeria .image-wrap#p12 {
     overflow: hidden; /* Ocultar la parte que sobresale del rollo */
     position: relative;
@@ -2368,20 +2405,20 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   #galeria .image-wrap#p12.mobile-rollo-enabled:active,
   #galeria .image-wrap#p12.mobile-rollo-dragging {
     cursor: grabbing;
-    touch-action: none; /* Solo cuando est√° arrastrando horizontalmente */
+    touch-action: none; /* Solo cuando est· arrastrando horizontalmente */
   }
   #galeria .image-wrap#p12 .mobile-rollo-scroll {
     position: absolute;
     top: 0;
     left: 0;
-    width: auto !important; /* Ancho autom√°tico basado en la altura */
-    max-width: none !important; /* Sin l√≠mite de ancho */
+    width: auto !important; /* Ancho autom·tico basado en la altura */
+    max-width: none !important; /* Sin lÌmite de ancho */
     height: 100% !important; /* Altura igual al contenedor/fondo */
     object-fit: cover; /* Mantener altura completa, el ancho se extiende */
     object-position: left center;
     z-index: 3;
     pointer-events: auto;
-    /* Anular animaci√≥n de entrada gen√©rica */
+    /* Anular animaciÛn de entrada genÈrica */
     opacity: 1 !important;
     user-select: none;
     -webkit-user-drag: none;
@@ -2389,14 +2426,14 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     -moz-user-select: none;
     -ms-user-select: none;
     transform: translateX(0) !important;
-    transition: none; /* Sin transiciones autom√°ticas, controlado por JS */
+    transition: none; /* Sin transiciones autom·ticas, controlado por JS */
   }
 
-  /* Texto overlay para m√≥vil */
+  /* Texto overlay para mÛvil */
   #galeria .image-wrap > .mobile-text-overlay {
     display: block !important;
     position: absolute;
-    font-family: var(--text-font-family, var(--font-family, 'Montserrat', Helvetica, Arial, sans-serif));
+    font-family: var(--text-font-family, var(--font-family, 'Montserrat', Inter, Arial, sans-serif));
     font-weight: var(--text-font-weight, var(--font-weight, 400));
     color: var(--text-color, #ffffff);
     background: none;
@@ -2425,13 +2462,13 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
                 filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Clase para activar la animaci√≥n del texto */
+  /* Clase para activar la animaciÛn del texto */
   #galeria .image-wrap > .mobile-text-overlay.visible {
     opacity: 1;
     filter: blur(0);
   }
 
-  /* Reflejos del Multiverso: aplicar el mismo sombreado de desktop en m√≥vil */
+  /* Reflejos del Multiverso: aplicar el mismo sombreado de desktop en mÛvil */
   #galeria .image-wrap#p7 > .mobile-text-overlay {
     text-shadow: 
       1px 1px 2px rgba(0,0,0,0.82),
@@ -2441,12 +2478,12 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
       0 4px 14px rgba(0,0,0,0.55) !important;
   }
 
-  /* Reducir tama√±o del t√≠tulo en ingl√©s para que quepa en pantalla */
+  /* Reducir tamaÒo del tÌtulo en inglÈs para que quepa en pantalla */
   html[lang='en'] #galeria .image-wrap#p7 > .mobile-text-overlay:first-of-type {
     font-size: 7.5cqw !important;
   }
 
-  /* Subir t√≠tulo de Hira en franc√©s para mejor ajuste */
+  /* Subir tÌtulo de Hira en francÈs para mejor ajuste */
   html[lang='fr'] #galeria .image-wrap#p1 > .mobile-text-overlay:first-of-type {
     top: 14% !important;
   }
@@ -2457,19 +2494,19 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   /* 5) Desactivar cualquier fondo inyectado por ::before (en caso de herencia) */
   #galeria .image-wrap::before { content: none !important; }
 
-  /* === Zona Zombi (p9) ‚Äî Versi√≥n m√≥vil ===
-     Mostrar base + overlays m√≥viles y ocultar duplicados de escritorio */
-  /* No mostrar la base de escritorio en m√≥vil; dejamos √∫nicamente el fondo m√≥vil y overlays m√≥viles */
+  /* === Zona Zombi (p9) ó VersiÛn mÛvil ===
+     Mostrar base + overlays mÛviles y ocultar duplicados de escritorio */
+  /* No mostrar la base de escritorio en mÛvil; dejamos ˙nicamente el fondo mÛvil y overlays mÛviles */
   /* (queda oculto por la regla global que oculta :not(.mobile-*) ) */
 
-  /* Mostrar SOLAMENTE recursos m√≥viles (carpeta /Zombis/movil/) */
+  /* Mostrar SOLAMENTE recursos mÛviles (carpeta /Zombis/movil/) */
   #galeria .image-wrap#p9 > img.overlay[src*="/Zombis/movil/"],
   #galeria .image-wrap#p9 > img.overlay-stand[src*="/Zombis/movil/"],
   #galeria .image-wrap#p9 > img.sombra[src*="/Zombis/movil/"] {
     display: block !important;
   }
 
-  /* Ocultar recursos de escritorio para evitar duplicados en m√≥vil */
+  /* Ocultar recursos de escritorio para evitar duplicados en mÛvil */
   #galeria .image-wrap#p9 > img.overlay:not([src*="/Zombis/movil/"]),
   #galeria .image-wrap#p9 > img.sombra:not([src*="/Zombis/movil/"]) {
     display: none !important;
@@ -2484,15 +2521,15 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     z-index: 3 !important;
   }
 
-  /* Justificar el texto explicativo de los Zombis en m√≥vil */
+  /* Justificar el texto explicativo de los Zombis en mÛvil */
   #galeria .image-wrap#p9 > .mobile-text-overlay:first-of-type {
     text-align: justify !important;
   }
 }
 
-/* Correcci√≥n espec√≠fica para la p√°gina aut√≥noma proyectos.html:
-   En algunos dispositivos estrechos la galer√≠a quedaba totalmente oculta.
-   Forzamos que los wrappers visibles definidos para m√≥vil se muestren siempre
+/* CorrecciÛn especÌfica para la p·gina autÛnoma proyectos.html:
+   En algunos dispositivos estrechos la galerÌa quedaba totalmente oculta.
+   Forzamos que los wrappers visibles definidos para mÛvil se muestren siempre
    cuando el body tiene la clase proyectos-page (solo aplica a proyectos.html). */
 @media (max-width: 1024px) {
   body.proyectos-page #galeria .image-wrap#p1,
@@ -2505,11 +2542,11 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   body.proyectos-page #galeria .image-wrap#p12,
   body.proyectos-page #galeria .image-wrap#p16,
   body.proyectos-page #galeria .image-wrap#p19 { display: block !important; }
-  /* Permitir scroll vertical tambi√©n en ventanas estrechas (‚â§1024px) */
+  /* Permitir scroll vertical tambiÈn en ventanas estrechas (=1024px) */
   body.proyectos-page, html.proyectos-page { overflow-y: auto !important; overflow-x: hidden; }
-  /* Mostrar todos los wrappers en la p√°gina aut√≥noma si a√∫n quedasen ocultos por reglas previas */
+  /* Mostrar todos los wrappers en la p·gina autÛnoma si a˙n quedasen ocultos por reglas previas */
   body.proyectos-page #galeria .image-wrap { display: block !important; }
-  /* Ocultar solo elementos de escritorio dentro de cada wrapper, mantener fondos y overlays m√≥viles */
+  /* Ocultar solo elementos de escritorio dentro de cada wrapper, mantener fondos y overlays mÛviles */
   body.proyectos-page #galeria .image-wrap > img.base,
   body.proyectos-page #galeria .image-wrap > img.overlay,
   body.proyectos-page #galeria .image-wrap > .text-overlay { display: none !important; }
