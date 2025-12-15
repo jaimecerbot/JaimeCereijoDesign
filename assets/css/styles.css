@@ -1,9 +1,9 @@
 /* Eliminadas @import duplicadas de Google Fonts.
   Las fuentes se cargan desde <head> con <link> + display=swap para mayor rendimiento y compatibilidad. */
-/* BLOQUE DE CONTROL DE COLOR Y TIPOGRAFÍA (añadido)
+/* BLOQUE DE CONTROL DE COLOR Y TIPOGRAFï¿½A (aï¿½adido)
    - Fijamos esquema claro independientemente del modo oscuro del SO
-   - Centralizamos colores clave en variables para evitar ajustes automáticos
-   - Aplicamos forced-color-adjust sólo a elementos de identidad para no romper accesibilidad general */
+   - Centralizamos colores clave en variables para evitar ajustes automï¿½ticos
+   - Aplicamos forced-color-adjust sï¿½lo a elementos de identidad para no romper accesibilidad general */
 :root {
   color-scheme: light;
   --color-bg-page: #f8f8f8;
@@ -19,14 +19,14 @@
   body, main { background: var(--color-bg-page) !important; color: var(--color-text-primary) !important; }
   /* Limitar fondo azul solo al header principal y su nav, no a otros <nav> como #indice */
   #main-header, footer, #main-nav { background: var(--color-brand-navy) !important; color: var(--color-brand-accent) !important; }
-  /* Reafirmar fondo claro del índice de proyectos */
+  /* Reafirmar fondo claro del ï¿½ndice de proyectos */
   #indice { background: var(--color-bg-panel) !important; }
 }
-/* High Contrast / Forced Colors: preservar branding únicamente */
+/* High Contrast / Forced Colors: preservar branding ï¿½nicamente */
 @media (forced-colors: active) {
   header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
 }
-/* Identidad fija también fuera de media queries (para motores que reescriben sin @media) */
+/* Identidad fija tambiï¿½n fuera de media queries (para motores que reescriben sin @media) */
 header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-color-adjust: none; }
 
 /* FUENTES LOCALES */
@@ -48,7 +48,7 @@ header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-col
   font-style: normal;
   font-display: swap;
 }
-/* === Fuentes locales añadidas === */
+/* === Fuentes locales aï¿½adidas === */
 @font-face {
   font-family: 'Montserrat';
   src: url('../../Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
@@ -148,11 +148,11 @@ header, footer, .logo, .btn-napoleon, .service-circle, .social-link { forced-col
 /* RESET Y BASE */
 *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; padding-right: calc(100vw - 100%); scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
-/* En la sección Proyectos (desktop y página autónoma), desactivar scroll global para evitar doble barra */
+/* En la secciï¿½n Proyectos (desktop y pï¿½gina autï¿½noma), desactivar scroll global para evitar doble barra */
 body.proyectos-active, html.proyectos-active,
 body.proyectos-page, html.proyectos-page { overflow: hidden; }
 
-/* MODO MÓVIL PARA proyectos.html: usar scroll global y footer normal */
+/* MODO Mï¿½VIL PARA proyectos.html: usar scroll global y footer normal */
 @media (max-width: 768px) {
   body.proyectos-page, html.proyectos-page { overflow-y: auto; overflow-x: hidden; }
   body.proyectos-page #proyectos, body.proyectos-page .proyectos-container { min-height: auto !important; height: auto !important; display: block !important; }
@@ -166,15 +166,15 @@ body.proyectos-page, html.proyectos-page { overflow: hidden; }
 }
 html::-webkit-scrollbar, body::-webkit-scrollbar, .carousel::-webkit-scrollbar, #indice::-webkit-scrollbar, #indice ul::-webkit-scrollbar { display: none; }
 body { font-family: Coolvetica, sans-serif; background: var(--color-bg-page); color: var(--color-text-primary); display: flex; flex-direction: column; min-height: 100vh; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-/* No añadimos margen superior global en main: el contenido arranca justo bajo el header fijo */
+/* No aï¿½adimos margen superior global en main: el contenido arranca justo bajo el header fijo */
 main { flex: 1; margin-top: 0; overflow-x: hidden; }
-/* Contenedor principal sin scroll cuando Proyectos está activo: el scroll vive en #galeria-container */
+/* Contenedor principal sin scroll cuando Proyectos estï¿½ activo: el scroll vive en #galeria-container */
 body.proyectos-active main { overflow: hidden; }
 /* Cuando el footer aparece, empujamos el contenido (salvo header) hacia arriba */
 main { transition: transform .3s ease; will-change: transform; }
 body.footer-visible main { transform: translateY(calc(-1 * var(--footer-h, 0px))); }
 
-/* Variables de altura del header (desktop/móvil) para cálculos de alto de secciones */
+/* Variables de altura del header (desktop/mï¿½vil) para cï¿½lculos de alto de secciones */
 :root { --header-h: 70px; }
 @media (max-width: 768px) { :root { --header-h: 60px; } }
 
@@ -286,7 +286,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   -webkit-text-stroke: 0.6px rgba(0,0,0,.9);
   paint-order: stroke fill;
   text-shadow:
-    /* contorno nítido en 8 direcciones */
+    /* contorno nï¿½tido en 8 direcciones */
     1px 0 0 rgba(0,0,0,1),
     -1px 0 0 rgba(0,0,0,1),
     0 1px 0 rgba(0,0,0,1),
@@ -295,13 +295,13 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
     -1px 1px 0 rgba(0,0,0,1),
     1px -1px 0 rgba(0,0,0,1),
     -1px -1px 0 rgba(0,0,0,1),
-    /* halos concéntricos para separar del fondo */
+    /* halos concï¿½ntricos para separar del fondo */
     0 0 14px rgba(0,0,0,1),
     0 0 26px rgba(0,0,0,1),
     0 10px 36px rgba(0,0,0,.98),
     0 14px 48px rgba(0,0,0,.98);
 }
-/* título de Reflejos: un pelín más trazo para máxima claridad */
+/* tï¿½tulo de Reflejos: un pelï¿½n mï¿½s trazo para mï¿½xima claridad */
 .carousel-item.contrast-strong .carousel-title { -webkit-text-stroke-width: 0.8px; }
 .carousel img:hover {
   transform: scale(1.02);
@@ -310,8 +310,8 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .carousel-item:hover { border-radius: 0; }
 /* Variables para slideshows de Servicios */
 :root {
-  --circle-frame: 3s; /* duración exacta por imagen */
-  --circle-easing: cubic-bezier(0.22, 1, 0.36, 1); /* easing orgánico */
+  --circle-frame: 3s; /* duraciï¿½n exacta por imagen */
+  --circle-easing: cubic-bezier(0.22, 1, 0.36, 1); /* easing orgï¿½nico */
   --circle-hover-fade: 600ms; /* difuminado al entrar/salir del hover */
 }
 
@@ -343,17 +343,17 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   width: 100%;
 }
 
-/* Descripción bajo los círculos */
+/* Descripciï¿½n bajo los cï¿½rculos */
 .services-description {
   width: 100%;
-  max-width: 760px; /* más estrecho */
+  max-width: 760px; /* mï¿½s estrecho */
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
   color: #333;
   font-family: 'Roboto', sans-serif;
-  font-size: clamp(16px, 2vw, 22px); /* texto más grande */
+  font-size: clamp(16px, 2vw, 22px); /* texto mï¿½s grande */
   line-height: 1.5;
   background: none; /* sin fondo */
   border: none;     /* sin recuadro */
@@ -362,7 +362,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   box-shadow: none; /* sin sombra */
   overflow: visible; /* permitir que el texto se extienda y se difumine */
   position: relative;
-  /* Altura fija calculada dinámicamente por JS para mantener mismo número de líneas */
+  /* Altura fija calculada dinï¿½micamente por JS para mantener mismo nï¿½mero de lï¿½neas */
   height: auto;
   display: flex;
   align-items: flex-start;
@@ -379,11 +379,11 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
 .cta-portfolio {
   width: 100%;
   max-width: 900px;
-  margin: 18px auto 16px auto; /* un poco más de aire alrededor */
+  margin: 18px auto 16px auto; /* un poco mï¿½s de aire alrededor */
   padding: 18px 24px; /* define la altura visual de la banda */
   text-align: center;
   position: relative; /* necesario para pseudo-elemento de banda */
-  isolation: isolate; /* garantiza que el ::before quede detrás del contenido */
+  isolation: isolate; /* garantiza que el ::before quede detrï¿½s del contenido */
 }
 .cta-portfolio::before {
   content: "";
@@ -394,11 +394,11 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   width: 100vw; /* banda de lado a lado de la pantalla */
   height: 100%;
   background: #ffffff; /* banda blanca */
-  /* Sombra más notoria, con dos capas para profundidad */
+  /* Sombra mï¿½s notoria, con dos capas para profundidad */
   box-shadow: 
     0 10px 28px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.12);
-  z-index: -1; /* detrás del contenido de la CTA */
+  z-index: -1; /* detrï¿½s del contenido de la CTA */
 }
 .cta-title {
   font-family: Coolvetica, Inter, Arial, sans-serif;
@@ -420,7 +420,7 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   align-items: center;
   justify-content: center;
   padding: 12px 18px;
-  background: #001f3f; /* azul napoleónico: header */
+  background: #001f3f; /* azul napoleï¿½nico: header */
   color: yellow;
   text-decoration: none;
   border-radius: 999px;
@@ -444,19 +444,19 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   transform: translateY(0) scale(0.995);
   box-shadow: 0 2px 8px rgba(0,31,63,.35);
 }
-/* Animación de entrada desde la derecha */
+/* Animaciï¿½n de entrada desde la derecha */
 .services-description #services-description-text.slide-in-right {
   animation: slideInRight 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-/* Animación de entrada desde la izquierda */
+/* Animaciï¿½n de entrada desde la izquierda */
 .services-description #services-description-text.slide-in-left {
   animation: slideInLeft 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-/* Animación de salida hacia la izquierda */
+/* Animaciï¿½n de salida hacia la izquierda */
 .services-description #services-description-text.slide-out-left {
   animation: slideOutLeft 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
-/* Animación de salida hacia la derecha */
+/* Animaciï¿½n de salida hacia la derecha */
 .services-description #services-description-text.slide-out-right {
   animation: slideOutRight 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
@@ -527,31 +527,31 @@ nav a:focus-visible { outline: 2px solid yellow; outline-offset: 3px; transform:
   transition: transform .18s ease, box-shadow .18s ease;
   user-select: none;
   position: relative;
-  overflow: hidden; /* Para usar el círculo como máscara del slideshow */
+  overflow: hidden; /* Para usar el cï¿½rculo como mï¿½scara del slideshow */
 }
-/* Texto de los círculos del menú: aumentado sin salir del contenedor */
+/* Texto de los cï¿½rculos del menï¿½: aumentado sin salir del contenedor */
 .service-circle span { 
   font-family: Coolvetica, Inter, Arial, sans-serif; 
   font-weight: 700; 
   line-height: 1.07; 
-  font-size: clamp(20px, 2.3vw, 40px); /* ajuste más contenido */
+  font-size: clamp(20px, 2.3vw, 40px); /* ajuste mï¿½s contenido */
   text-wrap: balance; 
   padding: 4px 6px; /* ligero ajuste de padding */
   box-sizing: border-box;
 }
-/* Ajustes puntuales de etiquetas dentro de los círculos (todas las pantallas) */
-/* "Comunicación de Proyectos" tamaño por defecto igual al resto */
+/* Ajustes puntuales de etiquetas dentro de los cï¿½rculos (todas las pantallas) */
+/* "Comunicaciï¿½n de Proyectos" tamaï¿½o por defecto igual al resto */
 .service-5 span { font-size: clamp(20px, 2.3vw, 40px); }
-/* Reducir sólo en Español y Portugués para que quepa en el círculo */
+/* Reducir sï¿½lo en Espaï¿½ol y Portuguï¿½s para que quepa en el cï¿½rculo */
 html[lang='es'] .service-5 span,
 html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
-/* "Desarrollo Web": mantener alineación vertical igual que el resto */
+/* "Desarrollo Web": mantener alineaciï¿½n vertical igual que el resto */
 .service-2 span { display: inline-block; transform: translateY(0); }
 .service-circle:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }
-/* Refuerzo de legibilidad del texto en hover (mucho más marcado) */
+/* Refuerzo de legibilidad del texto en hover (mucho mï¿½s marcado) */
 .service-circle:hover span { 
   text-shadow:
-    /* contorno en 8 direcciones para separación nítida */
+    /* contorno en 8 direcciones para separaciï¿½n nï¿½tida */
     1px 0 0 rgba(0,0,0,0.95),
     -1px 0 0 rgba(0,0,0,0.95),
     0 1px 0 rgba(0,0,0,0.95),
@@ -566,7 +566,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
     0 6px 28px rgba(0,0,0,0.9),
     0 10px 40px rgba(0,0,0,0.92);
 }
-/* Sombra interior perimetral que oscurece ligeramente las imágenes en hover */
+/* Sombra interior perimetral que oscurece ligeramente las imï¿½genes en hover */
 .service-circle::after {
   content: "";
   position: absolute;
@@ -599,7 +599,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 .service-6 { background: #001f3f; color: rgb(255, 255, 255); }
 .service-6 span { text-shadow: 0 1px 6px rgba(0,0,0,.35); }
 
-/* Hover: texto blanco para Desarrollo Web y Edición de Vídeo */
+/* Hover: texto blanco para Desarrollo Web y Ediciï¿½n de Vï¿½deo */
 .service-2:hover span,
 .service-3:hover span { color: #ffffff; }
 
@@ -655,7 +655,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 }
 .clients-logos img {
   max-width: 100%;
-  /* 33% más pequeños aprox */
+  /* 33% mï¿½s pequeï¿½os aprox */
   max-height: clamp(24px, 4.3vw, 40px);
   width: auto;
   height: auto;
@@ -686,11 +686,11 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 .service-circle span { position: relative; z-index: 3; }
 .service-circle .circle-slideshow { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 1; opacity: 0; transition: opacity var(--circle-hover-fade) var(--circle-easing); }
 .service-circle .circle-slideshow .frame { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; will-change: opacity; animation: ilustracionFade calc(var(--circle-frame) * 3) infinite; animation-timing-function: var(--circle-easing); animation-play-state: paused; }
-/* Ilustración (service-6) */
+/* Ilustraciï¿½n (service-6) */
 .service-6 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion1.png'); animation-delay: 0s; }
 .service-6 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion2.png'); animation-delay: var(--circle-frame); }
 .service-6 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Ilustraciones/Ilustracion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
-/* Diseño Gráfico (service-1) */
+/* Diseï¿½o Grï¿½fico (service-1) */
 .service-1 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico1.png'); animation-delay: 0s; }
 .service-1 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico2.png'); animation-delay: var(--circle-frame); }
 .service-1 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/DisenoGrafico/DisenoGrafico3.png'); animation-delay: calc(var(--circle-frame) * 2); }
@@ -716,7 +716,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   width: var(--mini-width, auto);
   height: var(--mini-height, auto);
 }
-/* Simulación del header (franja azul) por encima del mini carrusel, sin afectar su tamaño/posición */
+/* Simulaciï¿½n del header (franja azul) por encima del mini carrusel, sin afectar su tamaï¿½o/posiciï¿½n */
 .service-2 .mini-carousel::before {
   content: "";
   position: absolute;
@@ -727,9 +727,10 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   background: #001f3f; /* azul header */
   z-index: 0; /* por debajo del carrusel clonado */
 }
-/* Rótulo bajo el carrusel: ¿Qué puedo hacer por ti? */
+/* Rï¿½tulo bajo el carrusel: Â¿QuÃ© puedo hacer por ti? */
 .service-2 .mini-carousel::after {
-  content: "¿Qué puedo hacer por ti?";
+  /* Usar escapes Unicode para evitar problemas de encoding */
+  content: "\00BFQu\00E9  puedo hacer por ti?";
   position: absolute;
   left: 50%;
   bottom: 6%;
@@ -743,13 +744,13 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   z-index: 3; /* por encima del carrusel y de la sombra perimetral (z=2) */
   pointer-events: none;
 }
-/* El carrusel clonado se transformará (translateX) en tiempo real */
+/* El carrusel clonado se transformarï¿½ (translateX) en tiempo real */
 .service-2 .mini-carousel [data-mini="true"] {
   will-change: transform;
-  /* No fijamos una transición aquí: el mini heredará/sincronizará la del principal vía JS */
+  /* No fijamos una transiciï¿½n aquï¿½: el mini heredarï¿½/sincronizarï¿½ la del principal vï¿½a JS */
   transition: none;
 }
-/* Alinear textos del mini carrusel a la izquierda para mayor legibilidad en el círculo */
+/* Alinear textos del mini carrusel a la izquierda para mayor legibilidad en el cï¿½rculo */
 .service-2 .mini-carousel .carousel-caption {
   left: 7%;
   right: auto;
@@ -757,24 +758,24 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   text-align: left;
   align-items: flex-start;
 }
-/* Ocultar los textos del mini carrusel: mantener solo los títulos */
+/* Ocultar los textos del mini carrusel: mantener solo los tï¿½tulos */
 .service-2 .mini-carousel .carousel-caption .carousel-subtitle { display: none !important; }
-/* Desplazar ligeramente los títulos hacia arriba e izquierda */
+/* Desplazar ligeramente los tï¿½tulos hacia arriba e izquierda */
 .service-2 .mini-carousel .carousel-caption .carousel-title { 
   transform: translate(-1%, -3%);
 }
-/* Mantener visible el título "Desarrollo Web" incluso en hover */
-/* (El título ya tiene text-shadow reforzado en hover para legibilidad) */
-/* Comunicación de Proyectos (service-5) */
+/* Mantener visible el tï¿½tulo "Desarrollo Web" incluso en hover */
+/* (El tï¿½tulo ya tiene text-shadow reforzado en hover para legibilidad) */
+/* Comunicaciï¿½n de Proyectos (service-5) */
 .service-5 .circle-slideshow .f1.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion1.png'); animation-delay: 0s; }
 .service-5 .circle-slideshow .f2.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion2.png'); animation-delay: var(--circle-frame); }
 .service-5 .circle-slideshow .f3.loaded { background-image: url('../Secciones/Menu/circulos/Comunicacion/Comunicacion3.png'); animation-delay: calc(var(--circle-frame) * 2); }
-/* Gráficos Móviles (service-4) — un solo GIF: revelar suave en hover */
+/* Grï¿½ficos Mï¿½viles (service-4) ï¿½ un solo GIF: revelar suave en hover */
 .service-4 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/GraficosMoviles/Secuencia 01_1.gif"); background-position: center 3%; background-size: cover; transform: scale(1.19); transform-origin: center center;}
 .service-3 .circle-slideshow .frame.loaded { animation: none; opacity: 1; background-image: url("../Secciones/Menu/circulos/EdicionVideo/EdicionVideo.gif"); background-position: center 50%; background-size: cover;}
 /* Mostrar/ocultar el slideshow completo con un difuminado suave */
 .service-circle:hover .circle-slideshow { opacity: 1; }
-/* Control de animación: corre solo en hover */
+/* Control de animaciï¿½n: corre solo en hover */
 .service-6:hover .circle-slideshow .frame,
 .service-1:hover .circle-slideshow .frame,
 .service-5:hover .circle-slideshow .frame { animation-play-state: running; }
@@ -786,16 +787,16 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   44.44% { opacity: 0; }    /* 4.0s de 9s */
   100% { opacity: 0; }
 }
-/* Estilos para imágenes clonadas */
+/* Estilos para imï¿½genes clonadas */
 .carousel img[data-clone="true"] {
   opacity: 1;
 }
-/* Estilos para imágenes buffer (extra para transición suave) */
+/* Estilos para imï¿½genes buffer (extra para transiciï¿½n suave) */
 .carousel img.carousel-buffer {
   opacity: 1;
-  /* Mismos estilos que las imágenes normales */
+  /* Mismos estilos que las imï¿½genes normales */
 }
-/* Mensaje de error si no hay imágenes */
+/* Mensaje de error si no hay imï¿½genes */
 .carousel-error {
   color: #666;
   text-align: center;
@@ -808,7 +809,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 #proyectos { display: flex; flex-direction: column; position: relative; min-height: calc(100vh - 70px); padding: 0 !important; margin-top: 0; overflow: visible; }
 .proyectos-container { display: flex; flex: 1; height: calc(100vh - 70px); position: relative; overflow: hidden; }
 
-/* ÍNDICE */
+/* ï¿½NDICE */
 #indice { width: 280px; background: #f9f9f9; border-right: 1px solid #ddd; padding: 1.5em 0; flex-shrink: 0; display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px); align-self: flex-start; overflow-y: auto; z-index: 900; scrollbar-width: none; -ms-overflow-style: none; will-change: top; transition: top .3s ease; }
 .indice-content { padding: 0 1.5em; flex: 1; display: flex; flex-direction: column; }
 #indice h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1em; color: black; font-weight: normal; position: sticky; top: 0; background: #f9f9f9; padding: 10px 0; z-index: 1; }
@@ -820,7 +821,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
   #indice a:hover { color: #001f3f; transform: translateX(8px); background: transparent; }
 }
 
-/* GALERÍA Y FOOTER */
+/* GALERï¿½A Y FOOTER */
 #galeria-container { 
   flex: 1; 
   overflow-x: hidden; 
@@ -832,7 +833,7 @@ html[lang='pt'] .service-5 span { font-size: clamp(16px, 1.95vw, 32px); }
 #galeria { width: 100%; padding: 0; margin: 0; overflow: visible; }
 #galeria img, #galeria video { display: block; width: 100%; height: auto; object-fit: cover; border-radius: 0; box-shadow: none; margin: 0; padding: 0; }
 .overlay-rollo { width: auto !important; height: 100% !important; object-fit: contain !important; }
-/* Footer: fijo por defecto en desktop para evitar huecos en el layout cuando está oculto */
+/* Footer: fijo por defecto en desktop para evitar huecos en el layout cuando estï¿½ oculto */
 footer { display: flex; justify-content: space-between; background: #001f3f; color: #ffffff; padding: 20px; font-size: .9em; z-index: 1100; position: fixed; left: 0; right: 0; bottom: 0; width: 100%; transform: translateY(100%); transition: transform .3s; }
 /* Footer: forzar texto blanco y alinear bloque derecho */
 footer p, footer span, footer a { color:#ffffff !important; }
@@ -862,7 +863,7 @@ footer.visible { transform: translateY(0); }
 .overlay.hovered { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
 .overlay2.hovered { transform: translateX(-50%) scale(1.1); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1); }
 
-/* EFECTOS ESPECÍFICOS */
+/* EFECTOS ESPECï¿½FICOS */
 .overlay-stand { opacity: 0; transform: scale(1.2); pointer-events: auto; cursor: default; z-index: 10; position: absolute; will-change: opacity, transform; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
 /* Cursor behavior: default on general overlays, pointer only on bottles and posters */
@@ -873,7 +874,7 @@ footer.visible { transform: translateY(0); }
 .overlay-stand.resetting { opacity: 0 !important; transform: scale(1.2) !important; transition: none !important; }
 .overlay-stand.immediate-visible:hover { transition: transform 0.05s ease-out; }
 
-/* CUADROS DE TEXTO PARA GALERÍA */
+/* CUADROS DE TEXTO PARA GALERï¿½A */
 .image-wrap {
   position: relative;
   width: 100%;
@@ -895,16 +896,16 @@ footer.visible { transform: translateY(0); }
   user-select: text;
   cursor: text;
   z-index: 50;
-  font-size: var(--text-size, 5cqw); /* Tamaño relativo al ancho del contenedor (imagen) */
+  font-size: var(--text-size, 5cqw); /* Tamaï¿½o relativo al ancho del contenedor (imagen) */
   line-height: 1.4;
   white-space: pre-line;
   /* 
-  SISTEMA DE TAMAÑOS RELATIVOS A LA IMAGEN:
-  - El tamaño por defecto es 5cqw (5% del ancho de la imagen)
-  - Para textos más grandes usa: --text-size: 8cqw (8% del ancho)
-  - Para textos más pequeños usa: --text-size: 3cqw (3% del ancho)
-  - Para títulos principales usa: --text-size: 10cqw (10% del ancho)
-  - El tamaño siempre será proporcional al ancho de la imagen, manteniendo la relación visual
+  SISTEMA DE TAMAï¿½OS RELATIVOS A LA IMAGEN:
+  - El tamaï¿½o por defecto es 5cqw (5% del ancho de la imagen)
+  - Para textos mï¿½s grandes usa: --text-size: 8cqw (8% del ancho)
+  - Para textos mï¿½s pequeï¿½os usa: --text-size: 3cqw (3% del ancho)
+  - Para tï¿½tulos principales usa: --text-size: 10cqw (10% del ancho)
+  - El tamaï¿½o siempre serï¿½ proporcional al ancho de la imagen, manteniendo la relaciï¿½n visual
   */
   /* Posicionamiento usando variables CSS para flexibilidad */
   top: var(--text-top, 10%);
@@ -918,8 +919,8 @@ footer.visible { transform: translateY(0); }
   transform: var(--text-transform, none);
 }
 
-/* Sombra aplicada específicamente a los textos dentro del image-wrap "p2" (Hira/render)
-   - Mejora la legibilidad sobre imágenes claras/variadas
+/* Sombra aplicada especï¿½ficamente a los textos dentro del image-wrap "p2" (Hira/render)
+   - Mejora la legibilidad sobre imï¿½genes claras/variadas
    - Se aplica solo a #p2 para no afectar al resto de textos
    - Para ajustar: modificar el color/blur/offset en text-shadow
 */
@@ -929,17 +930,17 @@ footer.visible { transform: translateY(0); }
 }
 
 .image-wrap#p2 .text-overlay.shadowed {
-  /* Sombra más intensa específicamente para el texto largo de Hira */
+  /* Sombra mï¿½s intensa especï¿½ficamente para el texto largo de Hira */
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95),
                0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
-/* Sombra aplicada específicamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
+/* Sombra aplicada especï¿½ficamente a los textos dentro del image-wrap "p7" (Reflejos del Multiverso)
    - Mejora la legibilidad sobre el video de fondo
    - Se aplica solo a #p7 para textos verdes sobre video
 */
 .image-wrap#p7 .text-overlay {
-  /* Solo reborde negro para el título, sin sombra difusa */
+  /* Solo reborde negro para el tï¿½tulo, sin sombra difusa */
   text-shadow: 
     1px 1px 0 rgba(0, 0, 0, 1),
     -1px 1px 0 rgba(0, 0, 0, 1),
@@ -947,9 +948,9 @@ footer.visible { transform: translateY(0); }
     -1px -1px 0 rgba(0, 0, 0, 1);
 }
 
-/* Sombra con contorno específicamente para el texto descriptivo (Roboto) */
+/* Sombra con contorno especï¿½ficamente para el texto descriptivo (Roboto) */
 .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
-  /* Sombra muy intensa con contorno completo para máximo contraste */
+  /* Sombra muy intensa con contorno completo para mï¿½ximo contraste */
   text-shadow: 
     /* Contorno negro en todas las direcciones */
     1px 1px 3px rgba(0, 0, 0, 1),
@@ -966,7 +967,7 @@ footer.visible { transform: translateY(0); }
      entre esa imagen y la siguiente. Se usa clip-path para eliminar la franja
      inferior y overflow en el contenedor para evitar huecos. */
   .image-wrap#p8 { overflow: hidden; line-height: 0; }
-  /* Si el GIF está insertado como <img id="p8" class="base"> (sin wrapper),
+  /* Si el GIF estï¿½ insertado como <img id="p8" class="base"> (sin wrapper),
      aplicar recorte directamente al elemento imagen */
   #p8.base, .image-wrap#p8 .base {
     display: block; /* evitar espacio baseline */
@@ -997,27 +998,45 @@ footer.visible { transform: translateY(0); }
 .overlay-botella[data-botella="8"] { transform-origin: 51.19% 50%; }
 .overlay-botella[data-botella="9"] { transform-origin: 54.95% 50%; }
 
-.overlay-rollo { transform-origin: center center; opacity: 1; cursor: default; position: absolute; z-index: 10; top: var(--overlay-top, 0%); left: 50%; width: auto !important; height: 100% !important; object-fit: contain !important; max-width: none; max-height: none; will-change: transform; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); pointer-events: auto !important; }
-.overlay-rollo.displaced-left { transform: translateX(-50%) translateX(-5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.overlay-rollo.displaced-right { transform: translateX(-50%) translateX(5%); transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.overlay-rollo.centered { transform: translateX(-50%) translateX(0px); transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
-.overlay-rollo.centered:hover { transition: transform 0.05s ease-out; }
+.overlay-rollo { transform-origin: center center; opacity: 1; cursor: default; position: absolute; z-index: 10; top: var(--overlay-top, 0%); left: 50%; width: auto !important; height: 100% !important; object-fit: contain !important; max-width: none; max-height: none; pointer-events: none !important; }
 
-/* Sincronización del texto con rollo2 en p13 - movimiento fluido conjunto */
+/* Animaciones automÃ¡ticas para rollos en ventanas anchas */
+@keyframes rollo-slide-left-right {
+  0%, 100% { transform: translateX(-50%) translateX(-2%); }
+  50% { transform: translateX(-50%) translateX(2%); }
+}
+
+@keyframes rollo-slide-right-left {
+  0%, 100% { transform: translateX(-50%) translateX(2%); }
+  50% { transform: translateX(-50%) translateX(-2%); }
+}
+
+@media (min-width: 901px) {
+  /* Rollo 1: izquierda â†’ derecha â†’ izquierda */
+  .overlay-rollo[data-rollo="1"] {
+    animation: rollo-slide-left-right 12s ease-in-out infinite;
+  }
+  
+  /* Rollo 2: estÃ¡tico, sin animaciÃ³n ni hover */
+  .overlay-rollo[data-rollo="2"] {
+    transform: translateX(-50%);
+    animation: none;
+  }
+  
+  /* Rollo 3: derecha â†’ izquierda â†’ derecha */
+  .overlay-rollo[data-rollo="3"] {
+    animation: rollo-slide-right-left 12s ease-in-out infinite;
+  }
+  
+  /* Rollo 4: izquierda â†’ derecha â†’ izquierda */
+  .overlay-rollo[data-rollo="4"] {
+    animation: rollo-slide-left-right 12s ease-in-out infinite;
+  }
+}
+
+/* Texto en p13 ahora estÃ¡tico (rollo2 ya no tiene movimiento en escritorio) */
 .image-wrap#p13 .text-overlay {
-  will-change: transform;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 11; /* Por encima del rollo para visibilidad */
-}
-
-.image-wrap#p13 .text-overlay.displaced-left {
-  transform: translateX(-5%);
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.image-wrap#p13 .text-overlay.displaced-right {
-  transform: translateX(5%);
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .image-wrap#p13 .text-overlay.centered {
@@ -1029,18 +1048,18 @@ footer.visible { transform: translateY(0); }
   transition: transform 0.05s ease-out;
 }
 
-/* Quitar efecto hover del título en 'Concepto para baraja' (p16) */
+/* Quitar efecto hover del tï¿½tulo en 'Concepto para baraja' (p16) */
 .image-wrap#p16 .overlay {
   pointer-events: none;
 }
 
-/* Hover transform para carteles en p9: escala + rotación controlada por variables
-   - --overlay-origin: permite al editor cambiar el punto de transformación fácilmente
-   - --overlay-rot: ángulo aplicado al hover (se asigna por JS como ±15deg)
-   - Se usa una transición corta y will-change para suavizar el efecto */
+/* Hover transform para carteles en p9: escala + rotaciï¿½n controlada por variables
+   - --overlay-origin: permite al editor cambiar el punto de transformaciï¿½n fï¿½cilmente
+   - --overlay-rot: ï¿½ngulo aplicado al hover (se asigna por JS como ï¿½15deg)
+   - Se usa una transiciï¿½n corta y will-change para suavizar el efecto */
 .image-wrap#p9 .overlay {
-  --overlay-origin: 50% 50%; /* editable: cambia el origen de la rotación/scale */
-  --overlay-rot: 0deg;      /* JS asignará ±15deg por defecto */
+  --overlay-origin: 50% 50%; /* editable: cambia el origen de la rotaciï¿½n/scale */
+  --overlay-rot: 0deg;      /* JS asignarï¿½ ï¿½15deg por defecto */
   pointer-events: auto; /* permitir hover/click directo sobre el cartel */
   cursor: default;
   will-change: transform, opacity;
@@ -1050,15 +1069,15 @@ footer.visible { transform: translateY(0); }
   transform: rotate(0deg) scale(1);
 }
 
-/* Activación mediante clase .active (usada por JS al pasar sobre el área asociada) */
+/* Activaciï¿½n mediante clase .active (usada por JS al pasar sobre el ï¿½rea asociada) */
 .image-wrap#p9 .overlay.active {
-  /* transform-origin será establecido por JS en px (centro geométrico del área) */
+  /* transform-origin serï¿½ establecido por JS en px (centro geomï¿½trico del ï¿½rea) */
   transform: rotate(var(--overlay-rot)) scale(var(--overlay-scale, 1.1));
 }
 
-/* Áreas rectangulares asociadas a cada cartel. Edítalas en el HTML añadiendo
+/* ï¿½reas rectangulares asociadas a cada cartel. Edï¿½talas en el HTML aï¿½adiendo
    elementos <div class="cartel-area" data-cartel="N" style="top:...;left:...;width:...;height:...;"></div>
-   Mantén background: transparent; para que sean invisibles en producción. */
+   Mantï¿½n background: transparent; para que sean invisibles en producciï¿½n. */
 .image-wrap#p9 .cartel-area {
   position: absolute;
   pointer-events: auto;
@@ -1066,28 +1085,28 @@ footer.visible { transform: translateY(0); }
   cursor: pointer;
 }
 
-/* Justificar texto dentro de la sección 'Zona Zombi' (p9).
+/* Justificar texto dentro de la secciï¿½n 'Zona Zombi' (p9).
    Aplica a cualquier .text-overlay que quieras que aparezca justificado
    dentro del image-wrap p9. Forzamos wrapping y guionado para mejor
-   apariencia tipográfica en párrafos largos. */
+   apariencia tipogrï¿½fica en pï¿½rrafos largos. */
 .image-wrap#p9 .text-overlay {
   text-align: justify;
   text-justify: inter-word;
   -webkit-hyphens: none;
   -ms-hyphens: none;
-  hyphens: none; /* desactivar guionado automático */
-  white-space: normal; /* permitir quiebres de línea normales */
+  hyphens: none; /* desactivar guionado automï¿½tico */
+  white-space: normal; /* permitir quiebres de lï¿½nea normales */
 }
 
-/* Pseudo-clase útil para desarrollo: mostrar contornos mientras ajustas áreas.
-  Por defecto las áreas están invisibles; para activar los contornos añade la
+/* Pseudo-clase ï¿½til para desarrollo: mostrar contornos mientras ajustas ï¿½reas.
+  Por defecto las ï¿½reas estï¿½n invisibles; para activar los contornos aï¿½ade la
   clase `dev-outline-visible` al elemento <body>, por ejemplo <body class="dev-outline-visible">. */
 .image-wrap#p9 .cartel-area.dev-outline { outline: none; }
 .dev-outline-visible .image-wrap#p9 .cartel-area.dev-outline { outline: 1px dashed rgba(255,0,0,0.45); }
 
-/* THUMBNAILS: aparición con opacidad + desplazamiento hacia arriba y cascada */
-/* Aplica a overlays de p10/p11 (thumbnails 1.1..1.4) y p15/p16 (títulos) */
-/* NOTA: p9 (Zona Zombi) usa su propio sistema de animación con clases p9-entrance-* */
+/* THUMBNAILS: apariciï¿½n con opacidad + desplazamiento hacia arriba y cascada */
+/* Aplica a overlays de p10/p11 (thumbnails 1.1..1.4) y p15/p16 (tï¿½tulos) */
+/* NOTA: p9 (Zona Zombi) usa su propio sistema de animaciï¿½n con clases p9-entrance-* */
 #p10 .overlay, #p11 .overlay, #p15 .overlay, #p16 .overlay {
   opacity: 0;
   transform: translateY(64px);
@@ -1099,10 +1118,10 @@ footer.visible { transform: translateY(0); }
   transform: translateY(0);
 }
 
-/* Entrada rápida para la sección Zona Zombi (p9)
-   - Aplicar a las overlays y a las sombras para que aparezcan de forma simultánea
-   - Uso: JS añade la clase .p9-entrance-hidden inicialmente solo a carteles impares
-     y luego reemplaza por .p9-entrance-shown al entrar en la sección. */
+/* Entrada rï¿½pida para la secciï¿½n Zona Zombi (p9)
+   - Aplicar a las overlays y a las sombras para que aparezcan de forma simultï¿½nea
+   - Uso: JS aï¿½ade la clase .p9-entrance-hidden inicialmente solo a carteles impares
+     y luego reemplaza por .p9-entrance-shown al entrar en la secciï¿½n. */
 .image-wrap#p9 .overlay.p9-entrance-hidden,
 .image-wrap#p9 .sombra.p9-entrance-hidden {
   opacity: 0;
@@ -1113,7 +1132,7 @@ footer.visible { transform: translateY(0); }
   transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Sombras de los carteles: detrás de las overlays pero por delante del fondo */
+/* Sombras de los carteles: detrï¿½s de las overlays pero por delante del fondo */
 .image-wrap#p9 .sombra {
   position: absolute;
   left: 0;
@@ -1121,12 +1140,12 @@ footer.visible { transform: translateY(0); }
   width: 100%;
   height: auto;
   z-index: 2; /* base=1, sombras=2, overlays=3 */
-  pointer-events: none; /* la interacción se gestiona en las áreas o en el propio cartel */
+  pointer-events: none; /* la interacciï¿½n se gestiona en las ï¿½reas o en el propio cartel */
   opacity: 1;
   will-change: transform, filter, opacity;
-  /* estado base: sin rotación ni escala, visible por defecto */
+  /* estado base: sin rotaciï¿½n ni escala, visible por defecto */
   transform: rotate(0deg) scale(1);
-  /* transición sincronizada con las overlays */
+  /* transiciï¿½n sincronizada con las overlays */
   transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1), filter 320ms ease, opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
   filter: blur(0px) saturate(1);
   /* Desplazamiento de sombra al activarse */
@@ -1136,7 +1155,7 @@ footer.visible { transform: translateY(0); }
   --sombra-blur: 6px;
 }
 
-/* Activar sombra: misma rotación y escala que el cartel + ligero desplazamiento y blur */
+/* Activar sombra: misma rotaciï¿½n y escala que el cartel + ligero desplazamiento y blur */
 .image-wrap#p9 .sombra.active {
   /* Copiar exactamente el comportamiento del cartel (mismas variables) */
   transform: rotate(var(--overlay-rot, 0deg)) scale(var(--overlay-scale, 1.1));
@@ -1148,15 +1167,15 @@ footer.visible { transform: translateY(0); }
 .image-wrap#p9 .overlay { z-index: 3; }
 
 /* =============================
-  ZONA ZOMBI: REGLAS DE VISIBILIDAD Y ANIMACIÓN
+  ZONA ZOMBI: REGLAS DE VISIBILIDAD Y ANIMACIï¿½N
   =============================
-  Los carteles y sombras usan clases JS para controlar su aparición inicial.
+  Los carteles y sombras usan clases JS para controlar su apariciï¿½n inicial.
   Las reglas base permiten que las animaciones de hover funcionen correctamente.
 */
 
 
-/* THUMBNAILS: Prevención de espacios en blanco durante transiciones */
-/* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
+/* THUMBNAILS: Prevenciï¿½n de espacios en blanco durante transiciones */
+/* Para el sistema de transiciï¿½n suave, mantenemos las imï¿½genes base siempre visibles */
 #p11 .overlay, #p10 .overlay {
   position: absolute;
   top: var(--overlay-top, 0%);
@@ -1165,20 +1184,20 @@ footer.visible { transform: translateY(0); }
   height: auto;
 }
 
-/* Para el sistema de transición suave, mantenemos las imágenes base siempre visibles */
+/* Para el sistema de transiciï¿½n suave, mantenemos las imï¿½genes base siempre visibles */
 #p11 .overlay.transitioning, #p10 .overlay.transitioning {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* RECTANGULOS BLANCOS para ocultar imágenes viejas durante transición */
+/* RECTANGULOS BLANCOS para ocultar imï¿½genes viejas durante transiciï¿½n */
 .thumb-mask {
   position: absolute;
-  background: #ffffff; /* Mismo color que el fondo de la página */
+  background: #ffffff; /* Mismo color que el fondo de la pï¿½gina */
   z-index: 50; /* Entre imagen vieja (z-index bajo) y nueva (z-index 100) */
   pointer-events: none;
   opacity: 0;
-  /* Máscara diagonal sincronizada con las imágenes nuevas */
+  /* Mï¿½scara diagonal sincronizada con las imï¿½genes nuevas */
   -webkit-mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
   mask-image: linear-gradient(110deg, rgba(0,0,0,1) calc(var(--edge, -20%) - 3%), rgba(0,0,0,1) var(--edge, -20%), rgba(0,0,0,0) calc(var(--edge, -20%) + 3%));
   -webkit-mask-repeat: no-repeat;
@@ -1191,7 +1210,7 @@ footer.visible { transform: translateY(0); }
   opacity: 1;
 }
 
-/* Configuración de dimensiones por defecto para cada rectángulo (ajustables) */
+/* Configuraciï¿½n de dimensiones por defecto para cada rectï¿½ngulo (ajustables) */
 .thumb-mask[data-thumb="1"] {
   top: var(--mask1-top, 12%);
   left: var(--mask1-left, 30%);
@@ -1287,29 +1306,29 @@ footer.visible { transform: translateY(0); }
 
 /* RESPONSIVE - OPTIMIZADO */
 @media (max-width: 1024px) {
-  /* Empujar el contenido mucho más a la izquierda (menos padding lateral) */
+  /* Empujar el contenido mucho mï¿½s a la izquierda (menos padding lateral) */
   #sobremi { padding-left: 8px; padding-right: 8px; }
   /* Eliminar el hueco bajo el header en ventanas estrechas
-     Nota: #desktop-version section es más específico que "section",
-     por eso forzamos aquí el padding-top a 0. */
+     Nota: #desktop-version section es mï¿½s especï¿½fico que "section",
+     por eso forzamos aquï¿½ el padding-top a 0. */
   #desktop-version section { padding-top: 0 !important; }
-  /* En ventanas estrechas (=1024px): footer como elemento inline estático al final de cada sección */
+  /* En ventanas estrechas (=1024px): footer como elemento inline estï¿½tico al final de cada secciï¿½n */
   footer { 
     position: static !important; 
     transform: none !important; 
     transition: none !important;
-    display: none; /* Se mostrará inline vía JS en cada sección */
+    display: none; /* Se mostrarï¿½ inline vï¿½a JS en cada secciï¿½n */
   }
   footer.inline-footer { display: flex !important; position: static !important; }
   #indice { width: 250px; }
   /* Dar un poco de aire entre header y carrusel en ventanas estrechas */
   #menu .carousel { margin-top: 12px !important; }
   /* Carrusel en pantallas estrechas de escritorio: imagen al 80% del viewport
-     para que se insinúen las adyacentes por los lados */
+     para que se insinï¿½en las adyacentes por los lados */
   .carousel { justify-content: center; padding-left: 4vw; padding-right: 4vw; }
   .carousel img {
     width: 80vw !important;
-    height: calc(80vw * 0.58) !important; /* mantener proporción apaisada en escritorio estrecho */
+    height: calc(80vw * 0.58) !important; /* mantener proporciï¿½n apaisada en escritorio estrecho */
     max-width: 80vw !important;
     object-fit: cover !important;
   }
@@ -1317,26 +1336,26 @@ footer.visible { transform: translateY(0); }
   section > *:first-child { margin-top: 0 !important; }
   /* En Menu, asegurar carrusel sin margen superior */
   #menu .carousel { margin-top: 0 !important; }
-  /* Mini carrusel: rótulo ligeramente más pequeño y un poco más abajo en =1024px */
+  /* Mini carrusel: rï¿½tulo ligeramente mï¿½s pequeï¿½o y un poco mï¿½s abajo en =1024px */
   .service-2 .mini-carousel::after {
     font-size: clamp(9px, 1.8vw, 13px);
     bottom: 10.8%;
     line-height: 1.05;
     letter-spacing: 0.2px;
   }
-  /* Clients: texto más ancho, título más grande y más espacio entre texto y logos en ventanas estrechas */
+  /* Clients: texto mï¿½s ancho, tï¿½tulo mï¿½s grande y mï¿½s espacio entre texto y logos en ventanas estrechas */
   .clients { 
-    grid-template-columns: 1fr 2fr; /* ensanchar más el bloque de texto */
-    gap: 40px 56px; /* más espacio horizontal y vertical */
-    padding: 0 3vw; /* margen lateral más reducido para ganar ancho útil */
+    grid-template-columns: 1fr 2fr; /* ensanchar mï¿½s el bloque de texto */
+    gap: 40px 56px; /* mï¿½s espacio horizontal y vertical */
+    padding: 0 3vw; /* margen lateral mï¿½s reducido para ganar ancho ï¿½til */
     width: 100%; /* asegurar que no hereda el 100.608% del layout desktop */
   }
   .clients-copy { min-width: 82%; margin-left: 0; }
   .clients-copy h3 { font-size: clamp(34px, 5.6vw, 64px); }
-  /* Párrafo ocupa todo el ancho disponible dentro del padding lateral */
+  /* Pï¿½rrafo ocupa todo el ancho disponible dentro del padding lateral */
   .clients-copy p { width: 100%; max-width: none; margin: 0; }
   .clients-logos { gap: 24px 32px; }
-  /* Logo en pantallas estrechas (ajustado -25% respecto al tamaño ampliado) */
+  /* Logo en pantallas estrechas (ajustado -25% respecto al tamaï¿½o ampliado) */
   .logo { height: 195px !important; width: 195px !important; }
   /* Centrar logo en header en ventanas estrechas */
   header { justify-content: center !important; position: relative; }
@@ -1352,30 +1371,30 @@ footer.visible { transform: translateY(0); }
   .quote-content { display: contents; }
   .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: start; padding: 0 8px 0; margin: 0; }
   .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* Avatares un poco más grandes en ventanas estrechas */
+  /* Avatares un poco mï¿½s grandes en ventanas estrechas */
   .quote-avatar { width: 84px; height: 84px; }
   .quote-card > a .quote-avatar { display: block; }
 }
 @media (max-width: 768px) {
-  /* En móvil, asegurar que no hay espacio blanco bajo el header */
+  /* En mï¿½vil, asegurar que no hay espacio blanco bajo el header */
   #desktop-version section { padding-top: 0 !important; }
-  /* En móvil: footer como elemento inline estático al final de cada sección */
+  /* En mï¿½vil: footer como elemento inline estï¿½tico al final de cada secciï¿½n */
   footer { 
     position: static !important; 
     transform: none !important; 
     transition: none !important;
-    display: none; /* Se mostrará inline vía JS en cada sección */
+    display: none; /* Se mostrarï¿½ inline vï¿½a JS en cada secciï¿½n */
   }
   footer.inline-footer { display: flex !important; position: static !important; }
-  /* Header fijo con comportamiento de ocultación al scroll */
+  /* Header fijo con comportamiento de ocultaciï¿½n al scroll */
   header { flex-direction: row !important; align-items: center !important; padding: 10px 20px !important; height: 60px !important; justify-content: center !important; position: fixed !important; top: 0; transition: transform 0.3s ease; }
   header.hidden { transform: translateY(-100%); }
-  /* Logo en móvil (ajustado -25% respecto al tamaño ampliado) */
+  /* Logo en mï¿½vil (ajustado -25% respecto al tamaï¿½o ampliado) */
   .logo { height: 195px !important; width: 195px !important; order: -1; }
   .menu-toggle { display: block !important; order: 2; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-left: 0 !important; }
   #idioma-btn { display: none !important; }
   #idioma-list { display: none !important; }
-  /* Mostrar únicamente el botón de Idioma dentro del menú; mantener oculta la lista */
+  /* Mostrar ï¿½nicamente el botï¿½n de Idioma dentro del menï¿½; mantener oculta la lista */
   #idioma-mobile-btn { display: block !important; }
   #idioma-mobile-list { display: none; }
   nav { 
@@ -1407,7 +1426,7 @@ footer.visible { transform: translateY(0); }
     background: rgba(255, 255, 0, 0.1);
     transform: none;
   }
-  /* Contenido del menú principal apilado verticalmente */
+  /* Contenido del menï¿½ principal apilado verticalmente */
   #main-menu-items {
     display: flex;
     flex-direction: column;
@@ -1419,19 +1438,19 @@ footer.visible { transform: translateY(0); }
   #back-to-menu {
     font-weight: bold;
   }
-  /* En móvil, sin margen superior en main para que no exista hueco bajo el header */
+  /* En mï¿½vil, sin margen superior en main para que no exista hueco bajo el header */
   main { margin-top: 0; }
   section { padding: 20px; padding-top: 0; }
   /* Evitar hueco bajo el header en secciones: quitar margen superior del primer hijo */
   section > *:first-child { margin-top: 0 !important; }
   /* En Menu, asegurar carrusel sin margen superior */
   #menu .carousel { margin-top: 0 !important; }
-  /* En Sobre mí (#redes), alinear contenido al inicio para evitar espacio superior al centrar verticalmente */
+  /* En Sobre mï¿½ (#redes), alinear contenido al inicio para evitar espacio superior al centrar verticalmente */
   #redes { place-content: start; align-content: start; }
   /* Menu: ocupar casi todo el ancho con leve margen lateral */
   #menu { padding-left: 4vw !important; padding-right: 4vw !important; }
   .proyectos-container { flex-direction: column; height: auto; }
-  /* Header fijo en móvil con comportamiento de ocultación al scroll */
+  /* Header fijo en mï¿½vil con comportamiento de ocultaciï¿½n al scroll */
   header { position: fixed !important; top: 0; transition: transform 0.3s ease; }
   header.hidden { transform: translateY(-100%); }
   #indice { width: 100%; border-right: none; border-bottom: 1px solid #ddd; padding: 0; position: sticky; top: 60px; z-index: 900; background: #f9f9f9; height: 70px; transition: top .3s; display: flex; align-items: center; }
@@ -1454,12 +1473,12 @@ footer.visible { transform: translateY(0); }
     box-sizing: border-box !important;
   }
   #menu { padding-top: 0 !important; }
-  /* En móvil: más espacio visual bajo el header antes del carrusel */
+  /* En mï¿½vil: mï¿½s espacio visual bajo el header antes del carrusel */
   #menu .carousel { margin-top: 16px !important; padding-top: 8px !important; }
   .carousel-caption { bottom: 10% !important; max-width: 76% !important; }
   .carousel img { 
     width: 80vw !important;  /* ocupar ~80% del ancho para que se vean los bordes de las adyacentes */
-    height: 80vw !important; /* mantener formato cuadrado en móvil */
+    height: 80vw !important; /* mantener formato cuadrado en mï¿½vil */
     min-width: 250px !important;
     min-height: 250px !important;
     max-width: 80vw !important;
@@ -1469,15 +1488,15 @@ footer.visible { transform: translateY(0); }
  .services { gap: 16px; padding: 0 4vw; }
  .services-circles { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .service-circle { width: 100%; }
-/* Mobile: textos de círculos más grandes */
-/* Mobile ajuste: un pelín más pequeño */
+/* Mobile: textos de cï¿½rculos mï¿½s grandes */
+/* Mobile ajuste: un pelï¿½n mï¿½s pequeï¿½o */
 .service-circle span { font-size: clamp(16px, 4.6vw, 30px); }
-  /* Ajustes específicos en móvil: por defecto igual al resto */
+  /* Ajustes especï¿½ficos en mï¿½vil: por defecto igual al resto */
   .service-5 span { font-size: clamp(16px, 4.6vw, 30px); }
-  /* Reducir sólo en Español y Portugués en móvil */
+  /* Reducir sï¿½lo en Espaï¿½ol y Portuguï¿½s en mï¿½vil */
   html[lang='es'] .service-5 span,
   html[lang='pt'] .service-5 span { font-size: clamp(14px, 3.6vw, 26px); }
-  /* Mini carrusel: rótulo más pequeño y un poco más abajo en móvil */
+  /* Mini carrusel: rï¿½tulo mï¿½s pequeï¿½o y un poco mï¿½s abajo en mï¿½vil */
   .service-2 .mini-carousel::after { 
     font-size: clamp(7px, 2.0vw, 11px); 
     bottom: 6.0%; 
@@ -1487,22 +1506,22 @@ footer.visible { transform: translateY(0); }
 .services-description { font-size: clamp(15px, 2.6vw, 18px); }
 .text-overlay { --text-size: 3cqw !important; }
   /* Clients responsive */
-  /* Igualar formato móvil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
+  /* Igualar formato mï¿½vil al de .services (padding lateral 4vw) pero manteniendo el texto bien ancho */
   .clients { grid-template-columns: 1fr; grid-template-areas: "copy" "logos"; gap: 36px; padding: 0 2vw; margin-top: 16px; width: 100%; }
-  /* Evitar doble padding lateral con el contenedor externo en móvil */
+  /* Evitar doble padding lateral con el contenedor externo en mï¿½vil */
   .clients-block { padding: 0; }
   .cta-portfolio { padding: 12px 4vw; }
   .cta-title { font-size: clamp(18px, 4vw, 26px); }
   .cta-buttons { gap: 12px; }
   .btn-napoleon { padding: 10px 16px; font-size: clamp(13px, 3.2vw, 17px); }
-  /* Logos más pequeños, 3 columnas x 4 filas */
+  /* Logos mï¿½s pequeï¿½os, 3 columnas x 4 filas */
   .clients-logos { grid-template-columns: repeat(3, 1fr); gap: 16px 16px; margin-top: 16px; }
   .clients-logos img { max-height: clamp(22px, 7vw, 36px); }
   .clients-copy { width: 100%; max-width: none; margin-left: 0; }
   .clients-copy h3 { text-align: center; font-size: clamp(32px, 8vw, 64px); }
-  /* Alinear tipografía de párrafo al formato de servicios en móvil */
+  /* Alinear tipografï¿½a de pï¿½rrafo al formato de servicios en mï¿½vil */
   .clients-copy p { text-align: justify; width: 100%; max-width: none; margin: 0; font-size: clamp(15px, 2.6vw, 18px); line-height: 1.55; hyphens: auto; }
-  /* Footer inline en móvil: ancho completo de pantalla, sin espacio debajo */
+  /* Footer inline en mï¿½vil: ancho completo de pantalla, sin espacio debajo */
   footer.inline-footer { 
     flex-direction: column; 
     text-align: center; 
@@ -1512,7 +1531,7 @@ footer.visible { transform: translateY(0); }
     align-items: center;
     padding: 16px 0;
     margin: 0;
-    margin-bottom: -1px; /* Eliminar línea residual blanca */
+    margin-bottom: -1px; /* Eliminar lï¿½nea residual blanca */
     width: 100vw; /* Ancho completo de la pantalla */
     margin-left: calc(-50vw + 50%); /* Centrar y extender al full width */
     box-sizing: border-box;
@@ -1520,9 +1539,9 @@ footer.visible { transform: translateY(0); }
   }
   footer.inline-footer > div, 
   footer.inline-footer > div:last-child { text-align: center; }
-  /* Más margen entre contenido y footer en Menú y Sobre mí */
+  /* Mï¿½s margen entre contenido y footer en Menï¿½ y Sobre mï¿½ */
   #menu footer.inline-footer {
-    margin-top: 60px; /* Más espacio en Menú */
+    margin-top: 60px; /* Mï¿½s espacio en Menï¿½ */
   }
   #sobremi footer.inline-footer {
     margin-top: 40px;
@@ -1544,10 +1563,10 @@ footer.visible { transform: translateY(0); }
   }
   #intro-video { max-width: 90vw; max-height: 90vh; }
 }
-/* Eliminado el bloque de @media (max-width: 480px) para que móviles usen
+/* Eliminado el bloque de @media (max-width: 480px) para que mï¿½viles usen
    exactamente el mismo layout que pantallas estrechas de escritorio (<=768px). */
 
-/* CONTACTO: foto a la izquierda, datos a la derecha; título grande y centrado */
+/* CONTACTO: foto a la izquierda, datos a la derecha; tï¿½tulo grande y centrado */
 #contacto { max-width: 1100px; margin: 36px auto 60px auto; padding: 0 24px; }
 #contacto .contact-title { text-align: center; font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: 1px; font-size: clamp(36px, 6.5vw, 72px); margin: 0 0 18px 0; }
 #contacto .contact-inner { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; padding: 18px 0; max-width: 760px; margin: 0 auto; position: relative; left: 16%; top: 24%; }
@@ -1560,7 +1579,7 @@ footer.visible { transform: translateY(0); }
 @media (min-width: 1025px) {
   body.footer-visible #contacto { transform: translateY(var(--footer-h, 0px)); }
 }
-/* Móvil/ventanas estrechas: Contacto con footer fijo y contenido centrado entre header y footer */
+/* Mï¿½vil/ventanas estrechas: Contacto con footer fijo y contenido centrado entre header y footer */
 @media (max-width: 1024px) {
   #contacto { 
     margin: 0;
@@ -1609,7 +1628,7 @@ footer.visible { transform: translateY(0); }
 
 html.intro-active, body.intro-active { overflow: hidden; }
 
-/* En móvil, posibilidad de bloquear el scroll general cuando se muestren
+/* En mï¿½vil, posibilidad de bloquear el scroll general cuando se muestren
    secciones de pantalla completa como Redes/Contacto */
 @media (max-width: 768px) {
   body.lock-scroll {
@@ -1620,19 +1639,19 @@ html.intro-active, body.intro-active { overflow: hidden; }
 }
 
 /* =============================
-   SOBRE MÍ
+   SOBRE Mï¿½
    ============================= */
 #redes {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 24px 24px; /* sin padding-top extra; se centra con grid */
-  /* Altura visible bajo el header (usar svh para móviles) */
+  /* Altura visible bajo el header (usar svh para mï¿½viles) */
   min-height: calc(100svh - var(--header-h));
   display: grid;
   place-content: center;  /* centra verticalmente entre header y, si aparece, el espacio del footer */
   place-items: center;
   row-gap: clamp(90px, 14vw, 200px);
-  transform: translateY(8vh); /* empuja visualmente el bloque algo más hacia abajo */
+  transform: translateY(8vh); /* empuja visualmente el bloque algo mï¿½s hacia abajo */
 }
 #redes { box-sizing: border-box; }
 /* Desktop: cuando el footer sea visible, limitar altura de Redes */
@@ -1643,7 +1662,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     overflow: hidden;
   }
 }
-/* Móvil/ventanas estrechas: Redes con footer fijo y contenido centrado entre header y footer */
+/* Mï¿½vil/ventanas estrechas: Redes con footer fijo y contenido centrado entre header y footer */
 @media (max-width: 1024px) {
   #redes {
     min-height: 100svh; /* Altura completa de la ventana */
@@ -1658,7 +1677,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     padding-bottom: 70px; /* Espacio para el footer fijo */
     margin: 0;
     box-sizing: border-box;
-    transform: none; /* Eliminar el desplazamiento vertical en móvil */
+    transform: none; /* Eliminar el desplazamiento vertical en mï¿½vil */
   }
   #redes > h1,
   #redes > p,
@@ -1685,19 +1704,19 @@ html.intro-active, body.intro-active { overflow: hidden; }
   margin-top: 1.2em;
 }
 #redes > .social-links {
-  /* Más espacio entre el título y las barras, sin afectar el gap interno entre barras */
+  /* Mï¿½s espacio entre el tï¿½tulo y las barras, sin afectar el gap interno entre barras */
   margin-top: clamp(24px, 6vw, 64px);
 }
 @media (max-width: 700px) {
-  /* En móvil (barras tipo pill), un poco más de aire aún */
+  /* En mï¿½vil (barras tipo pill), un poco mï¿½s de aire aï¿½n */
   #redes > .social-links { margin-top: clamp(28px, 8vw, 72px); }
 }
 
 
-/* Redes sociales: círculos e interacciones */
+/* Redes sociales: cï¿½rculos e interacciones */
 .social-links {
-  /* Variables base: calculamos el tamaño que encajaría al completo, luego reducimos un 25% */
-  --gap: clamp(22px, 4vw, 48px); /* más separación entre círculos */
+  /* Variables base: calculamos el tamaï¿½o que encajarï¿½a al completo, luego reducimos un 25% */
+  --gap: clamp(22px, 4vw, 48px); /* mï¿½s separaciï¿½n entre cï¿½rculos */
   --base-circle: min(220px, calc((100vw - (4 * var(--gap))) / 7));
   --circle-size: calc(var(--base-circle) * 0.75);
   display: grid;
@@ -1731,7 +1750,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
 .social-link.behance:hover { background: #ffffff; }
 .social-link.behance:hover .icon { filter: brightness(0); }
 
-/* Tamaños responsivos */
+/* Tamaï¿½os responsivos */
 @media (max-width: 768px) {
   .social-links { --gap: clamp(12px, 3vw, 22px); }
 }
@@ -1739,12 +1758,12 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .social-links { --gap: clamp(10px, 3.5vw, 18px); }
 }
 
-/* Ventanas estrechas (círculos): icono de Behance ligeramente mayor (un poco más pequeño que antes) */
+/* Ventanas estrechas (cï¿½rculos): icono de Behance ligeramente mayor (un poco mï¿½s pequeï¿½o que antes) */
 @media (max-width: 1024px) {
   #redes .social-link.behance .icon { width: 54%; height: 54%; }
 }
 
-/* Redes: en móviles/ventanas estrechas, convertir círculos en barras horizontales */
+/* Redes: en mï¿½viles/ventanas estrechas, convertir cï¿½rculos en barras horizontales */
 @media (max-width: 700px) {
   #redes .social-links {
     grid-template-columns: 1fr;
@@ -1756,8 +1775,8 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
   #redes .social-link {
     width: 100%;
-    height: 48px; /* -25% en móvil */
-    border-radius: 9999px; /* máximo redondeo (pill) */
+    height: 48px; /* -25% en mï¿½vil */
+    border-radius: 9999px; /* mï¿½ximo redondeo (pill) */
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
@@ -1770,12 +1789,12 @@ html.intro-active, body.intro-active { overflow: hidden; }
     margin-right: 12px;
     filter: none;
   }
-  /* En móvil/barras: Behance un poco más pequeño que el ajuste previo */
+  /* En mï¿½vil/barras: Behance un poco mï¿½s pequeï¿½o que el ajuste previo */
   #redes .social-link.behance .icon {
     width: clamp(24px, 5.25vw, 30px);
     height: clamp(24px, 5.25vw, 30px);
   }
-  /* Asegurar cambio a negro en hover en móvil (gana a #redes .social-link .icon { filter:none }) */
+  /* Asegurar cambio a negro en hover en mï¿½vil (gana a #redes .social-link .icon { filter:none }) */
   #redes .social-link.behance:hover .icon { filter: brightness(0); }
   /* Etiqueta con nombre de la red a la derecha */
   #redes .social-link::after {
@@ -1789,11 +1808,11 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
   /* Mejorar contraste cuando Behance invierte a fondo blanco en hover */
   #redes .social-link.behance:hover::after { color: #111111; }
-  /* Ocultar texto descriptivo inferior en móvil/estrecho */
+  /* Ocultar texto descriptivo inferior en mï¿½vil/estrecho */
   #redes > p { display: none !important; }
 }
 
-/* Ajuste adicional de título en Redes para móvil (-25%) */
+/* Ajuste adicional de tï¿½tulo en Redes para mï¿½vil (-25%) */
 @media (max-width: 768px) {
   #redes > h1 { font-size: clamp(24px, 4.5vw, 48px) !important; }
 }
@@ -1807,7 +1826,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   gap: 28px;
   align-items: center;
   margin-bottom: 100px;
-  /* Revertimos margen superior para no bajar también la imagen y resto del bloque */
+  /* Revertimos margen superior para no bajar tambiï¿½n la imagen y resto del bloque */
   margin-top: 0;
 }
 .about-photo img {
@@ -1826,7 +1845,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   mask-composite: intersect;
   -webkit-mask-composite: destination-in;
 }
-/* Mostrar/ocultar imágenes específicas de Sobre mí */
+/* Mostrar/ocultar imï¿½genes especï¿½ficas de Sobre mï¿½ */
 .about-photo .about-photo__img--mobile { display: none; }
 @media (max-width: 1024px), (orientation: portrait) {
   .about-photo .about-photo__img--desktop { display: none; }
@@ -1835,25 +1854,25 @@ html.intro-active, body.intro-active { overflow: hidden; }
 .about-intro { display: flex; flex-direction: column; gap: 12px; }
 .about-subtitle { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; font-size: clamp(22px, 3.5vw, 36px); margin: 0; }
 .about-intro p { font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; margin: 0; }
-/* Centrado del título y texto de "¿Quién soy yo?" */
+/* Centrado del tï¿½tulo y texto de "ï¿½Quiï¿½n soy yo?" */
 #sobremi .about-intro { align-items: center; }
 #sobremi .about-intro .about-subtitle { text-align: center; }
 #sobremi .about-intro p { text-align: center; }
 @media (min-width: 1025px) {
-  /* Revertir a alineación izquierda solo en pantallas anchas */
+  /* Revertir a alineaciï¿½n izquierda solo en pantallas anchas */
   #sobremi .about-intro { align-items: flex-start; }
   #sobremi .about-intro .about-subtitle { text-align: left; }
   #sobremi .about-intro p { text-align: left; }
 }
 
-/* Espaciado específico solo entre el título y el párrafo biográfico en pantallas anchas */
+/* Espaciado especï¿½fico solo entre el tï¿½tulo y el pï¿½rrafo biogrï¿½fico en pantallas anchas */
 @media (min-width: 1025px) {
   .about-intro p { margin-top: 32px; }
   /* Elevar la imagen respecto al bloque de texto */
   .about-photo { margin-top: -20px; }
 }
 
-/* En pantallas más estrechas añadimos un espacio menor para mantener proporción */
+/* En pantallas mï¿½s estrechas aï¿½adimos un espacio menor para mantener proporciï¿½n */
 @media (max-width: 1024px) {
   .about-intro p { margin-top: 24px; }
 }
@@ -1891,29 +1910,29 @@ html.intro-active, body.intro-active { overflow: hidden; }
 .about-list li { background: transparent !important; border: none !important; border-radius: 0 !important; padding: 10px 12px; font-family: 'Roboto', sans-serif; color: #333; font-size: clamp(15px, 2vw, 18px); line-height: 1.45; box-shadow: none !important; }
 
 .about-references {
-  /* Aumentado el espacio entre 'Sobre mí' y 'Referencias' */
+  /* Aumentado el espacio entre 'Sobre mï¿½' y 'Referencias' */
   margin-top: 48px;
   max-width: 100%;
 }
-.references-title { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; /* tamaño aumentado solo para este título */ font-size: clamp(28px, 4.2vw, 44px); margin: 0 0 18px 0; text-align: center; }
+.references-title { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 700; letter-spacing: .5px; /* tamaï¿½o aumentado solo para este tï¿½tulo */ font-size: clamp(28px, 4.2vw, 44px); margin: 0 0 18px 0; text-align: center; }
 .references-grid {
   display: grid;
   /* Columnas fijas de 720px y centradas en el contenedor.
      Esto garantiza que cada tarjeta tenga 720px de ancho y que,
      en pantallas suficientemente anchas, se muestren dos tarjetas
-     una al lado de la otra centradas en la página. */
+     una al lado de la otra centradas en la pï¿½gina. */
   grid-template-columns: repeat(2, 630px);
   gap: 28px 40px; /* fila-gap 28px, column-gap 40px */
   width: 100%;
   max-width: none;
-  justify-content: center; /* centra las columnas rígidas */
+  justify-content: center; /* centra las columnas rï¿½gidas */
   justify-items: stretch;
   align-items: start;
   margin: 0 auto; /* asegurar centrado en su contenedor */
 }
 .quote-card {
   display: grid;
-  /* Ajustado para avatar más grande (90px = 72px * 1.25) */
+  /* Ajustado para avatar mï¿½s grande (90px = 72px * 1.25) */
   grid-template-columns: 90px 1fr;
   gap: 16px;
   align-items: start;
@@ -1952,7 +1971,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   color: #ffffff;
   font-family: Coolvetica, Inter, Arial, sans-serif;
   font-weight: 800;
-  /* aumentar el tamaño del badge para mejor legibilidad, responsivo */
+  /* aumentar el tamaï¿½o del badge para mejor legibilidad, responsivo */
   font-size: clamp(14px, 2.6vw, 18px);
   letter-spacing: 0.6px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
@@ -1962,7 +1981,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   text-transform: capitalize;
 }
 
-/* Badge específico para el enlace de Moifez (YouTube) */
+/* Badge especï¿½fico para el enlace de Moifez (YouTube) */
 .quote-card > a.quote-link--youtube::after {
   content: "YouTube";
 }
@@ -1979,16 +1998,25 @@ html.intro-active, body.intro-active { overflow: hidden; }
 /* Asegurar que las comillas se posicionen relativas al cuerpo del texto */
 .quote-text { position: relative; }
 /* Comillas gigantes alrededor del texto */
-.quote-text::before, .quote-text::after { content: '“'; position: absolute; color: #001f3f; opacity: .08; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; line-height: 1; pointer-events: none; }
+.quote-text::before, .quote-text::after {
+  content: 'â€œ';
+  position: absolute;
+  color: #001f3f;
+  opacity: .08;
+  font-family: 'Noto Serif', Georgia, serif;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
 .quote-text::before { left: -18px; top: -22px; font-size: 120px; transform: translateY(-10%); }
-.quote-text::after { content: '”'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
+.quote-text::after { content: 'â€'; right: -4px; bottom: -52px; font-size: 120px; transform: translateY(10%); }
 .quote-author { font-family: Coolvetica, Inter, Arial, sans-serif; color: #001f3f; font-weight: 800; letter-spacing: .2px; font-size: clamp(15px, 2vw, 18px); padding: 0 8px 2px; }
 @media (min-width: 769px) {
-  /* Alinear autores más a la izquierda en desktop (quitamos padding y compensamos) */
+  /* Alinear autores mï¿½s a la izquierda en desktop (quitamos padding y compensamos) */
   .quote-author { padding-left: 0; margin-left: -4px; }
 }
 
-/* Responsive ajustes para SOBRE MÍ */
+/* Responsive ajustes para SOBRE Mï¿½ */
 @media (max-width: 1024px) {
   .about-hero { grid-template-columns: 1fr; }
   .about-photo img {
@@ -1999,7 +2027,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
   /* En ventanas estrechas, mostrar la foto por encima del texto */
   .about-photo { order: -1; }
-  /* Sobre mí columnas: pasar a 1 columna, ocultar separador y reordenar
+  /* Sobre mï¿½ columnas: pasar a 1 columna, ocultar separador y reordenar
      para que Idiomas/Estudios queden arriba y Programas debajo */
   .about-columns { 
     grid-template-columns: 1fr; 
@@ -2018,7 +2046,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     grid-row: 1; 
     justify-self: stretch; /* ocupar todo el ancho disponible del grid */
     width: 100%;
-    max-width: none; /* sin límite para que alinee con el padding del contenedor */
+    max-width: none; /* sin lï¿½mite para que alinee con el padding del contenedor */
     margin-left: 0 !important;
     margin-right: 0 !important;
     padding-left: 0;
@@ -2065,10 +2093,10 @@ html.intro-active, body.intro-active { overflow: hidden; }
   }
 }
 @media (max-width: 768px) {
-  /* Aún menos padding en móvil para que “Estudios/Idiomas” queden mucho más a la izquierda */
+  /* Aï¿½n menos padding en mï¿½vil para que ï¿½Estudios/Idiomasï¿½ queden mucho mï¿½s a la izquierda */
   #sobremi { padding: 10px 16px 70px 16px; }
   .about-columns { grid-template-columns: 1fr; gap: 20px; justify-items: stretch; align-items: start; }
-  /* Educación e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
+  /* Educaciï¿½n e Idiomas: centrar horizontalmente pero texto alineado a la izquierda */
   .about-columns > .about-edu {
     justify-self: stretch; /* ocupar todo el ancho */
     width: 100%;
@@ -2093,7 +2121,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
     justify-self: center;
     width: 100%;
   }
-  /* En móvil, 5 columnas compactas y perfectamente centradas */
+  /* En mï¿½vil, 5 columnas compactas y perfectamente centradas */
   .about-programs .programs-grid {
     grid-template-columns: repeat(5, minmax(48px, max-content));
     width: fit-content;
@@ -2104,7 +2132,7 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .about-programs .programs-grid img { width: 48px; height: 48px; }
   .programs-grid { grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 12px 14px; }
   .references-grid { grid-template-columns: 1fr; }
-  /* En móvil: avatar a la izquierda del nombre; texto debajo a ancho completo */
+  /* En mï¿½vil: avatar a la izquierda del nombre; texto debajo a ancho completo */
   .quote-card {
     grid-template-columns: 96px 1fr;
     grid-template-rows: auto auto;
@@ -2114,24 +2142,37 @@ html.intro-active, body.intro-active { overflow: hidden; }
   .quote-content { display: contents; }
   .quote-author { grid-column: 2; grid-row: 1; text-align: left; justify-self: start; align-self: center; }
   .quote-text { grid-column: 1 / span 2; grid-row: 2; text-align: left; }
-  /* En móvil: avatares más grandes para mejor legibilidad */
+  /* En mï¿½vil: avatares mï¿½s grandes para mejor legibilidad */
   .quote-avatar { width: 96px; height: 96px; }
   .quote-text { font-size: clamp(12px, 1.4vw, 15px); }
   .quote-text::before, .quote-text::after { font-size: 96px; }
 }
 
 /* ======================================================
-   Tipografías: compatibilidad total (Safari iOS/Android)
+   Tipografï¿½as: compatibilidad total (Safari iOS/Android)
    ======================================================
    - Definimos la fuente base en Roboto
    - Forzamos equivalentes para familias declaradas inline
      que no existen como webfonts (p.ej. 'Kemco Pixel',
      'Google Sans Code', 'Roboto black', 'Aver', 'SF Florencesans')
-   - Reforzamos títulos clave a Montserrat para consistencia
+   - Reforzamos tï¿½tulos clave a Montserrat para consistencia
 */
 
-/* Base del sitio */
-body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Arial, sans-serif; }
+/* Base del sitio
+   Nota: se mantiene Coolvetica como tipografÃ­a base (como en desktop).
+   Roboto se aplica sÃ³lo a textos de cuerpo mediante selectores especÃ­ficos. */
+body { font-family: Coolvetica, Inter, Arial, sans-serif; }
+
+/* Texto de lectura/cuerpo: Roboto para mejor legibilidad */
+p,
+li,
+.clients-copy p,
+#contacto .contact-details,
+.about-intro p,
+.about-list li,
+.quote-text {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Arial, sans-serif;
+}
 
 /* Accesibilidad: enlace para saltar al contenido */
 .skip-link {
@@ -2171,7 +2212,7 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Int
   font-family: 'Kemco Pixel', 'Press Start 2P', cursive !important;
 }
 
-/* Refuerzo de títulos y elementos destacados a Montserrat */
+/* Refuerzo de tï¿½tulos y elementos destacados a Montserrat */
 .carousel-title,
 .carousel-subtitle,
 .services-title,
@@ -2205,10 +2246,20 @@ body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Int
 #sobremi .quote-author {
   font-family: Coolvetica, Inter, Arial, sans-serif !important;
 }
-/* Títulos Hira extra gruesos */
+
+/* Sobre mÃ­: estudios en lÃ­neas (universidad/grado/perÃ­odo) */
+#sobremi .about-edu .edu-lines strong {
+  font-weight: 900;
+}
+
+#sobremi .about-edu .edu-lines {
+  display: inline-block;
+  line-height: 1.35;
+}
+/* Tï¿½tulos Hira extra gruesos */
 .carousel-title.title-hira { font-weight: 900; }
 .text-overlay.title-hira { font-weight: 900; }
-/* Reducción específica del título Hira en francés para ventanas anchas */
+/* Reducciï¿½n especï¿½fica del tï¿½tulo Hira en francï¿½s para ventanas anchas */
 html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.8); }
 /* Sombreado de esquina inferior izquierda en cada imagen del carrusel */
 .carousel-item { position: relative; overflow: hidden; }
@@ -2222,11 +2273,11 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   z-index:0;
   background: rgba(0,0,0,0.50);
   filter: blur(26px); /* desenfoque gaussiano para bordes suaves */
-  /* Para que el interior conserve densidad tras el blur, añadir una capa nítida menor */
+  /* Para que el interior conserve densidad tras el blur, aï¿½adir una capa nï¿½tida menor */
 }
-/* Capa interior nítida opcional (refuerzo de lectura) */
+/* Capa interior nï¿½tida opcional (refuerzo de lectura) */
 .carousel-caption { position:absolute; z-index:1; }
-/* Reflejos del Multiverso: sombra moderada unificada (títulos + cuerpo + carrusel) */
+/* Reflejos del Multiverso: sombra moderada unificada (tï¿½tulos + cuerpo + carrusel) */
 .image-wrap#p7 .text-overlay,
 .image-wrap#p7 .text-overlay.reflejos-shadow,
 .image-wrap#p7 .text-overlay[style*="font-family: 'Roboto'"] {
@@ -2255,14 +2306,14 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
 @font-face { font-family:'Aver'; src:url('../../Aver Bold Italic.ttf') format('truetype'); font-weight:700; font-style:italic; font-display:swap; }
 
 /* =============================
-   GALERÍA: versión móvil/estrecha
+   GALERï¿½A: versiï¿½n mï¿½vil/estrecha
    =============================
-   En móviles y ventanas estrechas, sustituimos todas las imágenes/textos
-   de cada sección de la galería por un único fondo específico, ubicado
+   En mï¿½viles y ventanas estrechas, sustituimos todas las imï¿½genes/textos
+   de cada secciï¿½n de la galerï¿½a por un ï¿½nico fondo especï¿½fico, ubicado
    en assets/Secciones/Proyectos/<Proyecto>/movil/.
    El orden de las secciones se mantiene. Solo visibles en =1024px.
 */
-/* Asegurar que las imágenes de fondo móviles NO aparezcan en escritorio */
+/* Asegurar que las imï¿½genes de fondo mï¿½viles NO aparezcan en escritorio */
 @media (min-width: 1025px) {
   #galeria .image-wrap > img.mobile-bg,
   #galeria .image-wrap > img.mobile-overlay,
@@ -2270,8 +2321,8 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
 }
 
 @media (max-width: 1024px) {
-  /* Versión móvil de la galería basada en <img class="mobile-bg"> */
-  /* 1) Invisibilizar por defecto todos los wrappers de la galería */
+  /* Versiï¿½n mï¿½vil de la galerï¿½a basada en <img class="mobile-bg"> */
+  /* 1) Invisibilizar por defecto todos los wrappers de la galerï¿½a */
   #galeria .image-wrap { display: none; margin: 0 !important; position: relative; min-height: auto; }
 
   /* 2) Mostrar solo los necesarios (uno por fondo; dos si el proyecto tiene dos fondos) */
@@ -2286,10 +2337,10 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   #galeria .image-wrap#p16,
   #galeria .image-wrap#p19 { display: block; }
 
-  /* 3) Dentro de los visibles, ocultar todo salvo la imagen móvil y los overlays móviles */
+  /* 3) Dentro de los visibles, ocultar todo salvo la imagen mï¿½vil y los overlays mï¿½viles */
   #galeria .image-wrap > :not(.mobile-bg):not(.mobile-overlay):not(.mobile-text-overlay) { display: none !important; }
   
-  /* Fondo móvil */
+  /* Fondo mï¿½vil */
   #galeria .image-wrap > img.mobile-bg {
     display: block !important;
     width: 100% !important;
@@ -2303,12 +2354,12 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     padding: 0 !important;
   }
 
-  /* Eliminar espacio entre última imagen de la galería y el footer en móvil */
+  /* Eliminar espacio entre ï¿½ltima imagen de la galerï¿½a y el footer en mï¿½vil */
   #galeria .image-wrap#p19 {
     margin-bottom: -1px !important;
   }
 
-  /* Imagen overlay para móvil - posicionada sobre el fondo */
+  /* Imagen overlay para mï¿½vil - posicionada sobre el fondo */
   #galeria .image-wrap > img.mobile-overlay {
     display: block !important;
     position: absolute !important;
@@ -2319,21 +2370,21 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     object-fit: contain !important;
     pointer-events: none;
     z-index: 2;
-    /* Visible por defecto para evitar problemas con IntersectionObserver en móviles */
+    /* Visible por defecto para evitar problemas con IntersectionObserver en mï¿½viles */
     opacity: 1;
-    /* Animación de entrada opcional desde abajo con zoom */
+    /* Animaciï¿½n de entrada opcional desde abajo con zoom */
     transform: translateY(0) scale(1);
     transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
                 transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Clase inicial para animación (si JavaScript está disponible) */
+  /* Clase inicial para animaciï¿½n (si JavaScript estï¿½ disponible) */
   #galeria .image-wrap > img.mobile-overlay:not(.visible) {
     opacity: 0;
     transform: translateY(30px) scale(0.95);
   }
 
-  /* Clase para activar la animación (aplicada por JavaScript al hacer scroll) */
+  /* Clase para activar la animaciï¿½n (aplicada por JavaScript al hacer scroll) */
   #galeria .image-wrap > img.mobile-overlay.visible {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -2352,10 +2403,10 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     opacity: 0;
   }
 
-  /* Thumbnails móviles (p10) - Anulación de animación genérica */
+  /* Thumbnails mï¿½viles (p10) - Anulaciï¿½n de animaciï¿½n genï¿½rica */
   #galeria .image-wrap#p10 img.thumb-mobile,
   #galeria .image-wrap#p10 img.thumb-temp {
-    /* Anular la animación de entrada por defecto para evitar saltos */
+    /* Anular la animaciï¿½n de entrada por defecto para evitar saltos */
     transform: none !important;
     transition: none !important;
   }
@@ -2393,7 +2444,7 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     margin-bottom: 0;
   }
 
-  /* Rollo móvil deslizable (p12) */
+  /* Rollo mï¿½vil deslizable (p12) */
   #galeria .image-wrap#p12 {
     overflow: hidden; /* Ocultar la parte que sobresale del rollo */
     position: relative;
@@ -2405,20 +2456,20 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   #galeria .image-wrap#p12.mobile-rollo-enabled:active,
   #galeria .image-wrap#p12.mobile-rollo-dragging {
     cursor: grabbing;
-    touch-action: none; /* Solo cuando está arrastrando horizontalmente */
+    touch-action: none; /* Solo cuando estï¿½ arrastrando horizontalmente */
   }
   #galeria .image-wrap#p12 .mobile-rollo-scroll {
     position: absolute;
     top: 0;
     left: 0;
-    width: auto !important; /* Ancho automático basado en la altura */
-    max-width: none !important; /* Sin límite de ancho */
+    width: auto !important; /* Ancho automï¿½tico basado en la altura */
+    max-width: none !important; /* Sin lï¿½mite de ancho */
     height: 100% !important; /* Altura igual al contenedor/fondo */
     object-fit: cover; /* Mantener altura completa, el ancho se extiende */
     object-position: left center;
     z-index: 3;
     pointer-events: auto;
-    /* Anular animación de entrada genérica */
+    /* Anular animaciï¿½n de entrada genï¿½rica */
     opacity: 1 !important;
     user-select: none;
     -webkit-user-drag: none;
@@ -2426,14 +2477,15 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     -moz-user-select: none;
     -ms-user-select: none;
     transform: translateX(0) !important;
-    transition: none; /* Sin transiciones automáticas, controlado por JS */
+    transition: none; /* Sin transiciones automï¿½ticas, controlado por JS */
   }
 
-  /* Texto overlay para móvil */
+  /* Texto overlay para mï¿½vil */
   #galeria .image-wrap > .mobile-text-overlay {
     display: block !important;
     position: absolute;
-    font-family: var(--text-font-family, var(--font-family, 'Montserrat', Inter, Arial, sans-serif));
+    /* Por defecto usar Coolvetica (como en desktop) salvo override por variables inline */
+    font-family: var(--text-font-family, var(--font-family, Coolvetica, Inter, Arial, sans-serif));
     font-weight: var(--text-font-weight, var(--font-weight, 400));
     color: var(--text-color, #ffffff);
     background: none;
@@ -2462,13 +2514,13 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
                 filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Clase para activar la animación del texto */
+  /* Clase para activar la animaciï¿½n del texto */
   #galeria .image-wrap > .mobile-text-overlay.visible {
     opacity: 1;
     filter: blur(0);
   }
 
-  /* Reflejos del Multiverso: aplicar el mismo sombreado de desktop en móvil */
+  /* Reflejos del Multiverso: aplicar el mismo sombreado de desktop en mï¿½vil */
   #galeria .image-wrap#p7 > .mobile-text-overlay {
     text-shadow: 
       1px 1px 2px rgba(0,0,0,0.82),
@@ -2478,12 +2530,12 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
       0 4px 14px rgba(0,0,0,0.55) !important;
   }
 
-  /* Reducir tamaño del título en inglés para que quepa en pantalla */
+  /* Reducir tamaï¿½o del tï¿½tulo en inglï¿½s para que quepa en pantalla */
   html[lang='en'] #galeria .image-wrap#p7 > .mobile-text-overlay:first-of-type {
     font-size: 7.5cqw !important;
   }
 
-  /* Subir título de Hira en francés para mejor ajuste */
+  /* Subir tï¿½tulo de Hira en francï¿½s para mejor ajuste */
   html[lang='fr'] #galeria .image-wrap#p1 > .mobile-text-overlay:first-of-type {
     top: 14% !important;
   }
@@ -2494,19 +2546,19 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   /* 5) Desactivar cualquier fondo inyectado por ::before (en caso de herencia) */
   #galeria .image-wrap::before { content: none !important; }
 
-  /* === Zona Zombi (p9) — Versión móvil ===
-     Mostrar base + overlays móviles y ocultar duplicados de escritorio */
-  /* No mostrar la base de escritorio en móvil; dejamos únicamente el fondo móvil y overlays móviles */
+  /* === Zona Zombi (p9) ï¿½ Versiï¿½n mï¿½vil ===
+     Mostrar base + overlays mï¿½viles y ocultar duplicados de escritorio */
+  /* No mostrar la base de escritorio en mï¿½vil; dejamos ï¿½nicamente el fondo mï¿½vil y overlays mï¿½viles */
   /* (queda oculto por la regla global que oculta :not(.mobile-*) ) */
 
-  /* Mostrar SOLAMENTE recursos móviles (carpeta /Zombis/movil/) */
+  /* Mostrar SOLAMENTE recursos mï¿½viles (carpeta /Zombis/movil/) */
   #galeria .image-wrap#p9 > img.overlay[src*="/Zombis/movil/"],
   #galeria .image-wrap#p9 > img.overlay-stand[src*="/Zombis/movil/"],
   #galeria .image-wrap#p9 > img.sombra[src*="/Zombis/movil/"] {
     display: block !important;
   }
 
-  /* Ocultar recursos de escritorio para evitar duplicados en móvil */
+  /* Ocultar recursos de escritorio para evitar duplicados en mï¿½vil */
   #galeria .image-wrap#p9 > img.overlay:not([src*="/Zombis/movil/"]),
   #galeria .image-wrap#p9 > img.sombra:not([src*="/Zombis/movil/"]) {
     display: none !important;
@@ -2521,15 +2573,15 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
     z-index: 3 !important;
   }
 
-  /* Justificar el texto explicativo de los Zombis en móvil */
+  /* Justificar el texto explicativo de los Zombis en mï¿½vil */
   #galeria .image-wrap#p9 > .mobile-text-overlay:first-of-type {
     text-align: justify !important;
   }
 }
 
-/* Corrección específica para la página autónoma proyectos.html:
-   En algunos dispositivos estrechos la galería quedaba totalmente oculta.
-   Forzamos que los wrappers visibles definidos para móvil se muestren siempre
+/* Correcciï¿½n especï¿½fica para la pï¿½gina autï¿½noma proyectos.html:
+   En algunos dispositivos estrechos la galerï¿½a quedaba totalmente oculta.
+   Forzamos que los wrappers visibles definidos para mï¿½vil se muestren siempre
    cuando el body tiene la clase proyectos-page (solo aplica a proyectos.html). */
 @media (max-width: 1024px) {
   body.proyectos-page #galeria .image-wrap#p1,
@@ -2542,11 +2594,11 @@ html[lang="fr"] .text-overlay.title-hira { font-size: calc(var(--text-size) * 0.
   body.proyectos-page #galeria .image-wrap#p12,
   body.proyectos-page #galeria .image-wrap#p16,
   body.proyectos-page #galeria .image-wrap#p19 { display: block !important; }
-  /* Permitir scroll vertical también en ventanas estrechas (=1024px) */
+  /* Permitir scroll vertical tambiï¿½n en ventanas estrechas (=1024px) */
   body.proyectos-page, html.proyectos-page { overflow-y: auto !important; overflow-x: hidden; }
-  /* Mostrar todos los wrappers en la página autónoma si aún quedasen ocultos por reglas previas */
+  /* Mostrar todos los wrappers en la pï¿½gina autï¿½noma si aï¿½n quedasen ocultos por reglas previas */
   body.proyectos-page #galeria .image-wrap { display: block !important; }
-  /* Ocultar solo elementos de escritorio dentro de cada wrapper, mantener fondos y overlays móviles */
+  /* Ocultar solo elementos de escritorio dentro de cada wrapper, mantener fondos y overlays mï¿½viles */
   body.proyectos-page #galeria .image-wrap > img.base,
   body.proyectos-page #galeria .image-wrap > img.overlay,
   body.proyectos-page #galeria .image-wrap > .text-overlay { display: none !important; }

@@ -8,6 +8,22 @@ const MobileMenu = {
   idiomaList: null,
   backBtn: null,
   showingLanguages: false,
+  resetInlineState() {
+    // Evitar que estados inline del menú móvil se queden persistentes al cambiar el breakpoint.
+    try {
+      if (this.mainMenuItems) this.mainMenuItems.style.display = '';
+      if (this.idiomaList) this.idiomaList.style.display = '';
+    } catch {}
+  },
+  resetToClosed() {
+    // Cerrar y limpiar. Útil al pasar de estrecho→ancho.
+    try {
+      this.toggle?.classList.remove('active');
+      this.nav?.classList.remove('active');
+    } catch {}
+    this.showingLanguages = false;
+    this.resetInlineState();
+  },
   init() {
     this.toggle = document.getElementById('menu-toggle');
     this.nav = document.getElementById('main-nav');
@@ -790,7 +806,13 @@ const Lang = {
       if (btn) btn.textContent = lang.toUpperCase();
       elements.forEach(el => {
         const text = el.getAttribute(`data-${lang}`);
-        text && (el.textContent = text);
+        if (!text) return;
+        // Permitir HTML controlado en algunos textos (p.ej. <br>, <strong> en Estudios)
+        if (el.classList && el.classList.contains('edu-lines')) {
+          el.innerHTML = text;
+        } else {
+          el.textContent = text;
+        }
       });
       // Actualizar enlace de CV según idioma
       try {
@@ -1018,31 +1040,9 @@ const Overlays = {
   },
   
   processRollos(rollos, {centered}) {
-    rollos.forEach(rollo => {
-      const isCentered = rollo.classList.contains('centered');
-      if (centered !== isCentered) {
-        rollo.classList.toggle('centered', centered);
-        if (centered) {
-          rollo.classList.remove('displaced-left', 'displaced-right');
-        } else {
-          const dir = rollo.getAttribute('data-initial-direction') === 'right' ? 'displaced-right' : 'displaced-left';
-          rollo.classList.add(dir);
-        }
-      }
-      
-      // Sincronizar texto asociado al rollo (especialmente rollo2)
-      const rolloNum = rollo.getAttribute('data-rollo');
-      if (rolloNum === '2') {
-        const wrap = rollo.closest('.image-wrap');
-        const associatedText = wrap?.querySelector('.text-overlay');
-        if (associatedText) {
-          // Copiar las mismas clases de estado del rollo al texto
-          associatedText.classList.toggle('centered', rollo.classList.contains('centered'));
-          associatedText.classList.toggle('displaced-left', rollo.classList.contains('displaced-left'));
-          associatedText.classList.toggle('displaced-right', rollo.classList.contains('displaced-right'));
-        }
-      }
-    });
+    // Los rollos ahora tienen animaciones CSS automáticas en ventanas anchas
+    // Ya no necesitamos procesar estados de centered/displaced para el hover
+    // Las animaciones CSS se encargan del movimiento automático
   }
 };
 
@@ -1213,70 +1213,15 @@ const Effects = {
   },
   
   setupRollos() {
+    // Los rollos ahora usan animaciones CSS automáticas en ventanas anchas
+    // Solo configuramos propiedades básicas sin efectos de hover
     document.querySelectorAll('.overlay-rollo').forEach(rollo => {
       if (this.handlers.has(rollo)) return;
       
-      const dir = Math.random() > 0.5 ? 'right' : 'left';
-      rollo.classList.add(`displaced-${dir}`);
-      rollo.setAttribute('data-initial-direction', dir);
-      Object.assign(rollo.style, {pointerEvents: 'auto', zIndex: '100'});
-      const rectState = {rect: null, ts: 0};
-      const getRect = () => {
-        const now = performance.now();
-        if (!rectState.rect || (now - rectState.ts) > 500) {
-          rectState.rect = rollo.getBoundingClientRect();
-          rectState.ts = now;
-        }
-        return rectState.rect;
-      };
-      const invalidateRect = () => { rectState.rect = null; };
+      // Deshabilitar interacción en ventanas anchas (las animaciones CSS se encargan del movimiento)
+      Object.assign(rollo.style, {pointerEvents: 'none', zIndex: '10'});
       
-      // Encontrar el texto asociado (especialmente para rollo2)
-      const rolloNum = rollo.getAttribute('data-rollo');
-      const wrap = rollo.closest('.image-wrap');
-      const associatedText = (rolloNum === '2' && wrap) ? wrap.querySelector('.text-overlay') : null;
-      
-      // Si hay texto asociado, aplicarle también las clases iniciales
-      if (associatedText) {
-        associatedText.classList.add(`displaced-${dir}`);
-        associatedText.setAttribute('data-initial-direction', dir);
-      }
-      
-      const onMouseMove = e => {
-        if (rollo.classList.contains('centered')) {
-          const rect = getRect();
-          const x = Math.max(-8, Math.min(8, (e.clientX - rect.left - rect.width / 2) * 0.06));
-          rollo.style.transform = `translateX(-50%) translateX(${x}px)`;
-          
-          // Sincronizar movimiento del texto asociado
-          if (associatedText) {
-            associatedText.style.transform = `translateX(${x}px)`;
-          }
-        }
-      };
-      
-      const onMouseLeave = () => {
-        rollo.style.cursor = 'default';
-        const transform = rollo.classList.contains('centered') 
-          ? 'translateX(-50%) translateX(0px)'
-          : `translateX(-50%) translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
-        rollo.style.transform = transform;
-        invalidateRect();
-        
-        // Sincronizar reset del texto asociado
-        if (associatedText) {
-          const textTransform = rollo.classList.contains('centered')
-            ? 'translateX(0px)'
-            : `translateX(${rollo.classList.contains('displaced-left') ? '-5%' : '5%'})`;
-          associatedText.style.transform = textTransform;
-        }
-      };
-      
-      rollo.addEventListener('mouseenter', () => Object.assign(rollo.style, {cursor: 'default', pointerEvents: 'auto', zIndex: '100'}));
-      ['mousemove', 'mouseleave', 'click'].forEach((e, i) => 
-        rollo.addEventListener(e, [onMouseMove, onMouseLeave, e => { e.preventDefault(); e.stopPropagation(); }][i]));
-      
-      this.handlers.set(rollo, {onMouseMove, onMouseLeave});
+      this.handlers.set(rollo, {});
     });
   },
   
@@ -4230,6 +4175,26 @@ const init = () => {
 
       // Si cambiamos de modo (≤1024 ⇄ >1024), ajustar estado de Proyectos y overlays
       if (wasNarrow !== nowNarrow) {
+        // Reset de estados que pueden quedar inconsistentes tras el cambio de breakpoint
+        try {
+          // Si el header estaba oculto por scroll en modo estrecho, al ir a ancho lo mostramos.
+          $.header?.classList.remove('hidden');
+          $.lastScrollDirection = 0;
+          $.lastHeaderContainerScrollTop = 0;
+        } catch {}
+
+        // Cerrar/limpiar menú móvil al pasar a ancho (evita overlays/toggles invisibles)
+        try {
+          if (!nowNarrow) MobileMenu.resetToClosed && MobileMenu.resetToClosed();
+          else MobileMenu.resetInlineState && MobileMenu.resetInlineState();
+        } catch {}
+
+        // Limpiar overrides inline del índice fijados en algún modo anterior
+        try {
+          const indice = document.getElementById('indice');
+          if (indice) indice.style.top = '';
+        } catch {}
+
         const proyectos = document.getElementById('proyectos');
         const proyectosActivo = proyectos?.classList.contains('active');
         // En página de proyectos o si la sección proyectos está activa
