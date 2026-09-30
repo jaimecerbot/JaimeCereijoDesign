@@ -212,7 +212,10 @@ const IntroOverlay = {
   },
   detectFormat() {
     const v = document.createElement('video');
-    const canWebm = !!v.canPlayType && v.canPlayType('video/webm; codecs="vp9"');
+    const canWebm = !!v.canPlayType && (
+      v.canPlayType('video/webm; codecs="vp9"') ||
+      v.canPlayType('video/webm')
+    );
     // Usar los archivos disponibles y elegir según la capacidad real del navegador.
     if (canWebm) {
       return { src: 'Jmotion_FINAL.webm', type: 'video/webm' };
@@ -2591,7 +2594,7 @@ const Intro = {
     
     [$.html, $.body].forEach(el => el.classList.add('intro-active'));
     
-    video.src = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent) ? 'Jmotion_1.mov' : 'Jmotion_FINAL.webm';
+    video.src = IntroOverlay.detectFormat().src;
     Object.assign(video, {muted: true, autoplay: true, playsInline: true});
     
     const tryPlay = () => video.play().catch(() => 
