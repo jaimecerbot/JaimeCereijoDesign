@@ -230,9 +230,12 @@ const IntroOverlay = {
     this.video.autoplay = true;
     this.video.muted = true; // evitar bloqueo por autoplay
     this.video.playsInline = true;
-    this.video.style.maxWidth = '60vw';
-    this.video.style.maxHeight = '60vh';
+    this.video.style.width = '100%';
+    this.video.style.height = '100%';
+    this.video.style.maxWidth = '100%';
+    this.video.style.maxHeight = '100%';
     const fmt = this.detectFormat();
+    if (fmt.type === 'video/quicktime') this.video.style.mixBlendMode = 'screen';
     const source = document.createElement('source');
     source.src = fmt.src;
     source.type = fmt.type;
