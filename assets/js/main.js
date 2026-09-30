@@ -212,12 +212,13 @@ const IntroOverlay = {
   },
   detectFormat() {
     const v = document.createElement('video');
+    const isSafari = /safari/i.test(navigator.userAgent) && !/chrome|crios|android/i.test(navigator.userAgent);
     const canWebm = !!v.canPlayType && (
       v.canPlayType('video/webm; codecs="vp9"') ||
       v.canPlayType('video/webm')
     );
-    // Usar los archivos disponibles y elegir según la capacidad real del navegador.
-    if (canWebm) {
+    // Safari móvil puede reproducir WebM aunque canPlayType no lo anuncie de forma fiable.
+    if (isSafari || canWebm) {
       return { src: 'Jmotion_FINAL.webm', type: 'video/webm' };
     }
     return { src: 'Jmotion_1.mov', type: 'video/quicktime' };
@@ -238,7 +239,9 @@ const IntroOverlay = {
     this.video.style.maxWidth = '100%';
     this.video.style.maxHeight = '100%';
     const fmt = this.detectFormat();
-    if (fmt.type === 'video/quicktime') this.video.style.mixBlendMode = 'screen';
+    // El vídeo no tiene canal alfa en todos los navegadores: eliminar visualmente
+    // el matte negro permite conservar el fondo azul del overlay.
+    this.video.style.mixBlendMode = 'screen';
     const source = document.createElement('source');
     source.src = fmt.src;
     source.type = fmt.type;
