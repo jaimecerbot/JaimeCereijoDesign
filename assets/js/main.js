@@ -818,8 +818,9 @@ const Lang = {
       try {
         const cvBtn = document.getElementById('btn-cv');
         if (cvBtn) {
-          const href = lang === 'en' ? 'assets/Secciones/Menu/CV/Resume_JaimeCereijo.pdf' : 'assets/Secciones/Menu/CV/Curriculum_JaimeCereijo.pdf';
+          const href = lang === 'en' ? 'assets/Secciones/Menu/CV/Resume_JaimeCereijo.pdf' : 'assets/Secciones/Menu/CV/JaimeCereijo CV.pdf';
           cvBtn.setAttribute('href', href);
+          cvBtn.setAttribute('download', 'JaimeCereijo CV.pdf');
         }
       } catch {}
       // Re-formatear autores de referencias: salto de línea antes del rol
