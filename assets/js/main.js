@@ -211,14 +211,13 @@ const IntroOverlay = {
     } catch {}
   },
   detectFormat() {
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const v = document.createElement('video');
     const canWebm = !!v.canPlayType && v.canPlayType('video/webm; codecs="vp9"');
-    // Heurística: Safari usa .mov con alpha; Chrome/Firefox/Edge usan .webm con alpha
-    if (!isSafari && canWebm) {
-      return { src: 'Jmotion_1.webm', type: 'video/webm' };
+    // Usar los archivos disponibles y elegir según la capacidad real del navegador.
+    if (canWebm) {
+      return { src: 'Jmotion_FINAL.webm', type: 'video/webm' };
     }
-    return { src: 'Jmotion_FINAL.mov', type: 'video/quicktime' };
+    return { src: 'Jmotion_1.mov', type: 'video/quicktime' };
   },
   createOverlay() {
     if (document.getElementById('intro-overlay')) return; // ya existe
@@ -246,22 +245,30 @@ const IntroOverlay = {
     this.overlay.classList.add('fade-out');
     setTimeout(() => {
       try { this.overlay.remove(); } catch {}
-    }, 1500);
+      this.overlay = null;
+      this.video = null;
+    }, 500);
   },
   init() {
-    if (!this.shouldShow()) return;
-    // Marca inmediato para evitar que otras secciones o páginas en la misma sesión
-    // vuelvan a disparar la intro antes de que termine.
-    this.markShown();
     this.createOverlay();
     // Salida al finalizar o si falla la carga
     const done = () => this.fadeOut();
     this.video?.addEventListener('ended', done);
     this.video?.addEventListener('error', done);
     // Timeout de seguridad por si el evento ended no llega
-    setTimeout(done, 10000);
+    setTimeout(done, 2500);
     // Permitir cerrar manualmente al hacer clic
     this.overlay?.addEventListener('click', done);
+  },
+  play() {
+    if (this.overlay) return;
+    this.createOverlay();
+    const done = () => this.fadeOut();
+    this.video?.addEventListener('ended', done, { once: true });
+    this.video?.addEventListener('error', done, { once: true });
+    setTimeout(done, 10000);
+    this.overlay?.addEventListener('click', done, { once: true });
+    this.video?.play().catch(done);
   }
 };
 
@@ -661,6 +668,7 @@ function addTextOverlay(imageId, text, options = {}) {
 
 // ===== FUNCIONES DE NAVEGACIÓN Y IDIOMA =====
 function mostrarSeccion(id) {
+  IntroOverlay.play();
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
   
@@ -4055,7 +4063,7 @@ const init = () => {
   if ($.initialized) return; // prevent double init
   $.initialized = true;
   $.lastIsNarrow = $.isNarrow;
-  [Layout, Nav, Overlays, Lang, Intro, Carousel, WebdevMini, ServicesDesc, MobileOverlays].forEach(comp => comp.init());
+  [Layout, Nav, Overlays, Lang, Intro, IntroOverlay, Carousel, WebdevMini, ServicesDesc, MobileOverlays].forEach(comp => comp.init());
   
   // Inicializar footer inline en móvil
   MobileFooter.init();
